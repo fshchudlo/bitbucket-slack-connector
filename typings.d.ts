@@ -26,5 +26,6 @@ declare global {
         setChannelTopic(options: slack.ConversationsSetTopicArguments): Promise<slack.ConversationsSetTopicResponse>;
         inviteToChannel(options: slack.ConversationsInviteArguments): Promise<slack.ConversationsInviteResponse>;
         closeChannel(options: slack.ConversationsCloseArguments): Promise<slack.ConversationsCloseResponse>;
+        sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse>;
     }
 }

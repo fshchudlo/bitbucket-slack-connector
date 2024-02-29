@@ -16,7 +16,7 @@ export async function handlePullRequestCreated(payload: PullRequestCreatedPayloa
     const slackUserRequests = [pullRequest.author.user.emailAddress].concat(pullRequest.reviewers.map(r => r.user.emailAddress)).map(
         async email =>
             await slackGateway.lookupUserByEmail({
-                email: email
+                email: email,
             })
     );
 
@@ -39,6 +39,11 @@ export async function handlePullRequestCreated(payload: PullRequestCreatedPayloa
         channel: channelId,
         users: slackUserIds.join(","),
         force: true,
+    });
+
+    await slackGateway.sendMessage({
+        channel: channelId,
+        text: `The pull request was opened by ${pullRequest.author.user.name}. Please <${pullRequest.links.self[0]}|review the PR>`
     });
 
     return channelId;

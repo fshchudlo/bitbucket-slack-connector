@@ -24,6 +24,12 @@ exports[`Webhook handling should handle pull request creation 1`] = `
       "email": "test.reviewer1@test.com",
     },
   ],
+  "sentMessages": [
+    {
+      "channel": "12345",
+      "text": "The pull request was opened by test.author. Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
+    },
+  ],
   "setChannelTopics": [
     {
       "channel": "12345",

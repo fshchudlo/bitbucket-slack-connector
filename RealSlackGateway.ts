@@ -20,4 +20,7 @@ export class RealSlackGateway implements SlackGateway {
     closeChannel(options: slack.ConversationsCloseArguments): Promise<slack.ConversationsCloseResponse> {
         return this.client.conversations.close(options);
     }
+    sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {
+        return this.client.chat.postMessage(options);
+    }
 }
