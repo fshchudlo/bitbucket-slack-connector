@@ -1,3 +1,4 @@
+import { PullRequestCreatedPayload, SlackGateway } from "../../contracts";
 import buildChannelName from "../buildChannelName";
 
 function buildChannelTopic({ pullRequest }: PullRequestCreatedPayload) {

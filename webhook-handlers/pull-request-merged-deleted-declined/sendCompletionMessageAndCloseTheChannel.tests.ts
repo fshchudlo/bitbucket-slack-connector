@@ -1,5 +1,6 @@
 // mainApp.test.ts
 import { TestSlackGateway } from "../../TestSlackGateway";
+import { PullRequestMergedDeclinedDeletedPayload } from "../../contracts";
 import { sendCompletionMessageAndCloseTheChannel } from "./sendCompletionMessageAndCloseTheChannel";
 
 let payload: PullRequestMergedDeclinedDeletedPayload = {

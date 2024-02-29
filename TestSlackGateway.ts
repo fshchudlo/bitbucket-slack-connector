@@ -1,4 +1,5 @@
 import * as slack from "@slack/web-api";
+import { SlackGateway } from "./contracts";
 
 export class TestSlackGateway implements SlackGateway {
     snapshot: {

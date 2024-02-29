@@ -1,5 +1,6 @@
 // mainApp.test.ts
 import { TestSlackGateway } from "../../TestSlackGateway";
+import { PullRequestCreatedPayload } from "../../contracts";
 import { createChannelAndInviteParticipants } from "./createChannelAndInviteParticipants";
 
 let payload: PullRequestCreatedPayload = {
