@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Webhook handling should handle pull request creation 1`] = `
+{
+  "closedChannels": [],
+  "createdChannels": [
+    {
+      "is_private": false,
+      "name": "pr-test-proj-test-repository-1",
+    },
+  ],
+  "invitesToChannels": [
+    {
+      "channel": "12345",
+      "force": true,
+      "users": "test.author@test.com,test.reviewer1@test.com",
+    },
+  ],
+  "lookedUpUsers": [
+    {
+      "email": "test.author@test.com",
+    },
+    {
+      "email": "test.reviewer1@test.com",
+    },
+  ],
+  "setChannelTopics": [
+    {
+      "channel": "12345",
+      "topic": ":git: Pull request: *<https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|a new file added>* | :git-branch: To branch: *TEST-PROJ/test-repository:master*",
+    },
+  ],
+}
+`;

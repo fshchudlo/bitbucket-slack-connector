@@ -1,0 +1,7 @@
+{
+    "jest.runMode": {
+        "type": "watch",
+        "coverage": true
+    },
+    "Key Promoter.suggestKeybindingCreation": false
+}
