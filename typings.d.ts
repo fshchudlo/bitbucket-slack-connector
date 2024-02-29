@@ -2,11 +2,15 @@ import * as slack from "@slack/web-api";
 declare global {
     // see https://confluence.atlassian.com/bitbucketserver0816/event-payload-1333334207.html#Eventpayload-pullrequest
 
+    interface UserPayload {
+        name: string;
+        emailAddress: string;
+    }
     interface PullRequestPayload {
         id: number;
         title: string;
-        author: { user: { name: string; emailAddress: string } };
-        reviewers: Array<{ user: { name: string; emailAddress: string } }>;
+        author: { user: UserPayload };
+        reviewers: Array<{ user: UserPayload }>;
         links: { self: Array<string> };
         toRef: {
             displayId: string;
@@ -25,10 +29,7 @@ declare global {
     interface PullRequestMergedDeclinedDeletedPayload {
         eventKey: string;
         date: string;
-        actor: {
-            name: string;
-            emailAddress: string;
-        };
+        actor: UserPayload;
         pullRequest: PullRequestPayload;
     }
 
