@@ -9,7 +9,7 @@ function buildChannelTopic({ pullRequest }: PullRequestCreatedPayload) {
     return result;
 }
 
-export async function handlePullRequestCreated(payload: PullRequestCreatedPayload, slackGateway: SlackGateway) {
+export async function createChannelAndInviteParticipants(payload: PullRequestCreatedPayload, slackGateway: SlackGateway) {
     const pullRequest = payload.pullRequest;
     const channelName = buildChannelName(pullRequest.toRef.repository.project.key, pullRequest.toRef.repository.slug, pullRequest.id);
 

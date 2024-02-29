@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Webhook handling should handle pull request creation 1`] = `
+exports[`createChannelAndInviteParticipants Should create channel, set topic and invite author and reviewers 1`] = `
 {
   "closedChannels": [],
   "createdChannels": [

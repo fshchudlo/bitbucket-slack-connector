@@ -1,6 +1,6 @@
 // mainApp.test.ts
 import { TestSlackGateway } from "../../TestSlackGateway";
-import { handlePullRequestCreated } from "./pull-request-created-handler";
+import { createChannelAndInviteParticipants } from "./createChannelAndInviteParticipants";
 
 let payload: PullRequestCreatedPayload = {
     eventKey: "pr:opened",
@@ -38,11 +38,11 @@ let payload: PullRequestCreatedPayload = {
     },
 };
 
-describe("Webhook handling", () => {
-    it("should handle pull request creation", async () => {
+describe("createChannelAndInviteParticipants", () => {
+    it("Should create channel, set topic and invite author and reviewers", async () => {
         const testee = new TestSlackGateway();
 
-        await handlePullRequestCreated(payload, testee);
+        await createChannelAndInviteParticipants(payload, testee);
 
         expect(testee.snapshot).toMatchSnapshot();
     });

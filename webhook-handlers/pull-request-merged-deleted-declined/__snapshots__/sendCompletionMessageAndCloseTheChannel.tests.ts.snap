@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`sendCompletionMessageAndCloseTheChannel Should send completion message and close the channel on PR declining 1`] = `
+{
+  "closedChannels": [
+    {
+      "channel": "pr-test-proj-test-repository-1",
+    },
+  ],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "lookedUpUsers": [],
+  "sentMessages": [
+    {
+      "channel": "pr-test-proj-test-repository-1",
+      "text": "The pull request was declined by test.author.",
+    },
+  ],
+  "setChannelTopics": [],
+}
+`;
+
+exports[`sendCompletionMessageAndCloseTheChannel Should send completion message and close the channel on PR deletion 1`] = `
+{
+  "closedChannels": [
+    {
+      "channel": "pr-test-proj-test-repository-1",
+    },
+  ],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "lookedUpUsers": [],
+  "sentMessages": [
+    {
+      "channel": "pr-test-proj-test-repository-1",
+      "text": "The pull request was deleted by test.author.",
+    },
+  ],
+  "setChannelTopics": [],
+}
+`;
+
+exports[`sendCompletionMessageAndCloseTheChannel Should send completion message and close the channel on PR merge 1`] = `
+{
+  "closedChannels": [
+    {
+      "channel": "pr-test-proj-test-repository-1",
+    },
+  ],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "lookedUpUsers": [],
+  "sentMessages": [
+    {
+      "channel": "pr-test-proj-test-repository-1",
+      "text": "The pull request was merged by test.author. Well done, thank you all.",
+    },
+  ],
+  "setChannelTopics": [],
+}
+`;

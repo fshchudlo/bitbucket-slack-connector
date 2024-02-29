@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { App, ExpressReceiver } from "@slack/bolt";
-import { handlePullRequestCreated } from "./webhook-handlers/pull-request-created/pull-request-created-handler";
+import { createChannelAndInviteParticipants } from "./webhook-handlers/pull-request-created/createChannelAndInviteParticipants";
 import AppConfig from "./app.config";
 import { RealSlackGateway } from "./RealSlackGateway";
 
@@ -21,7 +21,7 @@ expressReceiver.router.post("/bitbucket-webhook", async (req, res) => {
 
     try {
         if (eventType === "pr:opened") {
-            await handlePullRequestCreated(req.body, slackGateway);
+            await createChannelAndInviteParticipants(req.body, slackGateway);
         }
         //pr:merged
         //pr:declined
