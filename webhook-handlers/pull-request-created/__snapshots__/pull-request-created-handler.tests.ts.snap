@@ -33,7 +33,7 @@ exports[`Webhook handling should handle pull request creation 1`] = `
   "setChannelTopics": [
     {
       "channel": "12345",
-      "topic": ":git: Pull request: *<https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|a new file added>* | :git-branch: To branch: *TEST-PROJ/test-repository:master*",
+      "topic": ":git: Pull request: *Quite a long and comprehensive description to get channel title longer than 250 symbols which is a maximum length for the Slack* | :git-branch: To branch: *TEST-PROJ/test-repository:master*",
     },
   ],
 }

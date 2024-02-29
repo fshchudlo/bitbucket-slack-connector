@@ -7,7 +7,7 @@ let payload: PullRequestCreatedPayload = {
     date: "2017-09-19T09:58:11+1000",
     pullRequest: {
         id: 1,
-        title: "a new file added",
+        title: "Quite a long and comprehensive description to get channel title longer than 250 symbols which is a maximum length for the Slack",
         toRef: {
             displayId: "master",
             repository: {

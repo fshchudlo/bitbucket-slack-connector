@@ -20,7 +20,7 @@ export async function handlePullRequestCreated(payload: PullRequestCreatedPayloa
             })
     );
 
-    const slackUserIds = (await Promise.all(slackUserRequests)).map(r => r.user.id);
+    const slackUserIds = [...new Set((await Promise.all(slackUserRequests)).map(r => r.user.id))];
 
     // Create a new Slack channel
     const channelId = (
@@ -43,7 +43,7 @@ export async function handlePullRequestCreated(payload: PullRequestCreatedPayloa
 
     await slackGateway.sendMessage({
         channel: channelId,
-        text: `The pull request was opened by ${pullRequest.author.user.name}. Please <${pullRequest.links.self[0]}|review the PR>`
+        text: `The pull request was opened by ${pullRequest.author.user.name}. Please <${pullRequest.links.self[0]}|review the PR>`,
     });
 
     return channelId;
