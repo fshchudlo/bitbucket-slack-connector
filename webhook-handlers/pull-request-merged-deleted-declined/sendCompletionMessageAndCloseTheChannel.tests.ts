@@ -8,7 +8,7 @@ const payload: PullRequestMergedDeclinedDeletedPayload = {
     date: "2017-09-19T09:58:11+1000",
     actor: {
         name: "test.author",
-        emailAddress: "test.author@test.com",
+        emailAddress: "test.author@test.com"
     },
     pullRequest: {
         id: 1,
@@ -19,28 +19,28 @@ const payload: PullRequestMergedDeclinedDeletedPayload = {
                 slug: "test-repository",
                 project: {
                     key: "TEST-PROJ",
-                    name: "Test project",
-                },
-            },
+                    name: "Test project"
+                }
+            }
         },
         author: {
             user: {
                 name: "test.author",
-                emailAddress: "test.author@test.com",
-            },
+                emailAddress: "test.author@test.com"
+            }
         },
         reviewers: [
             {
                 user: {
                     name: "test.reviewer1",
-                    emailAddress: "test.reviewer1@test.com",
-                },
-            },
+                    emailAddress: "test.reviewer1@test.com"
+                }
+            }
         ],
         links: {
-            self: ["https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview"],
-        },
-    },
+            self: [{ href: "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview" }]
+        }
+    }
 };
 
 describe("sendCompletionMessageAndCloseTheChannel", () => {

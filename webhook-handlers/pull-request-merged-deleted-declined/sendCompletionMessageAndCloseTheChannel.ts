@@ -27,7 +27,7 @@ export async function sendCompletionMessageAndCloseTheChannel(
         text: message
     });
 
-    await slackGateway.closeChannel({
+    await slackGateway.archiveChannel({
         //Close channel is quite unique and requires channel id, not the name. Take that id from sendMessage response to avoid extra triggers of Slack API
         channel: messageResponse.channel
     });

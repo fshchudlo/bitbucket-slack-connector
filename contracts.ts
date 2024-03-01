@@ -45,7 +45,7 @@ export declare interface SlackGateway {
 
     inviteToChannel(options: slack.ConversationsInviteArguments): Promise<slack.ConversationsInviteResponse>;
 
-    closeChannel(options: slack.ConversationsCloseArguments): Promise<slack.ConversationsCloseResponse>;
+    archiveChannel(options: slack.ConversationsArchiveArguments): Promise<slack.ConversationsArchiveResponse>;
 
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse>;
 }

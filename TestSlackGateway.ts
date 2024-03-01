@@ -6,7 +6,7 @@ export class TestSlackGateway implements SlackGateway {
         createdChannels: slack.ConversationsCreateArguments[];
         setChannelTopics: slack.ConversationsSetTopicArguments[];
         invitesToChannels: slack.ConversationsInviteArguments[];
-        closedChannels: slack.ConversationsCloseArguments[];
+        archivedChannels: slack.ConversationsCloseArguments[];
         sentMessages: slack.ChatPostMessageArguments[];
         lookedUpUsers: slack.UsersLookupByEmailArguments[];
     };
@@ -15,7 +15,7 @@ export class TestSlackGateway implements SlackGateway {
             createdChannels: new Array<slack.ConversationsCreateArguments>(),
             setChannelTopics: new Array<slack.ConversationsSetTopicArguments>(),
             invitesToChannels: new Array<slack.ConversationsInviteArguments>(),
-            closedChannels: new Array<slack.ConversationsCloseArguments>(),
+            archivedChannels: new Array<slack.ConversationsCloseArguments>(),
             sentMessages: new Array<slack.ChatPostMessageArguments>(),
             lookedUpUsers: new Array<slack.UsersLookupByEmailArguments>(),
         };
@@ -36,8 +36,8 @@ export class TestSlackGateway implements SlackGateway {
         this.snapshot.invitesToChannels.push(options);
         return Promise.resolve({ ok: true });
     }
-    closeChannel(options: slack.ConversationsCloseArguments): Promise<slack.ConversationsCloseResponse> {
-        this.snapshot.closedChannels.push(options);
+    archiveChannel(options: slack.ConversationsArchiveArguments): Promise<slack.ConversationsArchiveResponse> {
+        this.snapshot.archivedChannels.push(options);
         return Promise.resolve({ ok: true });
     }
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {
