@@ -3,7 +3,7 @@ import { TestSlackGateway } from "../../TestSlackGateway";
 import { PullRequestCreatedPayload } from "../../contracts";
 import { createChannelAndInviteParticipants } from "./createChannelAndInviteParticipants";
 
-let payload: PullRequestCreatedPayload = {
+const payload: PullRequestCreatedPayload = {
     eventKey: "pr:opened",
     date: "2017-09-19T09:58:11+1000",
     pullRequest: {

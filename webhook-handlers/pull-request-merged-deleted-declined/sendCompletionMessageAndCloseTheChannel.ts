@@ -1,5 +1,5 @@
 import buildChannelName from "../buildChannelName";
-import {PullRequestMergedDeclinedDeletedPayload, SlackGateway} from '../../contracts'
+import { PullRequestMergedDeclinedDeletedPayload, SlackGateway } from "../../contracts";
 
 export async function sendCompletionMessageAndCloseTheChannel(
     payload: PullRequestMergedDeclinedDeletedPayload,
@@ -19,15 +19,16 @@ export async function sendCompletionMessageAndCloseTheChannel(
             message = `The pull request was declined by ${payload.actor.name}.`;
             break;
         default:
-            throw new Error("Unknown payload type.");
+            throw new Error(`"${payload.eventKey}" payload is unknown.`);
     }
 
-    await slackGateway.sendMessage({
+    const messageResponse = await slackGateway.sendMessage({
         channel: channelName,
-        text: message,
+        text: message
     });
 
     await slackGateway.closeChannel({
-        channel: channelName,
+        //Close channel is quite unique and requires channel id, not the name. Take that id from sendMessage response to avoid extra triggers of Slack API
+        channel: messageResponse.channel
     });
 }

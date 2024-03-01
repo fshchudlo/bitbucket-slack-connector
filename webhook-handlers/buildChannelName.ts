@@ -6,6 +6,6 @@ export default function buildChannelName(projectKey: string, repositorySlug: str
     const maxChannelNameLengthInSlack = 80;
     const lengthLeftForTheKey = maxChannelNameLengthInSlack - pullRequestId.length - 4; //4 is the length of 'pr--' symbols in resulting channel name;
 
-    let key = `${projectKey}-${repositorySlug}`.slice(0, lengthLeftForTheKey).toLowerCase();
+    const key = `${projectKey}-${repositorySlug}`.slice(0, lengthLeftForTheKey).toLowerCase();
     return `pr-${key}-${pullRequestId}`.replace(/-+/g, '-');
 }

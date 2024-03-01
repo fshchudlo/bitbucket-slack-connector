@@ -3,7 +3,7 @@ import { TestSlackGateway } from "../../TestSlackGateway";
 import { PullRequestMergedDeclinedDeletedPayload } from "../../contracts";
 import { sendCompletionMessageAndCloseTheChannel } from "./sendCompletionMessageAndCloseTheChannel";
 
-let payload: PullRequestMergedDeclinedDeletedPayload = {
+const payload: PullRequestMergedDeclinedDeletedPayload = {
     eventKey: "pr:merged",
     date: "2017-09-19T09:58:11+1000",
     actor: {
@@ -78,7 +78,7 @@ describe("sendCompletionMessageAndCloseTheChannel", () => {
         try {
             await sendCompletionMessageAndCloseTheChannel(payload, testee);
         } catch (error) {
-            expect((error as Error).message).toBe("Unknown payload type.");
+            expect((error as Error).message).toBe("\"unknown action\" payload is unknown.");
         }
     });
 });

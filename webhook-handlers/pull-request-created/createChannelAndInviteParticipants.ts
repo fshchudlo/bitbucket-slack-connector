@@ -3,7 +3,7 @@ import buildChannelName from "../buildChannelName";
 
 function buildChannelTopic({ pullRequest }: PullRequestCreatedPayload) {
     const header = `${pullRequest.toRef.repository.project.key}/${pullRequest.toRef.repository.slug}:${pullRequest.toRef.displayId}`;
-    let result = `:git: Pull request: *<${pullRequest.links.self[0]}|${pullRequest.title}>* | :git-branch: To branch: *${header}*`;
+    let result = `:git: Pull request: *<${pullRequest.links.self[0].href}|${pullRequest.title}>* | :git-branch: To branch: *${header}*`;
     if (result.length > 250) {
         result = `:git: Pull request: *${pullRequest.title}* | :git-branch: To branch: *${header}*`;
     }
@@ -44,7 +44,7 @@ export async function createChannelAndInviteParticipants(payload: PullRequestCre
 
     await slackGateway.sendMessage({
         channel: channelId,
-        text: `The pull request was opened by ${pullRequest.author.user.name}. Please <${pullRequest.links.self[0]}|review the PR>`,
+        text: `The pull request was opened by ${pullRequest.author.user.name}. Please <${pullRequest.links.self[0].href}|review the PR>`,
     });
 
     return channelId;

@@ -1,0 +1,11 @@
+### Create pull request
+POST http://localhost:3000/bitbucket-webhook
+Content-Type: application/json
+
+< ./PR-opened-test-payload.json
+
+### Merge pull request
+POST http://localhost:3000/bitbucket-webhook
+Content-Type: application/json
+
+< ./PR-merged-test-payload.json

@@ -1,0 +1,44 @@
+{
+  "eventKey": "pr:merged",
+  "date": "2024-03-01T18:19:32+0700",
+  "actor": {
+    "name": "{{PRAuthorName}}",
+    "emailAddress": "{{PRAuthorEmail}}"
+  },
+  "pullRequest": {
+    "id": 1,
+    "title": "test pull request",
+    "toRef": {
+      "displayId": "master",
+      "repository": {
+        "slug": "test-repository",
+        "project": {
+          "key": "TEST-PROJ",
+          "name": "Test Project"
+        }
+      }
+    },
+    "author": {
+      "user": {
+        "name": "{{PRAuthorName}}",
+        "emailAddress": "{{PRAuthorEmail}}"
+      }
+    },
+    "reviewers": [
+      {
+        "user": {
+          "name": "{{FirstReviewerName}}",
+          "emailAddress": "{{FirstReviewerEmail}}"
+        }
+      }
+    ],
+    "participants": [],
+    "links": {
+      "self": [
+        {
+          "href": "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1"
+        }
+      ]
+    }
+  }
+}
