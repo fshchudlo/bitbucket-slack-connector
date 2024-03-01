@@ -1,8 +1,8 @@
 import buildChannelName from "../buildChannelName";
-import { PullRequestMergedDeclinedDeletedPayload, SlackGateway } from "../../contracts";
+import { PullRequestCreatedMergedDeclinedDeletedPayload, SlackGateway } from "../../contracts";
 
 export async function sendCompletionMessageAndCloseTheChannel(
-    payload: PullRequestMergedDeclinedDeletedPayload,
+    payload: PullRequestCreatedMergedDeclinedDeletedPayload,
     slackGateway: SlackGateway
 ) {
     const pullRequest = payload.pullRequest;

@@ -1,7 +1,7 @@
-import { PullRequestCreatedPayload, SlackGateway } from "../../contracts";
+import { PullRequestCreatedMergedDeclinedDeletedPayload, SlackGateway } from "../../contracts";
 import buildChannelName from "../buildChannelName";
 
-function buildChannelTopic({ pullRequest }: PullRequestCreatedPayload) {
+function buildChannelTopic({ pullRequest }: PullRequestCreatedMergedDeclinedDeletedPayload) {
     const header = `${pullRequest.toRef.repository.project.key}/${pullRequest.toRef.repository.slug}:${pullRequest.toRef.displayId}`;
     let result = `:git: Pull request: *<${pullRequest.links.self[0].href}|${pullRequest.title}>* | :git-branch: To branch: *${header}*`;
     if (result.length > 250) {
@@ -10,7 +10,7 @@ function buildChannelTopic({ pullRequest }: PullRequestCreatedPayload) {
     return result;
 }
 
-export async function createChannelAndInviteParticipants(payload: PullRequestCreatedPayload, slackGateway: SlackGateway) {
+export async function createChannelAndInviteParticipants(payload: PullRequestCreatedMergedDeclinedDeletedPayload, slackGateway: SlackGateway) {
     const pullRequest = payload.pullRequest;
     const channelName = buildChannelName(pullRequest.toRef.repository.project.key, pullRequest.toRef.repository.slug, pullRequest.id);
 

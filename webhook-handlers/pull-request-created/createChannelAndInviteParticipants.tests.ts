@@ -1,9 +1,9 @@
 // mainApp.test.ts
 import { TestSlackGateway } from "../../TestSlackGateway";
-import { PullRequestCreatedPayload } from "../../contracts";
+import { PullRequestCreatedMergedDeclinedDeletedPayload } from "../../contracts";
 import { createChannelAndInviteParticipants } from "./createChannelAndInviteParticipants";
 
-const payload: PullRequestCreatedPayload = {
+const payload: PullRequestCreatedMergedDeclinedDeletedPayload = {
     eventKey: "pr:opened",
     date: "2017-09-19T09:58:11+1000",
     actor: {

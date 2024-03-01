@@ -22,14 +22,7 @@ export declare interface PullRequestPayload {
     };
 }
 
-export declare interface PullRequestCreatedPayload {
-    eventKey: string;
-    date: string;
-    actor: UserPayload;
-    pullRequest: PullRequestPayload;
-}
-
-export declare interface PullRequestMergedDeclinedDeletedPayload {
+export declare interface PullRequestCreatedMergedDeclinedDeletedPayload {
     eventKey: string;
     date: string;
     actor: UserPayload;
