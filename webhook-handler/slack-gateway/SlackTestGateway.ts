@@ -1,7 +1,9 @@
 import * as slack from "@slack/web-api";
-import { SlackGateway } from "./contracts";
 
-export class TestSlackGateway implements SlackGateway {
+import { SlackGateway } from "./SlackGateway";
+
+const channelId = "12345";
+export default class SlackTestGateway implements SlackGateway {
     snapshot: {
         createdChannels: slack.ConversationsCreateArguments[];
         setChannelTopics: slack.ConversationsSetTopicArguments[];
@@ -10,6 +12,7 @@ export class TestSlackGateway implements SlackGateway {
         sentMessages: slack.ChatPostMessageArguments[];
         lookedUpUsers: slack.UsersLookupByEmailArguments[];
     };
+
     constructor() {
         this.snapshot = {
             createdChannels: new Array<slack.ConversationsCreateArguments>(),
@@ -17,31 +20,37 @@ export class TestSlackGateway implements SlackGateway {
             invitesToChannels: new Array<slack.ConversationsInviteArguments>(),
             archivedChannels: new Array<slack.ConversationsCloseArguments>(),
             sentMessages: new Array<slack.ChatPostMessageArguments>(),
-            lookedUpUsers: new Array<slack.UsersLookupByEmailArguments>(),
+            lookedUpUsers: new Array<slack.UsersLookupByEmailArguments>()
         };
     }
+
     lookupUserByEmail(options: slack.UsersLookupByEmailArguments): Promise<slack.UsersLookupByEmailResponse> {
         this.snapshot.lookedUpUsers.push(options);
         return Promise.resolve({ ok: true, user: { id: options.email } });
     }
+
     createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse> {
         this.snapshot.createdChannels.push(options);
-        return Promise.resolve({ ok: true, channel: { id: "12345", name: options.name } });
+        return Promise.resolve({ ok: true, channel: { id: channelId, name: options.name } });
     }
+
     setChannelTopic(options: slack.ConversationsSetTopicArguments): Promise<slack.ConversationsSetTopicResponse> {
         this.snapshot.setChannelTopics.push(options);
         return Promise.resolve({ ok: true });
     }
+
     inviteToChannel(options: slack.ConversationsInviteArguments): Promise<slack.ConversationsInviteResponse> {
         this.snapshot.invitesToChannels.push(options);
         return Promise.resolve({ ok: true });
     }
+
     archiveChannel(options: slack.ConversationsArchiveArguments): Promise<slack.ConversationsArchiveResponse> {
         this.snapshot.archivedChannels.push(options);
         return Promise.resolve({ ok: true });
     }
+
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {
         this.snapshot.sentMessages.push(options);
-        return Promise.resolve({ ok: true });
+        return Promise.resolve({ ok: true, channel: channelId });
     }
 }

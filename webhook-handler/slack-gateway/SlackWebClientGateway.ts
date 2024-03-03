@@ -1,7 +1,8 @@
 import * as slack from "@slack/web-api";
-import { SlackGateway } from "./contracts";
 
-export class RealSlackGateway implements SlackGateway {
+import { SlackGateway } from "./SlackGateway";
+
+export class SlackWebClientGateway implements SlackGateway {
     client: slack.WebClient;
     constructor(client: slack.WebClient) {
         this.client = client;

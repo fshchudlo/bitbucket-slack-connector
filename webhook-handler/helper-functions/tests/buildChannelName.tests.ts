@@ -1,4 +1,4 @@
-import buildChannelName from './buildChannelName';
+import buildChannelName from '../buildChannelName';
 
 describe("buildChannelName", () => {
     it("should generate the correct channel name", () => {

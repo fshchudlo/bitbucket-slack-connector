@@ -1,9 +1,9 @@
 {
-  "eventKey": "pr:opened",
+  "eventKey": "pr:comment:added",
   "date": "2024-03-01T18:19:32+0700",
   "actor": {
-    "displayName": "{{PRAuthorName}}",
-    "emailAddress": "{{PRAuthorEmail}}"
+    "displayName": "{{FirstReviewerName}}",
+    "emailAddress": "{{FirstReviewerEmail}}"
   },
   "pullRequest": {
     "id": 1,
@@ -39,6 +39,14 @@
           "href": "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1"
         }
       ]
+    }
+  },
+  "comment": {
+    "id": 1,
+    "text": "Test comment",
+    "author": {
+      "displayName": "{{FirstReviewerName}}",
+      "emailAddress": "{{FirstReviewerEmail}}"
     }
   }
 }

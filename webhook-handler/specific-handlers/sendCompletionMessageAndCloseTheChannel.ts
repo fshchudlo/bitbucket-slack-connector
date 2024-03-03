@@ -1,8 +1,9 @@
-import buildChannelName from "../buildChannelName";
-import { PullRequestCreatedMergedDeclinedDeletedPayload, SlackGateway } from "../../contracts";
+import buildChannelName from "../helper-functions/buildChannelName";
+import { PullRequestBasicPayload } from "../contracts";
+import { SlackGateway } from "../slack-gateway/SlackGateway";
 
 export async function sendCompletionMessageAndCloseTheChannel(
-    payload: PullRequestCreatedMergedDeclinedDeletedPayload,
+    payload: PullRequestBasicPayload,
     slackGateway: SlackGateway
 ) {
     const pullRequest = payload.pullRequest;
@@ -10,16 +11,14 @@ export async function sendCompletionMessageAndCloseTheChannel(
     let message = null;
     switch (payload.eventKey) {
         case "pr:deleted":
-            message = `The pull request was deleted by ${payload.actor.name}.`;
+            message = `The pull request was deleted by ${payload.actor.displayName}.`;
             break;
         case "pr:merged":
-            message = `The pull request was merged by ${payload.actor.name}. Well done, thank you all.`;
+            message = `The pull request was merged by ${payload.actor.displayName}. Well done, thank you all.`;
             break;
         case "pr:declined":
-            message = `The pull request was declined by ${payload.actor.name}.`;
+            message = `The pull request was declined by ${payload.actor.displayName}.`;
             break;
-        default:
-            throw new Error(`"${payload.eventKey}" payload is unknown.`);
     }
 
     const messageResponse = await slackGateway.sendMessage({

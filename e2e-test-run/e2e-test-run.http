@@ -4,8 +4,39 @@ Content-Type: application/json
 
 < ./PR-opened-test-payload.json
 
+> {%
+    client.assert(response.status === 200)
+%}
+
+### Add comment
+POST http://localhost:3000/bitbucket-webhook
+Content-Type: application/json
+
+< ./PR-comment-added-test-payload.json
+
+> {%
+    client.assert(response.status === 200)
+%}
+
 ### Merge pull request
 POST http://localhost:3000/bitbucket-webhook
 Content-Type: application/json
 
 < ./PR-merged-test-payload.json
+
+> {%
+    client.assert(response.status === 200)
+%}
+
+### Invalid payload
+POST http://localhost:3000/bitbucket-webhook
+Content-Type: application/json
+
+{
+  "eventKey": "invalid-payload"
+}
+
+> {%
+    client.assert(response.body === "Internal Server Error")
+    client.assert(response.status === 500)
+%}

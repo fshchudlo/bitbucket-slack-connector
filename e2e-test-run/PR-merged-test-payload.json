@@ -2,7 +2,7 @@
   "eventKey": "pr:merged",
   "date": "2024-03-01T18:19:32+0700",
   "actor": {
-    "name": "{{PRAuthorName}}",
+    "displayName": "{{PRAuthorName}}",
     "emailAddress": "{{PRAuthorEmail}}"
   },
   "pullRequest": {
@@ -20,14 +20,14 @@
     },
     "author": {
       "user": {
-        "name": "{{PRAuthorName}}",
+        "displayName": "{{PRAuthorName}}",
         "emailAddress": "{{PRAuthorEmail}}"
       }
     },
     "reviewers": [
       {
         "user": {
-          "name": "{{FirstReviewerName}}",
+          "displayName": "{{FirstReviewerName}}",
           "emailAddress": "{{FirstReviewerEmail}}"
         }
       }

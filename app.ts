@@ -1,42 +1,24 @@
 import "dotenv/config";
 import { App, ExpressReceiver } from "@slack/bolt";
-import {
-    createChannelAndInviteParticipants
-} from "./webhook-handlers/pull-request-created/createChannelAndInviteParticipants";
 import AppConfig from "./app.config";
-import { RealSlackGateway } from "./RealSlackGateway";
+import { SlackWebClientGateway } from "./webhook-handler/slack-gateway/SlackWebClientGateway";
 import bodyParser from "body-parser";
-import {
-    sendCompletionMessageAndCloseTheChannel
-} from "./webhook-handlers/pull-request-merged-deleted-declined/sendCompletionMessageAndCloseTheChannel";
+import handleBitbucketWebhook from "./webhook-handler/handleBitbucketWebhook";
 
-// Set up Slack App
 const expressReceiver = new ExpressReceiver({
     signingSecret: AppConfig.SLACK_SIGNING_SECRET
 });
-const app = new App({
+const slackApp = new App({
     token: AppConfig.SLACK_BOT_TOKEN,
     receiver: expressReceiver
 });
-const slackGateway = new RealSlackGateway(app.client);
+const slackGateway = new SlackWebClientGateway(slackApp.client);
 
 expressReceiver.router.use(bodyParser.json());
 
-// Handle incoming webhooks from Bitbucket
 expressReceiver.router.post("/bitbucket-webhook", async (req, res) => {
-    const eventType = req.body.eventKey;
-
     try {
-        switch (eventType) {
-            case "pr:opened":
-                await createChannelAndInviteParticipants(req.body, slackGateway);
-                break;
-            case "pr:merged":
-            case "pr:declined":
-            case "pr:deleted":
-                await sendCompletionMessageAndCloseTheChannel(req.body, slackGateway);
-                break;
-        }
+        await handleBitbucketWebhook(req.body, slackGateway);
         res.sendStatus(200);
     } catch (error) {
         console.error("Error processing webhook:", error);
@@ -46,8 +28,6 @@ expressReceiver.router.post("/bitbucket-webhook", async (req, res) => {
 
 
 (async () => {
-    await app.start(AppConfig.SLACK_BOT_PORT);
+    await slackApp.start(AppConfig.SLACK_BOT_PORT);
     console.log("⚡️ Bolt app is running!");
 })();
-
-export { app, expressReceiver };
