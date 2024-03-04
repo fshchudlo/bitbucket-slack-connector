@@ -3,7 +3,7 @@ import {
 } from "../contracts";
 import buildChannelName from "../helper-functions/buildChannelName";
 import { slackLink, slackSection } from "../slack-building-blocks";
-import { SlackGateway } from "../slack-gateway/SlackGateway";
+import { SlackGateway } from "../gateways/SlackGateway";
 
 export async function sendPRCommentToSlack(payload: PullRequestCommentAddedPayload, slackGateway: SlackGateway) {
     const pullRequest = payload.pullRequest;

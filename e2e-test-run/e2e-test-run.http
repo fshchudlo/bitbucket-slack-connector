@@ -18,6 +18,16 @@ Content-Type: application/json
     client.assert(response.status === 200)
 %}
 
+### Add commit
+POST http://localhost:3000/bitbucket-webhook
+Content-Type: application/json
+
+< ./PR-from-ref-updated-test-payload.json
+
+> {%
+    client.assert(response.status === 200)
+%}
+
 ### Merge pull request
 POST http://localhost:3000/bitbucket-webhook
 Content-Type: application/json

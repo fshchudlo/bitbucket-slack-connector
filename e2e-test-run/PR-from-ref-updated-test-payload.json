@@ -1,5 +1,5 @@
 {
-  "eventKey": "pr:merged",
+  "eventKey": "pr:from_ref_updated",
   "date": "2024-03-01T18:19:32+0700",
   "actor": {
     "displayName": "{{PRAuthorName}}",

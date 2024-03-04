@@ -1,12 +1,12 @@
 // see https://confluence.atlassian.com/bitbucketserver0816/event-payload-1333334207.html#Eventpayload-pullrequest
-export declare interface PullRequestBasicPayload {
+export interface PullRequestBasicPayload {
     eventKey: string;
     date: string;
     actor: UserPayload;
     pullRequest: PullRequestPayload;
 }
 
-export declare interface PullRequestCommentAddedPayload extends PullRequestBasicPayload {
+export interface PullRequestCommentAddedPayload extends PullRequestBasicPayload {
     comment: {
         id: number;
         text: string;
@@ -14,23 +14,26 @@ export declare interface PullRequestCommentAddedPayload extends PullRequestBasic
     };
 }
 
-export declare interface UserPayload {
+export interface UserPayload {
     displayName: string;
     emailAddress: string;
 }
+export interface RefPayload {
+    displayId: string;
+    latestCommit: string;
+    repository: {
+        slug: string;
+        project: { key: string; name: string };
+    };
+}
 
-export declare interface PullRequestPayload {
+export interface PullRequestPayload {
     id: number;
     title: string;
     author: { user: UserPayload };
     reviewers: Array<{ user: UserPayload }>;
     links: { self: Array<{ href: string }> };
-    toRef: {
-        displayId: string;
-        repository: {
-            slug: string;
-            project: { key: string; name: string };
-        };
-    };
+    fromRef: RefPayload;
+    toRef: RefPayload;
 }
 

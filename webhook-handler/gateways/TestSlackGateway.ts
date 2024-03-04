@@ -3,7 +3,7 @@ import * as slack from "@slack/web-api";
 import { SlackGateway } from "./SlackGateway";
 
 const channelId = "12345";
-export default class SlackTestGateway implements SlackGateway {
+export default class TestSlackGateway implements SlackGateway {
     snapshot: {
         createdChannels: slack.ConversationsCreateArguments[];
         setChannelTopics: slack.ConversationsSetTopicArguments[];

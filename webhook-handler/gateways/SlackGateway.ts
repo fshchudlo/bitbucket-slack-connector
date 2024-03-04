@@ -1,6 +1,6 @@
 import * as slack from "@slack/web-api";
 
-export declare interface SlackGateway {
+export interface SlackGateway {
     lookupUserByEmail(options: slack.UsersLookupByEmailArguments): Promise<slack.UsersLookupByEmailResponse>;
 
     createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse>;

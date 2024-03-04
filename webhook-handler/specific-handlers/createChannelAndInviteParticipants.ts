@@ -1,7 +1,7 @@
 import { PullRequestBasicPayload } from "../contracts";
 import buildChannelName from "../helper-functions/buildChannelName";
 import { slackLink } from "../slack-building-blocks";
-import { SlackGateway } from "../slack-gateway/SlackGateway";
+import { SlackGateway } from "../gateways/SlackGateway";
 
 function buildChannelTopic({ pullRequest }: PullRequestBasicPayload) {
     const header = `${pullRequest.toRef.repository.project.key}/${pullRequest.toRef.repository.slug}:${pullRequest.toRef.displayId}`;

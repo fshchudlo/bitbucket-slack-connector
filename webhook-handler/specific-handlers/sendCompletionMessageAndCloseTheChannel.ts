@@ -1,6 +1,6 @@
 import buildChannelName from "../helper-functions/buildChannelName";
 import { PullRequestBasicPayload } from "../contracts";
-import { SlackGateway } from "../slack-gateway/SlackGateway";
+import { SlackGateway } from "../gateways/SlackGateway";
 
 export async function sendCompletionMessageAndCloseTheChannel(
     payload: PullRequestBasicPayload,

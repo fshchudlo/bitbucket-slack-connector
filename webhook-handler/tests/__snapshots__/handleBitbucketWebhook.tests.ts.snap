@@ -123,3 +123,42 @@ exports[`handleBitbucketWebhook Should send message on PR commented 1`] = `
   "setChannelTopics": [],
 }
 `;
+
+exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
+{
+  "archivedChannels": [],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "lookedUpUsers": [],
+  "sentMessages": [
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": "A <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/commits/from-ref-commit-hash|new commit> was added to the pull request by Test Author.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "> Test comment for TEST-PROJ, test-repository, from-ref-commit-hash",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channel": "pr-test-proj-test-repository-1",
+      "text": "A <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/commits/from-ref-commit-hash|new commit> was added to the pull request by Test Author. Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>.",
+    },
+  ],
+  "setChannelTopics": [],
+}
+`;
