@@ -36,7 +36,7 @@ describe("reformatMarkdownToSlackMarkup", () => {
     });
     it('converts Markdown headings of any size to Slack bold text', () => {
         const markdownText = '### Heading 1';
-        const expected = '*Heading 1*';
+        const expected = '*Heading 1*\n\n';
         const result = reformatMarkdownToSlackMarkup(markdownText);
         expect(result).toBe(expected);
     });

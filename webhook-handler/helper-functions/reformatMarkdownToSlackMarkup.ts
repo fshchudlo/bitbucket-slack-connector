@@ -8,5 +8,5 @@ export default function reformatMarkdownToSlackMarkup(text: string): string {
         .replace(boldRegex, (_match, text) => `*${text}*`)
         .replace(strikethroughRegex, (_match, text) => `~${text}~`)
         .replace(linkRegex, (_match, title, url) => `<${url}|${title}>`)
-        .replace(headingRegex, (_match, _hashes, text) => `*${text}*`);
+        .replace(headingRegex, (_match, _hashes, text) => `*${text}*\n\n`);
 }
