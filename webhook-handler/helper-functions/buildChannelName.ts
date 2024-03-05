@@ -9,3 +9,4 @@ export default function buildChannelName(projectKey: string, repositorySlug: str
     const key = `${projectKey}-${repositorySlug}`.slice(0, lengthLeftForTheKey).toLowerCase();
     return `pr-${key}-${pullRequestId}`.replace(/-+/g, '-');
 }
+

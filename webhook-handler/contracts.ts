@@ -30,6 +30,7 @@ export interface RefPayload {
 export interface PullRequestPayload {
     id: number;
     title: string;
+    description: string;
     author: { user: UserPayload };
     reviewers: Array<{ user: UserPayload }>;
     links: { self: Array<{ href: string }> };
