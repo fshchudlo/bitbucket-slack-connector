@@ -7,7 +7,8 @@
     "start": "ts-node app.ts",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint --ext .ts ./ --fix",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "test:update-snapshots": "jest --updateSnapshot"
   },
   "keywords": [
     "bitbucket",

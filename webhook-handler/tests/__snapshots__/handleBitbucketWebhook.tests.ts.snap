@@ -26,6 +26,29 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
   ],
   "sentMessages": [
     {
+      "blocks": [
+        {
+          "text": {
+            "text": "The pull request was opened by Test Author.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Quite a long and comprehensive description to get channel title longer than 250 symbols which is a maximum length for the Slack",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
       "channel": "12345",
       "text": "The pull request was opened by Test Author. Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
     },
@@ -33,7 +56,7 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
   "setChannelTopics": [
     {
       "channel": "12345",
-      "topic": ":git: Pull request: *Quite a long and comprehensive description to get channel title longer than 250 symbols which is a maximum length for the Slack* | :git-branch: To branch: *TEST-PROJ/test-repository:master*",
+      "topic": ":git: Pull request: *Quite a long and comprehensive title to get channel title longer than 250 symbols which is a maximum length for the Slack* | :git-branch: To branch: *TEST-PROJ/test-repository:master*",
     },
   ],
 }
@@ -110,14 +133,23 @@ exports[`handleBitbucketWebhook Should send message on PR commented 1`] = `
       "blocks": [
         {
           "text": {
-            "text": "*Test Reviewer* <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>: Test comment",
+            "text": "*Test Reviewer* <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>:",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "> Test comment",
             "type": "mrkdwn",
           },
           "type": "section",
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
-      "text": "*Test Reviewer* <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>: Test comment",
+      "text": "*Test Reviewer* <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>:
+
+Test comment",
     },
   ],
   "setChannelTopics": [],
