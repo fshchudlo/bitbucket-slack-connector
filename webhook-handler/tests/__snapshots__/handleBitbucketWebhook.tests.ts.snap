@@ -5,7 +5,7 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
   "archivedChannels": [],
   "createdChannels": [
     {
-      "is_private": false,
+      "is_private": true,
       "name": "pr-test-proj-test-repository-1",
     },
   ],
@@ -136,15 +136,15 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
   "sentMessages": [
     {
       "channel": "pr-test-proj-test-repository-1",
-      "text": "*Test Reviewer 1*  requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+      "text": "*Test Reviewer 1*  requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
     {
       "channel": "pr-test-proj-test-repository-1",
-      "text": "*Test Reviewer 1*  unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+      "text": "*Test Reviewer 1*  unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
     {
       "channel": "pr-test-proj-test-repository-1",
-      "text": "*Test Reviewer 1*  approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+      "text": "*Test Reviewer 1*  approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
   ],
   "setChannelTopics": [],
@@ -232,14 +232,14 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
   "createdChannels": [],
   "invitesToChannels": [
     {
-      "channel": "pr-test-proj-test-repository-1",
+      "channel": "12345",
       "force": true,
       "users": "test.reviewer2@test.com",
     },
   ],
   "kicksFromChannels": [
     {
-      "channel": "pr-test-proj-test-repository-1",
+      "channel": "12345",
       "user": "test.reviewer1@test.com",
     },
   ],

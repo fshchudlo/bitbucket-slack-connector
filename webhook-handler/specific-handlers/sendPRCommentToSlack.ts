@@ -1,6 +1,6 @@
 import { PullRequestCommentAddedPayload } from "../contracts";
 import buildChannelName from "../helper-functions/buildChannelName";
-import { slackLink, slackSection } from "../slack-building-blocks";
+import { slackLink, slackQuote, slackSection } from "../slack-building-blocks";
 import { SlackGateway } from "../gateways/SlackGateway";
 import reformatMarkdownToSlackMarkup from "../helper-functions/reformatMarkdownToSlackMarkup";
 
@@ -14,7 +14,7 @@ export async function sendPRCommentToSlack(payload: PullRequestCommentAddedPaylo
         text: `${messageTitle}\n\n${payload.comment.text}`,
         blocks: [
             slackSection(messageTitle),
-            slackSection(`> ${reformatMarkdownToSlackMarkup(payload.comment.text)}`)
+            slackSection(slackQuote(reformatMarkdownToSlackMarkup(payload.comment.text)))
         ]
     });
 }

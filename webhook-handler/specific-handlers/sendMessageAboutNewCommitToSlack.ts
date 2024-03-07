@@ -2,7 +2,7 @@ import {
     PullRequestNotificationBasicPayload
 } from "../contracts";
 import buildChannelName from "../helper-functions/buildChannelName";
-import { slackLink, slackSection } from "../slack-building-blocks";
+import { slackLink, slackQuote, slackSection } from "../slack-building-blocks";
 import { SlackGateway } from "../gateways/SlackGateway";
 import { BitbucketGateway } from "../gateways/BitbucketGateway";
 import reformatMarkdownToSlackMarkup from "../helper-functions/reformatMarkdownToSlackMarkup";
@@ -22,7 +22,7 @@ export async function sendMessageAboutNewCommitToSlack(payload: PullRequestNotif
         text: `${messageTitle} ${pleaseReviewText}`,
         blocks: [
             slackSection(messageTitle),
-            commentText ? slackSection(`> ${reformatMarkdownToSlackMarkup(commentText)}`) : null,
+            commentText ? slackSection(slackQuote(reformatMarkdownToSlackMarkup(commentText))) : null,
             slackSection(pleaseReviewText)
         ].filter(b => b !== null)
     });
