@@ -26,6 +26,11 @@ export default class TestSlackGateway implements SlackGateway {
         };
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getChannelId(_channelName: string): Promise<string> {
+        return Promise.resolve(channelId);
+    }
+
     lookupUserByEmail(options: slack.UsersLookupByEmailArguments): Promise<slack.UsersLookupByEmailResponse> {
         this.snapshot.lookedUpUsers.push(options);
         return Promise.resolve({ ok: true, user: { id: options.email } });

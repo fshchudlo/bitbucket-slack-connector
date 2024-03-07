@@ -1,6 +1,7 @@
 import * as slack from "@slack/web-api";
 
 export interface SlackGateway {
+    getChannelId(channelName: string): Promise<string>;
     lookupUserByEmail(options: slack.UsersLookupByEmailArguments): Promise<slack.UsersLookupByEmailResponse>;
 
     createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse>;

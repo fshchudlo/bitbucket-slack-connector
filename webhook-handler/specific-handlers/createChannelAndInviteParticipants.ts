@@ -23,7 +23,7 @@ export async function createChannelAndInviteParticipants(payload: PullRequestNot
     const channelId = (
         await slackGateway.createChannel({
             name: channelName,
-            is_private: false
+            is_private: true
         })
     ).channel.id;
 
