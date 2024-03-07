@@ -2,8 +2,8 @@ import { PullRequestNotificationBasicPayload } from "../contracts";
 import buildChannelName from "../helper-functions/buildChannelName";
 import { slackLink, slackSection } from "../slack-building-blocks";
 import { SlackGateway } from "../gateways/SlackGateway";
-import reformatMarkdownToSlackMarkup from "../helper-functions/reformatMarkdownToSlackMarkup";
 import getSlackUserIds from "../helper-functions/getSlackUserIds";
+import getPullRequestDescriptionForSlack from "../helper-functions/getPullRequestDescriptionForSlack";
 
 function buildChannelTopic({ pullRequest }: PullRequestNotificationBasicPayload) {
     const header = `${pullRequest.toRef.repository.project.key}/${pullRequest.toRef.repository.slug}:${pullRequest.toRef.displayId}`;
@@ -40,12 +40,15 @@ export async function createChannelAndInviteParticipants(payload: PullRequestNot
 
     const messageTitle = `The pull request was opened by ${pullRequest.author.user.displayName}.`;
     const pleaseReviewText = `Please ${slackLink(pullRequest.links.self[0].href, "review the PR")}`;
+    const descriptionText = getPullRequestDescriptionForSlack(pullRequest.title, pullRequest.description);
+
     await slackGateway.sendMessage({
         channel: channelId,
         text: `${messageTitle} ${pleaseReviewText}`,
         blocks: [
             slackSection(messageTitle),
-            slackSection(reformatMarkdownToSlackMarkup(pullRequest.description?.substring(0, 3000) ?? pullRequest.title)),
+            slackSection(descriptionText),
             slackSection(pleaseReviewText)]
     });
 }
+
