@@ -16,6 +16,7 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
       "users": "test.author@test.com,test.reviewer1@test.com",
     },
   ],
+  "kicksFromChannels": [],
   "lookedUpUsers": [
     {
       "email": "test.author@test.com",
@@ -71,6 +72,7 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
   ],
   "createdChannels": [],
   "invitesToChannels": [],
+  "kicksFromChannels": [],
   "lookedUpUsers": [],
   "sentMessages": [
     {
@@ -91,6 +93,7 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
   ],
   "createdChannels": [],
   "invitesToChannels": [],
+  "kicksFromChannels": [],
   "lookedUpUsers": [],
   "sentMessages": [
     {
@@ -111,6 +114,7 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
   ],
   "createdChannels": [],
   "invitesToChannels": [],
+  "kicksFromChannels": [],
   "lookedUpUsers": [],
   "sentMessages": [
     {
@@ -122,18 +126,44 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
 }
 `;
 
-exports[`handleBitbucketWebhook Should send message on PR commented 1`] = `
+exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/needs work 1`] = `
 {
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [],
+  "sentMessages": [
+    {
+      "channel": "pr-test-proj-test-repository-1",
+      "text": "*Test Reviewer 1*  requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+    },
+    {
+      "channel": "pr-test-proj-test-repository-1",
+      "text": "*Test Reviewer 1*  unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+    },
+    {
+      "channel": "pr-test-proj-test-repository-1",
+      "text": "*Test Reviewer 1*  approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+    },
+  ],
+  "setChannelTopics": [],
+}
+`;
+
+exports[`handleBitbucketWebhook Should send message on PR comment 1`] = `
+{
+  "archivedChannels": [],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "kicksFromChannels": [],
   "lookedUpUsers": [],
   "sentMessages": [
     {
       "blocks": [
         {
           "text": {
-            "text": "*Test Reviewer* <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>:",
+            "text": "*Test Reviewer 1* <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>:",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -147,7 +177,7 @@ exports[`handleBitbucketWebhook Should send message on PR commented 1`] = `
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
-      "text": "*Test Reviewer* <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>:
+      "text": "*Test Reviewer 1* <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>:
 
 Test comment",
     },
@@ -161,6 +191,7 @@ exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
+  "kicksFromChannels": [],
   "lookedUpUsers": [],
   "sentMessages": [
     {
@@ -191,6 +222,36 @@ exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
       "text": "A <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/commits/from-ref-commit-hash|new commit> was added to the pull request by Test Author. Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>.",
     },
   ],
+  "setChannelTopics": [],
+}
+`;
+
+exports[`handleBitbucketWebhook Should update channel participants on reviewers list update 1`] = `
+{
+  "archivedChannels": [],
+  "createdChannels": [],
+  "invitesToChannels": [
+    {
+      "channel": "pr-test-proj-test-repository-1",
+      "force": true,
+      "users": "test.reviewer2@test.com",
+    },
+  ],
+  "kicksFromChannels": [
+    {
+      "channel": "pr-test-proj-test-repository-1",
+      "user": "test.reviewer1@test.com",
+    },
+  ],
+  "lookedUpUsers": [
+    {
+      "email": "test.reviewer2@test.com",
+    },
+    {
+      "email": "test.reviewer1@test.com",
+    },
+  ],
+  "sentMessages": [],
   "setChannelTopics": [],
 }
 `;

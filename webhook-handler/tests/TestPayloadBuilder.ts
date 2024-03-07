@@ -1,15 +1,23 @@
-import { PullRequestBasicPayload } from "../contracts";
+import {
+    PullRequestCommentAddedPayload,
+    PullRequestNotificationBasicPayload,
+    PullRequestReviewersUpdatedPayload
+} from "../contracts";
 
 const authorUser = {
     displayName: "Test Author",
     emailAddress: "test.author@test.com"
 };
-const reviewerUser = {
-    displayName: "Test Reviewer",
+const reviewer1User = {
+    displayName: "Test Reviewer 1",
     emailAddress: "test.reviewer1@test.com"
 };
+const reviewer2User = {
+    displayName: "Test Reviewer 2",
+    emailAddress: "test.reviewer2@test.com"
+};
 
-function getBasicPayload(eventKey: string): PullRequestBasicPayload {
+function getBasicPayload(eventKey: string): PullRequestNotificationBasicPayload {
     return {
         eventKey: eventKey,
         date: "2017-09-19T09:58:11+1000",
@@ -45,7 +53,7 @@ function getBasicPayload(eventKey: string): PullRequestBasicPayload {
             },
             reviewers: [
                 {
-                    user: { ...reviewerUser }
+                    user: { ...reviewer1User }
                 }
             ],
             links: {
@@ -57,37 +65,64 @@ function getBasicPayload(eventKey: string): PullRequestBasicPayload {
 }
 
 export default class TestPayloadBuilder {
-    static pullRequestOpened() {
+    static pullRequestOpened(): PullRequestNotificationBasicPayload {
         return getBasicPayload("pr:opened");
     }
 
-    static pullRequestMerged() {
+    static pullRequestMerged(): PullRequestNotificationBasicPayload {
         return getBasicPayload("pr:merged");
     }
 
-    static pullRequestDeclined() {
+    static pullRequestDeclined(): PullRequestNotificationBasicPayload {
         return getBasicPayload("pr:declined");
     }
 
-    static pullRequestDeleted() {
+    static pullRequestDeleted(): PullRequestNotificationBasicPayload {
         return getBasicPayload("pr:deleted");
     }
 
-    static pullRequestCommentAdded() {
+    static pullRequestCommentAdded(): PullRequestCommentAddedPayload {
         return {
             ...getBasicPayload("pr:comment:added"),
-            actor: { ...reviewerUser },
+            actor: { ...reviewer1User },
             comment: {
                 id: 1,
                 text: "Test comment",
-                author: { ...reviewerUser }
+                author: { ...reviewer1User }
             }
         };
     }
-    static pullRequestFromRefUpdated() {
+    static pullRequestNeedsWork(): PullRequestNotificationBasicPayload {
+        return {
+            ...getBasicPayload("pr:reviewer:needs_work"),
+            actor: { ...reviewer1User }
+        };
+    }
+    static pullRequestApproved(): PullRequestNotificationBasicPayload {
+        return {
+            ...getBasicPayload("pr:reviewer:approved"),
+            actor: { ...reviewer1User }
+        };
+    }
+    static pullRequestUnapproved(): PullRequestNotificationBasicPayload {
+        return {
+            ...getBasicPayload("pr:reviewer:unapproved"),
+            actor: { ...reviewer1User }
+        };
+    }
+
+    static pullRequestFromRefUpdated(): PullRequestNotificationBasicPayload {
         return {
             ...getBasicPayload("pr:from_ref_updated"),
-            ...{fromRef: {latestCommit: "from-ref-updated-hash"}}
+            ...{ fromRef: { latestCommit: "from-ref-updated-hash" } }
+        };
+    }
+
+    static reviewersUpdated(): PullRequestReviewersUpdatedPayload {
+        return {
+            ...getBasicPayload("pr:reviewer:updated"),
+            addedReviewers: [reviewer2User],
+            removedReviewers: [reviewer1User]
         };
     }
 }

@@ -8,6 +8,7 @@ export default class TestSlackGateway implements SlackGateway {
         createdChannels: slack.ConversationsCreateArguments[];
         setChannelTopics: slack.ConversationsSetTopicArguments[];
         invitesToChannels: slack.ConversationsInviteArguments[];
+        kicksFromChannels: slack.ConversationsKickArguments[];
         archivedChannels: slack.ConversationsCloseArguments[];
         sentMessages: slack.ChatPostMessageArguments[];
         lookedUpUsers: slack.UsersLookupByEmailArguments[];
@@ -18,6 +19,7 @@ export default class TestSlackGateway implements SlackGateway {
             createdChannels: new Array<slack.ConversationsCreateArguments>(),
             setChannelTopics: new Array<slack.ConversationsSetTopicArguments>(),
             invitesToChannels: new Array<slack.ConversationsInviteArguments>(),
+            kicksFromChannels: new Array<slack.ConversationsKickArguments>(),
             archivedChannels: new Array<slack.ConversationsCloseArguments>(),
             sentMessages: new Array<slack.ChatPostMessageArguments>(),
             lookedUpUsers: new Array<slack.UsersLookupByEmailArguments>()
@@ -41,6 +43,11 @@ export default class TestSlackGateway implements SlackGateway {
 
     inviteToChannel(options: slack.ConversationsInviteArguments): Promise<slack.ConversationsInviteResponse> {
         this.snapshot.invitesToChannels.push(options);
+        return Promise.resolve({ ok: true });
+    }
+
+    kickFromChannel(options: slack.ConversationsKickArguments): Promise<slack.ConversationsKickResponse> {
+        this.snapshot.kicksFromChannels.push(options);
         return Promise.resolve({ ok: true });
     }
 

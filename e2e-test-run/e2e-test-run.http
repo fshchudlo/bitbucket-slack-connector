@@ -18,6 +18,26 @@ Content-Type: application/json
     client.assert(response.status === 200)
 %}
 
+### Reviewer requested changes
+POST http://localhost:3000/bitbucket-webhook
+Content-Type: application/json
+
+< ./PR-needs-work-test-payload.json
+
+> {%
+    client.assert(response.status === 200)
+%}
+
+### Reviewers list updated
+POST http://localhost:3000/bitbucket-webhook
+Content-Type: application/json
+
+< ./PR-reviewer-updated-test-payload.json
+
+> {%
+    client.assert(response.status === 200)
+%}
+
 ### Add commit
 POST http://localhost:3000/bitbucket-webhook
 Content-Type: application/json
@@ -27,6 +47,17 @@ Content-Type: application/json
 > {%
     client.assert(response.status === 200)
 %}
+
+### Reviewer approved pull request
+POST http://localhost:3000/bitbucket-webhook
+Content-Type: application/json
+
+< ./PR-approved-test-payload.json
+
+> {%
+    client.assert(response.status === 200)
+%}
+
 
 ### Merge pull request
 POST http://localhost:3000/bitbucket-webhook

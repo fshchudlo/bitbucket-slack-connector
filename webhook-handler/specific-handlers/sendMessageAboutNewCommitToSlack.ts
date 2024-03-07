@@ -1,5 +1,5 @@
 import {
-    PullRequestBasicPayload
+    PullRequestNotificationBasicPayload
 } from "../contracts";
 import buildChannelName from "../helper-functions/buildChannelName";
 import { slackLink, slackSection } from "../slack-building-blocks";
@@ -7,7 +7,7 @@ import { SlackGateway } from "../gateways/SlackGateway";
 import { BitbucketGateway } from "../gateways/BitbucketGateway";
 import reformatMarkdownToSlackMarkup from "../helper-functions/reformatMarkdownToSlackMarkup";
 
-export async function sendMessageAboutNewCommitToSlack(payload: PullRequestBasicPayload, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway) {
+export async function sendMessageAboutNewCommitToSlack(payload: PullRequestNotificationBasicPayload, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway) {
     const pullRequest = payload.pullRequest;
     const channelName = buildChannelName(pullRequest.toRef.repository.project.key, pullRequest.toRef.repository.slug, pullRequest.id);
 

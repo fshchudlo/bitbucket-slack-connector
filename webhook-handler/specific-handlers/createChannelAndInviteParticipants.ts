@@ -1,10 +1,11 @@
-import { PullRequestBasicPayload } from "../contracts";
+import { PullRequestNotificationBasicPayload } from "../contracts";
 import buildChannelName from "../helper-functions/buildChannelName";
 import { slackLink, slackSection } from "../slack-building-blocks";
 import { SlackGateway } from "../gateways/SlackGateway";
 import reformatMarkdownToSlackMarkup from "../helper-functions/reformatMarkdownToSlackMarkup";
+import getSlackUserIds from "../helper-functions/getSlackUserIds";
 
-function buildChannelTopic({ pullRequest }: PullRequestBasicPayload) {
+function buildChannelTopic({ pullRequest }: PullRequestNotificationBasicPayload) {
     const header = `${pullRequest.toRef.repository.project.key}/${pullRequest.toRef.repository.slug}:${pullRequest.toRef.displayId}`;
     let result = `:git: Pull request: *${slackLink(pullRequest.links.self[0].href, pullRequest.title)}* | :git-branch: To branch: *${header}*`;
     if (result.length > 250) {
@@ -13,20 +14,12 @@ function buildChannelTopic({ pullRequest }: PullRequestBasicPayload) {
     return result;
 }
 
-export async function createChannelAndInviteParticipants(payload: PullRequestBasicPayload, slackGateway: SlackGateway) {
+export async function createChannelAndInviteParticipants(payload: PullRequestNotificationBasicPayload, slackGateway: SlackGateway) {
     const pullRequest = payload.pullRequest;
     const channelName = buildChannelName(pullRequest.toRef.repository.project.key, pullRequest.toRef.repository.slug, pullRequest.id);
+    const allParticipants = [pullRequest.author.user].concat(pullRequest.reviewers.map(r => r.user));
+    const slackUserIds = await getSlackUserIds(allParticipants, slackGateway);
 
-    const slackUserRequests = [pullRequest.author.user.emailAddress].concat(pullRequest.reviewers.map(r => r.user.emailAddress)).map(
-        async email =>
-            await slackGateway.lookupUserByEmail({
-                email: email
-            })
-    );
-
-    const slackUserIds = [...new Set((await Promise.all(slackUserRequests)).map(r => r.user.id))];
-
-    // Create a new Slack channel
     const channelId = (
         await slackGateway.createChannel({
             name: channelName,

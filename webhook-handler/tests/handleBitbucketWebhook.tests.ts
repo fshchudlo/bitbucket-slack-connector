@@ -1,7 +1,7 @@
 import TestSlackGateway from "../gateways/TestSlackGateway";
 import TestPayloadBuilder from "./TestPayloadBuilder";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
-import { PullRequestBasicPayload } from "../contracts";
+import { PullRequestNotificationBasicPayload } from "../contracts";
 import { TestBitbucketGateway } from "../gateways/TestBitbucketGateway";
 
 let testSlackGateway: TestSlackGateway = null;
@@ -19,14 +19,29 @@ describe("handleBitbucketWebhook", () => {
         expect(testSlackGateway.snapshot).toMatchSnapshot();
     });
 
-    it("Should send message on PR commented", async () => {
+    it("Should send message on PR comment", async () => {
         const payload = TestPayloadBuilder.pullRequestCommentAdded();
         await handleBitbucketWebhook(payload, testSlackGateway, testBitbucketGateway);
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
     });
+
+    it("Should send message on PR approval/unapproval/needs work", async () => {
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestNeedsWork(), testSlackGateway, testBitbucketGateway);
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestUnapproved(), testSlackGateway, testBitbucketGateway);
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestApproved(), testSlackGateway, testBitbucketGateway);
+        expect(testSlackGateway.snapshot).toMatchSnapshot();
+    });
+
     it("Should send message on PR commit", async () => {
         const payload = TestPayloadBuilder.pullRequestFromRefUpdated();
+        await handleBitbucketWebhook(payload, testSlackGateway, testBitbucketGateway);
+
+        expect(testSlackGateway.snapshot).toMatchSnapshot();
+    });
+
+    it("Should update channel participants on reviewers list update", async () => {
+        const payload = TestPayloadBuilder.reviewersUpdated();
         await handleBitbucketWebhook(payload, testSlackGateway, testBitbucketGateway);
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
@@ -58,7 +73,7 @@ describe("handleBitbucketWebhook", () => {
     it("Should throw Error on unknown action type", async () => {
         expect.assertions(1);
         try {
-            await handleBitbucketWebhook({ eventKey: "unknown action" } as PullRequestBasicPayload, testSlackGateway, testBitbucketGateway);
+            await handleBitbucketWebhook({ eventKey: "unknown action" } as PullRequestNotificationBasicPayload, testSlackGateway, testBitbucketGateway);
         } catch (error) {
             expect((error as Error).message).toBe("\"unknown action\" event type is unknown.");
         }

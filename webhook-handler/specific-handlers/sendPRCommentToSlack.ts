@@ -1,6 +1,4 @@
-import {
-    PullRequestCommentAddedPayload
-} from "../contracts";
+import { PullRequestCommentAddedPayload } from "../contracts";
 import buildChannelName from "../helper-functions/buildChannelName";
 import { slackLink, slackSection } from "../slack-building-blocks";
 import { SlackGateway } from "../gateways/SlackGateway";
@@ -20,3 +18,4 @@ export async function sendPRCommentToSlack(payload: PullRequestCommentAddedPaylo
         ]
     });
 }
+

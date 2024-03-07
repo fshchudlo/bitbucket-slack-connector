@@ -1,9 +1,9 @@
 import buildChannelName from "../helper-functions/buildChannelName";
-import { PullRequestBasicPayload } from "../contracts";
+import { PullRequestNotificationBasicPayload } from "../contracts";
 import { SlackGateway } from "../gateways/SlackGateway";
 
 export async function sendCompletionMessageAndCloseTheChannel(
-    payload: PullRequestBasicPayload,
+    payload: PullRequestNotificationBasicPayload,
     slackGateway: SlackGateway
 ) {
     const pullRequest = payload.pullRequest;

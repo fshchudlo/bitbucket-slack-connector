@@ -9,6 +9,8 @@ export interface SlackGateway {
 
     inviteToChannel(options: slack.ConversationsInviteArguments): Promise<slack.ConversationsInviteResponse>;
 
+    kickFromChannel(options: slack.ConversationsKickArguments): Promise<slack.ConversationsKickResponse>;
+
     archiveChannel(options: slack.ConversationsArchiveArguments): Promise<slack.ConversationsArchiveResponse>;
 
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse>;
