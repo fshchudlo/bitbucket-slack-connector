@@ -40,7 +40,7 @@ export async function createChannelAndInviteParticipants(payload: PullRequestNot
 
     const messageTitle = `The pull request was opened by ${pullRequest.author.user.displayName}.`;
     const pleaseReviewText = `Please ${slackLink(pullRequest.links.self[0].href, "review the PR")}`;
-    const descriptionText = getPullRequestDescriptionForSlack(pullRequest.title, pullRequest.description);
+    const descriptionText = getPullRequestDescriptionForSlack(pullRequest.description??pullRequest.title);
 
     await slackGateway.sendMessage({
         channel: channelId,
