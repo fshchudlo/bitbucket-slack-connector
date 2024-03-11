@@ -3,14 +3,15 @@ import { SlackGateway } from "../gateways/SlackGateway";
 import buildChannelName from "../helper-functions/buildChannelName";
 import { slackLink, slackSection } from "../slack-building-blocks";
 
-function getReviewerActionText(payload: PullRequestCommentAddedPayload, prLink: string) {
+function getReviewerActionText(payload: PullRequestCommentAddedPayload) {
+    const prLink = slackLink(payload.pullRequest.links.self[0].href, "pull request");
     switch (payload.eventKey) {
         case "pr:reviewer:unapproved":
-            return ` unapproved ${prLink}.`;
+            return `*${payload.actor.displayName}* unapproved ${prLink}.`;
         case "pr:reviewer:needs_work":
-            return ` requested changes for ${prLink}.`;
+            return `*${payload.actor.displayName}* requested changes for ${prLink}.`;
         case "pr:reviewer:approved":
-            return ` approved ${prLink}.`;
+            return `*${payload.actor.displayName}* approved ${prLink}.`;
     }
 }
 
@@ -36,8 +37,8 @@ function getReviewStatusBlocks(pullRequest: PullRequestPayload) {
 export async function sendReviewerActionToSlack(payload: PullRequestCommentAddedPayload, slackGateway: SlackGateway) {
     const pullRequest = payload.pullRequest;
     const channelName = buildChannelName(pullRequest.toRef.repository.project.key, pullRequest.toRef.repository.slug, pullRequest.id);
-    const prLink = slackLink(pullRequest.links.self[0].href, "pull request");
-    const messageTitle = `*${payload.actor.displayName}* ${getReviewerActionText(payload, prLink)}`;
+
+    const messageTitle = getReviewerActionText(payload);
     await slackGateway.sendMessage({
         channel: channelName,
         text: messageTitle,

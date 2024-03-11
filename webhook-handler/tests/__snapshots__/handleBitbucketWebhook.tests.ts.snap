@@ -138,7 +138,7 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
       "blocks": [
         {
           "text": {
-            "text": "*Test Reviewer 1*  requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "text": "*Test Reviewer 1* requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -152,13 +152,13 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
-      "text": "*Test Reviewer 1*  requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+      "text": "*Test Reviewer 1* requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
     {
       "blocks": [
         {
           "text": {
-            "text": "*Test Reviewer 1*  unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "text": "*Test Reviewer 1* unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -172,13 +172,13 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
-      "text": "*Test Reviewer 1*  unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+      "text": "*Test Reviewer 1* unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
     {
       "blocks": [
         {
           "text": {
-            "text": "*Test Reviewer 1*  approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "text": "*Test Reviewer 1* approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -199,7 +199,7 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
-      "text": "*Test Reviewer 1*  approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+      "text": "*Test Reviewer 1* approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
   ],
   "setChannelTopics": [],
