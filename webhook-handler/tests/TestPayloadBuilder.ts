@@ -1,5 +1,5 @@
 import {
-    PullRequestCommentAddedPayload,
+    PullRequestCommentAddedPayload, PullRequestModifiedPayload,
     PullRequestNotificationBasicPayload,
     PullRequestReviewersUpdatedPayload
 } from "../contracts";
@@ -93,6 +93,26 @@ export default class TestPayloadBuilder {
                 author: { ...reviewer1User }
             }
         };
+    }
+
+    static pullRequestModified(): PullRequestModifiedPayload {
+        const payload = {
+            ...getBasicPayload("pr:modified")
+        } as PullRequestModifiedPayload;
+
+        payload.previousTarget = {
+            displayId: payload.pullRequest.toRef.displayId,
+            latestCommit: payload.pullRequest.toRef.latestCommit
+        };
+
+        payload.previousDescription = payload.pullRequest.description;
+        payload.previousTitle = payload.pullRequest.title;
+
+        payload.pullRequest.title = "New pull request title";
+        payload.pullRequest.description = "New pull request description";
+        payload.pullRequest.toRef.displayId = "not-the-master";
+
+        return payload;
     }
 
     static pullRequestNeedsWork(): PullRequestNotificationBasicPayload {

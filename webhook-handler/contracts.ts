@@ -6,6 +6,15 @@ export interface PullRequestNotificationBasicPayload {
     pullRequest: PullRequestPayload;
 }
 
+export interface PullRequestModifiedPayload extends PullRequestNotificationBasicPayload {
+    previousTitle: string,
+    previousDescription: string | null,
+    previousTarget: {
+        displayId: string,
+        latestCommit: string
+    }
+}
+
 export interface UserPayload {
     displayName: string;
     emailAddress: string;
@@ -29,7 +38,7 @@ export interface RefPayload {
 export interface PullRequestPayload {
     id: number;
     title: string;
-    description: string;
+    description: string | null;
     author: { user: UserPayload };
     reviewers: Array<ReviewerPayload>;
     links: { self: Array<{ href: string }> };

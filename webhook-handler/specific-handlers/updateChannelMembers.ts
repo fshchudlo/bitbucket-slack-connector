@@ -1,15 +1,14 @@
 import { PullRequestReviewersUpdatedPayload } from "../contracts";
 import { SlackGateway } from "../gateways/SlackGateway";
 import buildChannelName from "../helper-functions/buildChannelName";
-import getSlackUserIds from "../helper-functions/getSlackUserIds";
 
 export async function updateChannelMembers(payload: PullRequestReviewersUpdatedPayload, slackGateway: SlackGateway) {
     const pullRequest = payload.pullRequest;
     const channelName = buildChannelName(pullRequest.toRef.repository.project.key, pullRequest.toRef.repository.slug, pullRequest.id);
 
     const channelId = await slackGateway.getChannelId(channelName);
-    const userIdsToAdd = await getSlackUserIds(payload.addedReviewers, slackGateway);
-    const userIdsToRemove = await getSlackUserIds(payload.removedReviewers, slackGateway);
+    const userIdsToAdd = await slackGateway.getSlackUserIds(payload.addedReviewers);
+    const userIdsToRemove = await slackGateway.getSlackUserIds(payload.removedReviewers);
 
     await slackGateway.inviteToChannel({
         channel: channelId,

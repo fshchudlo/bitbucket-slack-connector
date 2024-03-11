@@ -1,9 +1,9 @@
 import * as slack from "@slack/web-api";
+import { UserPayload } from "../contracts";
 
 export interface SlackGateway {
     getChannelId(channelName: string): Promise<string>;
-    lookupUserByEmail(options: slack.UsersLookupByEmailArguments): Promise<slack.UsersLookupByEmailResponse>;
-
+    getSlackUserIds(userPayloads: Array<UserPayload>): Promise<string[]>;
     createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse>;
 
     setChannelTopic(options: slack.ConversationsSetTopicArguments): Promise<slack.ConversationsSetTopicResponse>;

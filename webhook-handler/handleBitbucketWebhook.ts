@@ -6,17 +6,18 @@ import {
     sendMessageAboutNewCommitToSlack, sendReviewerActionToSlack
 } from "./specific-handlers";
 import {
-    PullRequestCommentAddedPayload,
+    PullRequestCommentAddedPayload, PullRequestModifiedPayload,
     PullRequestNotificationBasicPayload,
     PullRequestReviewersUpdatedPayload
 } from "./contracts";
 import { SlackGateway } from "./gateways/SlackGateway";
 import { BitbucketGateway } from "./gateways/BitbucketGateway";
+import { sendMessageAboutPRModificationToSlack } from "./specific-handlers/sendMessageAboutPRModificationToSlack";
 
 type BitbucketPayload =
     PullRequestNotificationBasicPayload
     | PullRequestCommentAddedPayload
-    | PullRequestReviewersUpdatedPayload;
+    | PullRequestReviewersUpdatedPayload | PullRequestModifiedPayload;
 
 export default async function handleBitbucketWebhook(payload: BitbucketPayload, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway) {
     const eventType = payload.eventKey;
@@ -42,6 +43,9 @@ export default async function handleBitbucketWebhook(payload: BitbucketPayload, 
         case "pr:declined":
         case "pr:deleted":
             await sendCompletionMessageAndCloseTheChannel(payload, slackGateway);
+            break;
+        case "pr:modified":
+            await sendMessageAboutPRModificationToSlack(payload as PullRequestModifiedPayload, slackGateway);
             break;
         default:
             throw new Error(`"${eventType}" event type is unknown.`);

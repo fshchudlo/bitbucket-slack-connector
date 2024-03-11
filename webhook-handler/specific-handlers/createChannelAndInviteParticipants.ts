@@ -2,7 +2,6 @@ import { PullRequestNotificationBasicPayload } from "../contracts";
 import buildChannelName from "../helper-functions/buildChannelName";
 import { slackLink, slackSection } from "../slack-building-blocks";
 import { SlackGateway } from "../gateways/SlackGateway";
-import getSlackUserIds from "../helper-functions/getSlackUserIds";
 import getPullRequestDescriptionForSlack from "../helper-functions/getPullRequestDescriptionForSlack";
 
 function buildChannelTopic({ pullRequest }: PullRequestNotificationBasicPayload) {
@@ -18,7 +17,7 @@ export async function createChannelAndInviteParticipants(payload: PullRequestNot
     const pullRequest = payload.pullRequest;
     const channelName = buildChannelName(pullRequest.toRef.repository.project.key, pullRequest.toRef.repository.slug, pullRequest.id);
     const allParticipants = [pullRequest.author.user].concat(pullRequest.reviewers.map(r => r.user));
-    const slackUserIds = await getSlackUserIds(allParticipants, slackGateway);
+    const slackUserIds = await slackGateway.getSlackUserIds(allParticipants);
 
     const channelId = (
         await slackGateway.createChannel({

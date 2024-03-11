@@ -1,11 +1,23 @@
 import * as slack from "@slack/web-api";
 import { SlackGateway } from "./SlackGateway";
+import { UserPayload } from "../contracts";
 
 export class SlackWebClientGateway implements SlackGateway {
     client: slack.WebClient;
 
     constructor(client: slack.WebClient) {
         this.client = client;
+    }
+
+    async getSlackUserIds(userPayloads: UserPayload[]): Promise<string[]> {
+        const slackUserRequests = userPayloads
+            .map(r => r.emailAddress)
+            .map(async email =>
+                await this.client.users.lookupByEmail({
+                    email: email
+                })
+            );
+        return [...new Set((await Promise.all(slackUserRequests)).map(r => r.user.id))];
     }
 
     async getChannelId(channelName: string): Promise<string> {
@@ -25,10 +37,6 @@ export class SlackWebClientGateway implements SlackGateway {
         });
 
         return result.channel;
-    }
-
-    lookupUserByEmail(options: slack.UsersLookupByEmailArguments): Promise<slack.UsersLookupByEmailResponse> {
-        return this.client.users.lookupByEmail(options);
     }
 
     createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse> {

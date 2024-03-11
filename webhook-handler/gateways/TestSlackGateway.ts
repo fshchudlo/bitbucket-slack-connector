@@ -1,6 +1,7 @@
 import * as slack from "@slack/web-api";
 
 import { SlackGateway } from "./SlackGateway";
+import { UserPayload } from "../contracts";
 
 const channelId = "12345";
 export default class TestSlackGateway implements SlackGateway {
@@ -26,14 +27,14 @@ export default class TestSlackGateway implements SlackGateway {
         };
     }
 
+    getSlackUserIds(userPayloads: UserPayload[]): Promise<string[]> {
+        userPayloads.forEach(u => this.snapshot.lookedUpUsers.push({ email: u.emailAddress }));
+        return Promise.resolve(userPayloads.map(u => u.emailAddress));
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getChannelId(_channelName: string): Promise<string> {
         return Promise.resolve(channelId);
-    }
-
-    lookupUserByEmail(options: slack.UsersLookupByEmailArguments): Promise<slack.UsersLookupByEmailResponse> {
-        this.snapshot.lookedUpUsers.push(options);
-        return Promise.resolve({ ok: true, user: { id: options.email } });
     }
 
     createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse> {

@@ -18,6 +18,16 @@ Content-Type: application/json
     client.assert(response.status === 200)
 %}
 
+### Modify PR
+POST http://localhost:3000/bitbucket-webhook
+Content-Type: application/json
+
+< ./PR-modified-test-payload.json
+
+> {%
+    client.assert(response.status === 200)
+%}
+
 ### Reviewer requested changes
 POST http://localhost:3000/bitbucket-webhook
 Content-Type: application/json

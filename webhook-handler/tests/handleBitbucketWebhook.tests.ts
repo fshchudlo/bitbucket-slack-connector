@@ -26,6 +26,13 @@ describe("handleBitbucketWebhook", () => {
         expect(testSlackGateway.snapshot).toMatchSnapshot();
     });
 
+    it("Should send message on PR modification", async () => {
+        const payload = TestPayloadBuilder.pullRequestModified();
+        await handleBitbucketWebhook(payload, testSlackGateway, testBitbucketGateway);
+
+        expect(testSlackGateway.snapshot).toMatchSnapshot();
+    });
+
     it("Should send message on PR approval/unapproval/needs work", async () => {
         await handleBitbucketWebhook(TestPayloadBuilder.pullRequestNeedsWork(), testSlackGateway, testBitbucketGateway);
         await handleBitbucketWebhook(TestPayloadBuilder.pullRequestUnapproved(), testSlackGateway, testBitbucketGateway);

@@ -274,6 +274,67 @@ exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
 }
 `;
 
+exports[`handleBitbucketWebhook Should send message on PR modification 1`] = `
+{
+  "archivedChannels": [],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [],
+  "sentMessages": [
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": "Test Author changed pull request title to:",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "> New pull request title",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Test Author changed pull request description to:",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "New pull request description",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Test Author changed pull request target to not-the-master",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channel": "pr-test-proj-test-repository-1",
+      "text": "Test Author modified pull request target, title, and description. Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
+    },
+  ],
+  "setChannelTopics": [],
+}
+`;
+
 exports[`handleBitbucketWebhook Should update channel participants on reviewers list update 1`] = `
 {
   "archivedChannels": [],
