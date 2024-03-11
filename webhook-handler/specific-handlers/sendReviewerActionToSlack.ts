@@ -20,18 +20,15 @@ function getReviewStatusBlocks(pullRequest: PullRequestPayload) {
     const whoRequestedWork = pullRequest.reviewers.filter(r => r.status == "NEEDS_WORK");
     const whoUnapproved = pullRequest.reviewers.filter(r => r.status == "UNAPPROVED");
 
+    if (whoRequestedWork.length == 0 && whoUnapproved.length == 0) {
+        return [slackSection(`All reviewers approved PR. Seems like you can ${slackLink(pullRequest.links.self[0].href, "merge it")}.`)];
+    }
+
     let reviewStatus = whoApproved.length > 0 ? `Approved: ${whoApproved.map(r => r.user.displayName).join(",")}` : "";
     reviewStatus += whoRequestedWork.length > 0 ? `Needs work: ${whoRequestedWork.map(r => r.user.displayName).join(",")}` : "";
     reviewStatus += whoUnapproved.length > 0 ? `Unapproved: ${whoUnapproved.map(r => r.user.displayName).join(",")}` : "";
 
-    const messageBlocks = [
-        slackSection(reviewStatus)
-    ];
-
-    if (whoRequestedWork.length == 0 && whoUnapproved.length == 0) {
-        messageBlocks.push(slackSection(`All reviewers approved PR. Seems like you can ${slackLink(pullRequest.links.self[0].href, "merge it")}.`));
-    }
-    return messageBlocks;
+    return [slackSection(reviewStatus)];
 }
 
 export async function sendReviewerActionToSlack(payload: PullRequestCommentAddedPayload, slackGateway: SlackGateway) {
