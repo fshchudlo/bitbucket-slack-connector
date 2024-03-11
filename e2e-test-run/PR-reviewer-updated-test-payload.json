@@ -38,9 +38,11 @@
     "reviewers": [
       {
         "user": {
-          "displayName": "{{FirstReviewerName}}",
-          "emailAddress": "{{FirstReviewerEmail}}"
-        }
+          "displayName": "{{SecondReviewerName}}",
+          "emailAddress": "{{SecondReviewerName}}"
+        },
+        "approved": false,
+        "status": "UNAPPROVED"
       }
     ],
     "participants": [],

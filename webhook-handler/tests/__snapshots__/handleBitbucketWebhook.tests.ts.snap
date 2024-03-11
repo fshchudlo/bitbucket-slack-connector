@@ -135,14 +135,69 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
   "lookedUpUsers": [],
   "sentMessages": [
     {
+      "blocks": [
+        {
+          "text": {
+            "text": "*Test Reviewer 1*  requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Needs work: Test Reviewer 1",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
       "channel": "pr-test-proj-test-repository-1",
       "text": "*Test Reviewer 1*  requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
     {
+      "blocks": [
+        {
+          "text": {
+            "text": "*Test Reviewer 1*  unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Unapproved: Test Reviewer 1",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
       "channel": "pr-test-proj-test-repository-1",
       "text": "*Test Reviewer 1*  unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
     {
+      "blocks": [
+        {
+          "text": {
+            "text": "*Test Reviewer 1*  approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Approved: Test Reviewer 1",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "All reviewers approved PR. Seems like you can <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|merge it>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
       "channel": "pr-test-proj-test-repository-1",
       "text": "*Test Reviewer 1*  approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },

@@ -40,7 +40,9 @@
         "user": {
           "displayName": "{{FirstReviewerName}}",
           "emailAddress": "{{FirstReviewerEmail}}"
-        }
+        },
+        "approved": true,
+        "status": "APPROVED"
       }
     ],
     "participants": [],

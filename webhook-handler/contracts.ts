@@ -10,6 +10,13 @@ export interface UserPayload {
     displayName: string;
     emailAddress: string;
 }
+
+export interface ReviewerPayload {
+    user: UserPayload,
+    approved: boolean,
+    status: "UNAPPROVED" | "NEEDS_WORK" | "APPROVED";
+}
+
 export interface RefPayload {
     displayId: string;
     latestCommit: string;
@@ -24,7 +31,7 @@ export interface PullRequestPayload {
     title: string;
     description: string;
     author: { user: UserPayload };
-    reviewers: Array<{ user: UserPayload }>;
+    reviewers: Array<ReviewerPayload>;
     links: { self: Array<{ href: string }> };
     fromRef: RefPayload;
     toRef: RefPayload;
@@ -37,6 +44,7 @@ export interface PullRequestCommentAddedPayload extends PullRequestNotificationB
         author: UserPayload;
     };
 }
+
 export interface PullRequestReviewersUpdatedPayload extends PullRequestNotificationBasicPayload {
     addedReviewers: Array<UserPayload>;
     removedReviewers: Array<UserPayload>;

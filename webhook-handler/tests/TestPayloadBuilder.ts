@@ -53,7 +53,9 @@ function getBasicPayload(eventKey: string): PullRequestNotificationBasicPayload 
             },
             reviewers: [
                 {
-                    user: { ...reviewer1User }
+                    user: { ...reviewer1User },
+                    approved: false,
+                    status: "UNAPPROVED"
                 }
             ],
             links: {
@@ -92,23 +94,38 @@ export default class TestPayloadBuilder {
             }
         };
     }
+
     static pullRequestNeedsWork(): PullRequestNotificationBasicPayload {
-        return {
+        const payload = {
             ...getBasicPayload("pr:reviewer:needs_work"),
             actor: { ...reviewer1User }
         };
+
+        payload.pullRequest.reviewers.forEach(r => r.status = r.user.displayName == payload.actor.displayName ? "NEEDS_WORK" : r.status);
+
+        return payload;
     }
+
     static pullRequestApproved(): PullRequestNotificationBasicPayload {
-        return {
+        const payload = {
             ...getBasicPayload("pr:reviewer:approved"),
             actor: { ...reviewer1User }
         };
+
+        payload.pullRequest.reviewers.forEach(r => r.status = r.user.displayName == payload.actor.displayName ? "APPROVED" : r.status);
+
+        return payload;
     }
+
     static pullRequestUnapproved(): PullRequestNotificationBasicPayload {
-        return {
+        const payload = {
             ...getBasicPayload("pr:reviewer:unapproved"),
             actor: { ...reviewer1User }
         };
+
+        payload.pullRequest.reviewers.forEach(r => r.status = r.user.displayName == payload.actor.displayName ? "UNAPPROVED" : r.status);
+
+        return payload;
     }
 
     static pullRequestFromRefUpdated(): PullRequestNotificationBasicPayload {

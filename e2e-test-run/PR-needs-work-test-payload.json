@@ -40,7 +40,9 @@
         "user": {
           "displayName": "{{FirstReviewerName}}",
           "emailAddress": "{{FirstReviewerEmail}}"
-        }
+        },
+        "approved": false,
+        "status": "NEEDS_WORK"
       }
     ],
     "participants": [],
