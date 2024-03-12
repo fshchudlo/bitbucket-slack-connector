@@ -5,6 +5,8 @@ import { SlackWebClientGateway } from "./webhook-handler/gateways/SlackWebClient
 import express from "express";
 import handleBitbucketWebhook from "./webhook-handler/handleBitbucketWebhook";
 import BitbucketWebAPIGateway from "./webhook-handler/gateways/BitbucketWebAPIGateway";
+import * as util from "util";
+import appConfig from "./app.config";
 
 const expressReceiver = new ExpressReceiver({
     signingSecret: AppConfig.SLACK_SIGNING_SECRET
@@ -23,7 +25,18 @@ expressReceiver.router.post("/bitbucket-webhook", async (req, res) => {
         await handleBitbucketWebhook(req.body, slackGateway, bitbucketGateway);
         res.sendStatus(200);
     } catch (error) {
-        console.error("Error processing webhook:", error);
+        const errorMessage = `Error processing webhook. \n\nError: ${util.inspect(error)}. \n\nPayload: ${util.inspect(req.body)}`;
+        console.error(errorMessage);
+        try {
+            if (appConfig.DIAGNOSTIC_CHANNEL) {
+                await slackGateway.sendMessage({
+                    channel: appConfig.DIAGNOSTIC_CHANNEL,
+                    text: errorMessage
+                });
+            }
+        } catch {
+
+        }
         res.sendStatus(500);
     }
 });

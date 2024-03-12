@@ -1,3 +1,14 @@
+### Add comment to the pull request without channel
+POST http://localhost:3000/bitbucket-webhook
+Content-Type: application/json
+
+< ./PR-comment-added-test-payload.json
+
+> {%
+    client.assert(response.body === "Internal Server Error")
+    client.assert(response.status === 500)
+%}
+
 ### Create pull request
 POST http://localhost:3000/bitbucket-webhook
 Content-Type: application/json
@@ -86,6 +97,17 @@ Content-Type: application/json
 {
   "eventKey": "invalid-payload"
 }
+
+> {%
+    client.assert(response.body === "Internal Server Error")
+    client.assert(response.status === 500)
+%}
+
+### Add comment to the already closed pull request
+POST http://localhost:3000/bitbucket-webhook
+Content-Type: application/json
+
+< ./PR-comment-added-test-payload.json
 
 > {%
     client.assert(response.body === "Internal Server Error")
