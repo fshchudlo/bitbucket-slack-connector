@@ -1,5 +1,5 @@
 import {
-    PullRequestCommentAddedPayload, PullRequestModifiedPayload,
+    PullRequestCommentAddedOrDeletedPayload, PullRequestModifiedPayload,
     PullRequestNotificationBasicPayload,
     PullRequestReviewersUpdatedPayload
 } from "../contracts";
@@ -83,7 +83,14 @@ export default class TestPayloadBuilder {
         return getBasicPayload("pr:deleted");
     }
 
-    static pullRequestCommentAdded(): PullRequestCommentAddedPayload {
+    static pullRequestCommentDeleted(): PullRequestCommentAddedOrDeletedPayload {
+        return {
+            ...this.pullRequestCommentAdded(),
+            eventKey: "pr:comment:deleted"
+        };
+    }
+
+    static pullRequestCommentAdded(): PullRequestCommentAddedOrDeletedPayload {
         return {
             ...getBasicPayload("pr:comment:added"),
             actor: { ...reviewer1User },

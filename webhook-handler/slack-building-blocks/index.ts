@@ -1,3 +1,4 @@
 export * from "./slackLink";
 export * from "./slackSection";
-export { slackQuote } from "./slackQuote";
+export * from "./slackQuote";
+export * from "./slackBold";

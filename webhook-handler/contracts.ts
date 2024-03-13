@@ -46,7 +46,7 @@ export interface PullRequestPayload {
     toRef: RefPayload;
 }
 
-export interface PullRequestCommentAddedPayload extends PullRequestNotificationBasicPayload {
+export interface PullRequestCommentAddedOrDeletedPayload extends PullRequestNotificationBasicPayload {
     comment: {
         id: number;
         text: string;

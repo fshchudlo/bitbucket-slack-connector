@@ -28,7 +28,7 @@ export async function sendMessageAboutPRModificationToSlack(payload: PullRequest
     }
     if (pullRequest.toRef.displayId != payload.previousTarget.displayId) {
         changesPlaceholder = "target";
-        changesDescriptionBlocks.push(slackSection(`${payload.actor.displayName} changed pull request target to ${pullRequest.toRef.displayId}`));
+        changesDescriptionBlocks.push(slackSection(`${payload.actor.displayName} changed pull request target to \`${pullRequest.toRef.displayId}\``));
     }
 
     if (pullRequest.description != payload.previousDescription && pullRequest.title != payload.previousTitle && pullRequest.toRef.displayId != payload.previousTarget.displayId) {

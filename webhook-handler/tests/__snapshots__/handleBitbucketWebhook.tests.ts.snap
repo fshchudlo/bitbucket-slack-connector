@@ -57,7 +57,7 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
   "setChannelTopics": [
     {
       "channel": "12345",
-      "topic": ":git: Pull request: *Quite a long and comprehensive title to get channel title longer than 250 symbols which is a maximum length for the Slack* | :git-branch: To branch: *TEST-PROJ/test-repository:master*",
+      "topic": ":git: Pull request: Quite a long and comprehensive title to get channel title longer than 250 symbols which is a maximum length for the Slack | :git-branch: To branch: \`TEST-PROJ/test-repository:master\`",
     },
   ],
 }
@@ -227,7 +227,42 @@ exports[`handleBitbucketWebhook Should send message on PR comment 1`] = `
       "channel": "pr-test-proj-test-repository-1",
       "text": "*Test Reviewer 1* <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>:
 
-Test comment",
+> Test comment",
+    },
+  ],
+  "setChannelTopics": [],
+}
+`;
+
+exports[`handleBitbucketWebhook Should send message on PR comment deletion 1`] = `
+{
+  "archivedChannels": [],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [],
+  "sentMessages": [
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": "*Test Reviewer 1* <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>:",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "> Test comment",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channel": "pr-test-proj-test-repository-1",
+      "text": "*Test Reviewer 1* <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>:
+
+> Test comment",
     },
   ],
   "setChannelTopics": [],
@@ -314,7 +349,7 @@ exports[`handleBitbucketWebhook Should send message on PR modification 1`] = `
         },
         {
           "text": {
-            "text": "Test Author changed pull request target to not-the-master",
+            "text": "Test Author changed pull request target to \`not-the-master\`",
             "type": "mrkdwn",
           },
           "type": "section",

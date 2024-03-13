@@ -10,7 +10,7 @@ describe("slackQuote", () => {
 
     it("should handle empty text", () => {
         const text = "";
-        const expectedResult = "> ";
+        const expectedResult = "";
         const result = slackQuote(text);
         expect(result).toBe(expectedResult);
     });

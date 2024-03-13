@@ -6,9 +6,9 @@ import getPullRequestDescriptionForSlack from "../helper-functions/getPullReques
 
 function buildChannelTopic({ pullRequest }: PullRequestNotificationBasicPayload) {
     const header = `${pullRequest.toRef.repository.project.key}/${pullRequest.toRef.repository.slug}:${pullRequest.toRef.displayId}`;
-    let result = `:git: Pull request: *${slackLink(pullRequest.links.self[0].href, pullRequest.title)}* | :git-branch: To branch: *${header}*`;
+    let result = `:git: Pull request: ${slackLink(pullRequest.links.self[0].href, pullRequest.title)} | :git-branch: To branch: \`${header}\``;
     if (result.length > 250) {
-        result = `:git: Pull request: *${pullRequest.title}* | :git-branch: To branch: *${header}*`;
+        result = `:git: Pull request: ${pullRequest.title} | :git-branch: To branch: \`${header}\``;
     }
     return result;
 }
@@ -39,7 +39,7 @@ export async function createChannelAndInviteParticipants(payload: PullRequestNot
 
     const messageTitle = `The pull request was opened by ${pullRequest.author.user.displayName}.`;
     const pleaseReviewText = `Please ${slackLink(pullRequest.links.self[0].href, "review the PR")}`;
-    const descriptionText = getPullRequestDescriptionForSlack(pullRequest.description??pullRequest.title);
+    const descriptionText = getPullRequestDescriptionForSlack(pullRequest.description ?? pullRequest.title);
 
     await slackGateway.sendMessage({
         channel: channelId,

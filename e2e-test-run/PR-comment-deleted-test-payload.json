@@ -1,0 +1,65 @@
+{
+  "eventKey": "pr:comment:deleted",
+  "date": "2024-03-01T18:19:32+0700",
+  "actor": {
+    "displayName": "{{FirstReviewerName}}",
+    "emailAddress": "{{FirstReviewerEmail}}"
+  },
+  "pullRequest": {
+    "id": "{{PullRequestId}}",
+    "title": "test pull request",
+    "fromRef": {
+      "displayId": "test pull request",
+      "latestCommit": "cc77d6b10a51932784abb68ee5a1db13e089c2a0",
+      "repository": {
+        "slug": "{{RepositoryName}}",
+        "project": {
+          "key": "{{ProjectName}}",
+          "name": "{{ProjectName}}"
+        }
+      }
+    },
+    "toRef": {
+      "displayId": "master",
+      "repository": {
+        "slug": "{{RepositoryName}}",
+        "project": {
+          "key": "{{ProjectName}}",
+          "name": "{{ProjectName}}"
+        }
+      }
+    },
+    "author": {
+      "user": {
+        "displayName": "{{PRAuthorName}}",
+        "emailAddress": "{{PRAuthorEmail}}"
+      }
+    },
+    "reviewers": [
+      {
+        "user": {
+          "displayName": "{{FirstReviewerName}}",
+          "emailAddress": "{{FirstReviewerEmail}}"
+        },
+        "approved": false,
+        "status": "UNAPPROVED"
+      }
+    ],
+    "participants": [],
+    "links": {
+      "self": [
+        {
+          "href": "{{BitbucketBaseUrl}}/projects/{{ProjectName}}/repos/{{RepositoryName}}/pull-requests/{{PullRequestId}}/overview"
+        }
+      ]
+    }
+  },
+  "comment": {
+    "id": "{{CommentId}}",
+    "text": "Test **bold** _italic_, ~~strikethrough~~ , [links](https://git.plesk.tech/projects/LPS/repos/core.key-administrator/pull-requests/2010/overview) and `code blocks`",
+    "author": {
+      "displayName": "{{FirstReviewerName}}",
+      "emailAddress": "{{FirstReviewerEmail}}"
+    }
+  }
+}

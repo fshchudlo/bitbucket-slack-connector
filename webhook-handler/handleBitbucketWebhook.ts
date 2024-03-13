@@ -1,12 +1,12 @@
 import {
     sendCompletionMessageAndCloseTheChannel,
     createChannelAndInviteParticipants,
-    sendPRCommentToSlack,
+    sendMessageAboutAddedCommentToSlack,
     updateChannelMembers,
-    sendMessageAboutNewCommitToSlack, sendReviewerActionToSlack
+    sendMessageAboutNewCommitToSlack, sendReviewerActionToSlack, sendMessageAboutDeletedCommentToSlack
 } from "./specific-handlers";
 import {
-    PullRequestCommentAddedPayload, PullRequestModifiedPayload,
+    PullRequestCommentAddedOrDeletedPayload, PullRequestModifiedPayload,
     PullRequestNotificationBasicPayload,
     PullRequestReviewersUpdatedPayload
 } from "./contracts";
@@ -16,7 +16,7 @@ import { sendMessageAboutPRModificationToSlack } from "./specific-handlers/sendM
 
 type BitbucketPayload =
     PullRequestNotificationBasicPayload
-    | PullRequestCommentAddedPayload
+    | PullRequestCommentAddedOrDeletedPayload
     | PullRequestReviewersUpdatedPayload | PullRequestModifiedPayload;
 
 export default async function handleBitbucketWebhook(payload: BitbucketPayload, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway) {
@@ -28,10 +28,13 @@ export default async function handleBitbucketWebhook(payload: BitbucketPayload, 
         case "pr:reviewer:unapproved":
         case "pr:reviewer:needs_work":
         case "pr:reviewer:approved":
-            await sendReviewerActionToSlack(payload as PullRequestCommentAddedPayload, slackGateway);
+            await sendReviewerActionToSlack(payload as PullRequestCommentAddedOrDeletedPayload, slackGateway);
             break;
         case "pr:comment:added":
-            await sendPRCommentToSlack(payload as PullRequestCommentAddedPayload, slackGateway);
+            await sendMessageAboutAddedCommentToSlack(payload as PullRequestCommentAddedOrDeletedPayload, slackGateway);
+            break;
+        case "pr:comment:deleted":
+            await sendMessageAboutDeletedCommentToSlack(payload as PullRequestCommentAddedOrDeletedPayload, slackGateway);
             break;
         case "pr:from_ref_updated":
             await sendMessageAboutNewCommitToSlack(payload, slackGateway, bitbucketGateway);

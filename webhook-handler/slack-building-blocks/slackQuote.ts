@@ -1,3 +1,3 @@
 export function slackQuote(text: string) {
-    return `> ${text}`;
+    return text ? `> ${text}` : "";
 }
