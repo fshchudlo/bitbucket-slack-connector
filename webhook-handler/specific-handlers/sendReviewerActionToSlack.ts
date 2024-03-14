@@ -1,17 +1,17 @@
-import { PullRequestCommentAddedOrDeletedPayload, PullRequestPayload } from "../contracts";
 import { SlackGateway } from "../gateways/SlackGateway";
 import buildChannelName from "../helper-functions/buildChannelName";
-import { slackBold, slackLink, slackSection } from "../slack-building-blocks";
+import { slackLink, slackSection } from "../slack-building-blocks";
+import { formatUserName } from "../slack-building-blocks/formatUserName";
 
-function getReviewerActionText(payload: PullRequestCommentAddedOrDeletedPayload) {
+function getReviewerActionText(payload: PullRequestBasicNotification) {
     const prLink = slackLink(payload.pullRequest.links.self[0].href, "pull request");
     switch (payload.eventKey) {
         case "pr:reviewer:unapproved":
-            return `${slackBold(payload.actor.displayName)} unapproved ${prLink}.`;
+            return `${formatUserName(payload.actor)} unapproved ${prLink}.`;
         case "pr:reviewer:needs_work":
-            return `${slackBold(payload.actor.displayName)} requested changes for ${prLink}.`;
+            return `${formatUserName(payload.actor)} requested changes for ${prLink}.`;
         case "pr:reviewer:approved":
-            return `${slackBold(payload.actor.displayName)} approved ${prLink}.`;
+            return `${formatUserName(payload.actor)} approved ${prLink}.`;
     }
 }
 
@@ -31,7 +31,7 @@ function getReviewStatusBlocks(pullRequest: PullRequestPayload) {
     return [slackSection(reviewStatus)];
 }
 
-export async function sendReviewerActionToSlack(payload: PullRequestCommentAddedOrDeletedPayload, slackGateway: SlackGateway) {
+export async function sendReviewerActionToSlack(payload: PullRequestBasicNotification, slackGateway: SlackGateway) {
     const pullRequest = payload.pullRequest;
     const channelName = buildChannelName(pullRequest.toRef.repository.project.key, pullRequest.toRef.repository.slug, pullRequest.id);
 

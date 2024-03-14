@@ -1,7 +1,6 @@
 import TestSlackGateway from "../gateways/TestSlackGateway";
 import TestPayloadBuilder from "./TestPayloadBuilder";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
-import { PullRequestNotificationBasicPayload } from "../contracts";
 import { TestBitbucketGateway } from "../gateways/TestBitbucketGateway";
 
 let testSlackGateway: TestSlackGateway = null;
@@ -27,7 +26,7 @@ describe("handleBitbucketWebhook", () => {
     });
 
     it("Should send message on PR comment deletion", async () => {
-        const payload = TestPayloadBuilder.pullRequestCommentAdded();
+        const payload = TestPayloadBuilder.pullRequestCommentDeleted();
         await handleBitbucketWebhook(payload, testSlackGateway, testBitbucketGateway);
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
@@ -86,8 +85,11 @@ describe("handleBitbucketWebhook", () => {
 
     it("Should throw Error on unknown action type", async () => {
         expect.assertions(1);
+
+        const invalidPayload = ({ eventKey: "unknown action" } as unknown) as PullRequestBasicNotification;
+
         try {
-            await handleBitbucketWebhook({ eventKey: "unknown action" } as PullRequestNotificationBasicPayload, testSlackGateway, testBitbucketGateway);
+            await handleBitbucketWebhook(invalidPayload, testSlackGateway, testBitbucketGateway);
         } catch (error) {
             expect((error as Error).message).toBe("\"unknown action\" event type is unknown.");
         }

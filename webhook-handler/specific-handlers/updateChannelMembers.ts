@@ -1,8 +1,7 @@
-import { PullRequestReviewersUpdatedPayload } from "../contracts";
 import { SlackGateway } from "../gateways/SlackGateway";
 import buildChannelName from "../helper-functions/buildChannelName";
 
-export async function updateChannelMembers(payload: PullRequestReviewersUpdatedPayload, slackGateway: SlackGateway) {
+export async function updateChannelMembers(payload: PullRequestReviewersUpdatedNotification, slackGateway: SlackGateway) {
     const pullRequest = payload.pullRequest;
     const channelName = buildChannelName(pullRequest.toRef.repository.project.key, pullRequest.toRef.repository.slug, pullRequest.id);
 

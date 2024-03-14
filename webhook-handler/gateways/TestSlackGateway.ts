@@ -1,7 +1,6 @@
 import * as slack from "@slack/web-api";
 
 import { SlackGateway } from "./SlackGateway";
-import { UserPayload } from "../contracts";
 
 const channelId = "12345";
 export default class TestSlackGateway implements SlackGateway {

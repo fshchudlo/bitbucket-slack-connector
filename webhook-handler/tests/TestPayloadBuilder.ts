@@ -1,9 +1,3 @@
-import {
-    PullRequestCommentAddedOrDeletedPayload, PullRequestModifiedPayload,
-    PullRequestNotificationBasicPayload,
-    PullRequestReviewersUpdatedPayload
-} from "../contracts";
-
 const authorUser = {
     displayName: "Test Author",
     emailAddress: "test.author@test.com"
@@ -17,9 +11,9 @@ const reviewer2User = {
     emailAddress: "test.reviewer2@test.com"
 };
 
-function getBasicPayload(eventKey: string): PullRequestNotificationBasicPayload {
+function getBasicPayload(): PullRequestBasicNotification {
     return {
-        eventKey: eventKey,
+        eventKey: "pr:opened",
         date: "2017-09-19T09:58:11+1000",
         actor: { ...authorUser },
         pullRequest: {
@@ -67,32 +61,46 @@ function getBasicPayload(eventKey: string): PullRequestNotificationBasicPayload 
 }
 
 export default class TestPayloadBuilder {
-    static pullRequestOpened(): PullRequestNotificationBasicPayload {
-        return getBasicPayload("pr:opened");
-    }
-
-    static pullRequestMerged(): PullRequestNotificationBasicPayload {
-        return getBasicPayload("pr:merged");
-    }
-
-    static pullRequestDeclined(): PullRequestNotificationBasicPayload {
-        return getBasicPayload("pr:declined");
-    }
-
-    static pullRequestDeleted(): PullRequestNotificationBasicPayload {
-        return getBasicPayload("pr:deleted");
-    }
-
-    static pullRequestCommentDeleted(): PullRequestCommentAddedOrDeletedPayload {
+    static pullRequestOpened(): BitbucketNotification {
         return {
-            ...this.pullRequestCommentAdded(),
+            ...getBasicPayload(),
+            eventKey: "pr:opened"
+        };
+    }
+
+    static pullRequestMerged(): BitbucketNotification {
+        return {
+            ...getBasicPayload(),
+            eventKey: "pr:merged"
+        };
+    }
+
+    static pullRequestDeclined(): BitbucketNotification {
+        return {
+            ...getBasicPayload(),
+            eventKey: "pr:declined"
+        };
+    }
+
+    static pullRequestDeleted(): BitbucketNotification {
+        return {
+            ...getBasicPayload(),
+            eventKey: "pr:deleted"
+        };
+    }
+
+    static pullRequestCommentDeleted(): PullRequestCommentAddedOrDeletedNotification {
+        const payload = this.pullRequestCommentAdded() as any;
+        return {
+            ...payload,
             eventKey: "pr:comment:deleted"
         };
     }
 
-    static pullRequestCommentAdded(): PullRequestCommentAddedOrDeletedPayload {
+    static pullRequestCommentAdded(): PullRequestCommentAddedOrDeletedNotification {
         return {
-            ...getBasicPayload("pr:comment:added"),
+            ...getBasicPayload(),
+            eventKey: "pr:comment:added",
             actor: { ...reviewer1User },
             comment: {
                 id: 1,
@@ -102,69 +110,74 @@ export default class TestPayloadBuilder {
         };
     }
 
-    static pullRequestModified(): PullRequestModifiedPayload {
-        const payload = {
-            ...getBasicPayload("pr:modified")
-        } as PullRequestModifiedPayload;
+    static pullRequestModified(): PullRequestModifiedNotification {
+        const payload = getBasicPayload();
 
-        payload.previousTarget = {
-            displayId: payload.pullRequest.toRef.displayId,
-            latestCommit: payload.pullRequest.toRef.latestCommit
+        return {
+            ...payload,
+            eventKey: "pr:modified",
+            previousDescription: payload.pullRequest.description,
+            previousTitle: payload.pullRequest.title,
+            previousTarget: {
+                displayId: payload.pullRequest.toRef.displayId,
+                latestCommit: payload.pullRequest.toRef.latestCommit
+            },
+            pullRequest: {
+                ...payload.pullRequest,
+                title: "New pull request title",
+                description: "New pull request description",
+                toRef: { ...payload.pullRequest.toRef, displayId: "not-the-master" }
+            }
         };
-
-        payload.previousDescription = payload.pullRequest.description;
-        payload.previousTitle = payload.pullRequest.title;
-
-        payload.pullRequest.title = "New pull request title";
-        payload.pullRequest.description = "New pull request description";
-        payload.pullRequest.toRef.displayId = "not-the-master";
-
-        return payload;
     }
 
-    static pullRequestNeedsWork(): PullRequestNotificationBasicPayload {
-        const payload = {
-            ...getBasicPayload("pr:reviewer:needs_work"),
-            actor: { ...reviewer1User }
-        };
+    static pullRequestNeedsWork(): BitbucketNotification {
+        const payload = getBasicPayload();
 
         payload.pullRequest.reviewers.forEach(r => r.status = r.user.displayName == payload.actor.displayName ? "NEEDS_WORK" : r.status);
 
-        return payload;
-    }
-
-    static pullRequestApproved(): PullRequestNotificationBasicPayload {
-        const payload = {
-            ...getBasicPayload("pr:reviewer:approved"),
+        return {
+            ...payload,
+            eventKey: "pr:reviewer:needs_work",
             actor: { ...reviewer1User }
         };
+    }
 
+    static pullRequestApproved(): BitbucketNotification {
+        const payload = getBasicPayload();
         payload.pullRequest.reviewers.forEach(r => r.status = r.user.displayName == payload.actor.displayName ? "APPROVED" : r.status);
 
-        return payload;
-    }
-
-    static pullRequestUnapproved(): PullRequestNotificationBasicPayload {
-        const payload = {
-            ...getBasicPayload("pr:reviewer:unapproved"),
+        return {
+            ...payload,
+            eventKey: "pr:reviewer:approved",
             actor: { ...reviewer1User }
         };
+    }
+
+    static pullRequestUnapproved(): BitbucketNotification {
+        const payload = getBasicPayload();
 
         payload.pullRequest.reviewers.forEach(r => r.status = r.user.displayName == payload.actor.displayName ? "UNAPPROVED" : r.status);
 
-        return payload;
-    }
-
-    static pullRequestFromRefUpdated(): PullRequestNotificationBasicPayload {
         return {
-            ...getBasicPayload("pr:from_ref_updated"),
-            ...{ fromRef: { latestCommit: "from-ref-updated-hash" } }
+            ...payload,
+            eventKey: "pr:reviewer:unapproved",
+            actor: { ...reviewer1User }
         };
     }
 
-    static reviewersUpdated(): PullRequestReviewersUpdatedPayload {
+    static pullRequestFromRefUpdated(): BitbucketNotification {
         return {
-            ...getBasicPayload("pr:reviewer:updated"),
+            ...getBasicPayload(),
+            ...{ fromRef: { latestCommit: "from-ref-updated-hash" } },
+            eventKey: "pr:from_ref_updated"
+        };
+    }
+
+    static reviewersUpdated(): PullRequestReviewersUpdatedNotification {
+        return {
+            ...getBasicPayload(),
+            eventKey: "pr:reviewer:updated",
             addedReviewers: [reviewer2User],
             removedReviewers: [reviewer1User]
         };

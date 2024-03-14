@@ -1,9 +1,9 @@
 import buildChannelName from "../helper-functions/buildChannelName";
-import { PullRequestNotificationBasicPayload } from "../contracts";
 import { SlackGateway } from "../gateways/SlackGateway";
+import { formatUserName } from "../slack-building-blocks/formatUserName";
 
 export async function sendCompletionMessageAndCloseTheChannel(
-    payload: PullRequestNotificationBasicPayload,
+    payload: PullRequestBasicNotification,
     slackGateway: SlackGateway
 ) {
     const pullRequest = payload.pullRequest;
@@ -11,13 +11,13 @@ export async function sendCompletionMessageAndCloseTheChannel(
     let message = null;
     switch (payload.eventKey) {
         case "pr:deleted":
-            message = `The pull request was deleted by ${payload.actor.displayName}.`;
+            message = `The pull request was deleted by ${formatUserName(payload.actor)}.`;
             break;
         case "pr:merged":
-            message = `The pull request was merged by ${payload.actor.displayName}. Well done, thank you all.`;
+            message = `The pull request was merged by ${formatUserName(payload.actor)}. Well done, thank you all.`;
             break;
         case "pr:declined":
-            message = `The pull request was declined by ${payload.actor.displayName}.`;
+            message = `The pull request was declined by ${formatUserName(payload.actor)}.`;
             break;
     }
 

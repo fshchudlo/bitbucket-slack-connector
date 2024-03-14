@@ -1,5 +1,4 @@
 import * as slack from "@slack/web-api";
-import { UserPayload } from "../contracts";
 
 export interface SlackGateway {
     getChannelId(channelName: string): Promise<string>;
