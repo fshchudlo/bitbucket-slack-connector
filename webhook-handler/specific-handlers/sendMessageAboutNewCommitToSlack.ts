@@ -4,6 +4,7 @@ import { SlackGateway } from "../gateways/SlackGateway";
 import { BitbucketGateway } from "../gateways/BitbucketGateway";
 import reformatMarkdownToSlackMarkup from "../helper-functions/reformatMarkdownToSlackMarkup";
 import { formatUserName } from "../slack-building-blocks/formatUserName";
+import { PullRequestBasicNotification } from "../../typings";
 
 export async function sendMessageAboutNewCommitToSlack(payload: PullRequestBasicNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway) {
     const pullRequest = payload.pullRequest;

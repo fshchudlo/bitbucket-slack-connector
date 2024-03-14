@@ -1,6 +1,7 @@
 import buildChannelName from "../helper-functions/buildChannelName";
 import { SlackGateway } from "../gateways/SlackGateway";
 import { formatUserName } from "../slack-building-blocks/formatUserName";
+import { PullRequestBasicNotification } from "../../typings";
 
 export async function sendCompletionMessageAndCloseTheChannel(
     payload: PullRequestBasicNotification,

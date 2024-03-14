@@ -4,6 +4,7 @@ import { SlackGateway } from "../gateways/SlackGateway";
 import getPullRequestDescriptionForSlack from "../helper-functions/getPullRequestDescriptionForSlack";
 import { Block } from "@slack/bolt";
 import { formatUserName } from "../slack-building-blocks/formatUserName";
+import { PullRequestModifiedNotification } from "../../typings";
 
 export async function sendMessageAboutPRModificationToSlack(payload: PullRequestModifiedNotification, slackGateway: SlackGateway) {
     const pullRequest = payload.pullRequest;

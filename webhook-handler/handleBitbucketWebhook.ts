@@ -10,6 +10,7 @@ import {
 import { SlackGateway } from "./gateways/SlackGateway";
 import { BitbucketGateway } from "./gateways/BitbucketGateway";
 import { sendMessageAboutPRModificationToSlack } from "./specific-handlers/sendMessageAboutPRModificationToSlack";
+import { BitbucketNotification } from "../typings";
 
 export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway) {
     const eventType = payload.eventKey;

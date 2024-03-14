@@ -2,6 +2,7 @@ import { SlackGateway } from "../gateways/SlackGateway";
 import buildChannelName from "../helper-functions/buildChannelName";
 import { slackLink, slackSection } from "../slack-building-blocks";
 import { formatUserName } from "../slack-building-blocks/formatUserName";
+import { PullRequestBasicNotification, PullRequestPayload } from "../../typings";
 
 function getReviewerActionText(payload: PullRequestBasicNotification) {
     const prLink = slackLink(payload.pullRequest.links.self[0].href, "pull request");

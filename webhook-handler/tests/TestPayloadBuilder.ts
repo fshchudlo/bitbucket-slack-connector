@@ -1,3 +1,9 @@
+import {
+    BitbucketNotification,
+    PullRequestBasicNotification, PullRequestCommentAddedOrDeletedNotification, PullRequestModifiedNotification,
+    PullRequestReviewersUpdatedNotification
+} from "../../typings";
+
 const authorUser = {
     displayName: "Test Author",
     emailAddress: "test.author@test.com"

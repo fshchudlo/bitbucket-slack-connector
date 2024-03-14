@@ -1,14 +1,14 @@
 // see https://confluence.atlassian.com/bitbucketserver0816/event-payload-1333334207.html#Eventpayload-pullrequest
-declare type BitbucketNotification =
+export type BitbucketNotification =
     PullRequestBasicNotification
     | PullRequestModifiedNotification
     | PullRequestCommentAddedOrDeletedNotification
     | PullRequestReviewersUpdatedNotification
 
-declare type PullRequestBasicNotification = PullRequestNotificationBasicPayload & {
+export type PullRequestBasicNotification = PullRequestNotificationBasicPayload & {
     eventKey: "pr:opened" | "pr:reviewer:unapproved" | "pr:reviewer:needs_work" | "pr:reviewer:approved" | "pr:from_ref_updated" | "pr:merged" | "pr:declined" | "pr:deleted";
 }
-declare type PullRequestModifiedNotification = PullRequestNotificationBasicPayload & {
+export type PullRequestModifiedNotification = PullRequestNotificationBasicPayload & {
     eventKey: "pr:modified";
     previousTitle: string;
     previousDescription: string | null;
@@ -17,7 +17,7 @@ declare type PullRequestModifiedNotification = PullRequestNotificationBasicPaylo
         latestCommit: string
     }
 }
-declare type PullRequestCommentAddedOrDeletedNotification = PullRequestNotificationBasicPayload & {
+export type PullRequestCommentAddedOrDeletedNotification = PullRequestNotificationBasicPayload & {
     eventKey: "pr:comment:added" | "pr:comment:deleted";
     comment: {
         id: number;
@@ -26,30 +26,30 @@ declare type PullRequestCommentAddedOrDeletedNotification = PullRequestNotificat
     };
 }
 
-declare type PullRequestReviewersUpdatedNotification = PullRequestNotificationBasicPayload & {
+export type PullRequestReviewersUpdatedNotification = PullRequestNotificationBasicPayload & {
     eventKey: "pr:reviewer:updated";
     addedReviewers: Array<UserPayload>;
     removedReviewers: Array<UserPayload>;
 }
 
-declare type PullRequestNotificationBasicPayload = {
+export type PullRequestNotificationBasicPayload = {
     date: string;
     actor: UserPayload;
     pullRequest: PullRequestPayload;
 }
 
-declare type UserPayload = {
+export type UserPayload = {
     displayName: string;
     emailAddress: string;
 }
 
-declare type ReviewerPayload = {
+export type ReviewerPayload = {
     user: UserPayload,
     approved: boolean,
     status: "UNAPPROVED" | "NEEDS_WORK" | "APPROVED";
 }
 
-declare type RefPayload = {
+export type RefPayload = {
     displayId: string;
     latestCommit: string;
     repository: {
@@ -58,7 +58,7 @@ declare type RefPayload = {
     };
 }
 
-declare type PullRequestPayload = {
+export type PullRequestPayload = {
     id: number;
     title: string;
     description: string | null;

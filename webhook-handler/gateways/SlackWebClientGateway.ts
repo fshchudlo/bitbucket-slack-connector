@@ -1,5 +1,6 @@
 import * as slack from "@slack/web-api";
 import { SlackGateway } from "./SlackGateway";
+import { UserPayload } from "../../typings";
 
 export class SlackWebClientGateway implements SlackGateway {
     client: slack.WebClient;

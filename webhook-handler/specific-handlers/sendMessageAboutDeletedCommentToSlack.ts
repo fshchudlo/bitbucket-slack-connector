@@ -3,6 +3,7 @@ import buildChannelName from "../helper-functions/buildChannelName";
 import { slackQuote, slackSection } from "../slack-building-blocks";
 import reformatMarkdownToSlackMarkup from "../helper-functions/reformatMarkdownToSlackMarkup";
 import { formatUserName } from "../slack-building-blocks/formatUserName";
+import { PullRequestCommentAddedOrDeletedNotification } from "../../typings";
 
 export async function sendMessageAboutDeletedCommentToSlack(payload: PullRequestCommentAddedOrDeletedNotification, slackGateway: SlackGateway) {
     const pullRequest = payload.pullRequest;

@@ -3,6 +3,7 @@ import { slackLink, slackSection } from "../slack-building-blocks";
 import { SlackGateway } from "../gateways/SlackGateway";
 import getPullRequestDescriptionForSlack from "../helper-functions/getPullRequestDescriptionForSlack";
 import { formatUserName } from "../slack-building-blocks/formatUserName";
+import { PullRequestBasicNotification } from "../../typings";
 
 function buildChannelTopic({ pullRequest }: PullRequestBasicNotification) {
     const header = `${pullRequest.toRef.repository.project.key}/${pullRequest.toRef.repository.slug}:${pullRequest.toRef.displayId}`;
