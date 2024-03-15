@@ -92,7 +92,7 @@ describe("handleBitbucketWebhook", () => {
         try {
             await handleBitbucketWebhook(invalidPayload, testSlackGateway, testBitbucketGateway);
         } catch (error) {
-            expect((error as Error).message).toBe("\"unknown action\" event type is unknown.");
+            expect((error as Error).message).toBe("\"unknown action\" event key is unknown.");
         }
     });
 });

@@ -1,8 +1,9 @@
 import { SlackGateway } from "../gateways/SlackGateway";
 import buildChannelName from "../helper-functions/buildChannelName";
-import { slackLink, slackSection } from "../slack-building-blocks";
+import { slackLink } from "../slack-building-blocks";
 import { formatUserName } from "../slack-building-blocks/formatUserName";
 import { PullRequestBasicNotification, PullRequestPayload } from "../../typings";
+import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
 function getReviewerActionText(payload: PullRequestBasicNotification) {
     const prLink = slackLink(payload.pullRequest.links.self[0].href, "pull request");
@@ -16,30 +17,36 @@ function getReviewerActionText(payload: PullRequestBasicNotification) {
     }
 }
 
-function getReviewStatusBlocks(pullRequest: PullRequestPayload) {
+function getReviewStatus(pullRequest: PullRequestPayload) {
     const whoApproved = pullRequest.reviewers.filter(r => r.status == "APPROVED");
     const whoRequestedWork = pullRequest.reviewers.filter(r => r.status == "NEEDS_WORK");
     const whoUnapproved = pullRequest.reviewers.filter(r => r.status == "UNAPPROVED");
 
     if (whoRequestedWork.length == 0 && whoUnapproved.length == 0) {
-        return [slackSection(`All reviewers approved PR. Seems like you can ${slackLink(pullRequest.links.self[0].href, "merge it")}.`)];
+        return `All reviewers approved PR. Seems like you can ${slackLink(pullRequest.links.self[0].href, "merge it")}.`;
     }
 
     let reviewStatus = whoApproved.length > 0 ? `Approved: ${whoApproved.map(r => r.user.displayName).join(",")}` : "";
     reviewStatus += whoRequestedWork.length > 0 ? `Needs work: ${whoRequestedWork.map(r => r.user.displayName).join(",")}` : "";
     reviewStatus += whoUnapproved.length > 0 ? `Unapproved: ${whoUnapproved.map(r => r.user.displayName).join(",")}` : "";
 
-    return [slackSection(reviewStatus)];
+    return reviewStatus;
 }
 
-export async function sendReviewerActionToSlack(payload: PullRequestBasicNotification, slackGateway: SlackGateway) {
+export async function sendReviewerActionToSlack(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const pullRequest = payload.pullRequest;
-    const channelName = buildChannelName(pullRequest.toRef.repository.project.key, pullRequest.toRef.repository.slug, pullRequest.id);
+    const channelName = buildChannelName(pullRequest);
 
     const messageTitle = getReviewerActionText(payload);
     await slackGateway.sendMessage({
         channel: channelName,
-        text: messageTitle,
-        blocks: [slackSection(messageTitle), ...getReviewStatusBlocks(pullRequest)]
+        icon_emoji: iconEmoji,
+        attachments: [
+            {
+                title: messageTitle,
+                text: getReviewStatus(pullRequest),
+                color: getMessageColor(payload)
+            }
+        ]
     });
 }

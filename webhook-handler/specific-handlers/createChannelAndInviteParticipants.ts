@@ -1,9 +1,10 @@
 import buildChannelName from "../helper-functions/buildChannelName";
-import { slackLink, slackSection } from "../slack-building-blocks";
+import { slackLink } from "../slack-building-blocks";
 import { SlackGateway } from "../gateways/SlackGateway";
 import getPullRequestDescriptionForSlack from "../helper-functions/getPullRequestDescriptionForSlack";
 import { formatUserName } from "../slack-building-blocks/formatUserName";
 import { PullRequestBasicNotification } from "../../typings";
+import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
 function buildChannelTopic({ pullRequest }: PullRequestBasicNotification) {
     const header = `${pullRequest.toRef.repository.project.key}/${pullRequest.toRef.repository.slug}:${pullRequest.toRef.displayId}`;
@@ -14,9 +15,9 @@ function buildChannelTopic({ pullRequest }: PullRequestBasicNotification) {
     return result;
 }
 
-export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackGateway: SlackGateway) {
+export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const pullRequest = payload.pullRequest;
-    const channelName = buildChannelName(pullRequest.toRef.repository.project.key, pullRequest.toRef.repository.slug, pullRequest.id);
+    const channelName = buildChannelName(pullRequest);
     const allParticipants = [pullRequest.author.user].concat(pullRequest.reviewers.map(r => r.user));
     const slackUserIds = await slackGateway.getSlackUserIds(allParticipants);
 
@@ -44,11 +45,17 @@ export async function createChannelAndInviteParticipants(payload: PullRequestBas
 
     await slackGateway.sendMessage({
         channel: channelId,
-        text: `${messageTitle} ${pleaseReviewText}`,
-        blocks: [
-            slackSection(messageTitle),
-            slackSection(descriptionText),
-            slackSection(pleaseReviewText)]
+        icon_emoji: iconEmoji,
+        attachments: [
+            {
+                title: messageTitle,
+                text: descriptionText,
+                color: getMessageColor(payload)
+            }, {
+                text: pleaseReviewText,
+                color: getMessageColor(payload)
+            }
+        ]
     });
 }
 

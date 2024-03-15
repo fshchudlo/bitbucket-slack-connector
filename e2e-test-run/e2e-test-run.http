@@ -9,7 +9,7 @@ Content-Type: application/json
     client.assert(response.status === 500)
 %}
 
-### Create pull request
+### Open pull request
 POST http://localhost:3000/bitbucket-webhook
 Content-Type: application/json
 

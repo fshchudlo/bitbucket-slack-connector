@@ -4,7 +4,7 @@
   "description": "An application for reflecting Bitbucket Pull Requests events to the Slack channels for PR author and all of reviewers.",
   "main": "app.ts",
   "scripts": {
-    "start": "ts-node app.ts",
+    "start": "npm run build && ts-node app.ts",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint --ext .ts ./ --fix",
     "test": "jest --coverage",

@@ -1,14 +1,15 @@
 import buildChannelName from "../helper-functions/buildChannelName";
-import { slackLink, slackQuote, slackSection } from "../slack-building-blocks";
+import { slackLink, slackQuote } from "../slack-building-blocks";
 import { SlackGateway } from "../gateways/SlackGateway";
 import { BitbucketGateway } from "../gateways/BitbucketGateway";
 import reformatMarkdownToSlackMarkup from "../helper-functions/reformatMarkdownToSlackMarkup";
 import { formatUserName } from "../slack-building-blocks/formatUserName";
 import { PullRequestBasicNotification } from "../../typings";
+import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
-export async function sendMessageAboutNewCommitToSlack(payload: PullRequestBasicNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway) {
+export async function sendMessageAboutNewCommitToSlack(payload: PullRequestBasicNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway, iconEmoji: string) {
     const pullRequest = payload.pullRequest;
-    const channelName = buildChannelName(pullRequest.toRef.repository.project.key, pullRequest.toRef.repository.slug, pullRequest.id);
+    const channelName = buildChannelName(pullRequest);
 
     const viewCommitUrl = `${payload.pullRequest.links.self[0].href.replace("/overview", "")}/commits/${pullRequest.fromRef.latestCommit}`;
     const messageTitle = `A ${slackLink(viewCommitUrl, "new commit")} was added to the pull request by ${formatUserName(payload.actor)}.`;
@@ -18,11 +19,12 @@ export async function sendMessageAboutNewCommitToSlack(payload: PullRequestBasic
 
     await slackGateway.sendMessage({
         channel: channelName,
-        text: `${messageTitle} ${pleaseReviewText}`,
-        blocks: [
-            slackSection(messageTitle),
-            commentText ? slackSection(slackQuote(reformatMarkdownToSlackMarkup(commentText))) : null,
-            slackSection(pleaseReviewText)
-        ].filter(b => b !== null)
+        icon_emoji: iconEmoji,
+        attachments: [
+            {
+                title: messageTitle,
+                text: [slackQuote(reformatMarkdownToSlackMarkup(commentText)), pleaseReviewText].join("\n\n"),
+                color: getMessageColor(payload)
+            }]
     });
 }

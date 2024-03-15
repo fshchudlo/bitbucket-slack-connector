@@ -2,13 +2,15 @@ import buildChannelName from "../helper-functions/buildChannelName";
 import { SlackGateway } from "../gateways/SlackGateway";
 import { formatUserName } from "../slack-building-blocks/formatUserName";
 import { PullRequestBasicNotification } from "../../typings";
+import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
 export async function sendCompletionMessageAndCloseTheChannel(
     payload: PullRequestBasicNotification,
-    slackGateway: SlackGateway
+    slackGateway: SlackGateway,
+    iconEmoji: string
 ) {
     const pullRequest = payload.pullRequest;
-    const channelName = buildChannelName(pullRequest.toRef.repository.project.key, pullRequest.toRef.repository.slug, pullRequest.id);
+    const channelName = buildChannelName(pullRequest);
     let message = null;
     switch (payload.eventKey) {
         case "pr:deleted":
@@ -24,7 +26,12 @@ export async function sendCompletionMessageAndCloseTheChannel(
 
     const messageResponse = await slackGateway.sendMessage({
         channel: channelName,
-        text: message
+        icon_emoji: iconEmoji,
+        attachments: [
+            {
+                text: message,
+                color: getMessageColor(payload)
+            }]
     });
 
     await slackGateway.archiveChannel({
