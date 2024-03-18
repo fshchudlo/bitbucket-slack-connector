@@ -1,5 +1,5 @@
 ### Add comment to the pull request without channel
-POST http://localhost:3000/bitbucket-webhook
+POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
 < ./PR-comment-added-test-payload.json
@@ -10,7 +10,7 @@ Content-Type: application/json
 %}
 
 ### Open pull request
-POST http://localhost:3000/bitbucket-webhook
+POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
 < ./PR-opened-test-payload.json
@@ -20,7 +20,7 @@ Content-Type: application/json
 %}
 
 ### Add comment
-POST http://localhost:3000/bitbucket-webhook
+POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
 < ./PR-comment-added-test-payload.json
@@ -30,7 +30,7 @@ Content-Type: application/json
 %}
 
 ### Delete comment
-POST http://localhost:3000/bitbucket-webhook
+POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
 < ./PR-comment-deleted-test-payload.json
@@ -40,7 +40,7 @@ Content-Type: application/json
 %}
 
 ### Modify PR
-POST http://localhost:3000/bitbucket-webhook
+POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
 < ./PR-modified-test-payload.json
@@ -50,7 +50,7 @@ Content-Type: application/json
 %}
 
 ### Reviewer requested changes
-POST http://localhost:3000/bitbucket-webhook
+POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
 < ./PR-needs-work-test-payload.json
@@ -60,7 +60,7 @@ Content-Type: application/json
 %}
 
 ### Reviewers list updated
-POST http://localhost:3000/bitbucket-webhook
+POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
 < ./PR-reviewer-updated-test-payload.json
@@ -70,7 +70,7 @@ Content-Type: application/json
 %}
 
 ### Add commit
-POST http://localhost:3000/bitbucket-webhook
+POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
 < ./PR-from-ref-updated-test-payload.json
@@ -80,7 +80,7 @@ Content-Type: application/json
 %}
 
 ### Reviewer approved pull request
-POST http://localhost:3000/bitbucket-webhook
+POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
 < ./PR-approved-test-payload.json
@@ -91,7 +91,7 @@ Content-Type: application/json
 
 
 ### Merge pull request
-POST http://localhost:3000/bitbucket-webhook
+POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
 < ./PR-merged-test-payload.json
@@ -101,7 +101,7 @@ Content-Type: application/json
 %}
 
 ### Invalid payload
-POST http://localhost:3000/bitbucket-webhook
+POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
 {
@@ -114,7 +114,7 @@ Content-Type: application/json
 %}
 
 ### Add comment to the already closed pull request
-POST http://localhost:3000/bitbucket-webhook
+POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
 < ./PR-comment-added-test-payload.json
