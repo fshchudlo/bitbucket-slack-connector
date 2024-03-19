@@ -8,10 +8,9 @@ import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
 export async function sendMessageAboutDeletedCommentToSlack(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const pullRequest = payload.pullRequest;
-    const channelName = buildChannelName(pullRequest);
     const messageTitle = `${formatUserName(payload.actor)} deleted comment:`;
     await slackGateway.sendMessage({
-        channel: channelName,
+        channel: buildChannelName(pullRequest),
         icon_emoji: iconEmoji,
         attachments: [
             {

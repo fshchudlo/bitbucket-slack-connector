@@ -8,30 +8,12 @@ import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
 export async function sendMessageAboutPRModificationToSlack(payload: PullRequestModifiedNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const pullRequest = payload.pullRequest;
-    const channelName = buildChannelName(pullRequest);
-
-    const changesDescription = new Array<string>();
-
-    if (pullRequest.title != payload.previousTitle) {
-        changesDescription.push("Title is changed to:");
-        changesDescription.push(slackQuote(pullRequest.title));
-    }
-    if (pullRequest.description != payload.previousDescription) {
-        if (pullRequest.description) {
-            changesDescription.push("Description is changed to:");
-            changesDescription.push(getPullRequestDescriptionForSlack(pullRequest.description));
-        } else {
-            changesDescription.push(`Description is deleted.`);
-        }
-    }
-    if (pullRequest.toRef.displayId != payload.previousTarget.displayId) {
-        changesDescription.push(`Target is changed to \`${pullRequest.toRef.displayId}\``);
-    }
+    const changesDescription = getChangesDescription(payload);
 
     const pleaseReviewText = `Please ${slackLink(pullRequest.links.self[0].href, "review the PR")}`;
 
     await slackGateway.sendMessage({
-        channel: channelName,
+        channel: buildChannelName(pullRequest),
         icon_emoji: iconEmoji,
         attachments: [
             {
@@ -40,5 +22,26 @@ export async function sendMessageAboutPRModificationToSlack(payload: PullRequest
                 color: getMessageColor(payload)
             }]
     });
+}
+
+function getChangesDescription(payload: PullRequestModifiedNotification) {
+    const changesDescription = new Array<string>();
+
+    if (payload.pullRequest.title != payload.previousTitle) {
+        changesDescription.push("Title is changed to:");
+        changesDescription.push(slackQuote(payload.pullRequest.title));
+    }
+    if (payload.pullRequest.description != payload.previousDescription) {
+        if (payload.pullRequest.description) {
+            changesDescription.push("Description is changed to:");
+            changesDescription.push(getPullRequestDescriptionForSlack(payload.pullRequest.description));
+        } else {
+            changesDescription.push(`Description is deleted.`);
+        }
+    }
+    if (payload.pullRequest.toRef.displayId != payload.previousTarget.displayId) {
+        changesDescription.push(`Target is changed to \`${payload.pullRequest.toRef.displayId}\``);
+    }
+    return changesDescription;
 }
 

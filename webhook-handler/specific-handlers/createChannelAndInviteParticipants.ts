@@ -17,13 +17,12 @@ function buildChannelTopic({ pullRequest }: PullRequestBasicNotification) {
 
 export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const pullRequest = payload.pullRequest;
-    const channelName = buildChannelName(pullRequest);
     const allParticipants = [pullRequest.author.user].concat(pullRequest.reviewers.map(r => r.user));
     const slackUserIds = await slackGateway.getSlackUserIds(allParticipants);
 
     const channelId = (
         await slackGateway.createChannel({
-            name: channelName,
+            name: buildChannelName(pullRequest),
             is_private: true
         })
     ).channel.id;

@@ -10,7 +10,6 @@ export async function sendCompletionMessageAndCloseTheChannel(
     iconEmoji: string
 ) {
     const pullRequest = payload.pullRequest;
-    const channelName = buildChannelName(pullRequest);
     let message = null;
     switch (payload.eventKey) {
         case "pr:deleted":
@@ -25,7 +24,7 @@ export async function sendCompletionMessageAndCloseTheChannel(
     }
 
     const messageResponse = await slackGateway.sendMessage({
-        channel: channelName,
+        channel: buildChannelName(pullRequest),
         icon_emoji: iconEmoji,
         attachments: [
             {

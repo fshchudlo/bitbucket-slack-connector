@@ -237,9 +237,9 @@ exports[`handleBitbucketWebhook Should send message on PR comment modification 1
     {
       "attachments": [
         {
-          "color": "#F6C342",
+          "color": "#9E34EB",
           "text": "> Updated comment text",
-          "title": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>:",
+          "title": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|edited comment>:",
         },
       ],
       "channel": "pr-test-proj-test-repository-1",

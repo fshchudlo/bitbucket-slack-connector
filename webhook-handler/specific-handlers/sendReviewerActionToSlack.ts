@@ -35,11 +35,10 @@ function getReviewStatus(pullRequest: PullRequestPayload) {
 
 export async function sendReviewerActionToSlack(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const pullRequest = payload.pullRequest;
-    const channelName = buildChannelName(pullRequest);
-
     const messageTitle = getReviewerActionText(payload);
+
     await slackGateway.sendMessage({
-        channel: channelName,
+        channel: buildChannelName(pullRequest),
         icon_emoji: iconEmoji,
         attachments: [
             {

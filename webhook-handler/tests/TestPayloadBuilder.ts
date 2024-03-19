@@ -118,6 +118,7 @@ export default class TestPayloadBuilder {
 
     static pullRequestCommentEdited(): PullRequestCommentActionNotification {
         const payload = this.pullRequestCommentAdded();
+        payload.eventKey = "pr:comment:edited";
         payload.comment.text = "Updated comment text";
         return payload;
     }
