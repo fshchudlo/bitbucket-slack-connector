@@ -4,12 +4,7 @@ import { formatUserName } from "../slack-building-blocks/formatUserName";
 import { PullRequestBasicNotification } from "../../typings";
 import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
-export async function sendCompletionMessageAndCloseTheChannel(
-    payload: PullRequestBasicNotification,
-    slackGateway: SlackGateway,
-    iconEmoji: string
-) {
-    const pullRequest = payload.pullRequest;
+export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string) {
     let message = null;
     switch (payload.eventKey) {
         case "pr:deleted":
@@ -24,7 +19,7 @@ export async function sendCompletionMessageAndCloseTheChannel(
     }
 
     const messageResponse = await slackGateway.sendMessage({
-        channel: buildChannelName(pullRequest),
+        channel: buildChannelName(payload.pullRequest),
         icon_emoji: iconEmoji,
         attachments: [
             {

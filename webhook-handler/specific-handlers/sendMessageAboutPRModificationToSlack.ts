@@ -7,13 +7,11 @@ import { PullRequestModifiedNotification } from "../../typings";
 import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
 export async function sendMessageAboutPRModificationToSlack(payload: PullRequestModifiedNotification, slackGateway: SlackGateway, iconEmoji: string) {
-    const pullRequest = payload.pullRequest;
     const changesDescription = getChangesDescription(payload);
-
-    const pleaseReviewText = `Please ${slackLink(pullRequest.links.self[0].href, "review the PR")}`;
+    const pleaseReviewText = `Please ${slackLink(payload.pullRequest.links.self[0].href, "review the PR")}`;
 
     await slackGateway.sendMessage({
-        channel: buildChannelName(pullRequest),
+        channel: buildChannelName(payload.pullRequest),
         icon_emoji: iconEmoji,
         attachments: [
             {

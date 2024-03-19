@@ -7,10 +7,10 @@ import { PullRequestCommentActionNotification } from "../../typings";
 import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
 export async function sendMessageAboutDeletedCommentToSlack(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
-    const pullRequest = payload.pullRequest;
     const messageTitle = `${formatUserName(payload.actor)} deleted comment:`;
+
     await slackGateway.sendMessage({
-        channel: buildChannelName(pullRequest),
+        channel: buildChannelName(payload.pullRequest),
         icon_emoji: iconEmoji,
         attachments: [
             {
@@ -19,5 +19,4 @@ export async function sendMessageAboutDeletedCommentToSlack(payload: PullRequest
                 color: getMessageColor(payload)
             }]
     });
-
 }

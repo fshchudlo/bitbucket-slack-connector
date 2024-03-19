@@ -38,13 +38,13 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
         case "pr:reviewer:updated":
             await updateChannelMembers(payload, slackGateway);
             break;
+        case "pr:modified":
+            await sendMessageAboutPRModificationToSlack(payload, slackGateway, iconEmoji);
+            break;
         case "pr:merged":
         case "pr:declined":
         case "pr:deleted":
             await sendCompletionMessageAndCloseTheChannel(payload, slackGateway, iconEmoji);
-            break;
-        case "pr:modified":
-            await sendMessageAboutPRModificationToSlack(payload, slackGateway, iconEmoji);
             break;
         default:
             throw new Error(`"${eventKey}" event key is unknown.`);

@@ -3,9 +3,7 @@ import buildChannelName from "../helper-functions/buildChannelName";
 import { PullRequestReviewersUpdatedNotification } from "../../typings";
 
 export async function updateChannelMembers(payload: PullRequestReviewersUpdatedNotification, slackGateway: SlackGateway) {
-    const pullRequest = payload.pullRequest;
-
-    const channelId = await slackGateway.getChannelId(buildChannelName(pullRequest));
+    const channelId = await slackGateway.getChannelId(buildChannelName(payload.pullRequest));
     const userIdsToAdd = await slackGateway.getSlackUserIds(payload.addedReviewers);
     const userIdsToRemove = await slackGateway.getSlackUserIds(payload.removedReviewers);
 

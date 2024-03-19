@@ -7,11 +7,11 @@ import { PullRequestCommentActionNotification } from "../../typings";
 import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
 export async function sendMessageAboutAddedCommentToSlack(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
-    const pullRequest = payload.pullRequest;
-    const commentUrl = `${pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
+    const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
     const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, "commented")}:`;
+
     await slackGateway.sendMessage({
-        channel: buildChannelName(pullRequest),
+        channel: buildChannelName(payload.pullRequest),
         icon_emoji: iconEmoji,
         attachments: [
             {
