@@ -29,6 +29,16 @@ Content-Type: application/json
     client.assert(response.status === 200)
 %}
 
+### Edit comment
+POST {{EndpointHost}}/bitbucket-webhook
+Content-Type: application/json
+
+< ./PR-comment-edited-test-payload.json
+
+> {%
+    client.assert(response.status === 200)
+%}
+
 ### Delete comment
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json

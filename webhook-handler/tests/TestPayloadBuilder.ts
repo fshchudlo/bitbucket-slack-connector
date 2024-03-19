@@ -1,6 +1,6 @@
 import {
     BitbucketNotification,
-    PullRequestBasicNotification, PullRequestCommentAddedOrDeletedNotification, PullRequestModifiedNotification,
+    PullRequestBasicNotification, PullRequestCommentActionNotification, PullRequestModifiedNotification,
     PullRequestReviewersUpdatedNotification
 } from "../../typings";
 
@@ -95,7 +95,7 @@ export default class TestPayloadBuilder {
         };
     }
 
-    static pullRequestCommentDeleted(): PullRequestCommentAddedOrDeletedNotification {
+    static pullRequestCommentDeleted(): PullRequestCommentActionNotification {
         const payload = this.pullRequestCommentAdded() as any;
         return {
             ...payload,
@@ -103,7 +103,7 @@ export default class TestPayloadBuilder {
         };
     }
 
-    static pullRequestCommentAdded(): PullRequestCommentAddedOrDeletedNotification {
+    static pullRequestCommentAdded(): PullRequestCommentActionNotification {
         return {
             ...getBasicPayload(),
             eventKey: "pr:comment:added",
@@ -114,6 +114,12 @@ export default class TestPayloadBuilder {
                 author: { ...reviewer1User }
             }
         };
+    }
+
+    static pullRequestCommentEdited(): PullRequestCommentActionNotification {
+        const payload = this.pullRequestCommentAdded();
+        payload.comment.text = "Updated comment text";
+        return payload;
     }
 
     static pullRequestModified(): PullRequestModifiedNotification {

@@ -226,6 +226,30 @@ exports[`handleBitbucketWebhook Should send message on PR comment deletion 1`] =
 }
 `;
 
+exports[`handleBitbucketWebhook Should send message on PR comment modification 1`] = `
+{
+  "archivedChannels": [],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [],
+  "sentMessages": [
+    {
+      "attachments": [
+        {
+          "color": "#F6C342",
+          "text": "> Updated comment text",
+          "title": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>:",
+        },
+      ],
+      "channel": "pr-test-proj-test-repository-1",
+      "icon_emoji": ":bitbucket:",
+    },
+  ],
+  "setChannelTopics": [],
+}
+`;
+
 exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
 {
   "archivedChannels": [],

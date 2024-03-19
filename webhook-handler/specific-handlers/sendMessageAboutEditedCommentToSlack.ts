@@ -1,15 +1,16 @@
+import { PullRequestCommentActionNotification } from "../../typings";
 import { SlackGateway } from "../gateways/SlackGateway";
 import buildChannelName from "../helper-functions/buildChannelName";
-import { slackQuote } from "../slack-building-blocks";
-import reformatMarkdownToSlackMarkup from "../helper-functions/reformatMarkdownToSlackMarkup";
 import { formatUserName } from "../slack-building-blocks/formatUserName";
-import { PullRequestCommentActionNotification } from "../../typings";
+import { slackLink, slackQuote } from "../slack-building-blocks";
+import reformatMarkdownToSlackMarkup from "../helper-functions/reformatMarkdownToSlackMarkup";
 import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
-export async function sendMessageAboutDeletedCommentToSlack(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
+export async function sendMessageAboutEditedCommentToSlack(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const pullRequest = payload.pullRequest;
     const channelName = buildChannelName(pullRequest);
-    const messageTitle = `${formatUserName(payload.actor)} deleted comment:`;
+    const commentUrl = `${pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
+    const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, "edited comment")}:`;
     await slackGateway.sendMessage({
         channel: channelName,
         icon_emoji: iconEmoji,
@@ -20,5 +21,4 @@ export async function sendMessageAboutDeletedCommentToSlack(payload: PullRequest
                 color: getMessageColor(payload)
             }]
     });
-
 }

@@ -2,7 +2,7 @@
 export type BitbucketNotification =
     PullRequestBasicNotification
     | PullRequestModifiedNotification
-    | PullRequestCommentAddedOrDeletedNotification
+    | PullRequestCommentActionNotification
     | PullRequestReviewersUpdatedNotification
 
 export type PullRequestBasicNotification = PullRequestNotificationBasicPayload & {
@@ -17,8 +17,9 @@ export type PullRequestModifiedNotification = PullRequestNotificationBasicPayloa
         latestCommit: string
     }
 }
-export type PullRequestCommentAddedOrDeletedNotification = PullRequestNotificationBasicPayload & {
-    eventKey: "pr:comment:added" | "pr:comment:deleted";
+export type PullRequestCommentActionNotification = PullRequestNotificationBasicPayload & {
+    eventKey: "pr:comment:added" | "pr:comment:deleted" | "pr:comment:edited";
+    commentParentId?: number;
     comment: {
         id: number;
         text: string;

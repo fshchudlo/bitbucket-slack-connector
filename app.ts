@@ -44,5 +44,5 @@ expressReceiver.router.post("/bitbucket-webhook", async (req, res) => {
 
 (async () => {
     await slackApp.start(AppConfig.SLACK_BOT_PORT);
-    console.log("⚡️ Bolt app is running!");
+    console.log("⚡️ Bitbucket connector app is running!");
 })();

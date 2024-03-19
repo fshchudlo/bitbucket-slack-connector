@@ -5,7 +5,7 @@ import {
     updateChannelMembers,
     sendMessageAboutNewCommitToSlack,
     sendReviewerActionToSlack,
-    sendMessageAboutDeletedCommentToSlack
+    sendMessageAboutDeletedCommentToSlack, sendMessageAboutEditedCommentToSlack
 } from "./specific-handlers";
 import { SlackGateway } from "./gateways/SlackGateway";
 import { BitbucketGateway } from "./gateways/BitbucketGateway";
@@ -25,6 +25,9 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
             break;
         case "pr:comment:added":
             await sendMessageAboutAddedCommentToSlack(payload, slackGateway, iconEmoji);
+            break;
+        case "pr:comment:edited":
+            await sendMessageAboutEditedCommentToSlack(payload, slackGateway, iconEmoji);
             break;
         case "pr:comment:deleted":
             await sendMessageAboutDeletedCommentToSlack(payload, slackGateway, iconEmoji);

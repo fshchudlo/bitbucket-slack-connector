@@ -26,6 +26,13 @@ describe("handleBitbucketWebhook", () => {
         expect(testSlackGateway.snapshot).toMatchSnapshot();
     });
 
+    it("Should send message on PR comment modification", async () => {
+        const payload = TestPayloadBuilder.pullRequestCommentEdited();
+        await handleBitbucketWebhook(payload, testSlackGateway, testBitbucketGateway);
+
+        expect(testSlackGateway.snapshot).toMatchSnapshot();
+    });
+
     it("Should send message on PR comment deletion", async () => {
         const payload = TestPayloadBuilder.pullRequestCommentDeleted();
         await handleBitbucketWebhook(payload, testSlackGateway, testBitbucketGateway);

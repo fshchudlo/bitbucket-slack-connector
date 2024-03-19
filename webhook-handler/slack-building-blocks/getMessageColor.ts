@@ -6,7 +6,8 @@ enum MessageColor {
     ACTION_REQUIRED = "#F6C342",
     SUCCESS = "#4CAF50"
 }
-export function getMessageColor(payload: BitbucketNotification){
+
+export function getMessageColor(payload: BitbucketNotification) {
     const eventKey = payload.eventKey;
     switch (eventKey) {
         case "pr:opened":
@@ -24,6 +25,7 @@ export function getMessageColor(payload: BitbucketNotification){
             return MessageColor.SUCCESS;
         case "pr:declined":
         case "pr:deleted":
+        case "pr:comment:edited":
             return MessageColor.INFO;
         default:
             throw new Error(`"${eventKey}" event key is unknown.`);
