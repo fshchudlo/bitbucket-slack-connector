@@ -1,4 +1,4 @@
-import getPullRequestDescriptionForSlack from "../getPullRequestDescriptionForSlack";
+import { getPullRequestDescriptionForSlack } from "../getPullRequestDescriptionForSlack";
 
 describe("getPullRequestDescriptionForSlack", () => {
     it("reformat markdown to slack markup if description is not empty", () => {

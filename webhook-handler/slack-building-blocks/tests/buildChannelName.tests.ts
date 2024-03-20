@@ -1,4 +1,4 @@
-import buildChannelName from "../buildChannelName";
+import { buildChannelName } from "../buildChannelName";
 import { PullRequestPayload } from "../../../typings";
 
 describe("buildChannelName", () => {

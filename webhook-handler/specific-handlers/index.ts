@@ -1,8 +1,8 @@
 export { createChannelAndInviteParticipants } from "./createChannelAndInviteParticipants";
 export { sendCompletionMessageAndCloseTheChannel } from "./sendCompletionMessageAndCloseTheChannel";
-export { sendMessageAboutNewCommitToSlack } from "./sendMessageAboutNewCommitToSlack";
-export { sendMessageAboutAddedCommentToSlack } from "./sendMessageAboutAddedCommentToSlack";
+export { sendMessageAboutNewCommit } from "./sendMessageAboutNewCommit";
+export { sendMessageAboutAddedComment } from "./sendMessageAboutAddedComment";
 export { updateChannelMembers } from "./updateChannelMembers";
-export { sendReviewerActionToSlack } from "./sendReviewerActionToSlack";
-export { sendMessageAboutDeletedCommentToSlack } from "./sendMessageAboutDeletedCommentToSlack";
-export { sendMessageAboutEditedCommentToSlack } from "./sendMessageAboutEditedCommentToSlack";
+export { sendMessageAboutReviewerAction } from "./sendMessageAboutReviewerAction";
+export { sendMessageAboutDeletedComment } from "./sendMessageAboutDeletedComment";
+export { sendMessageAboutEditedComment } from "./sendMessageAboutEditedComment";

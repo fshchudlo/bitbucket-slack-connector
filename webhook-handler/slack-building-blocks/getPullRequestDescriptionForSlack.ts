@@ -1,6 +1,6 @@
-import reformatMarkdownToSlackMarkup from "./reformatMarkdownToSlackMarkup";
+import { reformatMarkdownToSlackMarkup } from "./reformatMarkdownToSlackMarkup";
 
-export default function getPullRequestDescriptionForSlack(text: string, maxSlackMessageLength = 3000): string {
+export function getPullRequestDescriptionForSlack(text: string, maxSlackMessageLength = 3000): string {
     const reformattedText = reformatMarkdownToSlackMarkup(text);
     if (reformattedText.length < maxSlackMessageLength) {
         return reformattedText;

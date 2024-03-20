@@ -1,5 +1,5 @@
-import { SlackGateway } from "../gateways/SlackGateway";
-import buildChannelName from "../helper-functions/buildChannelName";
+import { SlackGateway } from "../ports/SlackGateway";
+import { buildChannelName } from "../slack-building-blocks";
 import { PullRequestReviewersUpdatedNotification } from "../../typings";
 
 export async function updateChannelMembers(payload: PullRequestReviewersUpdatedNotification, slackGateway: SlackGateway) {

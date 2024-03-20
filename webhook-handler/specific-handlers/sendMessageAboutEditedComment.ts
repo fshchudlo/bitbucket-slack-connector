@@ -1,12 +1,15 @@
 import { PullRequestCommentActionNotification } from "../../typings";
-import { SlackGateway } from "../gateways/SlackGateway";
-import buildChannelName from "../helper-functions/buildChannelName";
-import { formatUserName } from "../slack-building-blocks/formatUserName";
-import { slackLink, slackQuote } from "../slack-building-blocks";
-import reformatMarkdownToSlackMarkup from "../helper-functions/reformatMarkdownToSlackMarkup";
-import { getMessageColor } from "../slack-building-blocks/getMessageColor";
+import { SlackGateway } from "../ports/SlackGateway";
+import {
+    buildChannelName,
+    formatUserName,
+    getMessageColor,
+    reformatMarkdownToSlackMarkup,
+    slackLink,
+    slackQuote
+} from "../slack-building-blocks";
 
-export async function sendMessageAboutEditedCommentToSlack(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
+export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
     const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, "edited comment")}:`;
 

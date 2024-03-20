@@ -1,10 +1,12 @@
-import buildChannelName from "../helper-functions/buildChannelName";
-import { slackLink } from "../slack-building-blocks";
-import { SlackGateway } from "../gateways/SlackGateway";
-import getPullRequestDescriptionForSlack from "../helper-functions/getPullRequestDescriptionForSlack";
-import { formatUserName } from "../slack-building-blocks/formatUserName";
+import {
+    buildChannelName,
+    formatUserName,
+    getMessageColor,
+    getPullRequestDescriptionForSlack,
+    slackLink
+} from "../slack-building-blocks";
+import { SlackGateway } from "../ports/SlackGateway";
 import { PullRequestBasicNotification } from "../../typings";
-import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
 export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const allParticipants = [payload.pullRequest.author.user].concat(payload.pullRequest.reviewers.map(r => r.user));

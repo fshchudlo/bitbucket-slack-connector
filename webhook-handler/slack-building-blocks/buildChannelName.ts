@@ -1,6 +1,6 @@
 import { PullRequestPayload } from "../../typings";
 
-export default function buildChannelName(pullRequest: PullRequestPayload): string {
+export function buildChannelName(pullRequest: PullRequestPayload): string {
     const pullRequestId = pullRequest.id.toString();
     const projectKey = pullRequest.toRef.repository.project.key.replace("~", "").trim();
     const repositorySlug = pullRequest.toRef.repository.slug.replace(".", "");

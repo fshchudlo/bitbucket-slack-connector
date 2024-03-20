@@ -1,9 +1,6 @@
-import { SlackGateway } from "../gateways/SlackGateway";
-import buildChannelName from "../helper-functions/buildChannelName";
-import { slackLink } from "../slack-building-blocks";
-import { formatUserName } from "../slack-building-blocks/formatUserName";
+import { SlackGateway } from "../ports/SlackGateway";
+import { buildChannelName, formatUserName, getMessageColor, slackLink } from "../slack-building-blocks";
 import { PullRequestBasicNotification, PullRequestPayload } from "../../typings";
-import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
 function getReviewerActionText(payload: PullRequestBasicNotification) {
     const prLink = slackLink(payload.pullRequest.links.self[0].href, "pull request");
@@ -33,7 +30,7 @@ function getReviewStatus(pullRequest: PullRequestPayload) {
     return reviewStatus;
 }
 
-export async function sendReviewerActionToSlack(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string) {
+export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const pullRequest = payload.pullRequest;
     const messageTitle = getReviewerActionText(payload);
 

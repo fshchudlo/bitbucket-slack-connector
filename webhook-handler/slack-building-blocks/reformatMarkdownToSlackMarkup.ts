@@ -1,6 +1,6 @@
-import { slackBold, slackLink } from "../slack-building-blocks";
+import { slackBold, slackLink } from "./index";
 
-export default function reformatMarkdownToSlackMarkup(text: string): string {
+export function reformatMarkdownToSlackMarkup(text: string): string {
     const boldRegex = /\*\*(.*?)\*\*/g;
     const strikethroughRegex = /~~(.*?)~~/g;
     const linkRegex = /\[([^\]]+)]\(([^)]+)\)/g;

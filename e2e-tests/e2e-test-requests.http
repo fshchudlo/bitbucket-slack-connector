@@ -2,7 +2,7 @@
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
-< ./PR-comment-added-test-payload.json
+< ./test-payloads/PR-comment-added-test-payload.json
 
 > {%
     client.assert(response.body === "Internal Server Error")
@@ -13,7 +13,7 @@ Content-Type: application/json
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
-< ./PR-opened-test-payload.json
+< ./test-payloads/PR-opened-test-payload.json
 
 > {%
     client.assert(response.status === 200)
@@ -23,7 +23,7 @@ Content-Type: application/json
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
-< ./PR-comment-added-test-payload.json
+< ./test-payloads/PR-comment-added-test-payload.json
 
 > {%
     client.assert(response.status === 200)
@@ -33,7 +33,7 @@ Content-Type: application/json
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
-< ./PR-comment-edited-test-payload.json
+< ./test-payloads/PR-comment-edited-test-payload.json
 
 > {%
     client.assert(response.status === 200)
@@ -43,7 +43,7 @@ Content-Type: application/json
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
-< ./PR-comment-deleted-test-payload.json
+< ./test-payloads/PR-comment-deleted-test-payload.json
 
 > {%
     client.assert(response.status === 200)
@@ -53,7 +53,7 @@ Content-Type: application/json
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
-< ./PR-modified-test-payload.json
+< ./test-payloads/PR-modified-test-payload.json
 
 > {%
     client.assert(response.status === 200)
@@ -63,7 +63,7 @@ Content-Type: application/json
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
-< ./PR-needs-work-test-payload.json
+< ./test-payloads/PR-needs-work-test-payload.json
 
 > {%
     client.assert(response.status === 200)
@@ -73,7 +73,7 @@ Content-Type: application/json
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
-< ./PR-reviewer-updated-test-payload.json
+< ./test-payloads/PR-reviewer-updated-test-payload.json
 
 > {%
     client.assert(response.status === 200)
@@ -83,7 +83,7 @@ Content-Type: application/json
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
-< ./PR-from-ref-updated-test-payload.json
+< ./test-payloads/PR-from-ref-updated-test-payload.json
 
 > {%
     client.assert(response.status === 200)
@@ -93,7 +93,7 @@ Content-Type: application/json
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
-< ./PR-approved-test-payload.json
+< ./test-payloads/PR-approved-test-payload.json
 
 > {%
     client.assert(response.status === 200)
@@ -104,7 +104,7 @@ Content-Type: application/json
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
-< ./PR-merged-test-payload.json
+< ./test-payloads/PR-merged-test-payload.json
 
 > {%
     client.assert(response.status === 200)
@@ -127,7 +127,7 @@ Content-Type: application/json
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json
 
-< ./PR-comment-added-test-payload.json
+< ./test-payloads/PR-comment-added-test-payload.json
 
 > {%
     client.assert(response.body === "Internal Server Error")

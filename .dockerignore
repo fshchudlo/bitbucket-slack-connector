@@ -1,8 +1,6 @@
 # IDE's files
 .vscode
 .idea
-*.iml
-out
 gen
 
 # Logs
@@ -32,9 +30,6 @@ node_modules/
 # Optional npm cache directory
 .npm
 
-# Optional eslint cache
-.eslintcache
-
 # dotenv environment variable files
 .env
 .env.development.local
@@ -44,4 +39,4 @@ node_modules/
 
 # project-specific directories
 dist
-e2e-test-run
+e2e-tests

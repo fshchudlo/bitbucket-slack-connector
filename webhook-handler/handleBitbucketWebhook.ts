@@ -1,15 +1,15 @@
 import {
     sendCompletionMessageAndCloseTheChannel,
     createChannelAndInviteParticipants,
-    sendMessageAboutAddedCommentToSlack,
+    sendMessageAboutAddedComment,
     updateChannelMembers,
-    sendMessageAboutNewCommitToSlack,
-    sendReviewerActionToSlack,
-    sendMessageAboutDeletedCommentToSlack, sendMessageAboutEditedCommentToSlack
+    sendMessageAboutNewCommit,
+    sendMessageAboutReviewerAction,
+    sendMessageAboutDeletedComment, sendMessageAboutEditedComment
 } from "./specific-handlers";
-import { SlackGateway } from "./gateways/SlackGateway";
-import { BitbucketGateway } from "./gateways/BitbucketGateway";
-import { sendMessageAboutPRModificationToSlack } from "./specific-handlers/sendMessageAboutPRModificationToSlack";
+import { SlackGateway } from "./ports/SlackGateway";
+import { BitbucketGateway } from "./ports/BitbucketGateway";
+import { sendMessageAboutPRModification } from "./specific-handlers/sendMessageAboutPRModification";
 import { BitbucketNotification } from "../typings";
 
 export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway, iconEmoji = ":bitbucket:") {
@@ -21,25 +21,25 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
         case "pr:reviewer:unapproved":
         case "pr:reviewer:needs_work":
         case "pr:reviewer:approved":
-            await sendReviewerActionToSlack(payload, slackGateway, iconEmoji);
+            await sendMessageAboutReviewerAction(payload, slackGateway, iconEmoji);
             break;
         case "pr:comment:added":
-            await sendMessageAboutAddedCommentToSlack(payload, slackGateway, iconEmoji);
+            await sendMessageAboutAddedComment(payload, slackGateway, iconEmoji);
             break;
         case "pr:comment:edited":
-            await sendMessageAboutEditedCommentToSlack(payload, slackGateway, iconEmoji);
+            await sendMessageAboutEditedComment(payload, slackGateway, iconEmoji);
             break;
         case "pr:comment:deleted":
-            await sendMessageAboutDeletedCommentToSlack(payload, slackGateway, iconEmoji);
+            await sendMessageAboutDeletedComment(payload, slackGateway, iconEmoji);
             break;
         case "pr:from_ref_updated":
-            await sendMessageAboutNewCommitToSlack(payload, slackGateway, bitbucketGateway, iconEmoji);
+            await sendMessageAboutNewCommit(payload, slackGateway, bitbucketGateway, iconEmoji);
             break;
         case "pr:reviewer:updated":
             await updateChannelMembers(payload, slackGateway);
             break;
         case "pr:modified":
-            await sendMessageAboutPRModificationToSlack(payload, slackGateway, iconEmoji);
+            await sendMessageAboutPRModification(payload, slackGateway, iconEmoji);
             break;
         case "pr:merged":
         case "pr:declined":

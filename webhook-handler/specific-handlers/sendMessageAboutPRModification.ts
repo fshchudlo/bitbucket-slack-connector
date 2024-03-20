@@ -1,12 +1,15 @@
-import buildChannelName from "../helper-functions/buildChannelName";
-import { slackLink, slackQuote } from "../slack-building-blocks";
-import { SlackGateway } from "../gateways/SlackGateway";
-import getPullRequestDescriptionForSlack from "../helper-functions/getPullRequestDescriptionForSlack";
-import { formatUserName } from "../slack-building-blocks/formatUserName";
+import {
+    buildChannelName,
+    formatUserName,
+    getMessageColor,
+    getPullRequestDescriptionForSlack,
+    slackLink,
+    slackQuote
+} from "../slack-building-blocks";
+import { SlackGateway } from "../ports/SlackGateway";
 import { PullRequestModifiedNotification } from "../../typings";
-import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
-export async function sendMessageAboutPRModificationToSlack(payload: PullRequestModifiedNotification, slackGateway: SlackGateway, iconEmoji: string) {
+export async function sendMessageAboutPRModification(payload: PullRequestModifiedNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const changesDescription = getChangesDescription(payload);
     const pleaseReviewText = `Please ${slackLink(payload.pullRequest.links.self[0].href, "review the PR")}`;
 

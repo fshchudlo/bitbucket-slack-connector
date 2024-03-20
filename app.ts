@@ -1,10 +1,10 @@
 import "dotenv/config";
 import { App, ExpressReceiver } from "@slack/bolt";
 import AppConfig from "./app.config";
-import { SlackWebClientGateway } from "./webhook-handler/gateways/SlackWebClientGateway";
+import { SlackWebClientGateway } from "./webhook-handler/ports/SlackWebClientGateway";
 import express from "express";
 import handleBitbucketWebhook from "./webhook-handler/handleBitbucketWebhook";
-import BitbucketWebAPIGateway from "./webhook-handler/gateways/BitbucketWebAPIGateway";
+import BitbucketWebAPIGateway from "./webhook-handler/ports/BitbucketWebAPIGateway";
 import * as util from "util";
 import appConfig from "./app.config";
 

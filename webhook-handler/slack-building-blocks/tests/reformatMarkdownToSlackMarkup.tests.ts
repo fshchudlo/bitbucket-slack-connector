@@ -1,4 +1,4 @@
-import reformatMarkdownToSlackMarkup from "../reformatMarkdownToSlackMarkup";
+import { reformatMarkdownToSlackMarkup } from "../reformatMarkdownToSlackMarkup";
 
 describe("reformatMarkdownToSlackMarkup", () => {
     it("should convert Markdown bolds to Slack bolds", () => {

@@ -1,7 +1,7 @@
-import TestSlackGateway from "../gateways/TestSlackGateway";
+import TestSlackGateway from "./TestSlackGateway";
 import TestPayloadBuilder from "./TestPayloadBuilder";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
-import { TestBitbucketGateway } from "../gateways/TestBitbucketGateway";
+import { TestBitbucketGateway } from "./TestBitbucketGateway";
 import { PullRequestBasicNotification } from "../../typings";
 
 let testSlackGateway: TestSlackGateway = null;

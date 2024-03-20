@@ -1,13 +1,16 @@
-import buildChannelName from "../helper-functions/buildChannelName";
-import { slackLink, slackQuote } from "../slack-building-blocks";
-import { SlackGateway } from "../gateways/SlackGateway";
-import { BitbucketGateway } from "../gateways/BitbucketGateway";
-import reformatMarkdownToSlackMarkup from "../helper-functions/reformatMarkdownToSlackMarkup";
-import { formatUserName } from "../slack-building-blocks/formatUserName";
+import {
+    buildChannelName,
+    formatUserName,
+    getMessageColor,
+    reformatMarkdownToSlackMarkup,
+    slackLink,
+    slackQuote
+} from "../slack-building-blocks";
+import { SlackGateway } from "../ports/SlackGateway";
+import { BitbucketGateway } from "../ports/BitbucketGateway";
 import { PullRequestBasicNotification } from "../../typings";
-import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
-export async function sendMessageAboutNewCommitToSlack(payload: PullRequestBasicNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway, iconEmoji: string) {
+export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway, iconEmoji: string) {
     const pullRequest = payload.pullRequest;
     const viewCommitUrl = `${payload.pullRequest.links.self[0].href.replace("/overview", "")}/commits/${pullRequest.fromRef.latestCommit}`;
     const messageTitle = `A ${slackLink(viewCommitUrl, "new commit")} was added to the pull request by ${formatUserName(payload.actor)}.`;

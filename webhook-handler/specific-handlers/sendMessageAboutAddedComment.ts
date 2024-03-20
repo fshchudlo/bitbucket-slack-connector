@@ -1,12 +1,9 @@
-import buildChannelName from "../helper-functions/buildChannelName";
+import { buildChannelName, formatUserName, getMessageColor, reformatMarkdownToSlackMarkup } from "../slack-building-blocks";
 import { slackLink, slackQuote } from "../slack-building-blocks";
-import { SlackGateway } from "../gateways/SlackGateway";
-import reformatMarkdownToSlackMarkup from "../helper-functions/reformatMarkdownToSlackMarkup";
-import { formatUserName } from "../slack-building-blocks/formatUserName";
+import { SlackGateway } from "../ports/SlackGateway";
 import { PullRequestCommentActionNotification } from "../../typings";
-import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
-export async function sendMessageAboutAddedCommentToSlack(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
+export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
     const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, "commented")}:`;
 

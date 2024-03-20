@@ -1,6 +1,6 @@
 import * as slack from "@slack/web-api";
 
-import { SlackGateway } from "./SlackGateway";
+import { SlackGateway } from "../ports/SlackGateway";
 import { UserPayload } from "../../typings";
 
 const channelId = "12345";

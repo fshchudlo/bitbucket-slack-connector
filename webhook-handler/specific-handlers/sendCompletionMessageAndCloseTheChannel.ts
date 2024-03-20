@@ -1,8 +1,6 @@
-import buildChannelName from "../helper-functions/buildChannelName";
-import { SlackGateway } from "../gateways/SlackGateway";
-import { formatUserName } from "../slack-building-blocks/formatUserName";
+import { buildChannelName, formatUserName, getMessageColor } from "../slack-building-blocks";
+import { SlackGateway } from "../ports/SlackGateway";
 import { PullRequestBasicNotification } from "../../typings";
-import { getMessageColor } from "../slack-building-blocks/getMessageColor";
 
 export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string) {
     let message = null;
