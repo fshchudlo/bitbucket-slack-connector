@@ -5,19 +5,28 @@ Slack-channel.
 Built on top of [Slack bolt API](https://slack.dev/bolt-js/tutorial/getting-started)
 
 ### Configuring dev environment
+
 - Install [Node.js and npm](https://nodejs.org) on your machine
 - Run `npm i` from the repo root directory
 
 ### Running unit tests
+
 - Easy as ```npm run test```. Unit tests are not tied to Slack or Bitbucket, thus, you can run without real setup.
 - Tests use snapshots. You can update them by running ```npm run test:update-snapshots```
 
 ### Running locally
-- Configure Slack application to get required tokens. You can use "Create an app" and "Tokens and installing apps" sections [from this Slack guide](https://slack.dev/bolt-js/tutorial/getting-started#create-an-app)
+
+- Configure Slack application to get required tokens. You can use "Create an app" and "Tokens and installing apps"
+  sections [from this Slack guide](https://slack.dev/bolt-js/tutorial/getting-started#create-an-app). You can
+  use `./slack_app_manifest.yml` file as a basis to create your own app and assign all the required oauth scopes.
 - Create the copy of `.env.example` file, name it `.env` and provide relevant config values
 - Run ```npm run start```
 
 ### Running e2e-tests
-- e2e tests will require real Slack and Bitbucket connections. Please refer to [Running locally](#running-locally) section above.
-- [HTTP Client CLI](https://www.jetbrains.com/help/idea/http-client-cli.html) is used to run e2e tests. Thus, it should be installed.
-- After installing, you can run ```ijhttp e2e-test-run/myrequest.http``` from the project root directory, and it will run all the e2e-tests with the configured Slack and Bitbucket credentials.  
+
+- e2e tests will require real Slack and Bitbucket connections. Please refer to [Running locally](#running-locally)
+  section above.
+- [HTTP Client CLI](https://www.jetbrains.com/help/idea/http-client-cli.html) is used to run e2e tests. Thus, it should
+  be installed.
+- After installing, you can run ```ijhttp e2e-test-run/myrequest.http``` from the project root directory, and it will
+  run all the e2e-tests with the configured Slack and Bitbucket credentials.  
