@@ -69,3 +69,9 @@ export type PullRequestPayload = {
     fromRef: RefPayload;
     toRef: RefPayload;
 }
+
+export type SlackChannelInfo = {
+    id?: string;
+    isArchived?: boolean;
+    name?: string;
+}

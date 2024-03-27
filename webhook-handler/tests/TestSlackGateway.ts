@@ -1,7 +1,7 @@
 import * as slack from "@slack/web-api";
 
 import { SlackGateway } from "../ports/SlackGateway";
-import { UserPayload } from "../../typings";
+import { SlackChannelInfo, UserPayload } from "../../typings";
 
 const channelId = "12345";
 export default class TestSlackGateway implements SlackGateway {
@@ -32,9 +32,8 @@ export default class TestSlackGateway implements SlackGateway {
         return Promise.resolve(userPayloads.map(u => u.emailAddress));
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getChannelId(_channelName: string): Promise<string> {
-        return Promise.resolve(channelId);
+    getChannelInfo(channelName: string): Promise<SlackChannelInfo | undefined> {
+        return Promise.resolve({ isArchived: false, name: channelName, id: channelId });
     }
 
     createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse> {
@@ -57,8 +56,8 @@ export default class TestSlackGateway implements SlackGateway {
         return Promise.resolve({ ok: true });
     }
 
-    archiveChannel(options: slack.ConversationsArchiveArguments): Promise<slack.ConversationsArchiveResponse> {
-        this.snapshot.archivedChannels.push(options);
+    archiveChannel(channelId: string): Promise<slack.ConversationsArchiveResponse> {
+        this.snapshot.archivedChannels.push({ channel: channelId });
         return Promise.resolve({ ok: true });
     }
 

@@ -1,9 +1,9 @@
 import * as slack from "@slack/web-api";
-import { SlackGateway } from "./SlackGateway";
-import { UserPayload } from "../../typings";
+import { SlackGateway } from "../webhook-handler/ports/SlackGateway";
+import { SlackChannelInfo, UserPayload } from "../typings";
 
 export class SlackWebClientGateway implements SlackGateway {
-    client: slack.WebClient;
+    private client: slack.WebClient;
 
     constructor(client: slack.WebClient) {
         this.client = client;
@@ -20,23 +20,10 @@ export class SlackWebClientGateway implements SlackGateway {
         return [...new Set((await Promise.all(slackUserRequests)).map(r => r.user.id))];
     }
 
-    async getChannelId(channelName: string): Promise<string> {
-        const someFutureDate = new Date();
-        someFutureDate.setDate(someFutureDate.getDate() + 1);
-
-        // We use scheduleMessage instead of conversations.list to avoid requirement of additional (and quite privileged) scopes for the bot
-        const result = await this.client.chat.scheduleMessage({
-            channel: channelName,
-            post_at: Number.parseInt("" + (someFutureDate.getTime() / 1000)),
-            text: "Scheduled message to detect channel id. If you see that, something went wrong with a slack bot"
-        });
-
-        await this.client.chat.deleteScheduledMessage({
-            channel: channelName,
-            scheduled_message_id: result.scheduled_message_id
-        });
-
-        return result.channel;
+    async getChannelInfo(channelName: string): Promise<SlackChannelInfo | undefined> {
+        const response = await this.client.conversations.list();
+        const channel = response.channels.find(channel => channel.name === channelName);
+        return channel ? { name: channel.name, id: channel.id, isArchived: channel.is_archived } : undefined;
     }
 
     createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse> {
@@ -55,8 +42,8 @@ export class SlackWebClientGateway implements SlackGateway {
         return this.client.conversations.kick(options);
     }
 
-    archiveChannel(options: slack.ConversationsArchiveArguments): Promise<slack.ConversationsArchiveResponse> {
-        return this.client.conversations.archive(options);
+    archiveChannel(channelId: string): Promise<slack.ConversationsArchiveResponse> {
+        return this.client.conversations.archive({ channel: channelId });
     }
 
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {

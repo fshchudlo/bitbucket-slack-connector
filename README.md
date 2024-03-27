@@ -29,4 +29,14 @@ Built on top of [Slack bolt API](https://slack.dev/bolt-js/tutorial/getting-star
 - [HTTP Client CLI](https://www.jetbrains.com/help/idea/http-client-cli.html) is used to run e2e tests. Thus, it should
   be installed.
 - After installing, you can run ```ijhttp e2e-test-run/myrequest.http``` from the project root directory, and it will
-  run all the e2e-tests with the configured Slack and Bitbucket credentials.  
+  run all the e2e-tests with the configured Slack and Bitbucket credentials.
+
+### Running the service
+
+- You can use provided `Dockerfile` to build an image and run it with provided ENV variables identical to variables
+  specified in `.env.example` described above
+- Please, be aware that _service is stateful_ since it caches channels info. State stored in memory (
+  see `SlackGatewayCachedDecorator`). In memory caching used to keep implementation simple and efficiently serve
+  hundreds of pull requests. In case of service restart, cache will be gracefully restored. However,
+  if you need to run multiple instances or experience `Slack API` request limits exceeding, you will need to provide
+  some external cache.    

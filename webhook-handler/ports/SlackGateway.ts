@@ -1,9 +1,11 @@
 import * as slack from "@slack/web-api";
-import { UserPayload } from "../../typings";
+import { SlackChannelInfo, UserPayload } from "../../typings";
 
 export interface SlackGateway {
-    getChannelId(channelName: string): Promise<string>;
+    getChannelInfo(channelName: string): Promise<SlackChannelInfo | undefined>;
+
     getSlackUserIds(userPayloads: Array<UserPayload>): Promise<string[]>;
+
     createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse>;
 
     setChannelTopic(options: slack.ConversationsSetTopicArguments): Promise<slack.ConversationsSetTopicResponse>;
@@ -12,7 +14,10 @@ export interface SlackGateway {
 
     kickFromChannel(options: slack.ConversationsKickArguments): Promise<slack.ConversationsKickResponse>;
 
-    archiveChannel(options: slack.ConversationsArchiveArguments): Promise<slack.ConversationsArchiveResponse>;
+    /*
+    Channel archiving is quite unique in Slack since it requires channel id, not the name. To make it explicit, we change contract here
+     */
+    archiveChannel(channelId: string): Promise<slack.ConversationsArchiveResponse>;
 
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse>;
 }
