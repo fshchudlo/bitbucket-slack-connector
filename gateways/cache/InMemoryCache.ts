@@ -3,18 +3,26 @@ export class InMemoryCache {
     public cacheMisses = 0;
     public readonly maxCacheSize?: number;
     private cache: Map<string, any>;
+    private pushedOutItemsCounter: number = 0;
 
     constructor(maxSize?: number) {
         this.cache = new Map<string, any>();
         this.maxCacheSize = maxSize;
     }
+
     get cacheSize(): number {
         return this.cache.size;
     }
+
+    get pushedOutItemsCount(): number {
+        return this.pushedOutItemsCounter;
+    }
+
     set(key: string, value: any): void {
         if (!!this.maxCacheSize && this.cache.size >= this.maxCacheSize) {
             const oldestKey = this.cache.keys().next().value;
             this.cache.delete(oldestKey);
+            this.pushedOutItemsCounter++;
         }
         this.cache.set(key, value);
     }
