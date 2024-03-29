@@ -16,7 +16,8 @@ export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotific
     const messageTitle = `A ${slackLink(viewCommitUrl, "new commit")} was added to the pull request by ${formatUserName(payload.actor)}.`;
     const pleaseReviewText = `Please ${slackLink(payload.pullRequest.links.self[0].href, "review the PR")}.`;
 
-    const commentText = await bitbucketGateway.tryGetCommitMessage(pullRequest.fromRef.repository.project.key, pullRequest.fromRef.repository.slug, pullRequest.fromRef.latestCommit);
+    const comment = await bitbucketGateway.tryGetCommitMessage(pullRequest.fromRef.repository.project.key, pullRequest.fromRef.repository.slug, pullRequest.fromRef.latestCommit);
+    const commentText = slackQuote(reformatMarkdownToSlackMarkup(comment));
 
     await slackGateway.sendMessage({
         channel: buildChannelName(pullRequest),
@@ -24,7 +25,7 @@ export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotific
         attachments: [
             {
                 title: messageTitle,
-                text: [slackQuote(reformatMarkdownToSlackMarkup(commentText)), pleaseReviewText].join("\n\n"),
+                text: [commentText, pleaseReviewText].join("\n\n"),
                 color: getMessageColor(payload)
             }]
     });

@@ -31,20 +31,6 @@ export class InMemoryCache {
         return this.cache.get(key);
     }
 
-    fetch<T>(key: string, fetchDelegate: () => Promise<T>): Promise<T> {
-        const cachedValue = this.get<T>(key);
-        if (cachedValue) {
-            this.cacheHits++;
-            return Promise.resolve(cachedValue);
-        }
-        const promise = fetchDelegate();
-        promise.then(value => {
-            this.set(key, value);
-            this.cacheMisses++;
-        });
-        return promise;
-    }
-
     delete(key: string): void {
         this.cache.delete(key);
     }

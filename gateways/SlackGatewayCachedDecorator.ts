@@ -25,8 +25,17 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
         return promise;
     }
 
-    getChannelInfo(channelName: string): Promise<SlackChannelInfo | undefined> {
-        return this.channelsCache.fetch(channelName, () => this.gateway.getChannelInfo(channelName));
+    async getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
+        const cachedChannelInfo = this.channelsCache.get<SlackChannelInfo>(channelName);
+        if (cachedChannelInfo) {
+            return Promise.resolve(cachedChannelInfo);
+        }
+        const channelInfo = await this.gateway.getChannelInfo(channelName, excludeArchived);
+
+        if (channelInfo) {
+            this.channelsCache.set(channelName, channelInfo);
+        }
+        return channelInfo;
     }
 
     archiveChannel(channelId: string): Promise<slack.ConversationsArchiveResponse> {

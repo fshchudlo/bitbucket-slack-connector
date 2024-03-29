@@ -32,7 +32,8 @@ export default class TestSlackGateway implements SlackGateway {
         return Promise.resolve(userPayloads.map(u => u.emailAddress));
     }
 
-    getChannelInfo(channelName: string): Promise<SlackChannelInfo | undefined> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getChannelInfo(channelName: string, _excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
         return Promise.resolve({ isArchived: false, name: channelName, id: channelId });
     }
 

@@ -17,6 +17,15 @@ describe("buildChannelName", () => {
         expect(buildChannelName(payload)).toEqual("pr-project-repository-123");
     });
 
+    it("should handle flatten params structure", () => {
+        const payload = {
+            pullRequestId: 123,
+            repositorySlug: "REPOSITORY",
+            projectKey: "PROJECT"
+        };
+        expect(buildChannelName(payload)).toEqual("pr-project-repository-123");
+    });
+
     it("should remove extra dashes", () => {
         const payload = <PullRequestPayload>{
             id: 123,

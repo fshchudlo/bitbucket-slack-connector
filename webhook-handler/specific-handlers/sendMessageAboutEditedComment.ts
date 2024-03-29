@@ -12,6 +12,7 @@ import {
 export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
     const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, "edited comment")}:`;
+    const commentText = slackQuote(reformatMarkdownToSlackMarkup(payload.comment.text));
 
     await slackGateway.sendMessage({
         channel: buildChannelName(payload.pullRequest),
@@ -19,7 +20,7 @@ export async function sendMessageAboutEditedComment(payload: PullRequestCommentA
         attachments: [
             {
                 title: messageTitle,
-                text: slackQuote(reformatMarkdownToSlackMarkup(payload.comment.text)),
+                text: commentText,
                 color: getMessageColor(payload)
             }]
     });

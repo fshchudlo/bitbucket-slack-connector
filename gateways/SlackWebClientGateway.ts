@@ -1,6 +1,7 @@
 import * as slack from "@slack/web-api";
 import { SlackGateway } from "../webhook-handler/ports/SlackGateway";
 import { SlackChannelInfo, UserPayload } from "../typings";
+import appConfig from "../app.config";
 
 export class SlackWebClientGateway implements SlackGateway {
     private client: slack.WebClient;
@@ -20,10 +21,26 @@ export class SlackWebClientGateway implements SlackGateway {
         return [...new Set((await Promise.all(slackUserRequests)).map(r => r.user.id))];
     }
 
-    async getChannelInfo(channelName: string): Promise<SlackChannelInfo | undefined> {
-        const response = await this.client.conversations.list();
-        const channel = response.channels.find(channel => channel.name === channelName);
-        return channel ? { name: channel.name, id: channel.id, isArchived: channel.is_archived } : undefined;
+    async getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
+        let cursor: string | undefined = undefined;
+        while (true) {
+            const response = await this.client.conversations.list({
+                exclude_archived: !!excludeArchived,
+                types: appConfig.USE_PRIVATE_CHANNELS ? "private_channel" : undefined,
+                cursor
+            });
+
+            const channel = response.channels.find(channel => channel.name === channelName);
+            if (channel) {
+                return { name: channel.name, id: channel.id, isArchived: channel.is_archived };
+            }
+
+            if (response.response_metadata && response.response_metadata.next_cursor) {
+                cursor = response.response_metadata.next_cursor;
+            } else {
+                return null;
+            }
+        }
     }
 
     createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse> {

@@ -45,30 +45,4 @@ describe("InMemoryCache", () => {
         expect(cache.get("key1")).toBe("value1");
         expect(cache.get("key2")).toBeUndefined();
     });
-
-    it("fetch should return cached value if it exists", async () => {
-        const cache = new InMemoryCache();
-        cache.set("key", "cachedValue");
-        const fetchDelegate = jest.fn();
-
-        const result = await cache.fetch("key", fetchDelegate);
-
-        expect(result).toBe("cachedValue");
-        expect(fetchDelegate).not.toHaveBeenCalled();
-        expect(cache.cacheHits).toBe(1);
-        expect(cache.cacheMisses).toBe(0);
-    });
-
-    it("fetch should fetch value and store it in cache if not found", async () => {
-        const cache = new InMemoryCache();
-        const fetchDelegate = jest.fn(() => Promise.resolve("fetchedValue"));
-
-        const result = await cache.fetch("key", fetchDelegate);
-
-        expect(result).toBe("fetchedValue");
-        expect(fetchDelegate).toHaveBeenCalled();
-        expect(cache.get("key")).toBe("fetchedValue");
-        expect(cache.cacheHits).toBe(0);
-        expect(cache.cacheMisses).toBe(1);
-    });
 });

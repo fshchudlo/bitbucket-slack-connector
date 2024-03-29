@@ -5,8 +5,10 @@ Content-Type: application/json
 < ./test-payloads/PR-comment-added-test-payload.json
 
 > {%
-    client.assert(response.body === "Internal Server Error")
-    client.assert(response.status === 500)
+    client.test("Add comment to the pull request without channel leads to error", function() {
+        client.assert(response.body === "Internal Server Error");
+        client.assert(response.status === 500);
+    });
 %}
 
 ### Open pull request
@@ -16,7 +18,9 @@ Content-Type: application/json
 < ./test-payloads/PR-opened-test-payload.json
 
 > {%
-    client.assert(response.status === 200)
+    client.test("Pull request opening should be successful", function() {
+        client.assert(response.status === 200);
+    });
 %}
 
 ### Add comment
@@ -26,7 +30,9 @@ Content-Type: application/json
 < ./test-payloads/PR-comment-added-test-payload.json
 
 > {%
-    client.assert(response.status === 200)
+    client.test("Adding comment to open Pull request should be successful", function() {
+        client.assert(response.status === 200);
+    });
 %}
 
 ### Edit comment
@@ -36,7 +42,9 @@ Content-Type: application/json
 < ./test-payloads/PR-comment-edited-test-payload.json
 
 > {%
-    client.assert(response.status === 200)
+    client.test("Editing comment to open Pull request should be successful", function() {
+        client.assert(response.status === 200);
+    });
 %}
 
 ### Delete comment
@@ -46,7 +54,9 @@ Content-Type: application/json
 < ./test-payloads/PR-comment-deleted-test-payload.json
 
 > {%
-    client.assert(response.status === 200)
+    client.test("Deletion of comment to open Pull request should be successful", function() {
+        client.assert(response.status === 200);
+    });
 %}
 
 ### Modify PR
@@ -56,7 +66,10 @@ Content-Type: application/json
 < ./test-payloads/PR-modified-test-payload.json
 
 > {%
-    client.assert(response.status === 200)
+    client.test("Pull Request change of open Pull request should be successful", function() {
+        client.assert(response.status === 200);
+    });
+
 %}
 
 ### Reviewer requested changes
@@ -66,7 +79,9 @@ Content-Type: application/json
 < ./test-payloads/PR-needs-work-test-payload.json
 
 > {%
-    client.assert(response.status === 200)
+    client.test("Change request to open Pull request should be successful", function() {
+        client.assert(response.status === 200);
+    });
 %}
 
 ### Reviewers list updated
@@ -76,7 +91,9 @@ Content-Type: application/json
 < ./test-payloads/PR-reviewer-updated-test-payload.json
 
 > {%
-    client.assert(response.status === 200)
+    client.test("Update of reviewers in open Pull request should be successful", function() {
+        client.assert(response.status === 200);
+    });
 %}
 
 ### Add commit
@@ -86,7 +103,9 @@ Content-Type: application/json
 < ./test-payloads/PR-from-ref-updated-test-payload.json
 
 > {%
-    client.assert(response.status === 200)
+    client.test("Adding commit to open Pull request should be successful", function() {
+        client.assert(response.status === 200);
+    });
 %}
 
 ### Reviewer approved pull request
@@ -96,7 +115,9 @@ Content-Type: application/json
 < ./test-payloads/PR-approved-test-payload.json
 
 > {%
-    client.assert(response.status === 200)
+    client.test("Approve of open Pull request should be successful", function() {
+        client.assert(response.status === 200);
+    });
 %}
 
 
@@ -107,7 +128,9 @@ Content-Type: application/json
 < ./test-payloads/PR-merged-test-payload.json
 
 > {%
-    client.assert(response.status === 200)
+    client.test("Merge of open Pull request should be successful", function() {
+        client.assert(response.status === 200);
+    });
 %}
 
 ### Invalid payload
@@ -119,8 +142,10 @@ Content-Type: application/json
 }
 
 > {%
-    client.assert(response.body === "Internal Server Error")
-    client.assert(response.status === 500)
+    client.test("Invalid payload sending should lead to error", function() {
+        client.assert(response.body === "Internal Server Error")
+        client.assert(response.status === 500)
+    });
 %}
 
 ### Add comment to the already closed pull request
@@ -130,6 +155,20 @@ Content-Type: application/json
 < ./test-payloads/PR-comment-added-test-payload.json
 
 > {%
-    client.assert(response.body === "Internal Server Error")
-    client.assert(response.status === 500)
+    client.test("Addition of the comment to closed PR leads to error since channel is archived", function() {
+        client.assert(response.body === "Internal Server Error")
+        client.assert(response.status === 500)
+    });
+%}
+
+### Fetch channel info with API call
+GET {{EndpointHost}}/slack-channel?pullRequestId={{PullRequestId}}&repositorySlug={{RepositoryName}}&
+    projectKey={{ProjectName}}
+Content-Type: application/json
+
+> {%
+    client.test("Fetching of channel info should be successful even for archived channel", function() {
+        client.assert(response.status === 200)
+        client.assert(response.body.isArchived === true)
+    });
 %}

@@ -10,6 +10,7 @@ import { SlackGateway } from "../ports/SlackGateway";
 import { PullRequestModifiedNotification } from "../../typings";
 
 export async function sendMessageAboutPRModification(payload: PullRequestModifiedNotification, slackGateway: SlackGateway, iconEmoji: string) {
+    const messageTitle = `${formatUserName(payload.actor)} changed the pull request`;
     const changesDescription = getChangesDescription(payload);
     const pleaseReviewText = `Please ${slackLink(payload.pullRequest.links.self[0].href, "review the PR")}`;
 
@@ -18,7 +19,7 @@ export async function sendMessageAboutPRModification(payload: PullRequestModifie
         icon_emoji: iconEmoji,
         attachments: [
             {
-                title: `${formatUserName(payload.actor)} changed the pull request`,
+                title: messageTitle,
                 text: [...changesDescription, pleaseReviewText].join("\n\n"),
                 color: getMessageColor(payload)
             }]

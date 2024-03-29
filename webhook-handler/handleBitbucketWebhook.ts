@@ -12,11 +12,11 @@ import { BitbucketGateway } from "./ports/BitbucketGateway";
 import { sendMessageAboutPRModification } from "./specific-handlers/sendMessageAboutPRModification";
 import { BitbucketNotification } from "../typings";
 
-export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway, iconEmoji = ":bitbucket:") {
+export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway, usePrivateChannels: boolean = true, iconEmoji = ":bitbucket:") {
     const eventKey = payload.eventKey;
     switch (eventKey) {
         case "pr:opened":
-            await createChannelAndInviteParticipants(payload, slackGateway, iconEmoji);
+            await createChannelAndInviteParticipants(payload, slackGateway, iconEmoji, usePrivateChannels);
             break;
         case "pr:reviewer:unapproved":
         case "pr:reviewer:needs_work":

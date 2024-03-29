@@ -1,14 +1,25 @@
 import { PullRequestPayload } from "../../typings";
 
-export function buildChannelName(pullRequest: PullRequestPayload): string {
-    const pullRequestId = pullRequest.id.toString();
-    const projectKey = pullRequest.toRef.repository.project.key.replace("~", "").trim();
-    const repositorySlug = pullRequest.toRef.repository.slug.replace(".", "");
+interface FlattenParameters {
+    pullRequestId: string | number;
+    repositorySlug: string;
+    projectKey: string;
+}
 
+export function buildChannelName(params: FlattenParameters | PullRequestPayload): string {
     const maxChannelNameLengthInSlack = 80;
-    const lengthLeftForTheKey = maxChannelNameLengthInSlack - pullRequestId.length - 4; //4 is the length of 'pr--' symbols in resulting channel name;
+    const prDashDashPartOfTheNameLength = 4;
+
+    const pullRequestId = ("pullRequestId" in params ? params.pullRequestId : params.id)
+        .toString();
+    const projectKey = ("projectKey" in params ? params.projectKey : params.toRef.repository.project.key)
+        .replace("~", "").trim();
+    const repositorySlug = ("repositorySlug" in params ? params.repositorySlug : params.toRef.repository.slug)
+        .replace(".", "");
+
+    const lengthLeftForTheKey = maxChannelNameLengthInSlack - pullRequestId.length - prDashDashPartOfTheNameLength;
 
     const key = `${projectKey}-${repositorySlug}`.slice(0, lengthLeftForTheKey).toLowerCase();
-    return `pr-${key}-${pullRequestId}`.replace(/-+/g, '-');
+    return `pr-${key}-${pullRequestId}`.replace(/-+/g, "-");
 }
 

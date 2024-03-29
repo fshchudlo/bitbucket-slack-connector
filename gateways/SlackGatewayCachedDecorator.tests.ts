@@ -16,7 +16,6 @@ describe("SlackGatewayCachedDecorator", () => {
 
     beforeEach(() => {
         cachedGatewayDecorator = new SlackGatewayCachedDecorator(mockGateway as any);
-        jest.spyOn(cachedGatewayDecorator.channelsCache, "fetch");
         jest.spyOn(cachedGatewayDecorator.channelsCache, "set");
         jest.spyOn(cachedGatewayDecorator.channelsCache, "deleteWhere");
     });
@@ -75,7 +74,7 @@ describe("SlackGatewayCachedDecorator", () => {
 
         const result = await cachedGatewayDecorator.getChannelInfo("channelName");
 
-        expect(mockGateway.getChannelInfo).toHaveBeenCalledWith("channelName");
+        expect(mockGateway.getChannelInfo).toHaveBeenCalledWith("channelName", undefined);
         expect(result).toEqual(channelInfo);
         expect(cachedGatewayDecorator.channelsCache.set).toHaveBeenCalledWith("channelName", channelInfo);
     });

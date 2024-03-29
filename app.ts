@@ -9,6 +9,7 @@ import * as util from "util";
 import appConfig from "./app.config";
 import { SlackGatewayCachedDecorator } from "./gateways/SlackGatewayCachedDecorator";
 import client, { register, collectDefaultMetrics } from "prom-client";
+import { buildChannelName } from "./webhook-handler/slack-building-blocks";
 
 collectDefaultMetrics();
 
@@ -64,7 +65,7 @@ new client.Gauge({
 
 expressReceiver.router.post("/bitbucket-webhook", async (req, res) => {
     try {
-        await handleBitbucketWebhook(req.body, slackGateway, bitbucketGateway);
+        await handleBitbucketWebhook(req.body, slackGateway, bitbucketGateway, appConfig.USE_PRIVATE_CHANNELS);
         res.sendStatus(200);
     } catch (error) {
         const errorMessage = `Error processing webhook. \n\nError: ${util.inspect(error)}. \n\nPayload: ${util.inspect(req.body)}`;
@@ -86,6 +87,16 @@ expressReceiver.router.post("/bitbucket-webhook", async (req, res) => {
 expressReceiver.router.get("/metrics", async (req, res) => {
     res.set("Content-Type", register.contentType);
     res.end(await register.metrics());
+});
+
+expressReceiver.router.get("/slack-channel", async (req, res) => {
+    const channelName = buildChannelName({
+        pullRequestId: req.query.pullRequestId as string,
+        repositorySlug: req.query.repositorySlug as string,
+        projectKey: req.query.projectKey as string
+    });
+    const channelInfo = await slackGateway.getChannelInfo(channelName, false);
+    res.send(channelInfo);
 });
 
 

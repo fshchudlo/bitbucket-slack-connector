@@ -8,14 +8,14 @@ import {
 import { SlackGateway } from "../ports/SlackGateway";
 import { PullRequestBasicNotification } from "../../typings";
 
-export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string) {
+export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string, createPrivateChannel: boolean) {
     const allParticipants = [payload.pullRequest.author.user].concat(payload.pullRequest.reviewers.map(r => r.user));
     const slackUserIds = await slackGateway.getSlackUserIds(allParticipants);
 
     const channelId = (
         await slackGateway.createChannel({
             name: buildChannelName(payload.pullRequest),
-            is_private: true
+            is_private: createPrivateChannel
         })
     ).channel.id;
 
