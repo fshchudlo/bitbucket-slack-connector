@@ -1,10 +1,9 @@
 import {
     buildChannelName,
     formatUserName,
-    getMessageColor,
     reformatMarkdownToSlackMarkup,
     slackLink,
-    slackQuote
+    slackQuote, slackSection
 } from "../slack-building-blocks";
 import { SlackGateway } from "../SlackGateway";
 import { BitbucketGateway } from "../BitbucketGateway";
@@ -22,11 +21,7 @@ export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotific
     await slackGateway.sendMessage({
         channel: buildChannelName(pullRequest),
         icon_emoji: iconEmoji,
-        attachments: [
-            {
-                title: messageTitle,
-                text: [commentText, pleaseReviewText].join("\n\n"),
-                color: getMessageColor(payload)
-            }]
+        text: messageTitle,
+        blocks: [slackSection(messageTitle), slackSection(commentText), slackSection(pleaseReviewText)]
     });
 }

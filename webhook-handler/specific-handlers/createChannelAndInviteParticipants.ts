@@ -1,7 +1,6 @@
 import {
     buildChannelName,
     formatUserName,
-    getMessageColor,
     getPullRequestDescriptionForSlack,
     slackLink
 } from "../slack-building-blocks";
@@ -37,14 +36,13 @@ export async function createChannelAndInviteParticipants(payload: PullRequestBas
     await slackGateway.sendMessage({
         channel: channelId,
         icon_emoji: iconEmoji,
+        text: messageTitle,
         attachments: [
             {
-                title: messageTitle,
                 text: descriptionText,
-                color: getMessageColor(payload)
+                color: "#0288D1"
             }, {
-                text: pleaseReviewText,
-                color: getMessageColor(payload)
+                text: pleaseReviewText
             }
         ]
     });

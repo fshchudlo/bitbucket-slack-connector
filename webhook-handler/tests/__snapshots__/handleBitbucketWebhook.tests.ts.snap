@@ -31,15 +31,14 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
         {
           "color": "#0288D1",
           "text": "Quite a long and comprehensive description to get channel title longer than 250 symbols which is a maximum length for the Slack",
-          "title": "The pull request was opened by Test Author.",
         },
         {
-          "color": "#0288D1",
           "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
         },
       ],
       "channel": "12345",
       "icon_emoji": ":bitbucket:",
+      "text": "The pull request was opened by Test Author.",
     },
   ],
   "setChannelTopics": [
@@ -64,14 +63,9 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
   "lookedUpUsers": [],
   "sentMessages": [
     {
-      "attachments": [
-        {
-          "color": "#9E34EB",
-          "text": "The pull request was declined by Test Author.",
-        },
-      ],
       "channel": "pr-test-proj-test-repository-1",
       "icon_emoji": ":bitbucket:",
+      "text": ":no_entry_sign: The pull request was declined by Test Author.",
     },
   ],
   "setChannelTopics": [],
@@ -91,14 +85,9 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
   "lookedUpUsers": [],
   "sentMessages": [
     {
-      "attachments": [
-        {
-          "color": "#9E34EB",
-          "text": "The pull request was deleted by Test Author.",
-        },
-      ],
       "channel": "pr-test-proj-test-repository-1",
       "icon_emoji": ":bitbucket:",
+      "text": ":no_entry_sign: The pull request was deleted by Test Author.",
     },
   ],
   "setChannelTopics": [],
@@ -118,14 +107,9 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
   "lookedUpUsers": [],
   "sentMessages": [
     {
-      "attachments": [
-        {
-          "color": "#4CAF50",
-          "text": "The pull request was merged by Test Author. Well done, thank you all.",
-        },
-      ],
       "channel": "pr-test-proj-test-repository-1",
       "icon_emoji": ":bitbucket:",
+      "text": ":white_check_mark: The pull request was merged by Test Author. Well done, thank you all.",
     },
   ],
   "setChannelTopics": [],
@@ -141,37 +125,67 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
   "lookedUpUsers": [],
   "sentMessages": [
     {
-      "attachments": [
+      "blocks": [
         {
-          "color": "#F6C342",
-          "text": "Unapproved: Test Reviewer 1",
-          "title": "Test Reviewer 1 requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+          "text": {
+            "text": "Test Reviewer 1 requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": ":large_yellow_circle: Unapproved: Test Reviewer 1",
+            "type": "mrkdwn",
+          },
+          "type": "section",
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
       "icon_emoji": ":bitbucket:",
+      "text": "Test Reviewer 1 requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
     {
-      "attachments": [
+      "blocks": [
         {
-          "color": "#F6C342",
-          "text": "Unapproved: Test Reviewer 1",
-          "title": "Test Reviewer 1 unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+          "text": {
+            "text": "Test Reviewer 1 unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": ":large_yellow_circle: Unapproved: Test Reviewer 1",
+            "type": "mrkdwn",
+          },
+          "type": "section",
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
       "icon_emoji": ":bitbucket:",
+      "text": "Test Reviewer 1 unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
     {
-      "attachments": [
+      "blocks": [
         {
-          "color": "#4CAF50",
-          "text": "Unapproved: Test Reviewer 1",
-          "title": "Test Reviewer 1 approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+          "text": {
+            "text": "Test Reviewer 1 approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": ":large_yellow_circle: Unapproved: Test Reviewer 1",
+            "type": "mrkdwn",
+          },
+          "type": "section",
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
       "icon_emoji": ":bitbucket:",
+      "text": "Test Reviewer 1 approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
   ],
   "setChannelTopics": [],
@@ -187,15 +201,25 @@ exports[`handleBitbucketWebhook Should send message on PR comment 1`] = `
   "lookedUpUsers": [],
   "sentMessages": [
     {
-      "attachments": [
+      "blocks": [
         {
-          "color": "#F6C342",
-          "text": "> Test comment",
-          "title": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|commented>:",
+          "text": {
+            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added comment>:",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "> Test comment",
+            "type": "mrkdwn",
+          },
+          "type": "section",
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
       "icon_emoji": ":bitbucket:",
+      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added comment>:",
     },
   ],
   "setChannelTopics": [],
@@ -211,15 +235,25 @@ exports[`handleBitbucketWebhook Should send message on PR comment deletion 1`] =
   "lookedUpUsers": [],
   "sentMessages": [
     {
-      "attachments": [
+      "blocks": [
         {
-          "color": "#0288D1",
-          "text": "> Test comment",
-          "title": "Test Reviewer 1 deleted comment:",
+          "text": {
+            "text": "Test Reviewer 1 deleted comment:",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "> Test comment",
+            "type": "mrkdwn",
+          },
+          "type": "section",
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
       "icon_emoji": ":bitbucket:",
+      "text": "Test Reviewer 1 deleted comment:",
     },
   ],
   "setChannelTopics": [],
@@ -235,15 +269,25 @@ exports[`handleBitbucketWebhook Should send message on PR comment modification 1
   "lookedUpUsers": [],
   "sentMessages": [
     {
-      "attachments": [
+      "blocks": [
         {
-          "color": "#9E34EB",
-          "text": "> Updated comment text",
-          "title": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|edited comment>:",
+          "text": {
+            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|edited comment>:",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "> Updated comment text",
+            "type": "mrkdwn",
+          },
+          "type": "section",
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
       "icon_emoji": ":bitbucket:",
+      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|edited comment>:",
     },
   ],
   "setChannelTopics": [],
@@ -259,17 +303,32 @@ exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
   "lookedUpUsers": [],
   "sentMessages": [
     {
-      "attachments": [
+      "blocks": [
         {
-          "color": "#F6C342",
-          "text": "> Test comment for TEST-PROJ, test-repository, from-ref-commit-hash
-
-Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>.",
-          "title": "A <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/commits/from-ref-commit-hash|new commit> was added to the pull request by Test Author.",
+          "text": {
+            "text": "A <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/commits/from-ref-commit-hash|new commit> was added to the pull request by Test Author.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "> Test comment for TEST-PROJ, test-repository, from-ref-commit-hash",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
       "icon_emoji": ":bitbucket:",
+      "text": "A <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/commits/from-ref-commit-hash|new commit> was added to the pull request by Test Author.",
     },
   ],
   "setChannelTopics": [],
@@ -285,25 +344,48 @@ exports[`handleBitbucketWebhook Should send message on PR modification 1`] = `
   "lookedUpUsers": [],
   "sentMessages": [
     {
-      "attachments": [
+      "blocks": [
         {
-          "color": "#0288D1",
-          "text": "Title is changed to:
+          "text": {
+            "text": ":writing_hand: Test Author changed the pull request",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Target is changed to \`not-the-master\`",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Title is changed to: New pull request title",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Description is changed to:
 
-> New pull request title
-
-Description is changed to:
-
-New pull request description
-
-Target is changed to \`not-the-master\`
-
-Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
-          "title": "Test Author changed the pull request",
+New pull request description",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
+            "type": "mrkdwn",
+          },
+          "type": "section",
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
       "icon_emoji": ":bitbucket:",
+      "text": ":writing_hand: Test Author changed the pull request",
     },
   ],
   "setChannelTopics": [],

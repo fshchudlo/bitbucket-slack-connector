@@ -1,5 +1,5 @@
 import { SlackGateway } from "../SlackGateway";
-import { buildChannelName, formatUserName, getMessageColor, slackLink } from "../slack-building-blocks";
+import { buildChannelName, formatUserName, slackLink, slackSection } from "../slack-building-blocks";
 import { PullRequestBasicNotification, PullRequestPayload } from "../../typings";
 
 function getReviewerActionText(payload: PullRequestBasicNotification) {
@@ -20,14 +20,14 @@ function getReviewStatus(pullRequest: PullRequestPayload) {
     const whoUnapproved = pullRequest.reviewers.filter(r => r.status == "UNAPPROVED");
 
     if (whoRequestedWork.length == 0 && whoUnapproved.length == 0) {
-        return `All reviewers approved PR. Seems like you can ${slackLink(pullRequest.links.self[0].href, "merge it")}.`;
+        return `:large_green_circle: All reviewers approved PR. Seems like you can ${slackLink(pullRequest.links.self[0].href, "merge it")}.`;
     }
 
     let reviewStatus = whoApproved.length > 0 ? `Approved: ${whoApproved.map(r => r.user.displayName).join(",")}` : "";
     reviewStatus += whoRequestedWork.length > 0 ? `Needs work: ${whoRequestedWork.map(r => r.user.displayName).join(",")}` : "";
     reviewStatus += whoUnapproved.length > 0 ? `Unapproved: ${whoUnapproved.map(r => r.user.displayName).join(",")}` : "";
 
-    return reviewStatus;
+    return `:large_yellow_circle: ${reviewStatus}`;
 }
 
 export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string) {
@@ -37,12 +37,7 @@ export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNo
     await slackGateway.sendMessage({
         channel: buildChannelName(pullRequest),
         icon_emoji: iconEmoji,
-        attachments: [
-            {
-                title: messageTitle,
-                text: getReviewStatus(pullRequest),
-                color: getMessageColor(payload)
-            }
-        ]
+        text: messageTitle,
+        blocks: [slackSection(messageTitle), slackSection(getReviewStatus(pullRequest))]
     });
 }
