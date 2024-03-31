@@ -1,6 +1,4 @@
 export class InMemoryCache {
-    public cacheHits = 0;
-    public cacheMisses = 0;
     public readonly maxCacheSize?: number;
     private cache: Map<string, any>;
     private pushedOutItemsCounter: number = 0;

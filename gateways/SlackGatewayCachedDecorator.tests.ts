@@ -62,6 +62,8 @@ describe("SlackGatewayCachedDecorator", () => {
 
         expect(result).toEqual(cachedChannelInfo);
         expect(mockGateway.getChannelInfo).not.toHaveBeenCalled();
+        expect(cachedGatewayDecorator.channelsCacheHits).toEqual(1);
+        expect(cachedGatewayDecorator.channelsCacheMisses).toEqual(0);
     });
 
     it("should fetch channel info from gateway and save in cache", async () => {
@@ -76,6 +78,8 @@ describe("SlackGatewayCachedDecorator", () => {
 
         expect(mockGateway.getChannelInfo).toHaveBeenCalledWith("channelName", undefined);
         expect(result).toEqual(channelInfo);
+        expect(cachedGatewayDecorator.channelsCacheHits).toEqual(0);
+        expect(cachedGatewayDecorator.channelsCacheMisses).toEqual(1);
         expect(cachedGatewayDecorator.channelsCache.set).toHaveBeenCalledWith("channelName", channelInfo);
     });
 });

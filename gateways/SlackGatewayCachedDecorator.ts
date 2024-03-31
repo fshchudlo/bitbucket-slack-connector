@@ -4,13 +4,24 @@ import { SlackGateway } from "../webhook-handler/SlackGateway";
 import { InMemoryCache } from "./cache/InMemoryCache";
 
 export class SlackGatewayCachedDecorator implements SlackGateway {
+    private channelsCacheHitsCounter = 0;
+    private channelsCacheMissesCounter = 0;
     private gateway: SlackGateway;
-    public channelsCache: InMemoryCache;
+    public readonly channelsCache: InMemoryCache;
 
     constructor(gateway: SlackGateway) {
         this.gateway = gateway;
         this.channelsCache = new InMemoryCache(200);
     }
+
+    get channelsCacheHits(): number {
+        return this.channelsCacheHitsCounter;
+    }
+
+    get channelsCacheMisses(): number {
+        return this.channelsCacheMissesCounter;
+    }
+
 
     createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse> {
         const promise = this.gateway.createChannel(options);
@@ -28,8 +39,10 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
     async getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
         const cachedChannelInfo = this.channelsCache.get<SlackChannelInfo>(channelName);
         if (cachedChannelInfo) {
+            this.channelsCacheHitsCounter++;
             return Promise.resolve(cachedChannelInfo);
         }
+        this.channelsCacheMissesCounter++;
         const channelInfo = await this.gateway.getChannelInfo(channelName, excludeArchived);
 
         if (channelInfo) {

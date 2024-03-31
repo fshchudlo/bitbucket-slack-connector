@@ -6,14 +6,14 @@ export default function configureMetrics(slackGateway: SlackGatewayCachedDecorat
         name: "channel_names_cache_hits",
         help: "Successful cache hits counter",
         collect: function() {
-            this.set(slackGateway.channelsCache.cacheHits);
+            this.set(slackGateway.channelsCacheHits);
         }
     });
     new client.Gauge({
         name: "channel_names_cache_misses",
         help: "Missed cache hits counter",
         collect: function() {
-            this.set(slackGateway.channelsCache.cacheMisses);
+            this.set(slackGateway.channelsCacheMisses);
         }
     });
     new client.Gauge({
