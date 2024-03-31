@@ -49,7 +49,7 @@ async function handleWebhookError(error: any, requestBody: any, slackGateway: Sl
                 text: errorMessage
             });
         }
-    } catch {
-
+    } catch (error) {
+        console.error("Error during sending message to the diagnostic channel", error);
     }
 }
