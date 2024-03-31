@@ -7,8 +7,8 @@ import {
     sendMessageAboutReviewerAction,
     sendMessageAboutDeletedComment, sendMessageAboutEditedComment
 } from "./specific-handlers";
-import { SlackGateway } from "./ports/SlackGateway";
-import { BitbucketGateway } from "./ports/BitbucketGateway";
+import { SlackGateway } from "./SlackGateway";
+import { BitbucketGateway } from "./BitbucketGateway";
 import { sendMessageAboutPRModification } from "./specific-handlers/sendMessageAboutPRModification";
 import { BitbucketNotification } from "../typings";
 

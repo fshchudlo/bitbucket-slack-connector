@@ -3,15 +3,10 @@ import { App, ExpressReceiver } from "@slack/bolt";
 import AppConfig from "./app.config";
 import { SlackWebClientGateway } from "./gateways/SlackWebClientGateway";
 import express from "express";
-import handleBitbucketWebhook from "./webhook-handler/handleBitbucketWebhook";
-import BitbucketWebAPIGateway from "./gateways/BitbucketWebAPIGateway";
-import * as util from "util";
-import appConfig from "./app.config";
 import { SlackGatewayCachedDecorator } from "./gateways/SlackGatewayCachedDecorator";
-import client, { register, collectDefaultMetrics } from "prom-client";
-import { buildChannelName } from "./webhook-handler/slack-building-blocks";
-
-collectDefaultMetrics();
+import { collectDefaultMetrics } from "prom-client";
+import configureAppMetrics from "./app.metrics";
+import configureRoutes from "./app.routes";
 
 const expressReceiver = new ExpressReceiver({
     signingSecret: AppConfig.SLACK_SIGNING_SECRET
@@ -24,83 +19,14 @@ const slackApp = new App({
 });
 
 const slackGateway = new SlackGatewayCachedDecorator(new SlackWebClientGateway(slackApp.client));
-const bitbucketGateway = new BitbucketWebAPIGateway(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_API_TOKEN);
 
-new client.Gauge({
-    name: "channel_names_cache_hits",
-    help: "Successful cache hits counter",
-    collect: function() {
-        this.set(slackGateway.channelsCache.cacheHits);
-    }
-});
-new client.Gauge({
-    name: "channel_names_cache_misses",
-    help: "Missed cache hits counter",
-    collect: function() {
-        this.set(slackGateway.channelsCache.cacheMisses);
-    }
-});
-new client.Gauge({
-    name: "channel_names_cache_max_size",
-    help: "Maximum size of the cache",
-    collect: function() {
-        this.set(slackGateway.channelsCache.maxCacheSize);
-    }
-});
-new client.Gauge({
-    name: "channel_names_cache_size",
-    help: "Utilized cache size",
-    collect: function() {
-        this.set(slackGateway.channelsCache.cacheSize);
-    }
-});
-new client.Gauge({
-    name: "channel_names_cache_pushed_out_items_count",
-    help: "How many items were removed from cache because of it's max size exceeding",
-    collect: function() {
-        this.set(slackGateway.channelsCache.pushedOutItemsCount);
-    }
-});
-
-
-expressReceiver.router.post("/bitbucket-webhook", async (req, res) => {
-    try {
-        await handleBitbucketWebhook(req.body, slackGateway, bitbucketGateway, appConfig.USE_PRIVATE_CHANNELS);
-        res.sendStatus(200);
-    } catch (error) {
-        const errorMessage = `Error processing webhook. \n\nError: ${util.inspect(error)}. \n\nPayload: ${util.inspect(req.body)}`;
-        console.error(errorMessage);
-        try {
-            if (appConfig.DIAGNOSTIC_CHANNEL) {
-                await slackGateway.sendMessage({
-                    channel: appConfig.DIAGNOSTIC_CHANNEL,
-                    text: errorMessage
-                });
-            }
-        } catch {
-
-        }
-        res.sendStatus(500);
-    }
-});
-
-expressReceiver.router.get("/metrics", async (req, res) => {
-    res.set("Content-Type", register.contentType);
-    res.end(await register.metrics());
-});
-
-expressReceiver.router.get("/slack-channel", async (req, res) => {
-    const channelName = buildChannelName({
-        pullRequestId: req.query.pullRequestId as string,
-        repositorySlug: req.query.repositorySlug as string,
-        projectKey: req.query.projectKey as string
-    });
-    const channelInfo = await slackGateway.getChannelInfo(channelName, false);
-    res.send(channelInfo);
-});
-
+collectDefaultMetrics();
+configureAppMetrics(slackGateway);
+configureRoutes(expressReceiver, slackGateway);
 
 (async () => {
     await slackApp.start(AppConfig.SLACK_BOT_PORT);
     console.log("⚡️ Bitbucket connector app is running!");
 })();
+
+

@@ -1,5 +1,5 @@
 import * as slack from "@slack/web-api";
-import { SlackChannelInfo, UserPayload } from "../../typings";
+import { SlackChannelInfo, UserPayload } from "../typings";
 
 export interface SlackGateway {
     getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null>;

@@ -1,4 +1,4 @@
-import { SlackGateway } from "../ports/SlackGateway";
+import { SlackGateway } from "../SlackGateway";
 import { buildChannelName } from "../slack-building-blocks";
 import { PullRequestReviewersUpdatedNotification } from "../../typings";
 

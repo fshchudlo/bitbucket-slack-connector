@@ -6,7 +6,7 @@ import {
     slackLink,
     slackQuote
 } from "../slack-building-blocks";
-import { SlackGateway } from "../ports/SlackGateway";
+import { SlackGateway } from "../SlackGateway";
 import { PullRequestModifiedNotification } from "../../typings";
 
 export async function sendMessageAboutPRModification(payload: PullRequestModifiedNotification, slackGateway: SlackGateway, iconEmoji: string) {

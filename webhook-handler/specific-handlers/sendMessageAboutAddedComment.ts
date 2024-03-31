@@ -5,7 +5,7 @@ import {
     reformatMarkdownToSlackMarkup
 } from "../slack-building-blocks";
 import { slackLink, slackQuote } from "../slack-building-blocks";
-import { SlackGateway } from "../ports/SlackGateway";
+import { SlackGateway } from "../SlackGateway";
 import { PullRequestCommentActionNotification } from "../../typings";
 
 export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {

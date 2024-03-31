@@ -1,6 +1,6 @@
 import * as slack from "@slack/web-api";
 import { SlackChannelInfo, UserPayload } from "../typings";
-import { SlackGateway } from "../webhook-handler/ports/SlackGateway";
+import { SlackGateway } from "../webhook-handler/SlackGateway";
 import { InMemoryCache } from "./cache/InMemoryCache";
 
 export class SlackGatewayCachedDecorator implements SlackGateway {

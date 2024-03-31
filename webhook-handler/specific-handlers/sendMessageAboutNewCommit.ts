@@ -6,8 +6,8 @@ import {
     slackLink,
     slackQuote
 } from "../slack-building-blocks";
-import { SlackGateway } from "../ports/SlackGateway";
-import { BitbucketGateway } from "../ports/BitbucketGateway";
+import { SlackGateway } from "../SlackGateway";
+import { BitbucketGateway } from "../BitbucketGateway";
 import { PullRequestBasicNotification } from "../../typings";
 
 export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway, iconEmoji: string) {

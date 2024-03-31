@@ -1,5 +1,5 @@
 import * as slack from "@slack/web-api";
-import { SlackGateway } from "../webhook-handler/ports/SlackGateway";
+import { SlackGateway } from "../webhook-handler/SlackGateway";
 import { SlackChannelInfo, UserPayload } from "../typings";
 import appConfig from "../app.config";
 

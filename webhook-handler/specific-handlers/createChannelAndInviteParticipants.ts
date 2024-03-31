@@ -5,7 +5,7 @@ import {
     getPullRequestDescriptionForSlack,
     slackLink
 } from "../slack-building-blocks";
-import { SlackGateway } from "../ports/SlackGateway";
+import { SlackGateway } from "../SlackGateway";
 import { PullRequestBasicNotification } from "../../typings";
 
 export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string, createPrivateChannel: boolean) {
