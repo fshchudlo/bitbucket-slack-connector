@@ -45,7 +45,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackG
 }
 
 async function handleWebhookError(error: any, requestBody: any, slackGateway: SlackGateway) {
-    const errorMessage = ["Error processing webhook.", `Error: ${util.inspect(error)}.`, `Payload: ${util.inspect(requestBody)}`].join("\n\n");
+    const errorMessage = ["Error processing webhook.", `Error: ${util.inspect(error, true, 8)}.`, `Payload: ${util.inspect(requestBody, true, 8)}`].join("\n\n");
     console.error(errorMessage);
     try {
         if (appConfig.DIAGNOSTIC_CHANNEL) {
