@@ -14,7 +14,9 @@ oauth_config:
     bot:
       - channels:write.invite
       - channels:write.topic #Remove after getting rid of topics
+      - channels:read
       - groups:write
+      - groups:read
       - mpim:write
       - im:write
       - chat:write
