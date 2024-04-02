@@ -28,11 +28,16 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackG
     });
 
     expressReceiver.router.get("/slack-channel", async (req, res) => {
+        const { pullRequestId, repositorySlug, projectKey } = req.query;
+        if (!pullRequestId || !repositorySlug || !projectKey) {
+            return res.status(400).send("Please, specify valid \"pullRequestId\", \"repositorySlug\" and \"projectKey\" as query parameters.");
+        }
+
         try {
             const channelName = buildChannelName({
-                pullRequestId: req.query.pullRequestId as string,
-                repositorySlug: req.query.repositorySlug as string,
-                projectKey: req.query.projectKey as string
+                pullRequestId: <string>pullRequestId,
+                repositorySlug: <string>repositorySlug,
+                projectKey: <string>projectKey
             });
             const channelInfo = await slackGateway.getChannelInfo(channelName, false);
             res.send(channelInfo);
@@ -41,7 +46,6 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackG
             res.sendStatus(500);
         }
     });
-
 }
 
 async function handleWebhookError(error: any, requestBody: any, slackGateway: SlackGateway) {
