@@ -40,7 +40,7 @@ describe("InMemoryCache", () => {
         const cache = new InMemoryCache();
         cache.set("key1", "value1");
         cache.set("key2", "value2");
-        cache.deleteWhere(v => v == "value2");
+        cache.deleteWhere((k, v) => v == "value2");
 
         expect(cache.get("key1")).toBe("value1");
         expect(cache.get("key2")).toBeUndefined();

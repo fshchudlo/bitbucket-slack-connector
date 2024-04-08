@@ -1,4 +1,4 @@
-export class InMemoryCache {
+export class InMemoryCache<T> {
     public readonly maxCacheSize?: number;
     private cache: Map<string, any>;
     private pushedOutItemsCounter: number = 0;
@@ -16,7 +16,7 @@ export class InMemoryCache {
         return this.pushedOutItemsCounter;
     }
 
-    set(key: string, value: any): void {
+    set(key: string, value: T): void {
         if (!!this.maxCacheSize && this.cache.size >= this.maxCacheSize) {
             const oldestKey = this.cache.keys().next().value;
             this.cache.delete(oldestKey);
@@ -25,7 +25,7 @@ export class InMemoryCache {
         this.cache.set(key, value);
     }
 
-    get<T>(key: string): T | undefined {
+    get(key: string): T | undefined {
         return this.cache.get(key);
     }
 
@@ -33,9 +33,9 @@ export class InMemoryCache {
         this.cache.delete(key);
     }
 
-    deleteWhere<T>(matchPredicate: (entry: T) => boolean): void {
+    deleteWhere(matchPredicate: (key: string, value: T) => boolean): void {
         this.cache.forEach((value, key) => {
-            if (matchPredicate(value)) {
+            if (matchPredicate(key, value)) {
                 this.cache.delete(key);
             }
         });

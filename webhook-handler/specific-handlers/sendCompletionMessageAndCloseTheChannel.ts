@@ -16,8 +16,10 @@ export async function sendCompletionMessageAndCloseTheChannel(payload: PullReque
             break;
     }
 
+    const channelName = buildChannelName(payload.pullRequest);
+
     const messageResponse = await slackGateway.sendMessage({
-        channel: buildChannelName(payload.pullRequest),
+        channel: channelName,
         icon_emoji: iconEmoji,
         text: message
     });

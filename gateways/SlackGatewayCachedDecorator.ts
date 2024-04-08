@@ -3,15 +3,23 @@ import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo, UserPayload 
 import { SlackGateway } from "../webhook-handler/SlackGateway";
 import { InMemoryCache } from "./cache/InMemoryCache";
 
+function getCommentCacheKey(channelId: string, bitbucketCommentId: number | string) {
+    return `${channelId}-${bitbucketCommentId}`;
+}
+
 export class SlackGatewayCachedDecorator implements SlackGateway {
     private channelsCacheHitsCounter = 0;
     private channelsCacheMissesCounter = 0;
+    private bitbucketCommentsCacheHitsCounter = 0;
+    private bitbucketCommentsCacheMissesCounter = 0;
     private gateway: SlackGateway;
-    public readonly channelsCache: InMemoryCache;
+    public readonly channelsCache: InMemoryCache<SlackChannelInfo>;
+    public readonly bitbucketCommentsCache: InMemoryCache<BitbucketCommentSnapshotInSlackMetadata>;
 
     constructor(gateway: SlackGateway) {
         this.gateway = gateway;
         this.channelsCache = new InMemoryCache(200);
+        this.bitbucketCommentsCache = new InMemoryCache(500);
     }
 
     get channelsCacheHits(): number {
@@ -20,6 +28,14 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
 
     get channelsCacheMisses(): number {
         return this.channelsCacheMissesCounter;
+    }
+
+    get bitbucketCommentsCacheHits(): number {
+        return this.bitbucketCommentsCacheHitsCounter;
+    }
+
+    get bitbucketCommentsCacheMisses(): number {
+        return this.bitbucketCommentsCacheMissesCounter;
     }
 
 
@@ -37,7 +53,7 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
     }
 
     async getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
-        const cachedChannelInfo = this.channelsCache.get<SlackChannelInfo>(channelName);
+        const cachedChannelInfo = this.channelsCache.get(channelName);
         if (cachedChannelInfo) {
             this.channelsCacheHitsCounter++;
             return Promise.resolve(cachedChannelInfo);
@@ -53,7 +69,10 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
 
     archiveChannel(channelId: string): Promise<slack.ConversationsArchiveResponse> {
         const promise = this.gateway.archiveChannel(channelId);
-        promise.then(() => this.channelsCache.deleteWhere<SlackChannelInfo>(v => v.id == channelId));
+        promise.then(() => {
+            this.channelsCache.deleteWhere((k, v) => v.id == channelId);
+            this.bitbucketCommentsCache.deleteWhere((k) => k.startsWith(getCommentCacheKey(channelId, "")));
+        });
         return promise;
     }
 
@@ -74,10 +93,32 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
     }
 
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {
-        return this.gateway.sendMessage(options);
+        const promise = this.gateway.sendMessage(options);
+
+        promise.then((r) => {
+            const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>options.metadata?.event_payload;
+            if (commentSnapshot?.comment_id) {
+                this.bitbucketCommentsCache.set(getCommentCacheKey(r.channel, commentSnapshot.comment_id), commentSnapshot);
+            }
+        });
+
+        return promise;
     }
 
-    findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
-        return this.gateway.findLatestBitbucketCommentSnapshot(channelId, bitbucketCommentId);
+    async findLatestBitbucketCommentSnapshot(channelName: string, bitbucketCommentId: number): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
+        const channelInfo = await this.getChannelInfo(channelName);
+        const cacheKey = getCommentCacheKey(channelInfo.id, bitbucketCommentId);
+        const cachedCommentInfo = this.bitbucketCommentsCache.get(cacheKey);
+        if (cachedCommentInfo) {
+            this.bitbucketCommentsCacheHitsCounter++;
+            return Promise.resolve(cachedCommentInfo);
+        }
+        this.bitbucketCommentsCacheMissesCounter++;
+        const commentSnapshot = await this.gateway.findLatestBitbucketCommentSnapshot(channelName, bitbucketCommentId);
+
+        if (commentSnapshot) {
+            this.bitbucketCommentsCache.set(cacheKey, commentSnapshot);
+        }
+        return commentSnapshot;
     }
 }
