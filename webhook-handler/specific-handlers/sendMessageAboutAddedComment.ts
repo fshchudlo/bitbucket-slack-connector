@@ -1,6 +1,6 @@
 import {
     buildChannelName,
-    formatUserName,
+    formatUserName, getCommentType,
     reformatMarkdownToSlackMarkup, slackQuote, slackSection
 } from "../slack-building-blocks";
 import { slackLink } from "../slack-building-blocks";
@@ -9,7 +9,7 @@ import { PullRequestCommentActionNotification } from "../../typings";
 
 export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
-    const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, "added comment")}:`;
+    const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, `added ${getCommentType(payload)}`)}:`;
     const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);
 
     await slackGateway.sendMessage({

@@ -57,6 +57,7 @@
   "comment": {
     "id": "{{CommentId}}",
     "text": "Updated comment text",
+    "severity": "NORMAL",
     "author": {
       "displayName": "{{FirstReviewerName}}",
       "emailAddress": "{{FirstReviewerEmail}}"

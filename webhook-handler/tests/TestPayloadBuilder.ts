@@ -110,6 +110,7 @@ export default class TestPayloadBuilder {
             actor: { ...reviewer1User },
             comment: {
                 id: 1,
+                severity: "NORMAL",
                 text: "Test comment",
                 author: { ...reviewer1User }
             }

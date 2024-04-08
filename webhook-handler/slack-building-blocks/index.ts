@@ -6,3 +6,4 @@ export * from "./slackLink";
 export * from "./slackQuote";
 export * from "./slackBold";
 export * from "./slackSection";
+export * from "./getCommentType";

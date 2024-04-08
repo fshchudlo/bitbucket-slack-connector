@@ -24,6 +24,7 @@ export type PullRequestCommentActionNotification = PullRequestNotificationBasicP
         id: number;
         text: string;
         author: UserPayload;
+        severity: "NORMAL" | "BLOCKER"
     };
 }
 
