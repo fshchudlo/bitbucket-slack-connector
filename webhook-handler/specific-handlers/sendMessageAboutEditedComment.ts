@@ -4,7 +4,7 @@ import {
     buildChannelName,
     formatUserName, getCommentType,
     reformatMarkdownToSlackMarkup,
-    slackLink, slackQuote, slackSection
+    slackLink, slackQuote, slackSection, snapshotCommentAsSlackMetadata
 } from "../slack-building-blocks";
 
 export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
@@ -16,6 +16,7 @@ export async function sendMessageAboutEditedComment(payload: PullRequestCommentA
         channel: buildChannelName(payload.pullRequest),
         icon_emoji: iconEmoji,
         text: messageTitle,
-        blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))]
+        blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))],
+        metadata: snapshotCommentAsSlackMetadata(payload)
     });
 }

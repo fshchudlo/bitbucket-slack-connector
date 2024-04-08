@@ -1,9 +1,13 @@
 import {
     buildChannelName,
-    formatUserName, getCommentType,
-    reformatMarkdownToSlackMarkup, slackQuote, slackSection
+    formatUserName,
+    getCommentType,
+    reformatMarkdownToSlackMarkup,
+    slackLink,
+    slackQuote,
+    slackSection,
+    snapshotCommentAsSlackMetadata
 } from "../slack-building-blocks";
-import { slackLink } from "../slack-building-blocks";
 import { SlackGateway } from "../SlackGateway";
 import { PullRequestCommentActionNotification } from "../../typings";
 
@@ -16,7 +20,8 @@ export async function sendMessageAboutAddedComment(payload: PullRequestCommentAc
         channel: buildChannelName(payload.pullRequest),
         icon_emoji: iconEmoji,
         text: messageTitle,
-        blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))]
+        blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))],
+        metadata: snapshotCommentAsSlackMetadata(payload)
     });
 }
 

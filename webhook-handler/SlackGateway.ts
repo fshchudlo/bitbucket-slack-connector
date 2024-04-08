@@ -1,5 +1,5 @@
 import * as slack from "@slack/web-api";
-import { SlackChannelInfo, UserPayload } from "../typings";
+import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo, UserPayload } from "../typings";
 
 export interface SlackGateway {
     getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null>;
@@ -20,4 +20,6 @@ export interface SlackGateway {
     archiveChannel(channelId: string): Promise<slack.ConversationsArchiveResponse>;
 
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse>;
+
+    findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number): Promise<BitbucketCommentSnapshotInSlackMetadata | null>;
 }

@@ -17,14 +17,21 @@ export type PullRequestModifiedNotification = PullRequestNotificationBasicPayloa
         latestCommit: string
     }
 }
+
+export type CommentSeverity = "NORMAL" | "BLOCKER"
 export type PullRequestCommentActionNotification = PullRequestNotificationBasicPayload & {
     eventKey: "pr:comment:added" | "pr:comment:deleted" | "pr:comment:edited";
     commentParentId?: number;
+    previousComment?: string;
     comment: {
         id: number;
         text: string;
         author: UserPayload;
-        severity: "NORMAL" | "BLOCKER"
+        severity: CommentSeverity;
+        state: "OPEN" | "RESOLVED";
+        resolver?: UserPayload;
+        threadResolved: boolean;
+        threadResolver?: UserPayload;
     };
 }
 
@@ -75,4 +82,11 @@ export type SlackChannelInfo = {
     id?: string;
     isArchived?: boolean;
     name?: string;
+}
+
+export type BitbucketCommentSnapshotInSlackMetadata = {
+    // see https://api.slack.com/reference/metadata for the reference about naming
+    comment_id: string,
+    severity: CommentSeverity,
+    thread_resolved: boolean
 }

@@ -1,5 +1,5 @@
 import * as slack from "@slack/web-api";
-import { SlackChannelInfo, UserPayload } from "../typings";
+import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo, UserPayload } from "../typings";
 import { SlackGateway } from "../webhook-handler/SlackGateway";
 import { InMemoryCache } from "./cache/InMemoryCache";
 
@@ -75,5 +75,9 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
 
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {
         return this.gateway.sendMessage(options);
+    }
+
+    findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
+        return this.gateway.findLatestBitbucketCommentSnapshot(channelId, bitbucketCommentId);
     }
 }

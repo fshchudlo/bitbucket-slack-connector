@@ -111,6 +111,8 @@ export default class TestPayloadBuilder {
             comment: {
                 id: 1,
                 severity: "NORMAL",
+                state: "OPEN",
+                threadResolved: false,
                 text: "Test comment",
                 author: { ...reviewer1User }
             }

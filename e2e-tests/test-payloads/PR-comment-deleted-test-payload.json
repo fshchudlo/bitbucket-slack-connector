@@ -58,6 +58,8 @@
     "id": "{{CommentId}}",
     "text": "Test **bold** _italic_, ~~strikethrough~~ , [links](https://git.plesk.tech/projects/LPS/repos/core.key-administrator/pull-requests/2010/overview) and `code blocks`",
     "severity": "NORMAL",
+    "state": "OPEN",
+    "threadResolved": false,
     "author": {
       "displayName": "{{FirstReviewerName}}",
       "emailAddress": "{{FirstReviewerEmail}}"

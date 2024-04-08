@@ -1,7 +1,7 @@
 import * as slack from "@slack/web-api";
 
 import { SlackGateway } from "../SlackGateway";
-import { SlackChannelInfo, UserPayload } from "../../typings";
+import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo, UserPayload } from "../../typings";
 
 const channelId = "12345";
 export default class TestSlackGateway implements SlackGateway {
@@ -65,5 +65,14 @@ export default class TestSlackGateway implements SlackGateway {
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {
         this.snapshot.sentMessages.push(options);
         return Promise.resolve({ ok: true, channel: channelId });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    findLatestBitbucketCommentSnapshot(_channelId: string, bitbucketCommentId: number): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
+        return Promise.resolve({
+            comment_id: bitbucketCommentId.toString(),
+            severity: "NORMAL",
+            thread_resolved: false
+        });
     }
 }

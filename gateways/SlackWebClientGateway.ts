@@ -1,7 +1,8 @@
 import * as slack from "@slack/web-api";
 import { SlackGateway } from "../webhook-handler/SlackGateway";
-import { SlackChannelInfo, UserPayload } from "../typings";
+import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo, UserPayload } from "../typings";
 import appConfig from "../app.config";
+import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
 
 export class SlackWebClientGateway implements SlackGateway {
     private client: slack.WebClient;
@@ -11,22 +12,18 @@ export class SlackWebClientGateway implements SlackGateway {
     }
 
     async getSlackUserIds(userPayloads: UserPayload[]): Promise<string[]> {
-        const slackUserRequests = userPayloads
-            .map(r => r.emailAddress)
-            .map(async email =>
-                await this.client.users.lookupByEmail({
-                    email: email
-                })
-            );
-        return [...new Set((await Promise.all(slackUserRequests)).map(r => r.user.id))];
+        const emailAddresses = [...new Set(userPayloads.map(payload => payload.emailAddress))];
+        const slackUserIds = await Promise.all(emailAddresses.map(email => this.client.users.lookupByEmail({ email })));
+        return slackUserIds.map(r => r.user.id);
     }
 
     async getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
         let cursor: string | undefined = undefined;
+        const channelTypes = appConfig.USE_PRIVATE_CHANNELS ? "private_channel" : undefined;
         while (true) {
             const response = await this.client.conversations.list({
                 exclude_archived: !!excludeArchived,
-                types: appConfig.USE_PRIVATE_CHANNELS ? "private_channel" : undefined,
+                types: channelTypes,
                 cursor
             });
 
@@ -65,5 +62,32 @@ export class SlackWebClientGateway implements SlackGateway {
 
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {
         return this.client.chat.postMessage(options);
+    }
+
+    async findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
+        let cursor: string | undefined = undefined;
+        const matchPredicate = (message: MessageElement) => {
+            const eventPayload = <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload;
+            return eventPayload && eventPayload.comment_id === bitbucketCommentId.toString();
+        };
+
+        while (true) {
+            const response = await this.client.conversations.history({
+                channel: channelId,
+                include_all_metadata: true,
+                cursor
+            });
+
+            const message = response.messages.find(matchPredicate);
+            if (message) {
+                return <BitbucketCommentSnapshotInSlackMetadata>message.metadata.event_payload;
+            }
+
+            if (response.response_metadata && response.response_metadata.next_cursor) {
+                cursor = response.response_metadata.next_cursor;
+            } else {
+                return null;
+            }
+        }
     }
 }

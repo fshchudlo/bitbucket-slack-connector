@@ -2,7 +2,7 @@ import { SlackGateway } from "../SlackGateway";
 import {
     buildChannelName,
     formatUserName, getCommentType,
-    reformatMarkdownToSlackMarkup, slackQuote, slackSection
+    reformatMarkdownToSlackMarkup, slackQuote, slackSection, snapshotCommentAsSlackMetadata
 } from "../slack-building-blocks";
 import { PullRequestCommentActionNotification } from "../../typings";
 
@@ -14,6 +14,7 @@ export async function sendMessageAboutDeletedComment(payload: PullRequestComment
         channel: buildChannelName(payload.pullRequest),
         icon_emoji: iconEmoji,
         text: messageTitle,
-        blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))]
+        blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))],
+        metadata: snapshotCommentAsSlackMetadata(payload)
     });
 }
