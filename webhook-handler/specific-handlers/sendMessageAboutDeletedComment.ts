@@ -2,11 +2,11 @@ import { SlackGateway } from "../SlackGateway";
 import {
     buildChannelName,
     formatUserName, getCommentType,
-    reformatMarkdownToSlackMarkup, slackQuote, slackSection, snapshotCommentAsSlackMetadata
+    reformatMarkdownToSlackMarkup, slackQuote, slackSection, snapshotCommentAsSlackMetadata, iconEmoji
 } from "../slack-building-blocks";
 import { PullRequestCommentActionNotification } from "../../typings";
 
-export async function sendMessageAboutDeletedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
+export async function sendMessageAboutDeletedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway) {
     const messageTitle = `${formatUserName(payload.actor)} deleted ${getCommentType(payload)}:`;
     const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);
 

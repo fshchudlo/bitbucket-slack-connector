@@ -1,28 +1,29 @@
-import { buildChannelName, formatUserName } from "../slack-building-blocks";
+import { buildChannelName, formatUserName, iconEmoji } from "../slack-building-blocks";
 import { SlackGateway } from "../SlackGateway";
 import { PullRequestBasicNotification } from "../../typings";
 
-export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string) {
-    let message = null;
+export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackGateway: SlackGateway) {
+    const channelId = (await slackGateway.sendMessage(buildMessage(payload))).channel;
+    await slackGateway.archiveChannel(channelId);
+}
+
+function buildMessage(payload: PullRequestBasicNotification) {
+    const channelName = buildChannelName(payload.pullRequest);
+    let messageText = null;
     switch (payload.eventKey) {
         case "pr:deleted":
-            message = `:no_entry_sign: The pull request was deleted by ${formatUserName(payload.actor)}.`;
+            messageText = `:no_entry_sign: The pull request was deleted by ${formatUserName(payload.actor)}.`;
             break;
         case "pr:merged":
-            message = `:white_check_mark: The pull request was merged by ${formatUserName(payload.actor)}. Well done, thank you all.`;
+            messageText = `:white_check_mark: The pull request was merged by ${formatUserName(payload.actor)}. Well done, thank you all.`;
             break;
         case "pr:declined":
-            message = `:no_entry_sign: The pull request was declined by ${formatUserName(payload.actor)}.`;
+            messageText = `:no_entry_sign: The pull request was declined by ${formatUserName(payload.actor)}.`;
             break;
     }
-
-    const channelName = buildChannelName(payload.pullRequest);
-
-    const messageResponse = await slackGateway.sendMessage({
+    return {
         channel: channelName,
         icon_emoji: iconEmoji,
-        text: message
-    });
-
-    await slackGateway.archiveChannel(messageResponse.channel);
+        text: messageText
+    };
 }

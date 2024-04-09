@@ -2,12 +2,13 @@ import {
     buildChannelName,
     formatUserName,
     getPullRequestDescriptionForSlack,
-    slackLink
+    slackLink,
+    iconEmoji
 } from "../slack-building-blocks";
 import { SlackGateway } from "../SlackGateway";
 import { PullRequestBasicNotification } from "../../typings";
 
-export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string, createPrivateChannel: boolean) {
+export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackGateway: SlackGateway, createPrivateChannel: boolean) {
     const allParticipants = [payload.pullRequest.author.user].concat(payload.pullRequest.reviewers.map(r => r.user));
     const slackUserIds = await slackGateway.getSlackUserIds(allParticipants);
 
@@ -20,10 +21,10 @@ export async function createChannelAndInviteParticipants(payload: PullRequestBas
 
     await slackGateway.setChannelTopic({ channel: channelId, topic: buildChannelTopic(payload) });
     await slackGateway.inviteToChannel({ channel: channelId, users: slackUserIds.join(","), force: true });
-    await slackGateway.sendMessage(buildMessage(payload, channelId, iconEmoji));
+    await slackGateway.sendMessage(buildMessage(payload, channelId));
 }
 
-function buildMessage(payload: PullRequestBasicNotification, channelId: string, iconEmoji: string) {
+function buildMessage(payload: PullRequestBasicNotification, channelId: string) {
     const messageTitle = `The pull request was opened by ${formatUserName(payload.actor)}.`;
     const pleaseReviewText = `Please ${slackLink(payload.pullRequest.links.self[0].href, "review the PR")}`;
     const descriptionText = getPullRequestDescriptionForSlack(payload.pullRequest.description ?? payload.pullRequest.title);

@@ -2,12 +2,12 @@ import {
     buildChannelName,
     formatUserName,
     getPullRequestDescriptionForSlack,
-    slackLink, slackSection
+    slackLink, slackSection, iconEmoji
 } from "../slack-building-blocks";
 import { SlackGateway } from "../SlackGateway";
 import { PullRequestModifiedNotification } from "../../typings";
 
-export async function sendMessageAboutPRModification(payload: PullRequestModifiedNotification, slackGateway: SlackGateway, iconEmoji: string) {
+export async function sendMessageAboutPRModification(payload: PullRequestModifiedNotification, slackGateway: SlackGateway) {
     const messageTitle = `:writing_hand: ${formatUserName(payload.actor)} changed the pull request`;
     const changesDescription = getChangesDescription(payload);
     const pleaseReviewText = `Please ${slackLink(payload.pullRequest.links.self[0].href, "review the PR")}`;

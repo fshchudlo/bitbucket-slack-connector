@@ -1,6 +1,18 @@
 import { SlackGateway } from "../SlackGateway";
-import { buildChannelName, formatUserName, slackLink, slackSection } from "../slack-building-blocks";
+import { buildChannelName, formatUserName, slackLink, slackSection, iconEmoji } from "../slack-building-blocks";
 import { PullRequestBasicNotification, PullRequestPayload } from "../../typings";
+
+export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNotification, slackGateway: SlackGateway) {
+    const pullRequest = payload.pullRequest;
+    const messageTitle = getReviewerActionText(payload);
+
+    await slackGateway.sendMessage({
+        channel: buildChannelName(pullRequest),
+        icon_emoji: iconEmoji,
+        text: messageTitle,
+        blocks: [slackSection(messageTitle), slackSection(getReviewStatus(pullRequest))]
+    });
+}
 
 function getReviewerActionText(payload: PullRequestBasicNotification) {
     const prLink = slackLink(payload.pullRequest.links.self[0].href, "pull request");
@@ -28,16 +40,4 @@ function getReviewStatus(pullRequest: PullRequestPayload) {
     reviewStatus += whoUnapproved.length > 0 ? ` Unapproved: ${whoUnapproved.map(r => r.user.displayName).join(",")}` : "";
 
     return `:large_yellow_circle: ${reviewStatus}`;
-}
-
-export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNotification, slackGateway: SlackGateway, iconEmoji: string) {
-    const pullRequest = payload.pullRequest;
-    const messageTitle = getReviewerActionText(payload);
-
-    await slackGateway.sendMessage({
-        channel: buildChannelName(pullRequest),
-        icon_emoji: iconEmoji,
-        text: messageTitle,
-        blocks: [slackSection(messageTitle), slackSection(getReviewStatus(pullRequest))]
-    });
 }

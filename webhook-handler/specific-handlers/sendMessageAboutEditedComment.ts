@@ -4,10 +4,10 @@ import {
     buildChannelName,
     formatUserName, getCommentType,
     reformatMarkdownToSlackMarkup,
-    slackLink, slackQuote, slackSection, snapshotCommentAsSlackMetadata
+    slackLink, slackQuote, slackSection, snapshotCommentAsSlackMetadata, iconEmoji
 } from "../slack-building-blocks";
 
-export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway, iconEmoji: string) {
+export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway) {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
     const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, `edited ${getCommentType(payload)}`)}:`;
     const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);

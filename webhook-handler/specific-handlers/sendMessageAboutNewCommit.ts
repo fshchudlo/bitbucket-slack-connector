@@ -3,13 +3,13 @@ import {
     formatUserName,
     reformatMarkdownToSlackMarkup,
     slackLink,
-    slackQuote, slackSection
+    slackQuote, slackSection, iconEmoji
 } from "../slack-building-blocks";
 import { SlackGateway } from "../SlackGateway";
 import { BitbucketGateway } from "../BitbucketGateway";
 import { PullRequestBasicNotification } from "../../typings";
 
-export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway, iconEmoji: string) {
+export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway) {
     const pullRequest = payload.pullRequest;
     const viewCommitUrl = `${payload.pullRequest.links.self[0].href.replace("/overview", "")}/commits/${pullRequest.fromRef.latestCommit}`;
     const messageTitle = `A ${slackLink(viewCommitUrl, "new commit")} was added to the pull request by ${formatUserName(payload.actor)}.`;
