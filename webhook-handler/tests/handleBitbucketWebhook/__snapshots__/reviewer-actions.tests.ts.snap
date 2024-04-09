@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/needs work 1`] = `
+{
+  "archivedChannels": [],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [],
+  "sentMessages": [
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": "Test Reviewer 1 requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": ":large_yellow_circle:  Unapproved: Test Reviewer 1",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channel": "pr-test-proj-test-repository-1",
+      "icon_emoji": ":bitbucket:",
+      "text": "Test Reviewer 1 requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+    },
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": "Test Reviewer 1 unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": ":large_yellow_circle:  Unapproved: Test Reviewer 1",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channel": "pr-test-proj-test-repository-1",
+      "icon_emoji": ":bitbucket:",
+      "text": "Test Reviewer 1 unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+    },
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": "Test Reviewer 1 approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": ":large_yellow_circle:  Unapproved: Test Reviewer 1",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channel": "pr-test-proj-test-repository-1",
+      "icon_emoji": ":bitbucket:",
+      "text": "Test Reviewer 1 approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+    },
+  ],
+  "setChannelTopics": [],
+}
+`;

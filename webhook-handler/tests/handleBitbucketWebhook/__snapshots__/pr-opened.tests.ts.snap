@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handleBitbucketWebhook Should create channel, set topic and invite author and reviewers on PR opened 1`] = `
+{
+  "archivedChannels": [],
+  "createdChannels": [
+    {
+      "is_private": true,
+      "name": "pr-test-proj-test-repository-1",
+    },
+  ],
+  "invitesToChannels": [
+    {
+      "channel": "12345",
+      "force": true,
+      "users": "test.author@test.com,test.reviewer1@test.com",
+    },
+  ],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [
+    {
+      "email": "test.author@test.com",
+    },
+    {
+      "email": "test.reviewer1@test.com",
+    },
+  ],
+  "sentMessages": [
+    {
+      "attachments": [
+        {
+          "color": "#0288D1",
+          "text": "Quite a long and comprehensive description to get channel title longer than 250 symbols which is a maximum length for the Slack",
+        },
+        {
+          "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
+        },
+      ],
+      "channel": "12345",
+      "icon_emoji": ":bitbucket:",
+      "text": "The pull request was opened by Test Author.",
+    },
+  ],
+  "setChannelTopics": [
+    {
+      "channel": "12345",
+      "topic": ":git: Pull request: Quite a long and comprehensive title to get channel title longer than 250 symbols which is a maximum length for the Slack | :git-branch: To branch: \`TEST-PROJ/test-repository:master\`",
+    },
+  ],
+}
+`;

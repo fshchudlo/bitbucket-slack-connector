@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handleBitbucketWebhook Should send message on PR comment deletion 1`] = `
+{
+  "archivedChannels": [],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [],
+  "sentMessages": [
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": "Test Reviewer 1 deleted comment:",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "> Test comment",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channel": "pr-test-proj-test-repository-1",
+      "icon_emoji": ":bitbucket:",
+      "metadata": {
+        "event_payload": {
+          "comment_id": "1",
+          "severity": "NORMAL",
+          "thread_resolved": false,
+        },
+        "event_type": "bitbucket_comment_snapshot_saved",
+      },
+      "text": "Test Reviewer 1 deleted comment:",
+    },
+  ],
+  "setChannelTopics": [],
+}
+`;

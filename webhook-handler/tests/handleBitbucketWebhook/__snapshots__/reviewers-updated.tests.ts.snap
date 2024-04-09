@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handleBitbucketWebhook Should update channel participants on reviewers list update 1`] = `
+{
+  "archivedChannels": [],
+  "createdChannels": [],
+  "invitesToChannels": [
+    {
+      "channel": "12345",
+      "force": true,
+      "users": "test.reviewer2@test.com",
+    },
+  ],
+  "kicksFromChannels": [
+    {
+      "channel": "12345",
+      "user": "test.reviewer1@test.com",
+    },
+  ],
+  "lookedUpUsers": [
+    {
+      "email": "test.reviewer2@test.com",
+    },
+    {
+      "email": "test.reviewer1@test.com",
+    },
+  ],
+  "sentMessages": [],
+  "setChannelTopics": [],
+}
+`;

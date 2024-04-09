@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
+{
+  "archivedChannels": [],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [],
+  "sentMessages": [
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": ":writing_hand: Test Author changed the pull request",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Target is changed to \`not-the-master\`",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Title is changed to: New pull request title",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Description is changed to:
+
+New pull request description",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channel": "pr-test-proj-test-repository-1",
+      "icon_emoji": ":bitbucket:",
+      "text": ":writing_hand: Test Author changed the pull request",
+    },
+  ],
+  "setChannelTopics": [],
+}
+`;

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handleBitbucketWebhook Should send completion message and close the channel on PR merge 1`] = `
+{
+  "archivedChannels": [
+    {
+      "channel": "12345",
+    },
+  ],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [],
+  "sentMessages": [
+    {
+      "channel": "pr-test-proj-test-repository-1",
+      "icon_emoji": ":bitbucket:",
+      "text": ":white_check_mark: The pull request was merged by Test Author. Well done, thank you all.",
+    },
+  ],
+  "setChannelTopics": [],
+}
+`;
