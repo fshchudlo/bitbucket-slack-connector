@@ -8,7 +8,7 @@ export class InMemoryCache<T> {
     private readonly cacheHitsCounter: Counter;
     private readonly cacheMissesCounter: Counter;
 
-    constructor(metricsNamePrefix: string, maxSize?: number) {
+    constructor(metricsNamePrefix: string, maxSize: number) {
         this.cache = new Map<string, any>();
         this.maxCacheSize = maxSize;
         this.cacheHitsCounter = new client.Counter({
@@ -27,13 +27,10 @@ export class InMemoryCache<T> {
             name: `${metricsNamePrefix}_cache_size`,
             help: "Utilized cache size"
         });
-        new client.Gauge({
+        new client.Counter({
             name: `${metricsNamePrefix}_cache_max_size`,
-            help: "Maximum size of the cache",
-            collect: function(this: client.Gauge) {
-                this.set(maxSize);
-            }
-        });
+            help: "Maximum size of the cache"
+        }).inc(maxSize);
     }
 
     set(key: string, value: T): void {

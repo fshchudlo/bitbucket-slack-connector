@@ -25,6 +25,13 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
       "email": "test.reviewer1@test.com",
     },
   ],
+  "searchedChannels": [
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "excludeArchived": true,
+    },
+  ],
+  "searchedCommentSnapshots": [],
   "sentMessages": [],
   "setChannelTopics": [],
 }

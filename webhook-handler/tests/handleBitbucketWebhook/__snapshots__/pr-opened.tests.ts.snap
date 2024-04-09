@@ -25,6 +25,8 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
       "email": "test.reviewer1@test.com",
     },
   ],
+  "searchedChannels": [],
+  "searchedCommentSnapshots": [],
   "sentMessages": [
     {
       "attachments": [

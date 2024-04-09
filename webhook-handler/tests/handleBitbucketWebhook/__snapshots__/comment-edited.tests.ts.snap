@@ -7,6 +7,8 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
+  "searchedChannels": [],
+  "searchedCommentSnapshots": [],
   "sentMessages": [
     {
       "blocks": [

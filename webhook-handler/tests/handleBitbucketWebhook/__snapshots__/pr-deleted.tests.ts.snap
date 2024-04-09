@@ -11,6 +11,8 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
+  "searchedChannels": [],
+  "searchedCommentSnapshots": [],
   "sentMessages": [
     {
       "channel": "pr-test-proj-test-repository-1",

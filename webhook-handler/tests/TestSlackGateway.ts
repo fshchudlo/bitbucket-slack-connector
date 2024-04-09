@@ -6,6 +6,8 @@ import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo, UserPayload 
 const channelId = "12345";
 export default class TestSlackGateway implements SlackGateway {
     snapshot: {
+        searchedCommentSnapshots: any[];
+        searchedChannels: any[];
         createdChannels: slack.ConversationsCreateArguments[];
         setChannelTopics: slack.ConversationsSetTopicArguments[];
         invitesToChannels: slack.ConversationsInviteArguments[];
@@ -23,7 +25,9 @@ export default class TestSlackGateway implements SlackGateway {
             kicksFromChannels: new Array<slack.ConversationsKickArguments>(),
             archivedChannels: new Array<slack.ConversationsCloseArguments>(),
             sentMessages: new Array<slack.ChatPostMessageArguments>(),
-            lookedUpUsers: new Array<slack.UsersLookupByEmailArguments>()
+            lookedUpUsers: new Array<slack.UsersLookupByEmailArguments>(),
+            searchedCommentSnapshots: new Array<any>(),
+            searchedChannels: new Array<any>()
         };
     }
 
@@ -32,8 +36,8 @@ export default class TestSlackGateway implements SlackGateway {
         return Promise.resolve(userPayloads.map(u => u.emailAddress));
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getChannelInfo(channelName: string, _excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
+    getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
+        this.snapshot.searchedChannels.push({ channelName, excludeArchived });
         return Promise.resolve({ isArchived: false, name: channelName, id: channelId });
     }
 
@@ -67,8 +71,8 @@ export default class TestSlackGateway implements SlackGateway {
         return Promise.resolve({ ok: true, channel: channelId });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    findLatestBitbucketCommentSnapshot(_channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
+    findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
+        this.snapshot.searchedCommentSnapshots.push({ channelId, bitbucketCommentId });
         return Promise.resolve({
             comment_id: bitbucketCommentId.toString(),
             severity: "NORMAL",
