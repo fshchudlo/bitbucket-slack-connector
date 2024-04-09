@@ -1,17 +1,20 @@
 import { SlackGateway } from "../SlackGateway";
-import { buildChannelName, formatUserName, slackLink, slackSection, iconEmoji } from "../slack-building-blocks";
+import { buildChannelName, formatUserName, iconEmoji, slackLink, slackSection } from "../slack-building-blocks";
 import { PullRequestBasicNotification, PullRequestPayload } from "../../typings";
 
 export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNotification, slackGateway: SlackGateway) {
+    await slackGateway.sendMessage(buildMessage(payload));
+}
+
+function buildMessage(payload: PullRequestBasicNotification) {
     const pullRequest = payload.pullRequest;
     const messageTitle = getReviewerActionText(payload);
-
-    await slackGateway.sendMessage({
+    return {
         channel: buildChannelName(pullRequest),
         icon_emoji: iconEmoji,
         text: messageTitle,
         blocks: [slackSection(messageTitle), slackSection(getReviewStatus(pullRequest))]
-    });
+    };
 }
 
 function getReviewerActionText(payload: PullRequestBasicNotification) {
