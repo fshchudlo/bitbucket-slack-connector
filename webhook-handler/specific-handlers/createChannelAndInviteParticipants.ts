@@ -18,22 +18,16 @@ export async function createChannelAndInviteParticipants(payload: PullRequestBas
         })
     ).channel.id;
 
-    await slackGateway.setChannelTopic({
-        channel: channelId,
-        topic: buildChannelTopic(payload)
-    });
+    await slackGateway.setChannelTopic({ channel: channelId, topic: buildChannelTopic(payload) });
+    await slackGateway.inviteToChannel({ channel: channelId, users: slackUserIds.join(","), force: true });
+    await slackGateway.sendMessage(buildMessage(payload, channelId, iconEmoji));
+}
 
-    await slackGateway.inviteToChannel({
-        channel: channelId,
-        users: slackUserIds.join(","),
-        force: true
-    });
-
+function buildMessage(payload: PullRequestBasicNotification, channelId: string, iconEmoji: string) {
     const messageTitle = `The pull request was opened by ${formatUserName(payload.actor)}.`;
     const pleaseReviewText = `Please ${slackLink(payload.pullRequest.links.self[0].href, "review the PR")}`;
     const descriptionText = getPullRequestDescriptionForSlack(payload.pullRequest.description ?? payload.pullRequest.title);
-
-    await slackGateway.sendMessage({
+    return {
         channel: channelId,
         icon_emoji: iconEmoji,
         text: messageTitle,
@@ -45,7 +39,7 @@ export async function createChannelAndInviteParticipants(payload: PullRequestBas
                 text: pleaseReviewText
             }
         ]
-    });
+    };
 }
 
 function buildChannelTopic({ pullRequest }: PullRequestBasicNotification) {
