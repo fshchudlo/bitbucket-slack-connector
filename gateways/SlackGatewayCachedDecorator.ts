@@ -8,36 +8,15 @@ function getCommentCacheKey(channelId: string, bitbucketCommentId: number | stri
 }
 
 export class SlackGatewayCachedDecorator implements SlackGateway {
-    private channelsCacheHitsCounter = 0;
-    private channelsCacheMissesCounter = 0;
-    private bitbucketCommentsCacheHitsCounter = 0;
-    private bitbucketCommentsCacheMissesCounter = 0;
     private gateway: SlackGateway;
-    public readonly channelsCache: InMemoryCache<SlackChannelInfo>;
-    public readonly bitbucketCommentsCache: InMemoryCache<BitbucketCommentSnapshotInSlackMetadata>;
+    readonly channelsCache: InMemoryCache<SlackChannelInfo>;
+    readonly bitbucketCommentsCache: InMemoryCache<BitbucketCommentSnapshotInSlackMetadata>;
 
     constructor(gateway: SlackGateway) {
         this.gateway = gateway;
-        this.channelsCache = new InMemoryCache(200);
-        this.bitbucketCommentsCache = new InMemoryCache(500);
+        this.channelsCache = new InMemoryCache("channels", 200);
+        this.bitbucketCommentsCache = new InMemoryCache("comments", 500);
     }
-
-    get channelsCacheHits(): number {
-        return this.channelsCacheHitsCounter;
-    }
-
-    get channelsCacheMisses(): number {
-        return this.channelsCacheMissesCounter;
-    }
-
-    get bitbucketCommentsCacheHits(): number {
-        return this.bitbucketCommentsCacheHitsCounter;
-    }
-
-    get bitbucketCommentsCacheMisses(): number {
-        return this.bitbucketCommentsCacheMissesCounter;
-    }
-
 
     createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse> {
         const promise = this.gateway.createChannel(options);
@@ -55,10 +34,8 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
     async getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
         const cachedChannelInfo = this.channelsCache.get(channelName);
         if (cachedChannelInfo) {
-            this.channelsCacheHitsCounter++;
             return Promise.resolve(cachedChannelInfo);
         }
-        this.channelsCacheMissesCounter++;
         const channelInfo = await this.gateway.getChannelInfo(channelName, excludeArchived);
 
         if (channelInfo) {
@@ -105,15 +82,13 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
         return promise;
     }
 
-    async findLatestBitbucketCommentSnapshot(channelName: string, bitbucketCommentId: number): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
+    async findLatestBitbucketCommentSnapshot(channelName: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
         const channelInfo = await this.getChannelInfo(channelName);
         const cacheKey = getCommentCacheKey(channelInfo.id, bitbucketCommentId);
         const cachedCommentInfo = this.bitbucketCommentsCache.get(cacheKey);
         if (cachedCommentInfo) {
-            this.bitbucketCommentsCacheHitsCounter++;
             return Promise.resolve(cachedCommentInfo);
         }
-        this.bitbucketCommentsCacheMissesCounter++;
         const commentSnapshot = await this.gateway.findLatestBitbucketCommentSnapshot(channelName, bitbucketCommentId);
 
         if (commentSnapshot) {

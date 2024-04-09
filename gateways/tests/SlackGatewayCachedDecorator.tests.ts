@@ -1,6 +1,8 @@
 import { SlackGatewayCachedDecorator } from "../SlackGatewayCachedDecorator";
 import { snapshotCommentAsSlackMetadata } from "../../webhook-handler/slack-building-blocks";
 import { BitbucketCommentSnapshotInSlackMetadata, PullRequestCommentActionNotification } from "../../typings";
+import { register } from "prom-client";
+
 
 const decoratedGatewayMock = {
     createChannel: jest.fn(),
@@ -15,140 +17,123 @@ const decoratedGatewayMock = {
 };
 
 describe("SlackGatewayCachedDecorator", () => {
-    let decorator: SlackGatewayCachedDecorator;
+    let systemUnderTest: SlackGatewayCachedDecorator;
 
     beforeEach(() => {
-        decorator = new SlackGatewayCachedDecorator(decoratedGatewayMock as any);
-        jest.spyOn(decorator.channelsCache, "set");
-        jest.spyOn(decorator.channelsCache, "deleteWhere");
-        jest.spyOn(decorator.bitbucketCommentsCache, "set");
-        jest.spyOn(decorator.bitbucketCommentsCache, "deleteWhere");
+        systemUnderTest = new SlackGatewayCachedDecorator(decoratedGatewayMock as any);
     });
 
     afterEach(() => {
         jest.clearAllMocks();
+        register.clear();
     });
 
     it("should cache channel info when creating a channel", async () => {
-        decoratedGatewayMock.createChannel.mockResolvedValue({
-            channel: {
-                id: "channelId",
-                name: "channelName",
-                is_archived: false
-            }
-        });
-
-        await decorator.createChannel({ name: "channelName" });
-
-        expect(decorator.channelsCache.set).toHaveBeenCalledWith("channelName", {
+        const channelData = {
             id: "channelId",
             name: "channelName",
-            isArchived: false
+            is_archived: false
+        };
+        decoratedGatewayMock.createChannel.mockResolvedValue({ channel: channelData });
+
+        await systemUnderTest.createChannel({ name: channelData.name });
+
+        expect(systemUnderTest.channelsCache.get(channelData.name)).toEqual({
+            id: channelData.id,
+            name: channelData.name,
+            isArchived: channelData.is_archived
         });
     });
 
     it("should delete channel info from cache when archiving a channel", async () => {
+        const channelData = {
+            id: "channelId",
+            name: "channelName",
+            is_archived: false
+        };
+        decoratedGatewayMock.createChannel.mockResolvedValue({ channel: channelData });
         decoratedGatewayMock.archiveChannel.mockResolvedValue({});
 
-        await decorator.archiveChannel("channelId");
+        await systemUnderTest.createChannel({ name: channelData.name });
+        expect(systemUnderTest.channelsCache.get(channelData.name)).not.toBeUndefined();
 
-        expect(decorator.channelsCache.deleteWhere).toHaveBeenCalled();
+        await systemUnderTest.archiveChannel(channelData.id);
+        expect(systemUnderTest.channelsCache.get(channelData.name)).toBeUndefined();
     });
 
     it("should get channel info from cache if available", async () => {
-        const cachedChannelInfo = {
+        const channelData = {
             id: "channelId",
             name: "channelName",
             isArchived: false
         };
-        decorator.channelsCache.set(cachedChannelInfo.name, cachedChannelInfo);
+        systemUnderTest.channelsCache.set(channelData.name, channelData);
 
-        const result = await decorator.getChannelInfo("channelName");
+        const result = await systemUnderTest.getChannelInfo(channelData.name);
 
-        expect(result).toEqual(cachedChannelInfo);
+        expect(result).toEqual(channelData);
         expect(decoratedGatewayMock.getChannelInfo).not.toHaveBeenCalled();
-        expect(decorator.channelsCacheHits).toEqual(1);
-        expect(decorator.channelsCacheMisses).toEqual(0);
     });
 
     it("should fetch channel info from gateway and save in cache", async () => {
-        const channelInfo = {
+        const channelData = {
             id: "channelId",
             name: "channelName",
             isArchived: false
         };
-        decoratedGatewayMock.getChannelInfo.mockResolvedValueOnce(channelInfo);
+        decoratedGatewayMock.getChannelInfo.mockResolvedValueOnce(channelData);
+        expect(systemUnderTest.channelsCache.get(channelData.name)).toBeUndefined();
 
-        const result = await decorator.getChannelInfo("channelName");
+        const result = await systemUnderTest.getChannelInfo("channelName");
 
-        expect(decoratedGatewayMock.getChannelInfo).toHaveBeenCalledWith("channelName", undefined);
-        expect(result).toEqual(channelInfo);
-        expect(decorator.channelsCacheHits).toEqual(0);
-        expect(decorator.channelsCacheMisses).toEqual(1);
-        expect(decorator.channelsCache.set).toHaveBeenCalledWith("channelName", channelInfo);
+        expect(result).toEqual(channelData);
+        expect(systemUnderTest.channelsCache.get(channelData.name)).toEqual(channelData);
     });
 
     it("should cache comment info when sending a message", async () => {
-        decoratedGatewayMock.sendMessage.mockResolvedValue({
-            channel: "channelId"
-        });
-
-        await decorator.sendMessage({
-            channel: "channelName",
-            metadata: snapshotCommentAsSlackMetadata({
-                comment: {
-                    id: 1,
-                    severity: "NORMAL",
-                    threadResolved: false
-                }
-            } as PullRequestCommentActionNotification)
-        });
-
-        expect(decorator.bitbucketCommentsCache.set).toHaveBeenCalledWith("channelId-1", {
-            comment_id: "1",
-            severity: "NORMAL",
-            thread_resolved: false
-        });
-    });
-
-    it("should delete comment snapshots from cache when archiving a channel", async () => {
-        decoratedGatewayMock.archiveChannel.mockResolvedValue({});
-
-        await decorator.archiveChannel("channelId");
-
-        expect(decorator.bitbucketCommentsCache.deleteWhere).toHaveBeenCalled();
-    });
-
-
-    it("should get comment snapshot from cache if available", async () => {
-        decoratedGatewayMock.getChannelInfo.mockResolvedValueOnce({
+        const channelData = {
             id: "channelId",
             name: "channelName",
-            isArchived: false
+            is_archived: false
+        };
+        decoratedGatewayMock.createChannel.mockResolvedValue({ channel: channelData });
+
+        await systemUnderTest.createChannel({ name: channelData.name });
+
+        decoratedGatewayMock.sendMessage.mockResolvedValue({
+            channel: channelData.id
         });
 
-        const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>{
-            comment_id: "1",
-            severity: "NORMAL",
-            thread_resolved: false
-        };
-        decorator.bitbucketCommentsCache.set("channelId-1", commentSnapshot);
+        const testPayload = {
+            comment: {
+                id: 1,
+                severity: "NORMAL",
+                threadResolved: false
+            }
+        } as PullRequestCommentActionNotification;
 
-        const result = await decorator.findLatestBitbucketCommentSnapshot("channelName", 1);
+        await systemUnderTest.sendMessage({
+            channel: channelData.name,
+            metadata: snapshotCommentAsSlackMetadata(testPayload)
+        });
 
-        expect(result).toEqual(commentSnapshot);
+
+        expect(await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.name, testPayload.comment.id)).toEqual({
+            comment_id: testPayload.comment.id.toString(),
+            severity: testPayload.comment.severity,
+            thread_resolved: testPayload.comment.threadResolved
+        });
         expect(decoratedGatewayMock.findLatestBitbucketCommentSnapshot).not.toHaveBeenCalled();
-        expect(decorator.bitbucketCommentsCacheHits).toEqual(1);
-        expect(decorator.bitbucketCommentsCacheMisses).toEqual(0);
     });
 
     it("should fetch comment snapshot from gateway and save in cache", async () => {
-        decoratedGatewayMock.getChannelInfo.mockResolvedValueOnce({
+        const channelData = {
             id: "channelId",
             name: "channelName",
-            isArchived: false
-        });
+            is_archived: false
+        };
 
+        decoratedGatewayMock.getChannelInfo.mockResolvedValueOnce(channelData);
         const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>{
             comment_id: "1",
             severity: "NORMAL",
@@ -156,12 +141,37 @@ describe("SlackGatewayCachedDecorator", () => {
         };
         decoratedGatewayMock.findLatestBitbucketCommentSnapshot.mockResolvedValueOnce(commentSnapshot);
 
-        const result = await decorator.findLatestBitbucketCommentSnapshot("channelName", 1);
+        const result = await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.name, commentSnapshot.comment_id);
 
-        expect(decoratedGatewayMock.findLatestBitbucketCommentSnapshot).toHaveBeenCalledWith("channelName", 1);
+        expect(decoratedGatewayMock.findLatestBitbucketCommentSnapshot).toHaveBeenCalledWith(channelData.name, commentSnapshot.comment_id);
         expect(result).toEqual(commentSnapshot);
-        expect(decorator.bitbucketCommentsCacheHits).toEqual(0);
-        expect(decorator.bitbucketCommentsCacheMisses).toEqual(1);
-        expect(decorator.bitbucketCommentsCache.set).toHaveBeenCalledWith("channelId-1", commentSnapshot);
+        expect(systemUnderTest.bitbucketCommentsCache.get("channelId-1")).toEqual(commentSnapshot);
+    });
+
+    it("should delete comment snapshots from cache when archiving a channel", async () => {
+        const channelData = {
+            id: "channelId",
+            name: "channelName",
+            is_archived: false
+        };
+
+        decoratedGatewayMock.getChannelInfo.mockResolvedValueOnce(channelData);
+        const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>{
+            comment_id: "1",
+            severity: "NORMAL",
+            thread_resolved: false
+        };
+        decoratedGatewayMock.findLatestBitbucketCommentSnapshot.mockResolvedValueOnce(commentSnapshot);
+
+        await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.name, commentSnapshot.comment_id);
+
+        expect(systemUnderTest.bitbucketCommentsCache.get("channelId-1")).toEqual(commentSnapshot);
+
+        decoratedGatewayMock.archiveChannel.mockResolvedValue({});
+
+        await systemUnderTest.archiveChannel("channelId");
+
+        expect(systemUnderTest.bitbucketCommentsCache.get("channelId-1")).toBeUndefined();
+
     });
 });

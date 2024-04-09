@@ -64,7 +64,7 @@ export class SlackWebClientGateway implements SlackGateway {
         return this.client.chat.postMessage(options);
     }
 
-    async findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
+    async findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
         let cursor: string | undefined = undefined;
         const matchPredicate = (message: MessageElement) => {
             const eventPayload = <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload;

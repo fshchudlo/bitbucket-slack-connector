@@ -21,5 +21,5 @@ export interface SlackGateway {
 
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse>;
 
-    findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number): Promise<BitbucketCommentSnapshotInSlackMetadata | null>;
+    findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number| string): Promise<BitbucketCommentSnapshotInSlackMetadata | null>;
 }

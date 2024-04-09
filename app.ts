@@ -5,7 +5,6 @@ import { SlackWebClientGateway } from "./gateways/SlackWebClientGateway";
 import express from "express";
 import { SlackGatewayCachedDecorator } from "./gateways/SlackGatewayCachedDecorator";
 import { collectDefaultMetrics } from "prom-client";
-import configureAppMetrics from "./app.metrics";
 import configureRoutes from "./app.routes";
 
 const expressReceiver = new ExpressReceiver({
@@ -21,7 +20,6 @@ const slackApp = new App({
 const slackGateway = new SlackGatewayCachedDecorator(new SlackWebClientGateway(slackApp.client));
 
 collectDefaultMetrics();
-configureAppMetrics(slackGateway);
 configureRoutes(expressReceiver, slackGateway);
 
 (async () => {

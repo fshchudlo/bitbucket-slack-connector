@@ -68,7 +68,7 @@ export default class TestSlackGateway implements SlackGateway {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    findLatestBitbucketCommentSnapshot(_channelId: string, bitbucketCommentId: number): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
+    findLatestBitbucketCommentSnapshot(_channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
         return Promise.resolve({
             comment_id: bitbucketCommentId.toString(),
             severity: "NORMAL",
