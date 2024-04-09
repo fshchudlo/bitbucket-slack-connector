@@ -1,4 +1,4 @@
-import { InMemoryCache } from "./InMemoryCache";
+import { InMemoryCache } from "../InMemoryCache";
 import { register } from "prom-client";
 
 describe("InMemoryCache", () => {

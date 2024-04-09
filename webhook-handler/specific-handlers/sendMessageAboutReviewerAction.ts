@@ -23,9 +23,9 @@ function getReviewStatus(pullRequest: PullRequestPayload) {
         return `:large_green_circle: All reviewers approved PR. Seems like you can ${slackLink(pullRequest.links.self[0].href, "merge it")}.`;
     }
 
-    let reviewStatus = whoApproved.length > 0 ? `Approved: ${whoApproved.map(r => r.user.displayName).join(",")}` : "";
-    reviewStatus += whoRequestedWork.length > 0 ? `Needs work: ${whoRequestedWork.map(r => r.user.displayName).join(",")}` : "";
-    reviewStatus += whoUnapproved.length > 0 ? `Unapproved: ${whoUnapproved.map(r => r.user.displayName).join(",")}` : "";
+    let reviewStatus = whoApproved.length > 0 ? ` Approved: ${whoApproved.map(r => r.user.displayName).join(",")}` : "";
+    reviewStatus += whoRequestedWork.length > 0 ? ` Needs work: ${whoRequestedWork.map(r => r.user.displayName).join(",")}` : "";
+    reviewStatus += whoUnapproved.length > 0 ? ` Unapproved: ${whoUnapproved.map(r => r.user.displayName).join(",")}` : "";
 
     return `:large_yellow_circle: ${reviewStatus}`;
 }
