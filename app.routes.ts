@@ -17,7 +17,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackG
             await handleBitbucketWebhook(req.body, slackGateway, bitbucketGateway, appConfig.USE_PRIVATE_CHANNELS);
             res.sendStatus(200);
         } catch (error) {
-            await handleWebhookError(error, req.body, slackGateway);
+            await handleError(error, req.body, slackGateway);
             res.sendStatus(500);
         }
     });
@@ -42,13 +42,13 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackG
             const channelInfo = await slackGateway.getChannelInfo(channelName, false);
             res.send(channelInfo);
         } catch (error) {
-            await handleWebhookError(error, req.body, slackGateway);
+            await handleError(error, req.body, slackGateway);
             res.sendStatus(500);
         }
     });
 }
 
-async function handleWebhookError(error: any, requestBody: any, slackGateway: SlackGateway) {
+async function handleError(error: any, requestBody: any, slackGateway: SlackGateway) {
     const errorMessage = ["Error processing webhook.", `Error: ${util.inspect(error, true, 8)}.`, `Payload: ${util.inspect(requestBody, true, 8)}`].join("\n\n");
     console.error(errorMessage);
     try {
