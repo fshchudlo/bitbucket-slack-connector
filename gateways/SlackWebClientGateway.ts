@@ -18,8 +18,10 @@ export class SlackWebClientGateway implements SlackGateway {
 
     async getSlackUserIds(userPayloads: UserPayload[]): Promise<string[]> {
         const emailAddresses = [...new Set(userPayloads.map(payload => payload.emailAddress))];
-        const slackUserIds = await Promise.all(emailAddresses.map(email => this.client.users.lookupByEmail({ email })));
-        return slackUserIds.map(r => r.user.id);
+        const slackUserIds = await Promise.all(emailAddresses
+            .map(email => this.client.users.lookupByEmail({ email })
+                .catch(e => e.data?.error == "users_not_found" ? undefined : e)));
+        return slackUserIds.filter(r => !!r).map(r => r.user.id);
     }
 
     async getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {

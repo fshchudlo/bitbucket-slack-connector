@@ -7,11 +7,13 @@ export async function updateChannelMembers(payload: PullRequestReviewersUpdatedN
     const userIdsToAdd = await slackGateway.getSlackUserIds(payload.addedReviewers);
     const userIdsToRemove = await slackGateway.getSlackUserIds(payload.removedReviewers);
 
-    await slackGateway.inviteToChannel({
-        channel: channelInfo.id,
-        users: userIdsToAdd.join(","),
-        force: true
-    });
+    if (userIdsToAdd.length > 0) {
+        await slackGateway.inviteToChannel({
+            channel: channelInfo.id,
+            users: userIdsToAdd.join(","),
+            force: true
+        });
+    }
 
     await Promise.all(userIdsToRemove.map(async userId => {
         await slackGateway.kickFromChannel({

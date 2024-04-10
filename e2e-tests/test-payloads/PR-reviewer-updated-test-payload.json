@@ -58,6 +58,10 @@
     {
       "displayName": "{{SecondReviewerName}}",
       "emailAddress": "{{SecondReviewerEmail}}"
+    },
+    {
+      "displayName": "Non existing user in Slack",
+      "emailAddress": "non-existing-user@notthedomain.com"
     }
   ],
   "removedReviewers": [
