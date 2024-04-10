@@ -150,7 +150,7 @@ describe("SlackGatewayCachedDecorator", () => {
 
         const result = await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.name, commentSnapshot.commentId);
 
-        expect(decoratedGatewayMock.findLatestBitbucketCommentSnapshot).toHaveBeenCalledWith(channelData.name, commentSnapshot.commentId);
+        expect(decoratedGatewayMock.findLatestBitbucketCommentSnapshot).toHaveBeenCalledWith(channelData.id, commentSnapshot.commentId);
         expect(result).toEqual(commentSnapshot);
         expect(systemUnderTest.bitbucketCommentsCache.get("channelId-1")).toEqual(commentSnapshot);
     });

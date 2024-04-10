@@ -90,7 +90,7 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
         if (cachedCommentInfo) {
             return Promise.resolve(cachedCommentInfo);
         }
-        const commentSnapshot = await this.gateway.findLatestBitbucketCommentSnapshot(channelName, bitbucketCommentId);
+        const commentSnapshot = await this.gateway.findLatestBitbucketCommentSnapshot(channelInfo.id, bitbucketCommentId);
 
         if (commentSnapshot) {
             this.bitbucketCommentsCache.set(cacheKey, commentSnapshot);
