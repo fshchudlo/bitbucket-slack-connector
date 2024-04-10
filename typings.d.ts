@@ -78,15 +78,3 @@ export type PullRequestPayload = {
     toRef: RefPayload;
 }
 
-export type SlackChannelInfo = {
-    id?: string;
-    isArchived?: boolean;
-    name?: string;
-}
-
-export type BitbucketCommentSnapshotInSlackMetadata = {
-    // see https://api.slack.com/reference/metadata for the reference about naming
-    comment_id: string,
-    severity: CommentSeverity,
-    thread_resolved: boolean
-}

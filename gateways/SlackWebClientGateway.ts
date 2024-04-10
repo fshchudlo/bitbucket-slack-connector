@@ -1,6 +1,6 @@
 import * as slack from "@slack/web-api";
-import { SlackGateway } from "../webhook-handler/SlackGateway";
-import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo, UserPayload } from "../typings";
+import { SlackGateway, BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo } from "../webhook-handler/SlackGateway";
+import { UserPayload } from "../typings";
 import appConfig from "../app.config";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
 

@@ -1,7 +1,8 @@
 import { SlackGatewayCachedDecorator } from "../SlackGatewayCachedDecorator";
 import { snapshotCommentAsSlackMetadata } from "../../webhook-handler/slack-building-blocks";
-import { BitbucketCommentSnapshotInSlackMetadata, PullRequestCommentActionNotification } from "../../typings";
+import { PullRequestCommentActionNotification } from "../../typings";
 import { register } from "prom-client";
+import { BitbucketCommentSnapshotInSlackMetadata } from "../../webhook-handler/SlackGateway";
 
 
 const decoratedGatewayMock = {

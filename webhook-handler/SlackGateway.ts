@@ -1,5 +1,5 @@
 import * as slack from "@slack/web-api";
-import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo, UserPayload } from "../typings";
+import { CommentSeverity, UserPayload } from "../typings";
 
 export interface SlackGateway {
     getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null>;
@@ -22,4 +22,16 @@ export interface SlackGateway {
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse>;
 
     findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number| string): Promise<BitbucketCommentSnapshotInSlackMetadata | null>;
+}
+export type BitbucketCommentSnapshotInSlackMetadata = {
+    // see https://api.slack.com/reference/metadata for the reference about naming
+    comment_id: string,
+    severity: CommentSeverity,
+    thread_resolved: boolean
+}
+
+export type SlackChannelInfo = {
+    id?: string;
+    isArchived?: boolean;
+    name?: string;
 }

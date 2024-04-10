@@ -1,7 +1,7 @@
 import * as slack from "@slack/web-api";
 
-import { SlackGateway } from "../SlackGateway";
-import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo, UserPayload } from "../../typings";
+import { SlackGateway, BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo } from "../SlackGateway";
+import { UserPayload } from "../../typings";
 
 const channelId = "12345";
 export default class TestSlackGateway implements SlackGateway {

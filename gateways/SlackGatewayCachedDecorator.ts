@@ -1,7 +1,8 @@
 import * as slack from "@slack/web-api";
-import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo, UserPayload } from "../typings";
+import { UserPayload } from "../typings";
 import { SlackGateway } from "../webhook-handler/SlackGateway";
 import { InMemoryCache } from "./cache/InMemoryCache";
+import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo } from "../webhook-handler/SlackGateway";
 
 function getCommentCacheKey(channelId: string, bitbucketCommentId: number | string) {
     return `${channelId}-${bitbucketCommentId}`;

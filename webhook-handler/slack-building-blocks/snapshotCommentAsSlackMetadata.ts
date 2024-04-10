@@ -1,5 +1,6 @@
-import { BitbucketCommentSnapshotInSlackMetadata, PullRequestCommentActionNotification } from "../../typings";
+import { PullRequestCommentActionNotification } from "../../typings";
 import { MessageMetadata } from "@slack/types/dist/message-metadata";
+import { BitbucketCommentSnapshotInSlackMetadata } from "../SlackGateway";
 
 export function snapshotCommentAsSlackMetadata(payload: PullRequestCommentActionNotification): MessageMetadata {
     return {
