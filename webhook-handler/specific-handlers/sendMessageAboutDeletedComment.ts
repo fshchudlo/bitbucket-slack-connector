@@ -1,7 +1,7 @@
 import { SlackGateway } from "../SlackGateway";
 import {
     buildChannelName,
-    formatUserName, getCommentType,
+    formatUserName, getTaskOrCommentTitle,
     reformatMarkdownToSlackMarkup, slackQuote, slackSection, snapshotCommentAsSlackMetadata, iconEmoji
 } from "../slack-building-blocks";
 import { PullRequestCommentActionNotification } from "../../typings";
@@ -11,7 +11,7 @@ export async function sendMessageAboutDeletedComment(payload: PullRequestComment
 }
 
 function buildMessage(payload: PullRequestCommentActionNotification) {
-    const messageTitle = `${formatUserName(payload.actor)} deleted ${getCommentType(payload)}:`;
+    const messageTitle = `${formatUserName(payload.actor)} deleted ${getTaskOrCommentTitle(payload)}:`;
     const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);
     return {
         channel: buildChannelName(payload.pullRequest),

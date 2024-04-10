@@ -57,7 +57,8 @@
   "comment": {
     "id": "{{CommentId}}",
     "text": "Updated comment text",
-    "severity": "NORMAL",
+    "severity": "BLOCKER",
+    "threadResolvedDate": 1712736278990,
     "state": "OPEN",
     "author": {
       "displayName": "{{FirstReviewerName}}",

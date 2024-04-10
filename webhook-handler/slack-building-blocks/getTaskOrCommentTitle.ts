@@ -1,6 +1,6 @@
 import { PullRequestCommentActionNotification } from "../../typings";
 
-export function getCommentType(payload: PullRequestCommentActionNotification): "task" | "comment" {
+export function getTaskOrCommentTitle(payload: PullRequestCommentActionNotification): "task" | "comment" {
     switch (payload.comment.severity) {
         case "BLOCKER":
             return "task";

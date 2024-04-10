@@ -1,4 +1,4 @@
-import { getCommentType } from "../getCommentType";
+import { getTaskOrCommentTitle } from "../getTaskOrCommentTitle";
 import { PullRequestCommentActionNotification } from "../../../typings";
 
 describe("getCommentType function", () => {
@@ -8,7 +8,7 @@ describe("getCommentType function", () => {
                 severity: "BLOCKER"
             }
         } as PullRequestCommentActionNotification;
-        expect(getCommentType(payload)).toBe("task");
+        expect(getTaskOrCommentTitle(payload)).toBe("task");
     });
 
     it("should return \"comment\" for NORMAL severity", () => {
@@ -17,7 +17,7 @@ describe("getCommentType function", () => {
                 severity: "NORMAL"
             }
         } as PullRequestCommentActionNotification;
-        expect(getCommentType(payload)).toBe("comment");
+        expect(getTaskOrCommentTitle(payload)).toBe("comment");
     });
 
     it("should throw an error for unknown severity", () => {
@@ -26,6 +26,6 @@ describe("getCommentType function", () => {
                 severity: "UNKNOWN"
             }
         } as unknown as PullRequestCommentActionNotification;
-        expect(() => getCommentType(payload)).toThrowError("\"UNKNOWN\" comment severity is unknown.");
+        expect(() => getTaskOrCommentTitle(payload)).toThrowError("\"UNKNOWN\" comment severity is unknown.");
     });
 });

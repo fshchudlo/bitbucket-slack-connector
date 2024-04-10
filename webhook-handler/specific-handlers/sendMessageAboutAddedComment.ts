@@ -1,7 +1,7 @@
 import {
     buildChannelName,
     formatUserName,
-    getCommentType,
+    getTaskOrCommentTitle,
     reformatMarkdownToSlackMarkup,
     slackLink,
     slackQuote,
@@ -18,7 +18,7 @@ export async function sendMessageAboutAddedComment(payload: PullRequestCommentAc
 
 function buildMessage(payload: PullRequestCommentActionNotification) {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
-    const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, `added ${getCommentType(payload)}`)}:`;
+    const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, `added ${getTaskOrCommentTitle(payload)}`)}:`;
     const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);
 
     return {

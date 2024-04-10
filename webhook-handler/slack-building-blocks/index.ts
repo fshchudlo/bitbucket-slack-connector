@@ -1,6 +1,6 @@
 export * from "./buildChannelName";
 export * from "./formatUserName";
-export * from "./getCommentType";
+export * from "./getTaskOrCommentTitle";
 export * from "./getPullRequestDescriptionForSlack";
 export * from "./reformatMarkdownToSlackMarkup";
 export * from "./slackLink";
