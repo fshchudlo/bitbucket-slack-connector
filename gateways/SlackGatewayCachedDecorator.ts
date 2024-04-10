@@ -18,17 +18,14 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
         this.bitbucketCommentsCache = new InMemoryCache("comments", 500);
     }
 
-    createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse> {
-        const promise = this.gateway.createChannel(options);
-
-        promise.then(({ channel }) =>
-            this.channelsCache.set(options.name, <SlackChannelInfo>{
-                id: channel.id,
-                name: channel.name,
-                isArchived: channel.is_archived
-            }));
-
-        return promise;
+    async createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse> {
+        const response = await this.gateway.createChannel(options);
+        this.channelsCache.set(options.name, <SlackChannelInfo>{
+            id: response.channel.id,
+            name: response.channel.name,
+            isArchived: response.channel.is_archived
+        });
+        return response;
     }
 
     async getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
@@ -44,13 +41,11 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
         return channelInfo;
     }
 
-    archiveChannel(channelId: string): Promise<slack.ConversationsArchiveResponse> {
-        const promise = this.gateway.archiveChannel(channelId);
-        promise.then(() => {
-            this.channelsCache.deleteWhere((k, v) => v.id == channelId);
-            this.bitbucketCommentsCache.deleteWhere((k) => k.startsWith(getCommentCacheKey(channelId, "")));
-        });
-        return promise;
+    async archiveChannel(channelId: string): Promise<slack.ConversationsArchiveResponse> {
+        const response = await this.gateway.archiveChannel(channelId);
+        this.channelsCache.deleteWhere((k, v) => v.id == channelId);
+        this.bitbucketCommentsCache.deleteWhere((k) => k.startsWith(getCommentCacheKey(channelId, "")));
+        return response;
     }
 
     getSlackUserIds(userPayloads: UserPayload[]): Promise<string[]> {
@@ -69,17 +64,13 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
         return this.gateway.kickFromChannel(options);
     }
 
-    sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {
-        const promise = this.gateway.sendMessage(options);
-
-        promise.then((r) => {
-            const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>options.metadata?.event_payload;
-            if (commentSnapshot?.comment_id) {
-                this.bitbucketCommentsCache.set(getCommentCacheKey(r.channel, commentSnapshot.comment_id), commentSnapshot);
-            }
-        });
-
-        return promise;
+    async sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {
+        const response = await this.gateway.sendMessage(options);
+        const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>options.metadata?.event_payload;
+        if (commentSnapshot?.comment_id) {
+            this.bitbucketCommentsCache.set(getCommentCacheKey(response.channel, commentSnapshot.comment_id), commentSnapshot);
+        }
+        return response;
     }
 
     async findLatestBitbucketCommentSnapshot(channelName: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
