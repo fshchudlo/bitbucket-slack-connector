@@ -12,10 +12,6 @@ export async function createChannelAndInviteParticipants(payload: PullRequestBas
     const allParticipants = [payload.pullRequest.author.user].concat(payload.pullRequest.reviewers.map(r => r.user));
     const slackUserIds = await slackGateway.getSlackUserIds(allParticipants);
 
-    if (slackUserIds.length == 0) {
-        throw new Error("None of the pull request participants found in Slack");
-    }
-
     const channelId = (
         await slackGateway.createChannel({
             name: buildChannelName(payload.pullRequest),
@@ -24,7 +20,9 @@ export async function createChannelAndInviteParticipants(payload: PullRequestBas
     ).channel.id;
 
     await slackGateway.setChannelTopic({ channel: channelId, topic: buildChannelTopic(payload) });
-    await slackGateway.inviteToChannel({ channel: channelId, users: slackUserIds.join(","), force: true });
+    if (slackUserIds.length > 0) {
+        await slackGateway.inviteToChannel({ channel: channelId, users: slackUserIds.join(","), force: true });
+    }
     await slackGateway.sendMessage(buildMessage(payload, channelId));
 }
 
