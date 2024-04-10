@@ -81,7 +81,6 @@ export default class TestSlackGateway implements SlackGateway {
         return Promise.resolve({
             commentId: bitbucketCommentId.toString(),
             severity: "NORMAL",
-            threadResolved: false,
             slackMessageId: messageId
         });
     }

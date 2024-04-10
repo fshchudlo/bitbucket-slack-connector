@@ -59,7 +59,6 @@
     "text": "Updated comment text",
     "severity": "NORMAL",
     "state": "OPEN",
-    "threadResolved": false,
     "author": {
       "displayName": "{{FirstReviewerName}}",
       "emailAddress": "{{FirstReviewerEmail}}"
