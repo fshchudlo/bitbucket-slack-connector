@@ -6,10 +6,10 @@ import {
     sendMessageAboutNewCommit,
     sendMessageAboutReviewerAction,
     sendMessageAboutDeletedComment, sendMessageAboutEditedComment
-} from "./specific-handlers";
+} from "./use-cases";
 import { SlackGateway } from "./SlackGateway";
 import { BitbucketGateway } from "./BitbucketGateway";
-import { sendMessageAboutPRModification } from "./specific-handlers/sendMessageAboutPRModification";
+import { sendMessageAboutPRModification } from "./use-cases/sendMessageAboutPRModification";
 import { BitbucketNotification } from "../typings";
 
 export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway, usePrivateChannels: boolean = true) {
