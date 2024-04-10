@@ -31,9 +31,11 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
       "icon_emoji": ":bitbucket:",
       "metadata": {
         "event_payload": {
-          "comment_id": "1",
+          "commentId": "1",
+          "commentParentId": undefined,
           "severity": "NORMAL",
-          "thread_resolved": false,
+          "taskResolvedDate": undefined,
+          "threadResolvedDate": undefined,
         },
         "event_type": "bitbucket_comment_snapshot_saved",
       },

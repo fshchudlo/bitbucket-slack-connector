@@ -2,7 +2,7 @@ import { SlackGatewayCachedDecorator } from "../SlackGatewayCachedDecorator";
 import { snapshotCommentAsSlackMetadata } from "../../webhook-handler/slack-building-blocks";
 import { PullRequestCommentActionNotification } from "../../typings";
 import { register } from "prom-client";
-import { BitbucketCommentSnapshotInSlackMetadata } from "../../webhook-handler/SlackGateway";
+import { BitbucketCommentSnapshot, BitbucketCommentSnapshotInSlackMetadata } from "../../webhook-handler/SlackGateway";
 
 
 const decoratedGatewayMock = {
@@ -102,15 +102,17 @@ describe("SlackGatewayCachedDecorator", () => {
         await systemUnderTest.createChannel({ name: channelData.name });
 
         decoratedGatewayMock.sendMessage.mockResolvedValue({
-            channel: channelData.id
+            channel: channelData.id,
+            message: { ts: "ABCDE" }
         });
 
         const testPayload = {
             comment: {
                 id: 1,
                 severity: "NORMAL",
-                threadResolved: false
-            }
+                threadResolvedDate: 123456789
+            },
+            commentParentId: undefined
         } as PullRequestCommentActionNotification;
 
         await systemUnderTest.sendMessage({
@@ -119,10 +121,14 @@ describe("SlackGatewayCachedDecorator", () => {
         });
 
 
-        expect(await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.name, testPayload.comment.id)).toEqual({
-            comment_id: testPayload.comment.id.toString(),
+        expect(await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.name, testPayload.comment.id)).toEqual(<BitbucketCommentSnapshot>{
+            commentId: testPayload.comment.id.toString(),
+            commentParentId: testPayload.commentParentId?.toString(),
             severity: testPayload.comment.severity,
-            thread_resolved: testPayload.comment.threadResolved
+            threadResolvedDate: testPayload.comment.threadResolvedDate,
+            taskResolvedDate: testPayload.comment.resolvedDate,
+            slackMessageId: "ABCDE",
+            slackThreadId: undefined
         });
         expect(decoratedGatewayMock.findLatestBitbucketCommentSnapshot).not.toHaveBeenCalled();
     });
@@ -136,15 +142,15 @@ describe("SlackGatewayCachedDecorator", () => {
 
         decoratedGatewayMock.getChannelInfo.mockResolvedValueOnce(channelData);
         const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>{
-            comment_id: "1",
+            commentId: "1",
             severity: "NORMAL",
             thread_resolved: false
         };
         decoratedGatewayMock.findLatestBitbucketCommentSnapshot.mockResolvedValueOnce(commentSnapshot);
 
-        const result = await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.name, commentSnapshot.comment_id);
+        const result = await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.name, commentSnapshot.commentId);
 
-        expect(decoratedGatewayMock.findLatestBitbucketCommentSnapshot).toHaveBeenCalledWith(channelData.name, commentSnapshot.comment_id);
+        expect(decoratedGatewayMock.findLatestBitbucketCommentSnapshot).toHaveBeenCalledWith(channelData.name, commentSnapshot.commentId);
         expect(result).toEqual(commentSnapshot);
         expect(systemUnderTest.bitbucketCommentsCache.get("channelId-1")).toEqual(commentSnapshot);
     });
@@ -158,13 +164,13 @@ describe("SlackGatewayCachedDecorator", () => {
 
         decoratedGatewayMock.getChannelInfo.mockResolvedValueOnce(channelData);
         const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>{
-            comment_id: "1",
+            commentId: "1",
             severity: "NORMAL",
             thread_resolved: false
         };
         decoratedGatewayMock.findLatestBitbucketCommentSnapshot.mockResolvedValueOnce(commentSnapshot);
 
-        await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.name, commentSnapshot.comment_id);
+        await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.name, commentSnapshot.commentId);
 
         expect(systemUnderTest.bitbucketCommentsCache.get("channelId-1")).toEqual(commentSnapshot);
 

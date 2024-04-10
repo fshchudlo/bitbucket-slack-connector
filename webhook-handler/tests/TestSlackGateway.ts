@@ -1,9 +1,14 @@
 import * as slack from "@slack/web-api";
 
-import { SlackGateway, BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo } from "../SlackGateway";
+import {
+    SlackGateway,
+    SlackChannelInfo,
+    BitbucketCommentSnapshot
+} from "../SlackGateway";
 import { UserPayload } from "../../typings";
 
 const channelId = "12345";
+const messageId = "ABCDE";
 export default class TestSlackGateway implements SlackGateway {
     snapshot: {
         searchedCommentSnapshots: any[];
@@ -68,15 +73,16 @@ export default class TestSlackGateway implements SlackGateway {
 
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {
         this.snapshot.sentMessages.push(options);
-        return Promise.resolve({ ok: true, channel: channelId });
+        return Promise.resolve({ ok: true, channel: channelId, message: { ts: messageId } });
     }
 
-    findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
+    findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
         this.snapshot.searchedCommentSnapshots.push({ channelId, bitbucketCommentId });
         return Promise.resolve({
-            comment_id: bitbucketCommentId.toString(),
+            commentId: bitbucketCommentId.toString(),
             severity: "NORMAL",
-            thread_resolved: false
+            threadResolved: false,
+            slackMessageId: messageId
         });
     }
 }

@@ -21,13 +21,19 @@ export interface SlackGateway {
 
     sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse>;
 
-    findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number| string): Promise<BitbucketCommentSnapshotInSlackMetadata | null>;
+    findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null>;
 }
+
 export type BitbucketCommentSnapshotInSlackMetadata = {
-    // see https://api.slack.com/reference/metadata for the reference about naming
-    comment_id: string,
-    severity: CommentSeverity,
-    thread_resolved: boolean
+    severity: CommentSeverity;
+    taskResolvedDate?: number;
+    threadResolvedDate?: number;
+    commentId: string;
+    commentParentId?: string;
+}
+export type BitbucketCommentSnapshot = BitbucketCommentSnapshotInSlackMetadata & {
+    slackMessageId: string;
+    slackThreadId?: string;
 }
 
 export type SlackChannelInfo = {

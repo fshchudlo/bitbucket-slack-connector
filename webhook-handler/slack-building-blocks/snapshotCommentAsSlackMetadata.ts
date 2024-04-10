@@ -6,9 +6,11 @@ export function snapshotCommentAsSlackMetadata(payload: PullRequestCommentAction
     return {
         event_type: "bitbucket_comment_snapshot_saved",
         event_payload: <BitbucketCommentSnapshotInSlackMetadata>{
-            comment_id: payload.comment.id.toString(),
+            commentId: payload.comment.id.toString(),
             severity: payload.comment.severity,
-            thread_resolved: payload.comment.threadResolved
+            threadResolvedDate: payload.comment.threadResolvedDate,
+            taskResolvedDate: payload.comment.resolvedDate,
+            commentParentId: payload.commentParentId?.toString()
         }
     };
 }

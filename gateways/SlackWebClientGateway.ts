@@ -1,5 +1,10 @@
 import * as slack from "@slack/web-api";
-import { SlackGateway, BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo } from "../webhook-handler/SlackGateway";
+import {
+    BitbucketCommentSnapshot,
+    BitbucketCommentSnapshotInSlackMetadata,
+    SlackChannelInfo,
+    SlackGateway
+} from "../webhook-handler/SlackGateway";
 import { UserPayload } from "../typings";
 import appConfig from "../app.config";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
@@ -64,11 +69,11 @@ export class SlackWebClientGateway implements SlackGateway {
         return this.client.chat.postMessage(options);
     }
 
-    async findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
+    async findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
         let cursor: string | undefined = undefined;
         const matchPredicate = (message: MessageElement) => {
             const eventPayload = <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload;
-            return eventPayload && eventPayload.comment_id === bitbucketCommentId.toString();
+            return eventPayload && eventPayload.commentId === bitbucketCommentId.toString();
         };
 
         while (true) {
@@ -80,7 +85,16 @@ export class SlackWebClientGateway implements SlackGateway {
 
             const message = response.messages.find(matchPredicate);
             if (message) {
-                return <BitbucketCommentSnapshotInSlackMetadata>message.metadata.event_payload;
+                const metadata = <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload;
+                return <BitbucketCommentSnapshot>{
+                    commentId: metadata.commentId,
+                    commentParentId: metadata.commentParentId,
+                    threadResolvedDate: metadata.threadResolvedDate,
+                    taskResolvedDate: metadata.taskResolvedDate,
+                    severity: metadata.severity,
+                    slackMessageId: message.ts,
+                    slackThreadId: message.thread_ts
+                };
             }
 
             if (response.response_metadata && response.response_metadata.next_cursor) {

@@ -1,6 +1,6 @@
 import * as slack from "@slack/web-api";
 import { UserPayload } from "../typings";
-import { SlackGateway } from "../webhook-handler/SlackGateway";
+import { BitbucketCommentSnapshot, SlackGateway } from "../webhook-handler/SlackGateway";
 import { InMemoryCache } from "./cache/InMemoryCache";
 import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo } from "../webhook-handler/SlackGateway";
 
@@ -11,7 +11,7 @@ function getCommentCacheKey(channelId: string, bitbucketCommentId: number | stri
 export class SlackGatewayCachedDecorator implements SlackGateway {
     private gateway: SlackGateway;
     readonly channelsCache: InMemoryCache<SlackChannelInfo>;
-    readonly bitbucketCommentsCache: InMemoryCache<BitbucketCommentSnapshotInSlackMetadata>;
+    readonly bitbucketCommentsCache: InMemoryCache<BitbucketCommentSnapshot>;
 
     constructor(gateway: SlackGateway) {
         this.gateway = gateway;
@@ -67,14 +67,23 @@ export class SlackGatewayCachedDecorator implements SlackGateway {
 
     async sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {
         const response = await this.gateway.sendMessage(options);
-        const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>options.metadata?.event_payload;
-        if (commentSnapshot?.comment_id) {
-            this.bitbucketCommentsCache.set(getCommentCacheKey(response.channel, commentSnapshot.comment_id), commentSnapshot);
+        const metadata = <BitbucketCommentSnapshotInSlackMetadata>options.metadata?.event_payload;
+        if (metadata?.commentId) {
+            const commentSnapshot: BitbucketCommentSnapshot = {
+                commentId: metadata.commentId,
+                commentParentId: metadata.commentParentId,
+                threadResolvedDate: metadata.threadResolvedDate,
+                taskResolvedDate: metadata.taskResolvedDate,
+                severity: metadata.severity,
+                slackMessageId: response.message.ts,
+                slackThreadId: response.message.thread_ts
+            };
+            this.bitbucketCommentsCache.set(getCommentCacheKey(response.channel, commentSnapshot.commentId), commentSnapshot);
         }
         return response;
     }
 
-    async findLatestBitbucketCommentSnapshot(channelName: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshotInSlackMetadata | null> {
+    async findLatestBitbucketCommentSnapshot(channelName: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
         const channelInfo = await this.getChannelInfo(channelName);
         const cacheKey = getCommentCacheKey(channelInfo.id, bitbucketCommentId);
         const cachedCommentInfo = this.bitbucketCommentsCache.get(cacheKey);
