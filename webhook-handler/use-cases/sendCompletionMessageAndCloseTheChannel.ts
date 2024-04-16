@@ -1,13 +1,13 @@
 import { buildChannelName, formatUserName, iconEmoji } from "../slack-building-blocks";
-import { SlackAPIAdapter } from "../SlackAPIAdapter";
+import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
 
 export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackGateway: SlackAPIAdapter) {
-    const channelId = (await slackGateway.sendMessage(buildMessage(payload))).channel;
+    const channelId = (await slackGateway.sendMessage(buildMessage(payload))).channelId;
     await slackGateway.archiveChannel(channelId);
 }
 
-function buildMessage(payload: PullRequestBasicNotification) {
+function buildMessage(payload: PullRequestBasicNotification): SendMessageArguments {
     const channelName = buildChannelName(payload.pullRequest);
     let messageText = null;
     switch (payload.eventKey) {
@@ -23,7 +23,7 @@ function buildMessage(payload: PullRequestBasicNotification) {
     }
     return {
         channel: channelName,
-        icon_emoji: iconEmoji,
+        iconEmoji: iconEmoji,
         text: messageText
     };
 }

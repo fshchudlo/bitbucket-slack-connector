@@ -35,7 +35,7 @@ exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
-      "icon_emoji": ":bitbucket:",
+      "iconEmoji": ":bitbucket:",
       "text": "A <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/commits/from-ref-commit-hash|new commit> was added to the pull request by Test Author.",
     },
   ],

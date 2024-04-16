@@ -5,7 +5,7 @@ import {
     slackLink,
     iconEmoji
 } from "../slack-building-blocks";
-import { SlackAPIAdapter } from "../SlackAPIAdapter";
+import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
 
 export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackGateway: SlackAPIAdapter, createPrivateChannel: boolean) {
@@ -15,24 +15,24 @@ export async function createChannelAndInviteParticipants(payload: PullRequestBas
     const channelId = (
         await slackGateway.createChannel({
             name: buildChannelName(payload.pullRequest),
-            is_private: createPrivateChannel
+            isPrivate: createPrivateChannel
         })
-    ).channel.id;
+    ).id;
 
-    await slackGateway.setChannelTopic({ channel: channelId, topic: buildChannelTopic(payload) });
+    await slackGateway.setChannelTopic({ channelId, topic: buildChannelTopic(payload) });
     if (slackUserIds.length > 0) {
-        await slackGateway.inviteToChannel({ channel: channelId, users: slackUserIds.join(","), force: true });
+        await slackGateway.inviteToChannel({ channelId: channelId, users: slackUserIds, force: true });
     }
     await slackGateway.sendMessage(buildMessage(payload, channelId));
 }
 
-function buildMessage(payload: PullRequestBasicNotification, channelId: string) {
+function buildMessage(payload: PullRequestBasicNotification, channelId: string): SendMessageArguments {
     const messageTitle = `The pull request was opened by ${formatUserName(payload.actor)}.`;
     const pleaseReviewText = `Please ${slackLink(payload.pullRequest.links.self[0].href, "review the PR")}`;
     const descriptionText = getPullRequestDescriptionForSlack(payload.pullRequest.description ?? payload.pullRequest.title);
     return {
         channel: channelId,
-        icon_emoji: iconEmoji,
+        iconEmoji: iconEmoji,
         text: messageTitle,
         attachments: [
             {

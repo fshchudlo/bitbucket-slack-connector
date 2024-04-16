@@ -22,7 +22,7 @@ export async function sendMessageAboutEditedComment(payload: PullRequestCommentA
 
     await slackGateway.sendMessage({
         channel: channelName,
-        icon_emoji: iconEmoji,
+        iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))],
         metadata: snapshotCommentAsSlackMetadata(payload)
@@ -30,9 +30,9 @@ export async function sendMessageAboutEditedComment(payload: PullRequestCommentA
 }
 
 async function getUserAction(payload: PullRequestCommentActionNotification, slackGateway: SlackAPIAdapter) {
-    const channelName = buildChannelName(payload.pullRequest);
+    const channelInfo = await slackGateway.findChannel(buildChannelName(payload.pullRequest));
     const commentType = getTaskOrCommentTitle(payload);
-    const previousSnapshot = await slackGateway.findLatestBitbucketCommentSnapshot(channelName, payload.comment.id);
+    const previousSnapshot = await slackGateway.findLatestBitbucketCommentSnapshot(channelInfo.id, payload.comment.id);
     if (previousSnapshot) {
         if (previousSnapshot.severity == "NORMAL" && payload.comment.severity == "BLOCKER") {
             return "converted comment to the task";

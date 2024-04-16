@@ -16,7 +16,7 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
   "sentMessages": [
     {
       "channel": "pr-test-proj-test-repository-1",
-      "icon_emoji": ":bitbucket:",
+      "iconEmoji": ":bitbucket:",
       "text": ":no_entry_sign: The pull request was deleted by Test Author.",
     },
   ],

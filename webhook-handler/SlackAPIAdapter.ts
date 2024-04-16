@@ -1,25 +1,27 @@
-import * as slack from "@slack/web-api";
 import { CommentSeverity, UserPayload } from "../typings";
+import { Block, KnownBlock } from "@slack/bolt";
 
 export interface SlackAPIAdapter {
-    getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null>;
+    findChannel(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null>;
 
     getSlackUserIds(userPayloads: Array<UserPayload>): Promise<string[]>;
 
-    createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse>;
+    provisionChannel(options: CreateChannelArguments): Promise<SlackChannelInfo>;
 
-    setChannelTopic(options: slack.ConversationsSetTopicArguments): Promise<slack.ConversationsSetTopicResponse>;
+    createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo>;
 
-    inviteToChannel(options: slack.ConversationsInviteArguments): Promise<slack.ConversationsInviteResponse>;
+    setChannelTopic(options: SetChannelTopicArguments): Promise<void>;
 
-    kickFromChannel(options: slack.ConversationsKickArguments): Promise<slack.ConversationsKickResponse>;
+    inviteToChannel(options: InviteToChannelArguments): Promise<void>;
+
+    kickFromChannel(options: KickFromChannelArguments): Promise<void>;
 
     /*
     Channel archiving is quite unique in Slack since it requires channel id, not the name. To make it explicit, we change contract here
      */
-    archiveChannel(channelId: string): Promise<slack.ConversationsArchiveResponse>;
+    archiveChannel(channelId: string): Promise<void>;
 
-    sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse>;
+    sendMessage(options: SendMessageArguments): Promise<SendMessageResponse>;
 
     findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null>;
 }
@@ -40,4 +42,42 @@ export type SlackChannelInfo = {
     id?: string;
     isArchived?: boolean;
     name?: string;
+}
+export type CreateChannelArguments = {
+    name: string;
+    isPrivate?: boolean;
+}
+export type SetChannelTopicArguments = {
+    channelId: string;
+    topic: string;
+}
+
+export type InviteToChannelArguments = {
+    channelId: string;
+    force: boolean;
+    users: string[];
+}
+export type KickFromChannelArguments = {
+    channelId: string;
+    user: string;
+}
+export type SendMessageArguments = {
+    channel: string;
+    iconEmoji?: string;
+    text?: string;
+    attachments?: Array<{
+        text: string,
+        color?: string
+    }>;
+    metadata?: {
+        eventType: string;
+        eventPayload: { [p: string]: string | number | boolean }
+    };
+    blocks?: Block[] | KnownBlock[]
+
+}
+export type SendMessageResponse = {
+    channelId: string;
+    messageId: string;
+    threadId?: string;
 }

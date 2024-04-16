@@ -37,7 +37,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackG
                 repositorySlug: <string>repositorySlug,
                 projectKey: <string>projectKey
             });
-            const channelInfo = await slackGateway.getChannelInfo(channelName, false);
+            const channelInfo = await slackGateway.findChannel(channelName, false);
             res.send(channelInfo);
         } catch (error) {
             next(error);

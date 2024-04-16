@@ -5,15 +5,18 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
   "archivedChannels": [],
   "createdChannels": [
     {
-      "is_private": true,
+      "isPrivate": true,
       "name": "pr-test-proj-test-repository-1",
     },
   ],
   "invitesToChannels": [
     {
-      "channel": "12345",
+      "channelId": "12345",
       "force": true,
-      "users": "test.author@test.com,test.reviewer1@test.com",
+      "users": [
+        "test.author@test.com",
+        "test.reviewer1@test.com",
+      ],
     },
   ],
   "kicksFromChannels": [],
@@ -39,13 +42,13 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
         },
       ],
       "channel": "12345",
-      "icon_emoji": ":bitbucket:",
+      "iconEmoji": ":bitbucket:",
       "text": "The pull request was opened by Test Author.",
     },
   ],
   "setChannelTopics": [
     {
-      "channel": "12345",
+      "channelId": "12345",
       "topic": ":git: Pull request: Quite a long and comprehensive title to get channel title longer than 250 symbols which is a maximum length for the Slack | :git-branch: To branch: \`TEST-PROJ/test-repository:master\`",
     },
   ],

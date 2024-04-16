@@ -3,7 +3,11 @@ import * as slack from "@slack/web-api";
 import {
     SlackAPIAdapter,
     SlackChannelInfo,
-    BitbucketCommentSnapshot
+    BitbucketCommentSnapshot,
+    CreateChannelArguments,
+    SetChannelTopicArguments,
+    InviteToChannelArguments,
+    KickFromChannelArguments, SendMessageArguments, SendMessageResponse
 } from "../SlackAPIAdapter";
 import { UserPayload } from "../../typings";
 
@@ -14,22 +18,22 @@ export default class TestSlackGateway implements SlackAPIAdapter {
         searchedCommentSnapshots: any[];
         searchedChannels: any[];
         createdChannels: slack.ConversationsCreateArguments[];
-        setChannelTopics: slack.ConversationsSetTopicArguments[];
-        invitesToChannels: slack.ConversationsInviteArguments[];
-        kicksFromChannels: slack.ConversationsKickArguments[];
+        setChannelTopics: SetChannelTopicArguments[];
+        invitesToChannels: InviteToChannelArguments[];
+        kicksFromChannels: KickFromChannelArguments[];
         archivedChannels: slack.ConversationsCloseArguments[];
-        sentMessages: slack.ChatPostMessageArguments[];
+        sentMessages: SendMessageArguments[];
         lookedUpUsers: slack.UsersLookupByEmailArguments[];
     };
 
     constructor() {
         this.snapshot = {
             createdChannels: new Array<slack.ConversationsCreateArguments>(),
-            setChannelTopics: new Array<slack.ConversationsSetTopicArguments>(),
-            invitesToChannels: new Array<slack.ConversationsInviteArguments>(),
-            kicksFromChannels: new Array<slack.ConversationsKickArguments>(),
+            setChannelTopics: new Array<SetChannelTopicArguments>(),
+            invitesToChannels: new Array<InviteToChannelArguments>(),
+            kicksFromChannels: new Array<KickFromChannelArguments>(),
             archivedChannels: new Array<slack.ConversationsCloseArguments>(),
-            sentMessages: new Array<slack.ChatPostMessageArguments>(),
+            sentMessages: new Array<SendMessageArguments>(),
             lookedUpUsers: new Array<slack.UsersLookupByEmailArguments>(),
             searchedCommentSnapshots: new Array<any>(),
             searchedChannels: new Array<any>()
@@ -41,39 +45,43 @@ export default class TestSlackGateway implements SlackAPIAdapter {
         return Promise.resolve(userPayloads.map(u => u.emailAddress));
     }
 
-    getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
+    findChannel(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
         this.snapshot.searchedChannels.push({ channelName, excludeArchived });
         return Promise.resolve({ isArchived: false, name: channelName, id: channelId });
     }
 
-    createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse> {
+    provisionChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
+        return this.createChannel(options);
+    }
+
+    createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
         this.snapshot.createdChannels.push(options);
-        return Promise.resolve({ ok: true, channel: { id: channelId, name: options.name } });
+        return Promise.resolve({ id: channelId, name: options.name, isArchived: false });
     }
 
-    setChannelTopic(options: slack.ConversationsSetTopicArguments): Promise<slack.ConversationsSetTopicResponse> {
+    setChannelTopic(options: SetChannelTopicArguments): Promise<void> {
         this.snapshot.setChannelTopics.push(options);
-        return Promise.resolve({ ok: true });
+        return Promise.resolve();
     }
 
-    inviteToChannel(options: slack.ConversationsInviteArguments): Promise<slack.ConversationsInviteResponse> {
+    inviteToChannel(options: InviteToChannelArguments): Promise<void> {
         this.snapshot.invitesToChannels.push(options);
-        return Promise.resolve({ ok: true });
+        return Promise.resolve();
     }
 
-    kickFromChannel(options: slack.ConversationsKickArguments): Promise<slack.ConversationsKickResponse> {
+    kickFromChannel(options: KickFromChannelArguments): Promise<void> {
         this.snapshot.kicksFromChannels.push(options);
-        return Promise.resolve({ ok: true });
+        return Promise.resolve();
     }
 
-    archiveChannel(channelId: string): Promise<slack.ConversationsArchiveResponse> {
+    archiveChannel(channelId: string): Promise<void> {
         this.snapshot.archivedChannels.push({ channel: channelId });
-        return Promise.resolve({ ok: true });
+        return Promise.resolve();
     }
 
-    sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {
+    sendMessage(options: SendMessageArguments): Promise<SendMessageResponse> {
         this.snapshot.sentMessages.push(options);
-        return Promise.resolve({ ok: true, channel: channelId, message: { ts: messageId } });
+        return Promise.resolve({ ok: true, channelId: channelId, messageId: messageId });
     }
 
     findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {

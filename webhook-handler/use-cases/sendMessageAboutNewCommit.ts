@@ -7,7 +7,7 @@ import {
     slackQuote,
     slackSection
 } from "../slack-building-blocks";
-import { SlackAPIAdapter } from "../SlackAPIAdapter";
+import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
 import { BitbucketGateway } from "../BitbucketGateway";
 import { PullRequestBasicNotification } from "../../typings";
 
@@ -17,7 +17,7 @@ export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotific
     await slackGateway.sendMessage(message);
 }
 
-function buildMessage(payload: PullRequestBasicNotification, commentInBitbucket: string) {
+function buildMessage(payload: PullRequestBasicNotification, commentInBitbucket: string): SendMessageArguments {
     const pullRequest = payload.pullRequest;
     const viewCommitUrl = `${payload.pullRequest.links.self[0].href.replace("/overview", "")}/commits/${pullRequest.fromRef.latestCommit}`;
     const messageTitle = `A ${slackLink(viewCommitUrl, "new commit")} was added to the pull request by ${formatUserName(payload.actor)}.`;
@@ -26,7 +26,7 @@ function buildMessage(payload: PullRequestBasicNotification, commentInBitbucket:
     const commentText = slackQuote(reformatMarkdownToSlackMarkup(commentInBitbucket));
     return {
         channel: buildChannelName(pullRequest),
-        icon_emoji: iconEmoji,
+        iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [slackSection(messageTitle), slackSection(commentText), slackSection(pleaseReviewText)]
     };

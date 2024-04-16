@@ -1,4 +1,4 @@
-import { SlackAPIAdapter } from "../SlackAPIAdapter";
+import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
 import {
     buildChannelName,
     formatUserName, getTaskOrCommentTitle,
@@ -10,12 +10,12 @@ export async function sendMessageAboutDeletedComment(payload: PullRequestComment
     await slackGateway.sendMessage(buildMessage(payload));
 }
 
-function buildMessage(payload: PullRequestCommentActionNotification) {
+function buildMessage(payload: PullRequestCommentActionNotification): SendMessageArguments {
     const messageTitle = `${formatUserName(payload.actor)} deleted ${getTaskOrCommentTitle(payload)}:`;
     const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);
     return {
         channel: buildChannelName(payload.pullRequest),
-        icon_emoji: iconEmoji,
+        iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))],
         metadata: snapshotCommentAsSlackMetadata(payload)

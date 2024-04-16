@@ -1,4 +1,4 @@
-import { SlackAPIAdapter } from "../SlackAPIAdapter";
+import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
 import { buildChannelName, formatUserName, iconEmoji, slackLink, slackSection } from "../slack-building-blocks";
 import { PullRequestBasicNotification, PullRequestPayload } from "../../typings";
 
@@ -6,12 +6,12 @@ export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNo
     await slackGateway.sendMessage(buildMessage(payload));
 }
 
-function buildMessage(payload: PullRequestBasicNotification) {
+function buildMessage(payload: PullRequestBasicNotification): SendMessageArguments {
     const pullRequest = payload.pullRequest;
     const messageTitle = getReviewerActionText(payload);
     return {
         channel: buildChannelName(pullRequest),
-        icon_emoji: iconEmoji,
+        iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [slackSection(messageTitle), slackSection(getReviewStatus(pullRequest))]
     };

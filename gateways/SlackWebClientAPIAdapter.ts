@@ -3,11 +3,17 @@ import {
     BitbucketCommentSnapshot,
     BitbucketCommentSnapshotInSlackMetadata,
     SlackChannelInfo,
-    SlackAPIAdapter
+    SlackAPIAdapter,
+    CreateChannelArguments,
+    SetChannelTopicArguments,
+    InviteToChannelArguments,
+    KickFromChannelArguments, SendMessageResponse, SendMessageArguments
 } from "../webhook-handler/SlackAPIAdapter";
 import { UserPayload } from "../typings";
 import appConfig from "../app.config";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
+
+const createChannelPromisesMap = new Map<string, Promise<SlackChannelInfo>>();
 
 export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
     private client: slack.WebClient;
@@ -24,7 +30,7 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
         return slackUserIds.filter(r => !!r).map(r => r.user.id);
     }
 
-    async getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
+    async findChannel(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
         let cursor: string | undefined = undefined;
         const channelTypes = appConfig.USE_PRIVATE_CHANNELS ? "private_channel" : undefined;
         while (true) {
@@ -47,28 +53,78 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
         }
     }
 
-    createChannel(options: slack.ConversationsCreateArguments): Promise<slack.ConversationsCreateResponse> {
-        return this.client.conversations.create(options);
+    provisionChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
+        if (createChannelPromisesMap.has(options.name)) {
+            console.log(`Waiting for channel creation for name ${options.name}`);
+            return createChannelPromisesMap.get(options.name);
+        }
+
+        createChannelPromisesMap.set(options.name, new Promise(async (resolve, reject) => {
+            try {
+                const data = await this.createChannel(options);
+                createChannelPromisesMap.delete(options.name);
+                resolve(data);
+            } catch (error) {
+                reject(error);
+            }
+        }));
     }
 
-    setChannelTopic(options: slack.ConversationsSetTopicArguments): Promise<slack.ConversationsSetTopicResponse> {
-        return this.client.conversations.setTopic(options);
+    async createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
+        const response = await this.client.conversations.create({
+            name: options.name,
+            is_private: options.isPrivate
+        });
+        return {
+            name: response.channel.name,
+            isArchived: response.channel.is_archived,
+            id: response.channel.id
+        };
     }
 
-    inviteToChannel(options: slack.ConversationsInviteArguments): Promise<slack.ConversationsInviteResponse> {
-        return this.client.conversations.invite(options);
+    setChannelTopic(options: SetChannelTopicArguments): Promise<void> {
+        return this.client.conversations.setTopic({
+            channel: options.channelId,
+            topic: options.topic
+        }) as unknown as Promise<void>;
     }
 
-    kickFromChannel(options: slack.ConversationsKickArguments): Promise<slack.ConversationsKickResponse> {
-        return this.client.conversations.kick(options);
+    inviteToChannel(options: InviteToChannelArguments): Promise<void> {
+        return this.client.conversations.invite({
+            channel: options.channelId,
+            users: options.users.join(","),
+            force: true
+        }) as unknown as Promise<void>;
     }
 
-    archiveChannel(channelId: string): Promise<slack.ConversationsArchiveResponse> {
-        return this.client.conversations.archive({ channel: channelId });
+    kickFromChannel(options: KickFromChannelArguments): Promise<void> {
+        return this.client.conversations.kick({
+            channel: options.channelId,
+            user: options.user
+        }) as unknown as Promise<void>;
     }
 
-    sendMessage(options: slack.ChatPostMessageArguments): Promise<slack.ChatPostMessageResponse> {
-        return this.client.chat.postMessage(options);
+    archiveChannel(channelId: string): Promise<void> {
+        return this.client.conversations.archive({ channel: channelId }) as unknown as Promise<void>;
+    }
+
+    async sendMessage(options: SendMessageArguments): Promise<SendMessageResponse> {
+        const response = await this.client.chat.postMessage({
+            channel: options.channel,
+            icon_emoji: options.iconEmoji,
+            text: options.text,
+            metadata: options.metadata ? {
+                event_type: options.metadata.eventType,
+                event_payload: options.metadata.eventPayload
+            } : undefined,
+            attachments: options.attachments,
+            blocks: options.blocks
+        });
+        return {
+            channelId: response.channel,
+            messageId: response.message.ts,
+            threadId: response.message.thread_ts
+        };
     }
 
     async findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {

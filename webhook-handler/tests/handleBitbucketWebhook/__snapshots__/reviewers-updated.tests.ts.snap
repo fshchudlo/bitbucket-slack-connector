@@ -6,14 +6,16 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
   "createdChannels": [],
   "invitesToChannels": [
     {
-      "channel": "12345",
+      "channelId": "12345",
       "force": true,
-      "users": "test.reviewer2@test.com",
+      "users": [
+        "test.reviewer2@test.com",
+      ],
     },
   ],
   "kicksFromChannels": [
     {
-      "channel": "12345",
+      "channelId": "12345",
       "user": "test.reviewer1@test.com",
     },
   ],

@@ -7,11 +7,16 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
+  "searchedChannels": [
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "excludeArchived": undefined,
+    },
+  ],
   "searchedCommentSnapshots": [
     {
       "bitbucketCommentId": 1,
-      "channelId": "pr-test-proj-test-repository-1",
+      "channelId": "12345",
     },
   ],
   "sentMessages": [
@@ -33,16 +38,16 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
         },
       ],
       "channel": "pr-test-proj-test-repository-1",
-      "icon_emoji": ":bitbucket:",
+      "iconEmoji": ":bitbucket:",
       "metadata": {
-        "event_payload": {
+        "eventPayload": {
           "commentId": "1",
           "commentParentId": undefined,
           "severity": "NORMAL",
           "taskResolvedDate": undefined,
           "threadResolvedDate": undefined,
         },
-        "event_type": "bitbucket_comment_snapshot_saved",
+        "eventType": "bitbucket_comment_snapshot_saved",
       },
       "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|edited comment>:",
     },
