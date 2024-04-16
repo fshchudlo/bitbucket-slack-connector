@@ -1,15 +1,15 @@
 import * as slack from "@slack/web-api";
 
 import {
-    SlackGateway,
+    SlackAPIAdapter,
     SlackChannelInfo,
     BitbucketCommentSnapshot
-} from "../SlackGateway";
+} from "../SlackAPIAdapter";
 import { UserPayload } from "../../typings";
 
 const channelId = "12345";
 const messageId = "ABCDE";
-export default class TestSlackGateway implements SlackGateway {
+export default class TestSlackGateway implements SlackAPIAdapter {
     snapshot: {
         searchedCommentSnapshots: any[];
         searchedChannels: any[];

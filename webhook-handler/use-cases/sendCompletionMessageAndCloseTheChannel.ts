@@ -1,8 +1,8 @@
 import { buildChannelName, formatUserName, iconEmoji } from "../slack-building-blocks";
-import { SlackGateway } from "../SlackGateway";
+import { SlackAPIAdapter } from "../SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
 
-export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackGateway: SlackGateway) {
+export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackGateway: SlackAPIAdapter) {
     const channelId = (await slackGateway.sendMessage(buildMessage(payload))).channel;
     await slackGateway.archiveChannel(channelId);
 }

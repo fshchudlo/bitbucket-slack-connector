@@ -7,11 +7,11 @@ import {
     slackQuote,
     slackSection
 } from "../slack-building-blocks";
-import { SlackGateway } from "../SlackGateway";
+import { SlackAPIAdapter } from "../SlackAPIAdapter";
 import { BitbucketGateway } from "../BitbucketGateway";
 import { PullRequestBasicNotification } from "../../typings";
 
-export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway) {
+export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotification, slackGateway: SlackAPIAdapter, bitbucketGateway: BitbucketGateway) {
     const commentInBitbucket = await bitbucketGateway.tryGetCommitMessage(payload.pullRequest.fromRef.repository.project.key, payload.pullRequest.fromRef.repository.slug, payload.pullRequest.fromRef.latestCommit);
     const message = buildMessage(payload, commentInBitbucket);
     await slackGateway.sendMessage(message);

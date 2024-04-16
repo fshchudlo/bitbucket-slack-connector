@@ -1,7 +1,7 @@
 import * as slack from "@slack/web-api";
 import { CommentSeverity, UserPayload } from "../typings";
 
-export interface SlackGateway {
+export interface SlackAPIAdapter {
     getChannelInfo(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null>;
 
     getSlackUserIds(userPayloads: Array<UserPayload>): Promise<string[]>;

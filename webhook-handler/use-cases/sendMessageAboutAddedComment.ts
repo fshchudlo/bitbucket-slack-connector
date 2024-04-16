@@ -9,10 +9,10 @@ import {
     snapshotCommentAsSlackMetadata,
     iconEmoji
 } from "../slack-building-blocks";
-import { SlackGateway } from "../SlackGateway";
+import { SlackAPIAdapter } from "../SlackAPIAdapter";
 import { PullRequestCommentActionNotification } from "../../typings";
 
-export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway) {
+export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackAPIAdapter) {
     await slackGateway.sendMessage(buildMessage(payload));
 }
 

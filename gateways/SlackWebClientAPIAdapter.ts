@@ -3,13 +3,13 @@ import {
     BitbucketCommentSnapshot,
     BitbucketCommentSnapshotInSlackMetadata,
     SlackChannelInfo,
-    SlackGateway
-} from "../webhook-handler/SlackGateway";
+    SlackAPIAdapter
+} from "../webhook-handler/SlackAPIAdapter";
 import { UserPayload } from "../typings";
 import appConfig from "../app.config";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
 
-export class SlackWebClientGateway implements SlackGateway {
+export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
     private client: slack.WebClient;
 
     constructor(client: slack.WebClient) {

@@ -1,19 +1,19 @@
 import * as slack from "@slack/web-api";
 import { UserPayload } from "../typings";
-import { BitbucketCommentSnapshot, SlackGateway } from "../webhook-handler/SlackGateway";
+import { BitbucketCommentSnapshot, SlackAPIAdapter } from "../webhook-handler/SlackAPIAdapter";
 import { InMemoryCache } from "./cache/InMemoryCache";
-import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo } from "../webhook-handler/SlackGateway";
+import { BitbucketCommentSnapshotInSlackMetadata, SlackChannelInfo } from "../webhook-handler/SlackAPIAdapter";
 
 function getCommentCacheKey(channelId: string, bitbucketCommentId: number | string) {
     return `${channelId}-${bitbucketCommentId}`;
 }
 
-export class SlackGatewayCachedDecorator implements SlackGateway {
-    private gateway: SlackGateway;
+export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
+    private gateway: SlackAPIAdapter;
     readonly channelsCache: InMemoryCache<SlackChannelInfo>;
     readonly bitbucketCommentsCache: InMemoryCache<BitbucketCommentSnapshot>;
 
-    constructor(gateway: SlackGateway) {
+    constructor(gateway: SlackAPIAdapter) {
         this.gateway = gateway;
         this.channelsCache = new InMemoryCache("channels", 200);
         this.bitbucketCommentsCache = new InMemoryCache("comments", 500);

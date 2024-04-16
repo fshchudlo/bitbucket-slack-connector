@@ -1,5 +1,5 @@
 import { PullRequestCommentActionNotification } from "../../typings";
-import { SlackGateway } from "../SlackGateway";
+import { SlackAPIAdapter } from "../SlackAPIAdapter";
 import {
     buildChannelName,
     formatUserName,
@@ -12,7 +12,7 @@ import {
     snapshotCommentAsSlackMetadata
 } from "../slack-building-blocks";
 
-export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway) {
+export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackAPIAdapter) {
     const channelName = buildChannelName(payload.pullRequest);
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
     const userAction = await getUserAction(payload, slackGateway);
@@ -29,7 +29,7 @@ export async function sendMessageAboutEditedComment(payload: PullRequestCommentA
     });
 }
 
-async function getUserAction(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway) {
+async function getUserAction(payload: PullRequestCommentActionNotification, slackGateway: SlackAPIAdapter) {
     const channelName = buildChannelName(payload.pullRequest);
     const commentType = getTaskOrCommentTitle(payload);
     const previousSnapshot = await slackGateway.findLatestBitbucketCommentSnapshot(channelName, payload.comment.id);

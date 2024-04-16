@@ -7,12 +7,12 @@ import {
     sendMessageAboutReviewerAction,
     sendMessageAboutDeletedComment, sendMessageAboutEditedComment
 } from "./use-cases";
-import { SlackGateway } from "./SlackGateway";
+import { SlackAPIAdapter } from "./SlackAPIAdapter";
 import { BitbucketGateway } from "./BitbucketGateway";
 import { sendMessageAboutPRModification } from "./use-cases/sendMessageAboutPRModification";
 import { BitbucketNotification } from "../typings";
 
-export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackGateway: SlackGateway, bitbucketGateway: BitbucketGateway, usePrivateChannels: boolean = true) {
+export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackGateway: SlackAPIAdapter, bitbucketGateway: BitbucketGateway, usePrivateChannels: boolean = true) {
     const eventKey = payload.eventKey;
     switch (eventKey) {
         case "pr:opened":

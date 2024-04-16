@@ -1,4 +1,4 @@
-import { SlackGateway } from "../SlackGateway";
+import { SlackAPIAdapter } from "../SlackAPIAdapter";
 import {
     buildChannelName,
     formatUserName, getTaskOrCommentTitle,
@@ -6,7 +6,7 @@ import {
 } from "../slack-building-blocks";
 import { PullRequestCommentActionNotification } from "../../typings";
 
-export async function sendMessageAboutDeletedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackGateway) {
+export async function sendMessageAboutDeletedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackAPIAdapter) {
     await slackGateway.sendMessage(buildMessage(payload));
 }
 

@@ -1,9 +1,9 @@
 import "dotenv/config";
 import { App, ExpressReceiver } from "@slack/bolt";
 import AppConfig from "./app.config";
-import { SlackWebClientGateway } from "./gateways/SlackWebClientGateway";
+import { SlackWebClientAPIAdapter } from "./gateways/SlackWebClientAPIAdapter";
 import express from "express";
-import { SlackGatewayCachedDecorator } from "./gateways/SlackGatewayCachedDecorator";
+import { SlackAPIAdapterCachedDecorator } from "./gateways/SlackAPIAdapterCachedDecorator";
 import { collectDefaultMetrics } from "prom-client";
 import configureRoutes from "./app.routes";
 
@@ -17,7 +17,7 @@ const slackApp = new App({
     receiver: expressReceiver
 });
 
-const slackGateway = new SlackGatewayCachedDecorator(new SlackWebClientGateway(slackApp.client));
+const slackGateway = new SlackAPIAdapterCachedDecorator(new SlackWebClientAPIAdapter(slackApp.client));
 
 collectDefaultMetrics();
 configureRoutes(expressReceiver, slackGateway);

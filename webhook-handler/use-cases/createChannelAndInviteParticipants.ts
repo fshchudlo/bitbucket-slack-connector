@@ -5,10 +5,10 @@ import {
     slackLink,
     iconEmoji
 } from "../slack-building-blocks";
-import { SlackGateway } from "../SlackGateway";
+import { SlackAPIAdapter } from "../SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
 
-export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackGateway: SlackGateway, createPrivateChannel: boolean) {
+export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackGateway: SlackAPIAdapter, createPrivateChannel: boolean) {
     const allParticipants = [payload.pullRequest.author.user].concat(payload.pullRequest.reviewers.map(r => r.user));
     const slackUserIds = await slackGateway.getSlackUserIds(allParticipants);
 

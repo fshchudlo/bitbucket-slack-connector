@@ -1,8 +1,8 @@
-import { SlackGatewayCachedDecorator } from "../SlackGatewayCachedDecorator";
+import { SlackAPIAdapterCachedDecorator } from "../SlackAPIAdapterCachedDecorator";
 import { snapshotCommentAsSlackMetadata } from "../../webhook-handler/slack-building-blocks";
 import { PullRequestCommentActionNotification } from "../../typings";
 import { register } from "prom-client";
-import { BitbucketCommentSnapshot, BitbucketCommentSnapshotInSlackMetadata } from "../../webhook-handler/SlackGateway";
+import { BitbucketCommentSnapshot, BitbucketCommentSnapshotInSlackMetadata } from "../../webhook-handler/SlackAPIAdapter";
 
 
 const decoratedGatewayMock = {
@@ -18,10 +18,10 @@ const decoratedGatewayMock = {
 };
 
 describe("SlackGatewayCachedDecorator", () => {
-    let systemUnderTest: SlackGatewayCachedDecorator;
+    let systemUnderTest: SlackAPIAdapterCachedDecorator;
 
     beforeEach(() => {
-        systemUnderTest = new SlackGatewayCachedDecorator(decoratedGatewayMock as any);
+        systemUnderTest = new SlackAPIAdapterCachedDecorator(decoratedGatewayMock as any);
     });
 
     afterEach(() => {

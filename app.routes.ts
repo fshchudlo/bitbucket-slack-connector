@@ -3,14 +3,14 @@ import appConfig from "./app.config";
 import { register } from "prom-client";
 import { buildChannelName } from "./webhook-handler/slack-building-blocks";
 import util from "util";
-import { SlackGateway } from "./webhook-handler/SlackGateway";
+import { SlackAPIAdapter } from "./webhook-handler/SlackAPIAdapter";
 import { ExpressReceiver } from "@slack/bolt";
-import { SlackGatewayCachedDecorator } from "./gateways/SlackGatewayCachedDecorator";
+import { SlackAPIAdapterCachedDecorator } from "./gateways/SlackAPIAdapterCachedDecorator";
 import BitbucketWebAPIGateway from "./gateways/BitbucketWebAPIGateway";
 import AppConfig from "./app.config";
 
 const bitbucketGateway = new BitbucketWebAPIGateway(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_API_TOKEN);
-export default function configureRoutes(expressReceiver: ExpressReceiver, slackGateway: SlackGatewayCachedDecorator) {
+export default function configureRoutes(expressReceiver: ExpressReceiver, slackGateway: SlackAPIAdapterCachedDecorator) {
 
     expressReceiver.router.post("/bitbucket-webhook", async (req, res) => {
         try {
@@ -48,7 +48,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackG
     });
 }
 
-async function handleError(error: any, requestBody: any, slackGateway: SlackGateway) {
+async function handleError(error: any, requestBody: any, slackGateway: SlackAPIAdapter) {
     const errorMessage = ["Error processing webhook.", `Error: ${util.inspect(error, false, 8)}.`, `Payload: ${util.inspect(requestBody, false, 8)}`].join("\n\n");
     console.error(errorMessage);
     try {
