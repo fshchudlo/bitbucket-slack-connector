@@ -31,7 +31,6 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
         this.channelsCache.set(options.name, response);
         return response;
     }
-
     async findChannel(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
         const cachedChannelInfo = this.channelsCache.get(channelName);
         if (cachedChannelInfo) {
@@ -80,7 +79,7 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
                 slackMessageId: response.messageId,
                 slackThreadId: response.threadId
             };
-            this.bitbucketCommentsCache.set(getCommentCacheKey(response.channelId, commentSnapshot.commentId), commentSnapshot);
+            this.bitbucketCommentsCache.set(getCommentCacheKey(options.channelId, commentSnapshot.commentId), commentSnapshot);
         }
         return response;
     }

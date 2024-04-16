@@ -8,22 +8,20 @@ import {
 import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
 
-export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackGateway: SlackAPIAdapter, createPrivateChannel: boolean) {
+export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, createPrivateChannel: boolean) {
+    const channelInfo = await slackAPI.createChannel({
+        name: buildChannelName(payload.pullRequest),
+        isPrivate: createPrivateChannel
+    });
+
     const allParticipants = [payload.pullRequest.author.user].concat(payload.pullRequest.reviewers.map(r => r.user));
-    const slackUserIds = await slackGateway.getSlackUserIds(allParticipants);
+    const slackUserIds = await slackAPI.getSlackUserIds(allParticipants);
 
-    const channelId = (
-        await slackGateway.createChannel({
-            name: buildChannelName(payload.pullRequest),
-            isPrivate: createPrivateChannel
-        })
-    ).id;
-
-    await slackGateway.setChannelTopic({ channelId, topic: buildChannelTopic(payload) });
+    await slackAPI.setChannelTopic({ channelId: channelInfo.id, topic: buildChannelTopic(payload) });
     if (slackUserIds.length > 0) {
-        await slackGateway.inviteToChannel({ channelId: channelId, users: slackUserIds, force: true });
+        await slackAPI.inviteToChannel({ channelId: channelInfo.id, users: slackUserIds, force: true });
     }
-    await slackGateway.sendMessage(buildMessage(payload, channelId));
+    await slackAPI.sendMessage(buildMessage(payload, channelInfo.id));
 }
 
 function buildMessage(payload: PullRequestBasicNotification, channelId: string): SendMessageArguments {
@@ -31,7 +29,7 @@ function buildMessage(payload: PullRequestBasicNotification, channelId: string):
     const pleaseReviewText = `Please ${slackLink(payload.pullRequest.links.self[0].href, "review the PR")}`;
     const descriptionText = getPullRequestDescriptionForSlack(payload.pullRequest.description ?? payload.pullRequest.title);
     return {
-        channel: channelId,
+        channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
         attachments: [

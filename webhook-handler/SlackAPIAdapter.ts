@@ -39,7 +39,6 @@ export type BitbucketCommentSnapshot = BitbucketCommentSnapshotInSlackMetadata &
 export type SlackChannelInfo = {
     id?: string;
     isArchived?: boolean;
-    name?: string;
 }
 export type CreateChannelArguments = {
     name: string;
@@ -60,7 +59,7 @@ export type KickFromChannelArguments = {
     user: string;
 }
 export type SendMessageArguments = {
-    channel: string;
+    channelId: string;
     iconEmoji?: string;
     text?: string;
     attachments?: Array<{
@@ -75,7 +74,6 @@ export type SendMessageArguments = {
 
 }
 export type SendMessageResponse = {
-    channelId: string;
     messageId: string;
     threadId?: string;
 }

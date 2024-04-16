@@ -1,14 +1,15 @@
-import { buildChannelName, formatUserName, iconEmoji } from "../slack-helpers";
+import { formatUserName, iconEmoji } from "../slack-helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
+import { findPullRequestChannel } from "../slack-helpers/findPullRequestChannel";
 
-export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackGateway: SlackAPIAdapter) {
-    const channelId = (await slackGateway.sendMessage(buildMessage(payload))).channelId;
-    await slackGateway.archiveChannel(channelId);
+export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter) {
+    const channelInfo = await findPullRequestChannel(slackAPI, payload.pullRequest);
+    await slackAPI.sendMessage(buildMessage(payload, channelInfo.id));
+    await slackAPI.archiveChannel(channelInfo.id);
 }
 
-function buildMessage(payload: PullRequestBasicNotification): SendMessageArguments {
-    const channelName = buildChannelName(payload.pullRequest);
+function buildMessage(payload: PullRequestBasicNotification, channelId: string): SendMessageArguments {
     let messageText = null;
     switch (payload.eventKey) {
         case "pr:deleted":
@@ -22,7 +23,7 @@ function buildMessage(payload: PullRequestBasicNotification): SendMessageArgumen
             break;
     }
     return {
-        channel: channelName,
+        channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageText
     };

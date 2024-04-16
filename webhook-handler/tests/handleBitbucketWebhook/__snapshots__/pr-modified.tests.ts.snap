@@ -7,7 +7,12 @@ exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
+  "searchedChannels": [
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "excludeArchived": true,
+    },
+  ],
   "searchedCommentSnapshots": [],
   "sentMessages": [
     {
@@ -50,7 +55,7 @@ New pull request description",
           "type": "section",
         },
       ],
-      "channel": "pr-test-proj-test-repository-1",
+      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "text": ":writing_hand: Test Author changed the pull request",
     },

@@ -12,39 +12,39 @@ import { BitbucketGateway } from "./BitbucketGateway";
 import { sendMessageAboutPRModification } from "./use-cases/sendMessageAboutPRModification";
 import { BitbucketNotification } from "../typings";
 
-export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackGateway: SlackAPIAdapter, bitbucketGateway: BitbucketGateway, usePrivateChannels: boolean = true) {
+export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackAPI: SlackAPIAdapter, bitbucketGateway: BitbucketGateway, usePrivateChannels: boolean = true) {
     const eventKey = payload.eventKey;
     switch (eventKey) {
         case "pr:opened":
-            await createChannelAndInviteParticipants(payload, slackGateway, usePrivateChannels);
+            await createChannelAndInviteParticipants(payload, slackAPI, usePrivateChannels);
             break;
         case "pr:reviewer:unapproved":
         case "pr:reviewer:needs_work":
         case "pr:reviewer:approved":
-            await sendMessageAboutReviewerAction(payload, slackGateway);
+            await sendMessageAboutReviewerAction(payload, slackAPI);
             break;
         case "pr:comment:added":
-            await sendMessageAboutAddedComment(payload, slackGateway);
+            await sendMessageAboutAddedComment(payload, slackAPI);
             break;
         case "pr:comment:edited":
-            await sendMessageAboutEditedComment(payload, slackGateway);
+            await sendMessageAboutEditedComment(payload, slackAPI);
             break;
         case "pr:comment:deleted":
-            await sendMessageAboutDeletedComment(payload, slackGateway);
+            await sendMessageAboutDeletedComment(payload, slackAPI);
             break;
         case "pr:from_ref_updated":
-            await sendMessageAboutNewCommit(payload, slackGateway, bitbucketGateway);
+            await sendMessageAboutNewCommit(payload, slackAPI, bitbucketGateway);
             break;
         case "pr:reviewer:updated":
-            await updateChannelMembers(payload, slackGateway);
+            await updateChannelMembers(payload, slackAPI);
             break;
         case "pr:modified":
-            await sendMessageAboutPRModification(payload, slackGateway);
+            await sendMessageAboutPRModification(payload, slackAPI);
             break;
         case "pr:merged":
         case "pr:declined":
         case "pr:deleted":
-            await sendCompletionMessageAndCloseTheChannel(payload, slackGateway);
+            await sendCompletionMessageAndCloseTheChannel(payload, slackAPI);
             break;
         default:
             throw new Error(`"${eventKey}" event key is unknown.`);

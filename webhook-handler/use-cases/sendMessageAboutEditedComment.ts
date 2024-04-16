@@ -1,7 +1,9 @@
 import { PullRequestCommentActionNotification } from "../../typings";
-import { SlackAPIAdapter } from "../SlackAPIAdapter";
 import {
-    buildChannelName,
+    BitbucketCommentSnapshot,
+    SlackAPIAdapter
+} from "../SlackAPIAdapter";
+import {
     formatUserName,
     getTaskOrCommentTitle,
     iconEmoji,
@@ -11,17 +13,20 @@ import {
     slackSection,
     snapshotCommentAsSlackMetadata
 } from "../slack-helpers";
+import { findPullRequestChannel } from "../slack-helpers/findPullRequestChannel";
 
-export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackAPIAdapter) {
-    const channelName = buildChannelName(payload.pullRequest);
+export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackAPIAdapter) {
+    const channelInfo = await findPullRequestChannel(slackAPI, payload.pullRequest);
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
-    const userAction = await getUserAction(payload, slackGateway);
+
+    const previousCommentSnapshot = await slackAPI.findLatestBitbucketCommentSnapshot(channelInfo.id, payload.comment.id);
+    const userAction = await getUserAction(payload, previousCommentSnapshot);
 
     const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, userAction)}:`;
     const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);
 
-    await slackGateway.sendMessage({
-        channel: channelName,
+    await slackAPI.sendMessage({
+        channelId: channelInfo.id,
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))],
@@ -29,27 +34,25 @@ export async function sendMessageAboutEditedComment(payload: PullRequestCommentA
     });
 }
 
-async function getUserAction(payload: PullRequestCommentActionNotification, slackGateway: SlackAPIAdapter) {
-    const channelInfo = await slackGateway.findChannel(buildChannelName(payload.pullRequest));
+async function getUserAction(payload: PullRequestCommentActionNotification, previousCommentSnapshot: BitbucketCommentSnapshot) {
     const commentType = getTaskOrCommentTitle(payload);
-    const previousSnapshot = await slackGateway.findLatestBitbucketCommentSnapshot(channelInfo.id, payload.comment.id);
-    if (previousSnapshot) {
-        if (previousSnapshot.severity == "NORMAL" && payload.comment.severity == "BLOCKER") {
+    if (previousCommentSnapshot) {
+        if (previousCommentSnapshot.severity == "NORMAL" && payload.comment.severity == "BLOCKER") {
             return "converted comment to the task";
         }
-        if (previousSnapshot.severity == "BLOCKER" && payload.comment.severity == "NORMAL") {
+        if (previousCommentSnapshot.severity == "BLOCKER" && payload.comment.severity == "NORMAL") {
             return "converted task to the comment";
         }
-        if (!previousSnapshot.taskResolvedDate && payload.comment.resolvedDate) {
+        if (!previousCommentSnapshot.taskResolvedDate && payload.comment.resolvedDate) {
             return `resolved ${commentType}`;
         }
-        if (previousSnapshot.taskResolvedDate && !payload.comment.resolvedDate) {
+        if (previousCommentSnapshot.taskResolvedDate && !payload.comment.resolvedDate) {
             return `reopened ${commentType}`;
         }
-        if (!previousSnapshot.threadResolvedDate && payload.comment.threadResolvedDate) {
+        if (!previousCommentSnapshot.threadResolvedDate && payload.comment.threadResolvedDate) {
             return `resolved ${commentType}`;
         }
-        if (previousSnapshot.threadResolvedDate && !payload.comment.threadResolvedDate) {
+        if (previousCommentSnapshot.threadResolvedDate && !payload.comment.threadResolvedDate) {
             return `reopened ${commentType}`;
         }
         return `edited ${commentType}`;

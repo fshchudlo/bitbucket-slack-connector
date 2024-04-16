@@ -1,5 +1,4 @@
 import {
-    buildChannelName,
     formatUserName,
     iconEmoji,
     reformatMarkdownToSlackMarkup,
@@ -10,14 +9,17 @@ import {
 import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
 import { BitbucketGateway } from "../BitbucketGateway";
 import { PullRequestBasicNotification } from "../../typings";
+import { findPullRequestChannel } from "../slack-helpers/findPullRequestChannel";
 
-export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotification, slackGateway: SlackAPIAdapter, bitbucketGateway: BitbucketGateway) {
+export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, bitbucketGateway: BitbucketGateway) {
     const commentInBitbucket = await bitbucketGateway.tryGetCommitMessage(payload.pullRequest.fromRef.repository.project.key, payload.pullRequest.fromRef.repository.slug, payload.pullRequest.fromRef.latestCommit);
-    const message = buildMessage(payload, commentInBitbucket);
-    await slackGateway.sendMessage(message);
+    const channelInfo = await findPullRequestChannel(slackAPI, payload.pullRequest);
+
+    const message = buildMessage(payload, commentInBitbucket, channelInfo.id);
+    await slackAPI.sendMessage(message);
 }
 
-function buildMessage(payload: PullRequestBasicNotification, commentInBitbucket: string): SendMessageArguments {
+function buildMessage(payload: PullRequestBasicNotification, commentInBitbucket: string, channelId: string): SendMessageArguments {
     const pullRequest = payload.pullRequest;
     const viewCommitUrl = `${payload.pullRequest.links.self[0].href.replace("/overview", "")}/commits/${pullRequest.fromRef.latestCommit}`;
     const messageTitle = `A ${slackLink(viewCommitUrl, "new commit")} was added to the pull request by ${formatUserName(payload.actor)}.`;
@@ -25,7 +27,7 @@ function buildMessage(payload: PullRequestBasicNotification, commentInBitbucket:
 
     const commentText = slackQuote(reformatMarkdownToSlackMarkup(commentInBitbucket));
     return {
-        channel: buildChannelName(pullRequest),
+        channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [slackSection(messageTitle), slackSection(commentText), slackSection(pleaseReviewText)]

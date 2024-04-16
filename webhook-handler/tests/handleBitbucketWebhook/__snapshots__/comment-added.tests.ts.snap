@@ -7,7 +7,12 @@ exports[`handleBitbucketWebhook Should send message on PR comment 1`] = `
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
+  "searchedChannels": [
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "excludeArchived": true,
+    },
+  ],
   "searchedCommentSnapshots": [],
   "sentMessages": [
     {
@@ -27,7 +32,7 @@ exports[`handleBitbucketWebhook Should send message on PR comment 1`] = `
           "type": "section",
         },
       ],
-      "channel": "pr-test-proj-test-repository-1",
+      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {

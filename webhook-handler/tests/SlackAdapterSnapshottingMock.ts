@@ -13,7 +13,7 @@ import { UserPayload } from "../../typings";
 
 const channelId = "12345";
 const messageId = "ABCDE";
-export default class TestSlackGateway implements SlackAPIAdapter {
+export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
     snapshot: {
         searchedCommentSnapshots: any[];
         searchedChannels: any[];
@@ -47,12 +47,12 @@ export default class TestSlackGateway implements SlackAPIAdapter {
 
     findChannel(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
         this.snapshot.searchedChannels.push({ channelName, excludeArchived });
-        return Promise.resolve({ isArchived: false, name: channelName, id: channelId });
+        return Promise.resolve({ isArchived: false, id: channelId });
     }
 
     createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
         this.snapshot.createdChannels.push(options);
-        return Promise.resolve({ id: channelId, name: options.name, isArchived: false });
+        return Promise.resolve({ id: channelId, isArchived: false });
     }
 
     setChannelTopic(options: SetChannelTopicArguments): Promise<void> {

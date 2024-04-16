@@ -34,10 +34,8 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
 
     async findChannel(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
         if (awaitingCreateChannelRequests.has(channelName)) {
-            console.log(`Waiting for channel creation for name ${channelName}`);
             return awaitingCreateChannelRequests.get(channelName);
         }
-
         let cursor: string | undefined = undefined;
         const channelTypes = appConfig.USE_PRIVATE_CHANNELS ? "private_channel" : undefined;
         while (true) {
@@ -49,7 +47,7 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
 
             const channel = response.channels.find(channel => channel.name === channelName);
             if (channel) {
-                return { name: channel.name, id: channel.id, isArchived: channel.is_archived };
+                return { id: channel.id, isArchived: channel.is_archived };
             }
 
             if (response.response_metadata && response.response_metadata.next_cursor) {
@@ -65,23 +63,23 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
             console.log(`Waiting for channel creation for name ${options.name}`);
             return awaitingCreateChannelRequests.get(options.name);
         }
-
-        awaitingCreateChannelRequests.set(options.name, new Promise(async (resolve, reject) => {
+        const createChannelPromise = new Promise(async (resolve, reject) => {
             try {
                 const response = await this.client.conversations.create({
                     name: options.name,
                     is_private: options.isPrivate
                 });
-                awaitingCreateChannelRequests.delete(options.name);
                 resolve({
-                    name: response.channel.name,
                     isArchived: response.channel.is_archived,
                     id: response.channel.id
                 });
+                awaitingCreateChannelRequests.delete(options.name);
             } catch (error) {
                 reject(error);
             }
-        }));
+        });
+        awaitingCreateChannelRequests.set(options.name, createChannelPromise);
+        return createChannelPromise;
     }
 
     setChannelTopic(options: SetChannelTopicArguments): Promise<void> {
@@ -112,7 +110,7 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
 
     async sendMessage(options: SendMessageArguments): Promise<SendMessageResponse> {
         const response = await this.client.chat.postMessage({
-            channel: options.channel,
+            channel: options.channelId,
             icon_emoji: options.iconEmoji,
             text: options.text,
             metadata: options.metadata ? {
@@ -123,7 +121,6 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
             blocks: options.blocks
         });
         return {
-            channelId: response.channel,
             messageId: response.message.ts,
             threadId: response.message.thread_ts
         };

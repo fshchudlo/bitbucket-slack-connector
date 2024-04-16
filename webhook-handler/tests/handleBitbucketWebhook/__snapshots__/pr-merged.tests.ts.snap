@@ -11,11 +11,16 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
+  "searchedChannels": [
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "excludeArchived": true,
+    },
+  ],
   "searchedCommentSnapshots": [],
   "sentMessages": [
     {
-      "channel": "pr-test-proj-test-repository-1",
+      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "text": ":white_check_mark: The pull request was merged by Test Author. Well done, thank you all.",
     },

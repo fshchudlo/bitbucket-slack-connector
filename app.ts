@@ -18,11 +18,11 @@ const slackApp = new App({
     receiver: expressReceiver
 });
 
-const slackGateway = new SlackAPIAdapterCachedDecorator(new SlackWebClientAPIAdapter(slackApp.client));
+const slackAPI = new SlackAPIAdapterCachedDecorator(new SlackWebClientAPIAdapter(slackApp.client));
 
 collectDefaultMetrics();
-configureRoutes(expressReceiver, slackGateway);
-configureErrorHandler(expressReceiver, slackGateway);
+configureRoutes(expressReceiver, slackAPI);
+configureErrorHandler(expressReceiver, slackAPI);
 
 (async () => {
     await slackApp.start(AppConfig.SLACK_BOT_PORT);

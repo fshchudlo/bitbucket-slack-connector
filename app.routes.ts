@@ -9,11 +9,11 @@ import AppConfig from "./app.config";
 import { NextFunction } from "express";
 
 const bitbucketGateway = new BitbucketWebAPIGateway(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_API_TOKEN);
-export default function configureRoutes(expressReceiver: ExpressReceiver, slackGateway: SlackAPIAdapterCachedDecorator) {
+export default function configureRoutes(expressReceiver: ExpressReceiver, slackAPI: SlackAPIAdapterCachedDecorator) {
 
     expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
         try {
-            await handleBitbucketWebhook(req.body, slackGateway, bitbucketGateway, appConfig.USE_PRIVATE_CHANNELS);
+            await handleBitbucketWebhook(req.body, slackAPI, bitbucketGateway, appConfig.USE_PRIVATE_CHANNELS);
             res.sendStatus(200);
         } catch (error) {
             next(error);
@@ -37,7 +37,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackG
                 repositorySlug: <string>repositorySlug,
                 projectKey: <string>projectKey
             });
-            const channelInfo = await slackGateway.findChannel(channelName, false);
+            const channelInfo = await slackAPI.findChannel(channelName, false);
             res.send(channelInfo);
         } catch (error) {
             next(error);

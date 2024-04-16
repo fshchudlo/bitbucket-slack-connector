@@ -41,7 +41,7 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
           "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
         },
       ],
-      "channel": "12345",
+      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "text": "The pull request was opened by Test Author.",
     },

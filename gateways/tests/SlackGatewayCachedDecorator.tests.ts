@@ -102,7 +102,6 @@ describe("SlackGatewayCachedDecorator", () => {
         await systemUnderTest.createChannel({ name: channelData.name });
 
         decoratedGatewayMock.sendMessage.mockResolvedValue(<SendMessageResponse>{
-            channelId: channelData.id,
             messageId: "ABCDE"
         });
 
@@ -116,7 +115,7 @@ describe("SlackGatewayCachedDecorator", () => {
         } as PullRequestCommentActionNotification;
 
         await systemUnderTest.sendMessage({
-            channel: channelData.name,
+            channelId: channelData.id,
             metadata: snapshotCommentAsSlackMetadata(testPayload)
         });
 

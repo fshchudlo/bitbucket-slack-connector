@@ -4,7 +4,7 @@ import { ExpressReceiver } from "@slack/bolt";
 import { SlackAPIAdapterCachedDecorator } from "./gateways/SlackAPIAdapterCachedDecorator";
 import express, { NextFunction } from "express";
 
-export default function configureErrorHandler(expressReceiver: ExpressReceiver, slackGateway: SlackAPIAdapterCachedDecorator) {
+export default function configureErrorHandler(expressReceiver: ExpressReceiver, slackAPI: SlackAPIAdapterCachedDecorator) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     expressReceiver.router.use(async (error: any, req: express.Request, res: express.Response, next: NextFunction) => {
         if (res.headersSent) {
@@ -14,8 +14,8 @@ export default function configureErrorHandler(expressReceiver: ExpressReceiver, 
         console.error(errorMessage);
         try {
             if (appConfig.DIAGNOSTIC_CHANNEL) {
-                await slackGateway.sendMessage({
-                    channel: appConfig.DIAGNOSTIC_CHANNEL,
+                await slackAPI.sendMessage({
+                    channelId: appConfig.DIAGNOSTIC_CHANNEL,
                     text: errorMessage
                 });
             }
