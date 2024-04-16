@@ -1,12 +1,12 @@
 import { PullRequestPayload } from "../../typings";
 
-interface FlattenParameters {
+interface PullRequestFlattenTraits {
     pullRequestId: string | number;
     repositorySlug: string;
     projectKey: string;
 }
 
-export function buildChannelName(params: FlattenParameters | PullRequestPayload): string {
+export function buildChannelName(params: PullRequestFlattenTraits | PullRequestPayload): string {
     const maxChannelNameLengthInSlack = 80;
     const prDashDashPartOfTheNameLength = 4;
 

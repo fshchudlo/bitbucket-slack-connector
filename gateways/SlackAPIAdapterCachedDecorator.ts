@@ -26,16 +26,6 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
         this.bitbucketCommentsCache = new InMemoryCache("comments", 500);
     }
 
-    async provisionChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
-        const cachedChannelInfo = this.channelsCache.get(options.name);
-        if (cachedChannelInfo) {
-            return Promise.resolve(cachedChannelInfo);
-        }
-        const channelInfo = await this.gateway.provisionChannel(options);
-        this.channelsCache.set(options.name, channelInfo);
-        return channelInfo;
-    }
-
     async createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
         const response = await this.gateway.createChannel(options);
         this.channelsCache.set(options.name, response);

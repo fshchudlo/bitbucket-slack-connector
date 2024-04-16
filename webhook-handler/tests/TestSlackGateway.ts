@@ -50,10 +50,6 @@ export default class TestSlackGateway implements SlackAPIAdapter {
         return Promise.resolve({ isArchived: false, name: channelName, id: channelId });
     }
 
-    provisionChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
-        return this.createChannel(options);
-    }
-
     createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
         this.snapshot.createdChannels.push(options);
         return Promise.resolve({ id: channelId, name: options.name, isArchived: false });

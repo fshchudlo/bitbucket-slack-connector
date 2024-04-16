@@ -6,8 +6,6 @@ export interface SlackAPIAdapter {
 
     getSlackUserIds(userPayloads: Array<UserPayload>): Promise<string[]>;
 
-    provisionChannel(options: CreateChannelArguments): Promise<SlackChannelInfo>;
-
     createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo>;
 
     setChannelTopic(options: SetChannelTopicArguments): Promise<void>;

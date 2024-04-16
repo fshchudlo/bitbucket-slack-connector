@@ -2,12 +2,14 @@ import * as slack from "@slack/web-api";
 import {
     BitbucketCommentSnapshot,
     BitbucketCommentSnapshotInSlackMetadata,
-    SlackChannelInfo,
-    SlackAPIAdapter,
     CreateChannelArguments,
-    SetChannelTopicArguments,
     InviteToChannelArguments,
-    KickFromChannelArguments, SendMessageResponse, SendMessageArguments
+    KickFromChannelArguments,
+    SendMessageArguments,
+    SendMessageResponse,
+    SetChannelTopicArguments,
+    SlackAPIAdapter,
+    SlackChannelInfo
 } from "../webhook-handler/SlackAPIAdapter";
 import { UserPayload } from "../typings";
 import appConfig from "../app.config";
@@ -58,7 +60,7 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
         }
     }
 
-    provisionChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
+    createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
         if (awaitingCreateChannelRequests.has(options.name)) {
             console.log(`Waiting for channel creation for name ${options.name}`);
             return awaitingCreateChannelRequests.get(options.name);
@@ -66,25 +68,20 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
 
         awaitingCreateChannelRequests.set(options.name, new Promise(async (resolve, reject) => {
             try {
-                const data = await this.createChannel(options);
+                const response = await this.client.conversations.create({
+                    name: options.name,
+                    is_private: options.isPrivate
+                });
                 awaitingCreateChannelRequests.delete(options.name);
-                resolve(data);
+                resolve({
+                    name: response.channel.name,
+                    isArchived: response.channel.is_archived,
+                    id: response.channel.id
+                });
             } catch (error) {
                 reject(error);
             }
         }));
-    }
-
-    async createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
-        const response = await this.client.conversations.create({
-            name: options.name,
-            is_private: options.isPrivate
-        });
-        return {
-            name: response.channel.name,
-            isArchived: response.channel.is_archived,
-            id: response.channel.id
-        };
     }
 
     setChannelTopic(options: SetChannelTopicArguments): Promise<void> {
