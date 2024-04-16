@@ -2,23 +2,21 @@ import handleBitbucketWebhook from "./webhook-handler/handleBitbucketWebhook";
 import appConfig from "./app.config";
 import { register } from "prom-client";
 import { buildChannelName } from "./webhook-handler/slack-building-blocks";
-import util from "util";
-import { SlackAPIAdapter } from "./webhook-handler/SlackAPIAdapter";
 import { ExpressReceiver } from "@slack/bolt";
 import { SlackAPIAdapterCachedDecorator } from "./gateways/SlackAPIAdapterCachedDecorator";
 import BitbucketWebAPIGateway from "./gateways/BitbucketWebAPIGateway";
 import AppConfig from "./app.config";
+import { NextFunction } from "express";
 
 const bitbucketGateway = new BitbucketWebAPIGateway(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_API_TOKEN);
 export default function configureRoutes(expressReceiver: ExpressReceiver, slackGateway: SlackAPIAdapterCachedDecorator) {
 
-    expressReceiver.router.post("/bitbucket-webhook", async (req, res) => {
+    expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
         try {
             await handleBitbucketWebhook(req.body, slackGateway, bitbucketGateway, appConfig.USE_PRIVATE_CHANNELS);
             res.sendStatus(200);
         } catch (error) {
-            await handleError(error, req.body, slackGateway);
-            res.sendStatus(500);
+            next(error);
         }
     });
 
@@ -27,7 +25,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackG
         res.end(await register.metrics());
     });
 
-    expressReceiver.router.get("/slack-channel", async (req, res) => {
+    expressReceiver.router.get("/slack-channel", async (req, res, next: NextFunction) => {
         const { pullRequestId, repositorySlug, projectKey } = req.query;
         if (!pullRequestId || !repositorySlug || !projectKey) {
             return res.status(400).send("Please, specify valid \"pullRequestId\", \"repositorySlug\" and \"projectKey\" as query parameters.");
@@ -42,23 +40,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackG
             const channelInfo = await slackGateway.getChannelInfo(channelName, false);
             res.send(channelInfo);
         } catch (error) {
-            await handleError(error, req.body, slackGateway);
-            res.sendStatus(500);
+            next(error);
         }
     });
-}
-
-async function handleError(error: any, requestBody: any, slackGateway: SlackAPIAdapter) {
-    const errorMessage = ["Error processing webhook.", `Error: ${util.inspect(error, false, 8)}.`, `Payload: ${util.inspect(requestBody, false, 8)}`].join("\n\n");
-    console.error(errorMessage);
-    try {
-        if (appConfig.DIAGNOSTIC_CHANNEL) {
-            await slackGateway.sendMessage({
-                channel: appConfig.DIAGNOSTIC_CHANNEL,
-                text: errorMessage
-            });
-        }
-    } catch (error) {
-        console.error("Error during sending message to the diagnostic channel", error);
-    }
 }

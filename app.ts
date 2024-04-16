@@ -6,6 +6,7 @@ import express from "express";
 import { SlackAPIAdapterCachedDecorator } from "./gateways/SlackAPIAdapterCachedDecorator";
 import { collectDefaultMetrics } from "prom-client";
 import configureRoutes from "./app.routes";
+import configureErrorHandler from "./app.errorHandler";
 
 const expressReceiver = new ExpressReceiver({
     signingSecret: AppConfig.SLACK_SIGNING_SECRET
@@ -21,6 +22,7 @@ const slackGateway = new SlackAPIAdapterCachedDecorator(new SlackWebClientAPIAda
 
 collectDefaultMetrics();
 configureRoutes(expressReceiver, slackGateway);
+configureErrorHandler(expressReceiver, slackGateway);
 
 (async () => {
     await slackApp.start(AppConfig.SLACK_BOT_PORT);
