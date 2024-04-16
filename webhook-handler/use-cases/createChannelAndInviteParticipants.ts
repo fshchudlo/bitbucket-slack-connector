@@ -4,7 +4,7 @@ import {
     getPullRequestDescriptionForSlack,
     slackLink,
     iconEmoji
-} from "../slack-building-blocks";
+} from "../slack-helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
 

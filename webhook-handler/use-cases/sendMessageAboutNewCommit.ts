@@ -6,7 +6,7 @@ import {
     slackLink,
     slackQuote,
     slackSection
-} from "../slack-building-blocks";
+} from "../slack-helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
 import { BitbucketGateway } from "../BitbucketGateway";
 import { PullRequestBasicNotification } from "../../typings";

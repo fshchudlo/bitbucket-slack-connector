@@ -5,7 +5,7 @@ import {
     iconEmoji,
     slackLink,
     slackSection
-} from "../slack-building-blocks";
+} from "../slack-helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
 import { PullRequestModifiedNotification } from "../../typings";
 

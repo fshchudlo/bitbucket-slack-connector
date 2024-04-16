@@ -8,7 +8,7 @@ import {
     slackSection,
     snapshotCommentAsSlackMetadata,
     iconEmoji
-} from "../slack-building-blocks";
+} from "../slack-helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
 import { PullRequestCommentActionNotification } from "../../typings";
 

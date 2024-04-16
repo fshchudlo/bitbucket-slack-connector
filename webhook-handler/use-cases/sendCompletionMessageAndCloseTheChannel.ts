@@ -1,4 +1,4 @@
-import { buildChannelName, formatUserName, iconEmoji } from "../slack-building-blocks";
+import { buildChannelName, formatUserName, iconEmoji } from "../slack-helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
 

@@ -1,5 +1,5 @@
 import { SlackAPIAdapterCachedDecorator } from "../SlackAPIAdapterCachedDecorator";
-import { snapshotCommentAsSlackMetadata } from "../../webhook-handler/slack-building-blocks";
+import { snapshotCommentAsSlackMetadata } from "../../webhook-handler/slack-helpers";
 import { PullRequestCommentActionNotification } from "../../typings";
 import { register } from "prom-client";
 import {

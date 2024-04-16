@@ -1,5 +1,5 @@
 import { SlackAPIAdapter } from "../SlackAPIAdapter";
-import { buildChannelName } from "../slack-building-blocks";
+import { buildChannelName } from "../slack-helpers";
 import { PullRequestReviewersUpdatedNotification } from "../../typings";
 
 export async function updateChannelMembers(payload: PullRequestReviewersUpdatedNotification, slackGateway: SlackAPIAdapter) {

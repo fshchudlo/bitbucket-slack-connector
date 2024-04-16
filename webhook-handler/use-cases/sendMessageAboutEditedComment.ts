@@ -10,7 +10,7 @@ import {
     slackQuote,
     slackSection,
     snapshotCommentAsSlackMetadata
-} from "../slack-building-blocks";
+} from "../slack-helpers";
 
 export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackAPIAdapter) {
     const channelName = buildChannelName(payload.pullRequest);

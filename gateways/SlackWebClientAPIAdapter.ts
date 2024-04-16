@@ -13,7 +13,7 @@ import { UserPayload } from "../typings";
 import appConfig from "../app.config";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
 
-const createChannelPromisesMap = new Map<string, Promise<SlackChannelInfo>>();
+const awaitingCreateChannelRequests = new Map<string, Promise<SlackChannelInfo>>();
 
 export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
     private client: slack.WebClient;
@@ -31,6 +31,11 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
     }
 
     async findChannel(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
+        if (awaitingCreateChannelRequests.has(channelName)) {
+            console.log(`Waiting for channel creation for name ${channelName}`);
+            return awaitingCreateChannelRequests.get(channelName);
+        }
+
         let cursor: string | undefined = undefined;
         const channelTypes = appConfig.USE_PRIVATE_CHANNELS ? "private_channel" : undefined;
         while (true) {
@@ -54,15 +59,15 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
     }
 
     provisionChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
-        if (createChannelPromisesMap.has(options.name)) {
+        if (awaitingCreateChannelRequests.has(options.name)) {
             console.log(`Waiting for channel creation for name ${options.name}`);
-            return createChannelPromisesMap.get(options.name);
+            return awaitingCreateChannelRequests.get(options.name);
         }
 
-        createChannelPromisesMap.set(options.name, new Promise(async (resolve, reject) => {
+        awaitingCreateChannelRequests.set(options.name, new Promise(async (resolve, reject) => {
             try {
                 const data = await this.createChannel(options);
-                createChannelPromisesMap.delete(options.name);
+                awaitingCreateChannelRequests.delete(options.name);
                 resolve(data);
             } catch (error) {
                 reject(error);

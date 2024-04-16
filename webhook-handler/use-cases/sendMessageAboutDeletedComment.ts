@@ -3,7 +3,7 @@ import {
     buildChannelName,
     formatUserName, getTaskOrCommentTitle,
     reformatMarkdownToSlackMarkup, slackQuote, slackSection, snapshotCommentAsSlackMetadata, iconEmoji
-} from "../slack-building-blocks";
+} from "../slack-helpers";
 import { PullRequestCommentActionNotification } from "../../typings";
 
 export async function sendMessageAboutDeletedComment(payload: PullRequestCommentActionNotification, slackGateway: SlackAPIAdapter) {
