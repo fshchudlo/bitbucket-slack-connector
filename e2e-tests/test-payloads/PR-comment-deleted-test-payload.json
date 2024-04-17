@@ -56,7 +56,7 @@
   },
   "comment": {
     "id": "{{CommentId}}",
-    "text": "Test **bold** _italic_, ~~strikethrough~~ , [links](https://git.plesk.tech/projects/LPS/repos/core.key-administrator/pull-requests/2010/overview) and `code blocks`",
+    "text": "Updated comment text",
     "severity": "NORMAL",
     "state": "OPEN",
     "author": {

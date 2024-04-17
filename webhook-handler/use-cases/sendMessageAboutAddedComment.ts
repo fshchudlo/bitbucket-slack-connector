@@ -8,16 +8,18 @@ import {
     snapshotCommentAsSlackMetadata,
     iconEmoji
 } from "../slack-helpers";
-import { SendMessageArguments, SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
+import { BitbucketCommentSnapshot, SendMessageArguments, SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
 import { PullRequestCommentActionNotification } from "../../typings";
 
 export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackAPIAdapter, channel: SlackChannelInfo) {
-    await slackAPI.sendMessage(buildMessage(payload, channel.id));
+    const parentCommentSnapshot = payload.commentParentId ? await slackAPI.findLatestBitbucketCommentSnapshot(channel.id, payload.commentParentId) : null;
+    await slackAPI.sendMessage(buildMessage(payload, parentCommentSnapshot, channel.id));
 }
 
-function buildMessage(payload: PullRequestCommentActionNotification, channelId: string): SendMessageArguments {
+function buildMessage(payload: PullRequestCommentActionNotification, parentCommentSnapshot: BitbucketCommentSnapshot, channelId: string): SendMessageArguments {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
-    const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, `added ${getTaskOrCommentTitle(payload)}`)}:`;
+    const action = parentCommentSnapshot ? "replied" : `added ${getTaskOrCommentTitle(payload)}`;
+    const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, action)}:`;
     const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);
 
     return {
@@ -25,6 +27,8 @@ function buildMessage(payload: PullRequestCommentActionNotification, channelId: 
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))],
-        metadata: snapshotCommentAsSlackMetadata(payload)
+        metadata: snapshotCommentAsSlackMetadata(payload),
+        threadId: parentCommentSnapshot?.slackThreadId || parentCommentSnapshot?.slackMessageId,
+        replyBroadcast: parentCommentSnapshot ? true : undefined
     };
 }

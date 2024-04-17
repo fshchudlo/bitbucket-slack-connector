@@ -1,5 +1,5 @@
 {
-  "eventKey": "pr:reviewer:approved",
+  "eventKey": "pr:comment:added",
   "date": "2024-03-01T18:19:32+0700",
   "actor": {
     "displayName": "{{SecondReviewerName}}",
@@ -38,11 +38,11 @@
     "reviewers": [
       {
         "user": {
-          "displayName": "{{SecondReviewerName}}",
-          "emailAddress": "{{SecondReviewerEmail}}"
+          "displayName": "{{FirstReviewerName}}",
+          "emailAddress": "{{FirstReviewerEmail}}"
         },
-        "approved": true,
-        "status": "APPROVED"
+        "approved": false,
+        "status": "UNAPPROVED"
       }
     ],
     "participants": [],
@@ -53,5 +53,16 @@
         }
       ]
     }
-  }
+  },
+  "comment": {
+    "id": "12345",
+    "text": "Test reply to the comment",
+    "severity": "NORMAL",
+    "state": "OPEN",
+    "author": {
+      "displayName": "{{SecondReviewerName}}",
+      "emailAddress": "{{SecondReviewerEmail}}"
+    }
+  },
+  "commentParentId": "{{CommentId}}"
 }

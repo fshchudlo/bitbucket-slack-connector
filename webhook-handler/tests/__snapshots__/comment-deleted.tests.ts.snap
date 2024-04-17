@@ -13,7 +13,12 @@ exports[`handleBitbucketWebhook Should send message on PR comment deletion 1`] =
       "excludeArchived": true,
     },
   ],
-  "searchedCommentSnapshots": [],
+  "searchedCommentSnapshots": [
+    {
+      "bitbucketCommentId": 1,
+      "channelId": "12345",
+    },
+  ],
   "sentMessages": [
     {
       "blocks": [
@@ -44,7 +49,9 @@ exports[`handleBitbucketWebhook Should send message on PR comment deletion 1`] =
         },
         "eventType": "bitbucket_comment_snapshot_saved",
       },
+      "replyBroadcast": true,
       "text": "Test Reviewer 1 deleted comment:",
+      "threadId": "ABCDE",
     },
   ],
   "setChannelTopics": [],

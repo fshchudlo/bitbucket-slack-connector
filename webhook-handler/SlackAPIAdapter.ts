@@ -62,6 +62,8 @@ export type SendMessageArguments = {
     channelId: string;
     iconEmoji?: string;
     text?: string;
+    threadId?: string;
+    replyBroadcast?: boolean,
     attachments?: Array<{
         text: string,
         color?: string

@@ -118,7 +118,9 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
                 event_payload: options.metadata.eventPayload
             } : undefined,
             attachments: options.attachments,
-            blocks: options.blocks
+            blocks: options.blocks,
+            thread_ts: options.threadId,
+            reply_broadcast: options.replyBroadcast
         });
         return {
             messageId: response.message.ts,

@@ -96,6 +96,18 @@ Content-Type: application/json
     });
 %}
 
+### Add reply to the comment
+POST {{EndpointHost}}/bitbucket-webhook
+Content-Type: application/json
+
+< ./test-payloads/PR-comment-replied-test-payload.json
+
+> {%
+    client.test("Reply to the PR comment should be successful", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
 ### Add commit
 POST {{EndpointHost}}/bitbucket-webhook
 Content-Type: application/json

@@ -17,8 +17,8 @@ import {
 export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackAPIAdapter, channel: SlackChannelInfo) {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
 
-    const previousCommentSnapshot = await slackAPI.findLatestBitbucketCommentSnapshot(channel.id, payload.comment.id);
-    const userAction = await getUserAction(payload, previousCommentSnapshot);
+    const commentSnapshot = await slackAPI.findLatestBitbucketCommentSnapshot(channel.id, payload.comment.id);
+    const userAction = await getUserAction(payload, commentSnapshot);
 
     const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, userAction)}:`;
     const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);
@@ -28,7 +28,9 @@ export async function sendMessageAboutEditedComment(payload: PullRequestCommentA
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))],
-        metadata: snapshotCommentAsSlackMetadata(payload)
+        metadata: snapshotCommentAsSlackMetadata(payload),
+        threadId: commentSnapshot?.slackThreadId || commentSnapshot?.slackMessageId,
+        replyBroadcast: commentSnapshot ? true : undefined
     });
 }
 
