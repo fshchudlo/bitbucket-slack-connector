@@ -1,4 +1,4 @@
-export * from "./buildChannelName";
+export * from "../buildChannelName";
 export * from "./formatUserName";
 export * from "./getTaskOrCommentTitle";
 export * from "./getPullRequestDescriptionForSlack";

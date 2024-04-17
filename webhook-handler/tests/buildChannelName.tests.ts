@@ -1,5 +1,5 @@
 import { buildChannelName } from "../buildChannelName";
-import { PullRequestPayload } from "../../../typings";
+import { PullRequestPayload } from "../../typings";
 
 describe("buildChannelName", () => {
     it("should generate the correct channel name", () => {

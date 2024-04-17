@@ -5,13 +5,11 @@ import {
     slackLink,
     slackSection
 } from "../slack-helpers";
-import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
+import { SendMessageArguments, SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
 import { PullRequestModifiedNotification } from "../../typings";
-import { findPullRequestChannel } from "../slack-helpers/findPullRequestChannel";
 
-export async function sendMessageAboutPRModification(payload: PullRequestModifiedNotification, slackAPI: SlackAPIAdapter) {
-    const channelInfo = await findPullRequestChannel(slackAPI, payload.pullRequest);
-    await slackAPI.sendMessage(buildMessage(payload, channelInfo.id));
+export async function sendMessageAboutPRModification(payload: PullRequestModifiedNotification, slackAPI: SlackAPIAdapter, channel: SlackChannelInfo) {
+    await slackAPI.sendMessage(buildMessage(payload, channel.id));
 }
 
 function buildMessage(payload: PullRequestModifiedNotification, channelId: string): SendMessageArguments {

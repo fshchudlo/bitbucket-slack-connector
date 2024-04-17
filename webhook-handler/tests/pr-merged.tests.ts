@@ -1,7 +1,7 @@
-import SlackAdapterSnapshottingMock from "../SlackAdapterSnapshottingMock";
-import TestPayloadBuilder from "../TestPayloadBuilder";
-import handleBitbucketWebhook from "../../handleBitbucketWebhook";
-import { TestBitbucketGateway } from "../TestBitbucketGateway";
+import SlackAdapterSnapshottingMock from "./mocks/SlackAdapterSnapshottingMock";
+import TestPayloadBuilder from "./mocks/TestPayloadBuilder";
+import handleBitbucketWebhook from "../handleBitbucketWebhook";
+import { TestBitbucketGateway } from "./mocks/TestBitbucketGateway";
 
 describe("handleBitbucketWebhook", () => {
     it("Should send completion message and close the channel on PR merge", async () => {

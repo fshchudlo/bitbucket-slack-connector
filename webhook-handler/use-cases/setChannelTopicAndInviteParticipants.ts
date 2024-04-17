@@ -1,27 +1,21 @@
 import {
-    buildChannelName,
     formatUserName,
     getPullRequestDescriptionForSlack,
     slackLink,
     iconEmoji
 } from "../slack-helpers";
-import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
+import { SendMessageArguments, SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
 
-export async function createChannelAndInviteParticipants(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, createPrivateChannel: boolean) {
-    const channelInfo = await slackAPI.createChannel({
-        name: buildChannelName(payload.pullRequest),
-        isPrivate: createPrivateChannel
-    });
-
+export async function setChannelTopicAndInviteParticipants(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, channel: SlackChannelInfo) {
     const allParticipants = [payload.pullRequest.author.user].concat(payload.pullRequest.reviewers.map(r => r.user));
     const slackUserIds = await slackAPI.getSlackUserIds(allParticipants);
 
-    await slackAPI.setChannelTopic({ channelId: channelInfo.id, topic: buildChannelTopic(payload) });
+    await slackAPI.setChannelTopic({ channelId: channel.id, topic: buildChannelTopic(payload) });
     if (slackUserIds.length > 0) {
-        await slackAPI.inviteToChannel({ channelId: channelInfo.id, users: slackUserIds, force: true });
+        await slackAPI.inviteToChannel({ channelId: channel.id, users: slackUserIds, force: true });
     }
-    await slackAPI.sendMessage(buildMessage(payload, channelInfo.id));
+    await slackAPI.sendMessage(buildMessage(payload, channel.id));
 }
 
 function buildMessage(payload: PullRequestBasicNotification, channelId: string): SendMessageArguments {

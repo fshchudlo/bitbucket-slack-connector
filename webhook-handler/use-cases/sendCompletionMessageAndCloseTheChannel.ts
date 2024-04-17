@@ -1,12 +1,10 @@
 import { formatUserName, iconEmoji } from "../slack-helpers";
-import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
+import { SendMessageArguments, SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
-import { findPullRequestChannel } from "../slack-helpers/findPullRequestChannel";
 
-export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter) {
-    const channelInfo = await findPullRequestChannel(slackAPI, payload.pullRequest);
-    await slackAPI.sendMessage(buildMessage(payload, channelInfo.id));
-    await slackAPI.archiveChannel(channelInfo.id);
+export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, channel: SlackChannelInfo) {
+    await slackAPI.sendMessage(buildMessage(payload, channel.id));
+    await slackAPI.archiveChannel(channel.id);
 }
 
 function buildMessage(payload: PullRequestBasicNotification, channelId: string): SendMessageArguments {

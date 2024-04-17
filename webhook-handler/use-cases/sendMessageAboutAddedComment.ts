@@ -8,13 +8,11 @@ import {
     snapshotCommentAsSlackMetadata,
     iconEmoji
 } from "../slack-helpers";
-import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
+import { SendMessageArguments, SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
 import { PullRequestCommentActionNotification } from "../../typings";
-import { findPullRequestChannel } from "../slack-helpers/findPullRequestChannel";
 
-export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackAPIAdapter) {
-    const channelInfo = await findPullRequestChannel(slackAPI, payload.pullRequest);
-    await slackAPI.sendMessage(buildMessage(payload, channelInfo.id));
+export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackAPIAdapter, channel: SlackChannelInfo) {
+    await slackAPI.sendMessage(buildMessage(payload, channel.id));
 }
 
 function buildMessage(payload: PullRequestCommentActionNotification, channelId: string): SendMessageArguments {

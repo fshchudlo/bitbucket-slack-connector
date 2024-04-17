@@ -1,11 +1,9 @@
-import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
+import { SendMessageArguments, SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
 import { formatUserName, iconEmoji, slackLink, slackSection } from "../slack-helpers";
 import { PullRequestBasicNotification, PullRequestPayload } from "../../typings";
-import { findPullRequestChannel } from "../slack-helpers/findPullRequestChannel";
 
-export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter) {
-    const channelInfo = await findPullRequestChannel(slackAPI, payload.pullRequest);
-    await slackAPI.sendMessage(buildMessage(payload, channelInfo.id));
+export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, channel: SlackChannelInfo) {
+    await slackAPI.sendMessage(buildMessage(payload, channel.id));
 }
 
 function buildMessage(payload: PullRequestBasicNotification, channelId: string): SendMessageArguments {

@@ -2,7 +2,7 @@ import {
     BitbucketNotification,
     PullRequestBasicNotification, PullRequestCommentActionNotification, PullRequestModifiedNotification,
     PullRequestReviewersUpdatedNotification
-} from "../../typings";
+} from "../../../typings";
 
 const authorUser = {
     displayName: "Test Author",

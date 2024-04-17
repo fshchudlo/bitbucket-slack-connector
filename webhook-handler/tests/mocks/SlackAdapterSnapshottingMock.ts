@@ -8,8 +8,8 @@ import {
     SetChannelTopicArguments,
     InviteToChannelArguments,
     KickFromChannelArguments, SendMessageArguments, SendMessageResponse
-} from "../SlackAPIAdapter";
-import { UserPayload } from "../../typings";
+} from "../../SlackAPIAdapter";
+import { UserPayload } from "../../../typings";
 
 const channelId = "12345";
 const messageId = "ABCDE";

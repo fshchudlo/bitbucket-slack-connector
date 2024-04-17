@@ -6,16 +6,13 @@ import {
     slackQuote,
     slackSection
 } from "../slack-helpers";
-import { SendMessageArguments, SlackAPIAdapter } from "../SlackAPIAdapter";
+import { SendMessageArguments, SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
 import { BitbucketGateway } from "../BitbucketGateway";
 import { PullRequestBasicNotification } from "../../typings";
-import { findPullRequestChannel } from "../slack-helpers/findPullRequestChannel";
 
-export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, bitbucketGateway: BitbucketGateway) {
+export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, bitbucketGateway: BitbucketGateway, channel: SlackChannelInfo) {
     const commentInBitbucket = await bitbucketGateway.tryGetCommitMessage(payload.pullRequest.fromRef.repository.project.key, payload.pullRequest.fromRef.repository.slug, payload.pullRequest.fromRef.latestCommit);
-    const channelInfo = await findPullRequestChannel(slackAPI, payload.pullRequest);
-
-    const message = buildMessage(payload, commentInBitbucket, channelInfo.id);
+    const message = buildMessage(payload, commentInBitbucket, channel.id);
     await slackAPI.sendMessage(message);
 }
 

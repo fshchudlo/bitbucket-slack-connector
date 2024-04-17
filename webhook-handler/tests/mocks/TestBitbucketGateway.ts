@@ -1,4 +1,4 @@
-import { BitbucketGateway } from "../BitbucketGateway";
+import { BitbucketGateway } from "../../BitbucketGateway";
 
 export class TestBitbucketGateway implements BitbucketGateway {
     tryGetCommitMessage(projectKey: string, repoSlug: string, commitHash: string): Promise<string> {

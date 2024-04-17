@@ -1,4 +1,4 @@
-import { PullRequestPayload } from "../../typings";
+import { PullRequestPayload } from "../typings";
 
 interface PullRequestFlattenTraits {
     pullRequestId: string | number;

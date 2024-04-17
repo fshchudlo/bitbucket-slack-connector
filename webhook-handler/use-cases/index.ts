@@ -1,4 +1,4 @@
-export { createChannelAndInviteParticipants } from "./createChannelAndInviteParticipants";
+export { setChannelTopicAndInviteParticipants } from "./setChannelTopicAndInviteParticipants";
 export { sendCompletionMessageAndCloseTheChannel } from "./sendCompletionMessageAndCloseTheChannel";
 export { sendMessageAboutNewCommit } from "./sendMessageAboutNewCommit";
 export { sendMessageAboutAddedComment } from "./sendMessageAboutAddedComment";
