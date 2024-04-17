@@ -1,7 +1,7 @@
 import appConfig from "./app.config";
 import util from "util";
 import { ExpressReceiver } from "@slack/bolt";
-import { SlackAPIAdapterCachedDecorator } from "./gateways/slack-api-adapter/SlackAPIAdapterCachedDecorator";
+import { SlackAPIAdapterCachedDecorator } from "./adapters/slack-api-adapter/SlackAPIAdapterCachedDecorator";
 import express, { NextFunction } from "express";
 
 export default function configureErrorHandler(expressReceiver: ExpressReceiver, slackAPI: SlackAPIAdapterCachedDecorator) {

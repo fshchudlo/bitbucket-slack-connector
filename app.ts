@@ -1,9 +1,9 @@
 import "dotenv/config";
 import { App, ExpressReceiver } from "@slack/bolt";
 import AppConfig from "./app.config";
-import { SlackWebClientAPIAdapter } from "./gateways/slack-api-adapter/SlackWebClientAPIAdapter";
+import { SlackWebClientAPIAdapter } from "./adapters/slack-api-adapter/SlackWebClientAPIAdapter";
 import express from "express";
-import { SlackAPIAdapterCachedDecorator } from "./gateways/slack-api-adapter/SlackAPIAdapterCachedDecorator";
+import { SlackAPIAdapterCachedDecorator } from "./adapters/slack-api-adapter/SlackAPIAdapterCachedDecorator";
 import { collectDefaultMetrics } from "prom-client";
 import configureRoutes from "./app.routes";
 import configureErrorHandler from "./app.errorHandler";

@@ -8,7 +8,7 @@ import {
     SetChannelTopicArguments,
     InviteToChannelArguments,
     KickFromChannelArguments, SendMessageArguments, SendMessageResponse, BitbucketCommentSnapshotInSlackMetadata
-} from "../../SlackAPIAdapter";
+} from "../../ports/SlackAPIAdapter";
 import { UserPayload } from "../../../typings";
 
 const channelId = "12345";

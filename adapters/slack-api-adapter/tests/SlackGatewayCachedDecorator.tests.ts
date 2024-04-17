@@ -5,7 +5,7 @@ import { register } from "prom-client";
 import {
     BitbucketCommentSnapshot,
     BitbucketCommentSnapshotInSlackMetadata, SendMessageResponse
-} from "../../../webhook-handler/SlackAPIAdapter";
+} from "../../../webhook-handler/ports/SlackAPIAdapter";
 
 
 const decoratedGatewayMock = {

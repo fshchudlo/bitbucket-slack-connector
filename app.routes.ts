@@ -3,8 +3,8 @@ import appConfig from "./app.config";
 import { register } from "prom-client";
 import { buildChannelName } from "./webhook-handler/slack-helpers";
 import { ExpressReceiver } from "@slack/bolt";
-import { SlackAPIAdapterCachedDecorator } from "./gateways/slack-api-adapter/SlackAPIAdapterCachedDecorator";
-import BitbucketWebAPIGateway from "./gateways/bitbucket-gateway/BitbucketWebAPIGateway";
+import { SlackAPIAdapterCachedDecorator } from "./adapters/slack-api-adapter/SlackAPIAdapterCachedDecorator";
+import BitbucketWebAPIGateway from "./adapters/bitbucket-gateway/BitbucketWebAPIGateway";
 import AppConfig from "./app.config";
 import { NextFunction } from "express";
 

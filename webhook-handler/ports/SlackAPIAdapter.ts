@@ -1,4 +1,4 @@
-import { CommentSeverity, UserPayload } from "../typings";
+import { CommentSeverity, UserPayload } from "../../typings";
 import { Block, KnownBlock } from "@slack/bolt";
 
 export interface SlackAPIAdapter {
@@ -14,9 +14,6 @@ export interface SlackAPIAdapter {
 
     kickFromChannel(options: KickFromChannelArguments): Promise<void>;
 
-    /*
-    Channel archiving is quite unique in Slack since it requires channel id, not the name. To make it explicit, we change contract here
-     */
     archiveChannel(channelId: string): Promise<void>;
 
     sendMessage(options: SendMessageArguments): Promise<SendMessageResponse>;

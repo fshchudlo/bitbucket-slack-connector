@@ -1,6 +1,6 @@
 import * as useCases from "./use-cases";
-import { SlackAPIAdapter } from "./SlackAPIAdapter";
-import { BitbucketGateway } from "./BitbucketGateway";
+import { SlackAPIAdapter } from "./ports/SlackAPIAdapter";
+import { BitbucketGateway } from "./ports/BitbucketGateway";
 import { BitbucketNotification } from "../typings";
 import { buildChannelName } from "./slack-helpers";
 
@@ -10,35 +10,35 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
 
     switch (eventKey) {
         case "pr:opened":
-            await useCases.setChannelTopicAndInviteParticipants(payload, slackAPI, channelInfo);
+            await useCases.setChannelTopicAndInviteParticipants(payload, slackAPI, channelInfo.id);
             break;
         case "pr:modified":
-            await useCases.sendMessageAboutPRModification(payload, slackAPI, channelInfo);
+            await useCases.sendMessageAboutPRModification(payload, slackAPI, channelInfo.id);
             break;
         case "pr:reviewer:updated":
-            await useCases.updateChannelMembers(payload, slackAPI, channelInfo);
+            await useCases.updateChannelMembers(payload, slackAPI, channelInfo.id);
             break;
         case "pr:reviewer:unapproved":
         case "pr:reviewer:needs_work":
         case "pr:reviewer:approved":
-            await useCases.sendMessageAboutReviewerAction(payload, slackAPI, channelInfo);
+            await useCases.sendMessageAboutReviewerAction(payload, slackAPI, channelInfo.id);
             break;
         case "pr:comment:added":
-            await useCases.sendMessageAboutAddedComment(payload, slackAPI, channelInfo);
+            await useCases.sendMessageAboutAddedComment(payload, slackAPI, channelInfo.id);
             break;
         case "pr:comment:edited":
-            await useCases.sendMessageAboutEditedComment(payload, slackAPI, channelInfo);
+            await useCases.sendMessageAboutEditedComment(payload, slackAPI, channelInfo.id);
             break;
         case "pr:comment:deleted":
-            await useCases.sendMessageAboutDeletedComment(payload, slackAPI, channelInfo);
+            await useCases.sendMessageAboutDeletedComment(payload, slackAPI, channelInfo.id);
             break;
         case "pr:from_ref_updated":
-            await useCases.sendMessageAboutNewCommit(payload, slackAPI, bitbucketGateway, channelInfo);
+            await useCases.sendMessageAboutNewCommit(payload, slackAPI, bitbucketGateway, channelInfo.id);
             break;
         case "pr:merged":
         case "pr:declined":
         case "pr:deleted":
-            await useCases.sendCompletionMessageAndCloseTheChannel(payload, slackAPI, channelInfo);
+            await useCases.sendCompletionMessageAndCloseTheChannel(payload, slackAPI, channelInfo.id);
             break;
         default:
             throw new Error(`"${eventKey}" event key is unknown.`);

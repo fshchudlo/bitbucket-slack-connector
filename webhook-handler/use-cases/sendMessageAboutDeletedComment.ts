@@ -1,20 +1,20 @@
-import { BitbucketCommentSnapshot, SendMessageArguments, SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
+import { BitbucketCommentSnapshot, SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import {
     formatUserName, getTaskOrCommentTitle,
     reformatMarkdownToSlackMarkup, slackQuote, slackSection, snapshotCommentToSlackMetadata, iconEmoji
 } from "../slack-helpers";
 import { PullRequestCommentActionNotification } from "../../typings";
 
-export async function sendMessageAboutDeletedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackAPIAdapter, channel: SlackChannelInfo) {
-    const previousCommentSnapshot = await slackAPI.findLatestBitbucketCommentSnapshot(channel.id, payload.comment.id);
-    await slackAPI.sendMessage(buildMessage(payload, previousCommentSnapshot, channel.id));
+export async function sendMessageAboutDeletedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackAPIAdapter, slackChannelId: string) {
+    const previousCommentSnapshot = await slackAPI.findLatestBitbucketCommentSnapshot(slackChannelId, payload.comment.id);
+    await slackAPI.sendMessage(buildMessage(payload, previousCommentSnapshot, slackChannelId));
 }
 
-function buildMessage(payload: PullRequestCommentActionNotification, commentSnapshot: BitbucketCommentSnapshot, channelId: string): SendMessageArguments {
+function buildMessage(payload: PullRequestCommentActionNotification, commentSnapshot: BitbucketCommentSnapshot, slackChannelId: string): SendMessageArguments {
     const messageTitle = `${formatUserName(payload.actor)} deleted ${getTaskOrCommentTitle(payload)}:`;
     const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);
     return {
-        channelId: channelId,
+        channelId: slackChannelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))],

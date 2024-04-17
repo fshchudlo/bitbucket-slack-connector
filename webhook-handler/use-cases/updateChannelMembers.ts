@@ -1,13 +1,13 @@
-import { SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
+import { SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { PullRequestReviewersUpdatedNotification } from "../../typings";
 
-export async function updateChannelMembers(payload: PullRequestReviewersUpdatedNotification, slackAPI: SlackAPIAdapter, channel: SlackChannelInfo) {
+export async function updateChannelMembers(payload: PullRequestReviewersUpdatedNotification, slackAPI: SlackAPIAdapter, slackChannelId: string) {
     const userIdsToAdd = await slackAPI.getSlackUserIds(payload.addedReviewers);
     const userIdsToRemove = await slackAPI.getSlackUserIds(payload.removedReviewers);
 
     if (userIdsToAdd.length > 0) {
         await slackAPI.inviteToChannel({
-            channelId: channel.id,
+            channelId: slackChannelId,
             users: userIdsToAdd,
             force: true
         });
@@ -15,7 +15,7 @@ export async function updateChannelMembers(payload: PullRequestReviewersUpdatedN
 
     await Promise.all(userIdsToRemove.map(async userId => {
         await slackAPI.kickFromChannel({
-            channelId: channel.id,
+            channelId: slackChannelId,
             user: userId
         });
     }));

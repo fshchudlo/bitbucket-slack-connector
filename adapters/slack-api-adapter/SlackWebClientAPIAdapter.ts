@@ -10,7 +10,7 @@ import {
     SetChannelTopicArguments,
     SlackAPIAdapter,
     SlackChannelInfo
-} from "../../webhook-handler/SlackAPIAdapter";
+} from "../../webhook-handler/ports/SlackAPIAdapter";
 import { UserPayload } from "../../typings";
 import appConfig from "../../app.config";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
