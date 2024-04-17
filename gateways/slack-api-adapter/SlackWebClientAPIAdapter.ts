@@ -10,9 +10,9 @@ import {
     SetChannelTopicArguments,
     SlackAPIAdapter,
     SlackChannelInfo
-} from "../webhook-handler/SlackAPIAdapter";
-import { UserPayload } from "../typings";
-import appConfig from "../app.config";
+} from "../../webhook-handler/SlackAPIAdapter";
+import { UserPayload } from "../../typings";
+import appConfig from "../../app.config";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
 
 const awaitingCreateChannelRequests = new Map<string, Promise<SlackChannelInfo>>();

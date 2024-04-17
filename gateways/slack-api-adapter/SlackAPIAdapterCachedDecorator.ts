@@ -1,4 +1,4 @@
-import { UserPayload } from "../typings";
+import { UserPayload } from "../../typings";
 import {
     BitbucketCommentSnapshot,
     BitbucketCommentSnapshotInSlackMetadata,
@@ -8,7 +8,7 @@ import {
     SetChannelTopicArguments,
     SlackAPIAdapter,
     SlackChannelInfo
-} from "../webhook-handler/SlackAPIAdapter";
+} from "../../webhook-handler/SlackAPIAdapter";
 import { InMemoryCache } from "./cache/InMemoryCache";
 
 function getCommentCacheKey(channelId: string, bitbucketCommentId: number | string) {

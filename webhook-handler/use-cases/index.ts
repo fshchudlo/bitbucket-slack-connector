@@ -6,3 +6,4 @@ export { updateChannelMembers } from "./updateChannelMembers";
 export { sendMessageAboutReviewerAction } from "./sendMessageAboutReviewerAction";
 export { sendMessageAboutDeletedComment } from "./sendMessageAboutDeletedComment";
 export { sendMessageAboutEditedComment } from "./sendMessageAboutEditedComment";
+export { sendMessageAboutPRModification } from "./sendMessageAboutPRModification";

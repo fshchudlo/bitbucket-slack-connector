@@ -1,7 +1,7 @@
 import appConfig from "./app.config";
 import util from "util";
 import { ExpressReceiver } from "@slack/bolt";
-import { SlackAPIAdapterCachedDecorator } from "./gateways/SlackAPIAdapterCachedDecorator";
+import { SlackAPIAdapterCachedDecorator } from "./gateways/slack-api-adapter/SlackAPIAdapterCachedDecorator";
 import express, { NextFunction } from "express";
 
 export default function configureErrorHandler(expressReceiver: ExpressReceiver, slackAPI: SlackAPIAdapterCachedDecorator) {
@@ -18,6 +18,7 @@ export default function configureErrorHandler(expressReceiver: ExpressReceiver, 
         } catch (error) {
             console.error("Error during sending message to the diagnostic channel", error);
         }
+
         if (res.headersSent) {
             return next(error);
         } else {
