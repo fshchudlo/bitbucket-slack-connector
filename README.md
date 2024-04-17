@@ -36,7 +36,7 @@ Built on top of [Slack bolt API](https://slack.dev/bolt-js/tutorial/getting-star
 - You can use provided `Dockerfile` to build an image and run it with provided ENV variables identical to variables
   specified in `.env.example` described above
 - Please, be aware that _service is stateful_ since it caches channels info. State stored in memory (
-  see `SlackGatewayCachedDecorator`). In memory caching used to keep implementation simple and efficiently serve
+  see `SlackAPIAdapterCachedDecorator`). In memory caching used to keep implementation simple, it efficiently serves
   hundreds of pull requests. In case of service restart, cache will be gracefully restored. However,
-  if you need to run multiple instances or experience `Slack API` request limits exceeding, you will need to provide
+  if you need to run multiple instances or experience `Slack API` requests limit exceeding, you will need to provide
   some external cache.    
