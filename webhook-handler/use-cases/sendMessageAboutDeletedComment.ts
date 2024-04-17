@@ -1,7 +1,7 @@
 import { BitbucketCommentSnapshot, SendMessageArguments, SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
 import {
     formatUserName, getTaskOrCommentTitle,
-    reformatMarkdownToSlackMarkup, slackQuote, slackSection, snapshotCommentAsSlackMetadata, iconEmoji
+    reformatMarkdownToSlackMarkup, slackQuote, slackSection, snapshotCommentToSlackMetadata, iconEmoji
 } from "../slack-helpers";
 import { PullRequestCommentActionNotification } from "../../typings";
 
@@ -18,7 +18,7 @@ function buildMessage(payload: PullRequestCommentActionNotification, commentSnap
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))],
-        metadata: snapshotCommentAsSlackMetadata(payload),
+        metadata: snapshotCommentToSlackMetadata(payload),
         threadId: commentSnapshot?.slackThreadId || commentSnapshot?.slackMessageId,
         replyBroadcast: commentSnapshot ? true : undefined
     };

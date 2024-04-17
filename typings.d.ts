@@ -28,7 +28,6 @@ export type PullRequestCommentActionNotification = PullRequestNotificationBasicP
         text: string;
         author: UserPayload;
         severity: CommentSeverity;
-        state: "OPEN" | "RESOLVED";
         resolvedDate?: number;
         threadResolvedDate?: number;
     };

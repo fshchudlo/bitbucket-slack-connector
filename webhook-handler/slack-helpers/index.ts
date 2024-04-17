@@ -3,7 +3,7 @@ export * from "./formatUserName";
 export * from "./getTaskOrCommentTitle";
 export * from "./getPullRequestDescriptionForSlack";
 export * from "./reformatMarkdownToSlackMarkup";
-export * from "./snapshotCommentAsSlackMetadata";
+export * from "./snapshotCommentToSlackMetadata";
 export * from "./constants";
 export * from "./building-blocks/slackLink";
 export * from "./building-blocks/slackQuote";

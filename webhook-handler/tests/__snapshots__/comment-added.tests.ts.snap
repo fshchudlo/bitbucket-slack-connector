@@ -52,3 +52,56 @@ exports[`handleBitbucketWebhook Should send message on PR comment 1`] = `
   "setChannelTopics": [],
 }
 `;
+
+exports[`handleBitbucketWebhook Should send message on PR task 1`] = `
+{
+  "archivedChannels": [],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [],
+  "searchedChannels": [
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "excludeArchived": true,
+    },
+  ],
+  "searchedCommentSnapshots": [],
+  "sentMessages": [
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added task>:",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "> Test comment",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channelId": "12345",
+      "iconEmoji": ":bitbucket:",
+      "metadata": {
+        "eventPayload": {
+          "commentId": "1",
+          "commentParentId": undefined,
+          "severity": "BLOCKER",
+          "taskResolvedDate": undefined,
+          "threadResolvedDate": undefined,
+        },
+        "eventType": "bitbucket_comment_snapshot_saved",
+      },
+      "replyBroadcast": undefined,
+      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added task>:",
+      "threadId": undefined,
+    },
+  ],
+  "setChannelTopics": [],
+}
+`;

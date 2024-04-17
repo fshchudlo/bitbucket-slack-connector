@@ -34,7 +34,7 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
         },
         {
           "text": {
-            "text": ":large_yellow_circle:  Unapproved: Test Reviewer 1",
+            "text": ":large_yellow_circle:  Needs work: Test Reviewer 1 Unapproved: Test Reviewer 2",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -55,7 +55,7 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
         },
         {
           "text": {
-            "text": ":large_yellow_circle:  Unapproved: Test Reviewer 1",
+            "text": ":large_yellow_circle:  Unapproved: Test Reviewer 1,Test Reviewer 2",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -76,7 +76,7 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
         },
         {
           "text": {
-            "text": ":large_yellow_circle:  Unapproved: Test Reviewer 1",
+            "text": ":large_yellow_circle:  Approved: Test Reviewer 1 Unapproved: Test Reviewer 2",
             "type": "mrkdwn",
           },
           "type": "section",

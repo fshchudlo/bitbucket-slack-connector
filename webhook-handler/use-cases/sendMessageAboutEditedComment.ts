@@ -11,7 +11,7 @@ import {
     slackLink,
     slackQuote,
     slackSection,
-    snapshotCommentAsSlackMetadata
+    snapshotCommentToSlackMetadata
 } from "../slack-helpers";
 
 export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackAPIAdapter, channel: SlackChannelInfo) {
@@ -28,7 +28,7 @@ export async function sendMessageAboutEditedComment(payload: PullRequestCommentA
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))],
-        metadata: snapshotCommentAsSlackMetadata(payload),
+        metadata: snapshotCommentToSlackMetadata(payload),
         threadId: commentSnapshot?.slackThreadId || commentSnapshot?.slackMessageId,
         replyBroadcast: commentSnapshot ? true : undefined
     });

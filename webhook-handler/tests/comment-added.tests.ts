@@ -11,4 +11,12 @@ describe("handleBitbucketWebhook", () => {
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
     });
+
+    it("Should send message on PR task", async () => {
+        const testSlackGateway = new SlackAdapterSnapshottingMock();
+        const payload = TestPayloadBuilder.pullRequestTaskAdded();
+        await handleBitbucketWebhook(payload, testSlackGateway, new TestBitbucketGateway());
+
+        expect(testSlackGateway.snapshot).toMatchSnapshot();
+    });
 });

@@ -16,6 +16,10 @@ const reviewer2User = {
     displayName: "Test Reviewer 2",
     emailAddress: "test.reviewer2@test.com"
 };
+const reviewer3User = {
+    displayName: "Test Reviewer 3",
+    emailAddress: "test.reviewer3@test.com"
+};
 
 function getBasicPayload(): PullRequestBasicNotification {
     return {
@@ -54,6 +58,11 @@ function getBasicPayload(): PullRequestBasicNotification {
             reviewers: [
                 {
                     user: { ...reviewer1User },
+                    approved: false,
+                    status: "UNAPPROVED"
+                },
+                {
+                    user: { ...reviewer2User },
                     approved: false,
                     status: "UNAPPROVED"
                 }
@@ -111,9 +120,19 @@ export default class TestPayloadBuilder {
             comment: {
                 id: 1,
                 severity: "NORMAL",
-                state: "OPEN",
                 text: "Test comment",
                 author: { ...reviewer1User }
+            }
+        };
+    }
+
+    static pullRequestTaskAdded(): PullRequestCommentActionNotification {
+        const basicPayload = this.pullRequestCommentAdded();
+        return {
+            ...basicPayload,
+            comment: {
+                ...basicPayload.comment,
+                severity: "BLOCKER"
             }
         };
     }
@@ -122,6 +141,48 @@ export default class TestPayloadBuilder {
         const payload = this.pullRequestCommentAdded();
         payload.eventKey = "pr:comment:edited";
         payload.comment.text = "Updated comment text";
+        return payload;
+    }
+
+    static pullRequestCommentConvertedToTheTask(): PullRequestCommentActionNotification {
+        const payload = this.pullRequestCommentAdded();
+        payload.eventKey = "pr:comment:edited";
+        payload.comment.severity = "BLOCKER";
+        return payload;
+    }
+
+    static pullRequestTaskConvertedToTheComment(): PullRequestCommentActionNotification {
+        const payload = this.pullRequestTaskAdded();
+        payload.eventKey = "pr:comment:edited";
+        payload.comment.severity = "NORMAL";
+        return payload;
+    }
+
+    static pullRequestTaskResolved(): PullRequestCommentActionNotification {
+        const payload = this.pullRequestTaskAdded();
+        payload.eventKey = "pr:comment:edited";
+        payload.comment.resolvedDate = 123456789;
+        return payload;
+    }
+
+    static pullRequestTaskReopened(): PullRequestCommentActionNotification {
+        const payload = this.pullRequestTaskAdded();
+        payload.eventKey = "pr:comment:edited";
+        payload.comment.resolvedDate = undefined;
+        return payload;
+    }
+
+    static pullRequestCommentResolved(): PullRequestCommentActionNotification {
+        const payload = this.pullRequestCommentAdded();
+        payload.eventKey = "pr:comment:edited";
+        payload.comment.threadResolvedDate = 123456789;
+        return payload;
+    }
+
+    static pullRequestCommentReopened(): PullRequestCommentActionNotification {
+        const payload = this.pullRequestCommentAdded();
+        payload.eventKey = "pr:comment:edited";
+        payload.comment.threadResolvedDate = undefined;
         return payload;
     }
 
@@ -149,7 +210,7 @@ export default class TestPayloadBuilder {
     static pullRequestNeedsWork(): BitbucketNotification {
         const payload = getBasicPayload();
 
-        payload.pullRequest.reviewers.forEach(r => r.status = r.user.displayName == payload.actor.displayName ? "NEEDS_WORK" : r.status);
+        payload.pullRequest.reviewers[0].status = "NEEDS_WORK";
 
         return {
             ...payload,
@@ -160,7 +221,7 @@ export default class TestPayloadBuilder {
 
     static pullRequestApproved(): BitbucketNotification {
         const payload = getBasicPayload();
-        payload.pullRequest.reviewers.forEach(r => r.status = r.user.displayName == payload.actor.displayName ? "APPROVED" : r.status);
+        payload.pullRequest.reviewers[0].status = "APPROVED";
 
         return {
             ...payload,
@@ -172,7 +233,7 @@ export default class TestPayloadBuilder {
     static pullRequestUnapproved(): BitbucketNotification {
         const payload = getBasicPayload();
 
-        payload.pullRequest.reviewers.forEach(r => r.status = r.user.displayName == payload.actor.displayName ? "UNAPPROVED" : r.status);
+        payload.pullRequest.reviewers[0].status = "UNAPPROVED";
 
         return {
             ...payload,
@@ -193,7 +254,7 @@ export default class TestPayloadBuilder {
         return {
             ...getBasicPayload(),
             eventKey: "pr:reviewer:updated",
-            addedReviewers: [reviewer2User],
+            addedReviewers: [reviewer3User],
             removedReviewers: [reviewer1User]
         };
     }

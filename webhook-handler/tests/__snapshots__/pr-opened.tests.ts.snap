@@ -16,6 +16,7 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
       "users": [
         "test.author@test.com",
         "test.reviewer1@test.com",
+        "test.reviewer2@test.com",
       ],
     },
   ],
@@ -26,6 +27,9 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
     },
     {
       "email": "test.reviewer1@test.com",
+    },
+    {
+      "email": "test.reviewer2@test.com",
     },
   ],
   "searchedChannels": [],

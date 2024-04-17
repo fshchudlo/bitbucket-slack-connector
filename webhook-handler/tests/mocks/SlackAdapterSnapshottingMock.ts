@@ -7,7 +7,7 @@ import {
     CreateChannelArguments,
     SetChannelTopicArguments,
     InviteToChannelArguments,
-    KickFromChannelArguments, SendMessageArguments, SendMessageResponse
+    KickFromChannelArguments, SendMessageArguments, SendMessageResponse, BitbucketCommentSnapshotInSlackMetadata
 } from "../../SlackAPIAdapter";
 import { UserPayload } from "../../../typings";
 
@@ -82,10 +82,26 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
 
     findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
         this.snapshot.searchedCommentSnapshots.push({ channelId, bitbucketCommentId });
-        return Promise.resolve({
-            commentId: bitbucketCommentId.toString(),
-            severity: "NORMAL",
-            slackMessageId: messageId
-        });
+
+        const snapshot = (<any>this.snapshot.sentMessages).findLast((m: SendMessageArguments) => m.metadata?.eventPayload?.commentId == bitbucketCommentId);
+
+        if (snapshot) {
+            const metadata = <BitbucketCommentSnapshotInSlackMetadata>snapshot.metadata?.eventPayload;
+            return Promise.resolve({
+                commentId: metadata.commentId,
+                commentParentId: metadata.commentParentId,
+                threadResolvedDate: metadata.threadResolvedDate,
+                taskResolvedDate: metadata.taskResolvedDate,
+                severity: metadata.severity,
+                slackMessageId: messageId,
+                slackThreadId: snapshot.threadId
+            });
+        } else {
+            return Promise.resolve({
+                commentId: bitbucketCommentId.toString(),
+                severity: "NORMAL",
+                slackMessageId: messageId
+            });
+        }
     }
 }

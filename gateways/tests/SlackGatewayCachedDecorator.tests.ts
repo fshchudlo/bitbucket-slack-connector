@@ -1,5 +1,5 @@
 import { SlackAPIAdapterCachedDecorator } from "../SlackAPIAdapterCachedDecorator";
-import { snapshotCommentAsSlackMetadata } from "../../webhook-handler/slack-helpers";
+import { snapshotCommentToSlackMetadata } from "../../webhook-handler/slack-helpers";
 import { PullRequestCommentActionNotification } from "../../typings";
 import { register } from "prom-client";
 import {
@@ -116,7 +116,7 @@ describe("SlackGatewayCachedDecorator", () => {
 
         await systemUnderTest.sendMessage({
             channelId: channelData.id,
-            metadata: snapshotCommentAsSlackMetadata(testPayload)
+            metadata: snapshotCommentToSlackMetadata(testPayload)
         });
 
 

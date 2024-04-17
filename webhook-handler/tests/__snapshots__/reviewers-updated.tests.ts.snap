@@ -9,7 +9,7 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
       "channelId": "12345",
       "force": true,
       "users": [
-        "test.reviewer2@test.com",
+        "test.reviewer3@test.com",
       ],
     },
   ],
@@ -21,7 +21,7 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
   ],
   "lookedUpUsers": [
     {
-      "email": "test.reviewer2@test.com",
+      "email": "test.reviewer3@test.com",
     },
     {
       "email": "test.reviewer1@test.com",

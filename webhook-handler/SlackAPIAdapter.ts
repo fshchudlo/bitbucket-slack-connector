@@ -73,7 +73,6 @@ export type SendMessageArguments = {
         eventPayload: { [p: string]: string | number | boolean }
     };
     blocks?: Block[] | KnownBlock[]
-
 }
 export type SendMessageResponse = {
     messageId: string;

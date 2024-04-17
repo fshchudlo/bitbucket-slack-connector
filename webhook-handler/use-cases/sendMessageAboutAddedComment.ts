@@ -5,7 +5,7 @@ import {
     slackLink,
     slackQuote,
     slackSection,
-    snapshotCommentAsSlackMetadata,
+    snapshotCommentToSlackMetadata,
     iconEmoji
 } from "../slack-helpers";
 import { BitbucketCommentSnapshot, SendMessageArguments, SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
@@ -27,7 +27,7 @@ function buildMessage(payload: PullRequestCommentActionNotification, parentComme
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))],
-        metadata: snapshotCommentAsSlackMetadata(payload),
+        metadata: snapshotCommentToSlackMetadata(payload),
         threadId: parentCommentSnapshot?.slackThreadId || parentCommentSnapshot?.slackMessageId,
         replyBroadcast: parentCommentSnapshot ? true : undefined
     };
