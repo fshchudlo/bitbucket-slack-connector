@@ -20,6 +20,12 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
         case "pr:opened":
             await setChannelTopicAndInviteParticipants(payload, slackAPI, channelInfo);
             break;
+        case "pr:modified":
+            await sendMessageAboutPRModification(payload, slackAPI, channelInfo);
+            break;
+        case "pr:reviewer:updated":
+            await updateChannelMembers(payload, slackAPI, channelInfo);
+            break;
         case "pr:reviewer:unapproved":
         case "pr:reviewer:needs_work":
         case "pr:reviewer:approved":
@@ -36,12 +42,6 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
             break;
         case "pr:from_ref_updated":
             await sendMessageAboutNewCommit(payload, slackAPI, bitbucketGateway, channelInfo);
-            break;
-        case "pr:reviewer:updated":
-            await updateChannelMembers(payload, slackAPI, channelInfo);
-            break;
-        case "pr:modified":
-            await sendMessageAboutPRModification(payload, slackAPI, channelInfo);
             break;
         case "pr:merged":
         case "pr:declined":

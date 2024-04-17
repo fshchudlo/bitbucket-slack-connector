@@ -5,23 +5,23 @@ import {
     slackLink,
     slackSection
 } from "../slack-helpers";
-import { SendMessageArguments, SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
+import { SlackAPIAdapter, SlackChannelInfo } from "../SlackAPIAdapter";
 import { PullRequestModifiedNotification } from "../../typings";
 
 export async function sendMessageAboutPRModification(payload: PullRequestModifiedNotification, slackAPI: SlackAPIAdapter, channel: SlackChannelInfo) {
-    await slackAPI.sendMessage(buildMessage(payload, channel.id));
-}
-
-function buildMessage(payload: PullRequestModifiedNotification, channelId: string): SendMessageArguments {
-    const messageTitle = `:writing_hand: ${formatUserName(payload.actor)} changed the pull request`;
     const changesDescription = getChangesDescription(payload);
+    if (changesDescription.length == 0) {
+        return;
+    }
+
+    const messageTitle = `:writing_hand: ${formatUserName(payload.actor)} changed the pull request`;
     const pleaseReviewText = `Please ${slackLink(payload.pullRequest.links.self[0].href, "review the PR")}`;
-    return {
-        channelId: channelId,
+    await slackAPI.sendMessage({
+        channelId: channel.id,
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [messageTitle, ...changesDescription, pleaseReviewText].map(t => slackSection(t))
-    };
+    });
 }
 
 function getChangesDescription(payload: PullRequestModifiedNotification) {

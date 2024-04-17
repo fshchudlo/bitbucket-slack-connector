@@ -1,5 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`handleBitbucketWebhook Doesn't send message if PR doesn't contain visible changes 1`] = `
+{
+  "archivedChannels": [],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [],
+  "searchedChannels": [
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "excludeArchived": true,
+    },
+  ],
+  "searchedCommentSnapshots": [],
+  "sentMessages": [],
+  "setChannelTopics": [],
+}
+`;
+
 exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
 {
   "archivedChannels": [],
