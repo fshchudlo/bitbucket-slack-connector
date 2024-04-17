@@ -12,9 +12,11 @@ export async function setChannelTopicAndInviteParticipants(payload: PullRequestB
     const slackUserIds = await slackAPI.getSlackUserIds(allParticipants);
 
     await slackAPI.setChannelTopic({ channelId: slackChannelId, topic: buildChannelTopic(payload) });
+
     if (slackUserIds.length > 0) {
         await slackAPI.inviteToChannel({ channelId: slackChannelId, users: slackUserIds, force: true });
     }
+
     await slackAPI.sendMessage(buildMessage(payload, slackChannelId));
 }
 

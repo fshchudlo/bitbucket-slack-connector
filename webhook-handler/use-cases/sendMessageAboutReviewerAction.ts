@@ -9,11 +9,12 @@ export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNo
 function buildMessage(payload: PullRequestBasicNotification, channelId: string): SendMessageArguments {
     const pullRequest = payload.pullRequest;
     const messageTitle = getReviewerActionText(payload);
+    const reviewStatus = getReviewStatus(pullRequest);
     return {
         channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
-        blocks: [slackSection(messageTitle), slackSection(getReviewStatus(pullRequest))]
+        blocks: [slackSection(messageTitle), slackSection(reviewStatus)]
     };
 }
 
