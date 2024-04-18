@@ -47,7 +47,7 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
 
             const channel = response.channels.find(channel => channel.name === channelName);
             if (channel) {
-                return { id: channel.id, isArchived: channel.is_archived };
+                return { id: channel.id, isArchived: channel.is_archived, name: channel.name };
             }
 
             if (response.response_metadata && response.response_metadata.next_cursor) {
@@ -63,7 +63,7 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
             console.log(`Waiting for channel creation for name ${options.name}`);
             return awaitingCreateChannelRequests.get(options.name);
         }
-        const createChannelPromise = new Promise(async (resolve, reject) => {
+        const createChannelPromise: Promise<SlackChannelInfo> = new Promise(async (resolve, reject) => {
             try {
                 const response = await this.client.conversations.create({
                     name: options.name,
@@ -71,7 +71,8 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
                 });
                 resolve({
                     isArchived: response.channel.is_archived,
-                    id: response.channel.id
+                    id: response.channel.id,
+                    name: response.channel.name
                 });
                 awaitingCreateChannelRequests.delete(options.name);
             } catch (error) {

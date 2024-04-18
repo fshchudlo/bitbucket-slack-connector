@@ -34,8 +34,9 @@ export type BitbucketCommentSnapshot = BitbucketCommentSnapshotInSlackMetadata &
 }
 
 export type SlackChannelInfo = {
-    id?: string;
-    isArchived?: boolean;
+    id: string;
+    name: string;
+    isArchived: boolean;
 }
 export type CreateChannelArguments = {
     name: string;
