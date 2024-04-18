@@ -15,7 +15,7 @@ export function buildChannelName(params: PullRequestFlattenTraits | PullRequestP
     const projectKey = ("projectKey" in params ? params.projectKey : params.toRef.repository.project.key)
         .replace("~", "").trim();
     const repositorySlug = ("repositorySlug" in params ? params.repositorySlug : params.toRef.repository.slug)
-        .replace(".", "");
+        .replace(".", "-");
 
     const lengthLeftForTheKey = maxChannelNameLengthInSlack - pullRequestId.length - prDashDashPartOfTheNameLength;
 

@@ -55,7 +55,7 @@ describe("buildChannelName", () => {
             }
         };
 
-        expect(buildChannelName(payload)).toEqual("pr-project-repositoryslug-456");
+        expect(buildChannelName(payload)).toEqual("pr-project-repository-slug-456");
     });
 
     it("should limit channel name to 80 symbols", () => {

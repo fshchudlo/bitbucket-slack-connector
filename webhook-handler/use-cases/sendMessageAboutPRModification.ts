@@ -27,16 +27,17 @@ export async function sendMessageAboutPRModification(payload: PullRequestModifie
 
 function getChangesDescription(payload: PullRequestModifiedNotification) {
     const changesDescription = new Array<string>();
+    const pullRequest = payload.pullRequest;
 
-    if (payload.pullRequest.toRef.displayId != payload.previousTarget.displayId) {
-        changesDescription.push(`Target is changed to \`${payload.pullRequest.toRef.displayId}\``);
+    if (pullRequest.toRef.displayId != payload.previousTarget.displayId) {
+        changesDescription.push(`Target is changed to \`${pullRequest.toRef.displayId}\``);
     }
-    if (payload.pullRequest.title != payload.previousTitle) {
-        changesDescription.push(`Title is changed to: ${payload.pullRequest.title}`);
+    if (pullRequest.title != payload.previousTitle) {
+        changesDescription.push(`Title is changed to: ${pullRequest.title}`);
     }
-    if (payload.pullRequest.description != payload.previousDescription) {
-        if (payload.pullRequest.description) {
-            changesDescription.push(`Description is changed to:\n\n${getPullRequestDescriptionForSlack(payload.pullRequest.description)}`);
+    if (pullRequest.description != payload.previousDescription) {
+        if (pullRequest.description) {
+            changesDescription.push(`Description is changed to:\n\n${getPullRequestDescriptionForSlack(pullRequest.description)}`);
         } else {
             changesDescription.push(`Description is deleted.`);
         }
