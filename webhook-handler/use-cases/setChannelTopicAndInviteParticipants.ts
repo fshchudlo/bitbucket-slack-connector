@@ -7,9 +7,11 @@ import {
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
 
-export async function setChannelTopicAndInviteParticipants(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, slackChannelId: string) {
-    const allParticipants = [payload.pullRequest.author.user].concat(payload.pullRequest.reviewers.map(r => r.user));
-    const slackUserIds = await slackAPI.getSlackUserIds(allParticipants);
+export async function setChannelTopicAndInviteParticipants(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, defaultChannelParticipants: string[], slackChannelId: string) {
+    const allParticipants = [payload.pullRequest.author.user]
+        .concat(payload.pullRequest.reviewers.map(r => r.user));
+
+    const slackUserIds = (await slackAPI.getSlackUserIds(allParticipants)).concat(defaultChannelParticipants ?? []);
 
     await slackAPI.setChannelTopic({ channelId: slackChannelId, topic: buildChannelTopic(payload) });
 

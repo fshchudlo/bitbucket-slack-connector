@@ -14,7 +14,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackA
 
     expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
         try {
-            await handleBitbucketWebhook(req.body, slackAPI, bitbucketGateway, appConfig.USE_PRIVATE_CHANNELS);
+            await handleBitbucketWebhook(req.body, slackAPI, bitbucketGateway, appConfig.USE_PRIVATE_CHANNELS, appConfig.DEFAULT_CHANNEL_PARTICIPANTS);
             res.sendStatus(200);
         } catch (error) {
             next(error);

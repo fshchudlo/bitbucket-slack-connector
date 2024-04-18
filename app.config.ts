@@ -6,7 +6,8 @@ const AppConfig = {
     BITBUCKET_BASE_URL: process.env.BITBUCKET_BASE_URL,
     DIAGNOSTIC_CHANNEL: process.env.DIAGNOSTIC_CHANNEL,
     // If you want to use public channels, you need to configure Slack permissions properly - https://stackoverflow.com/a/75442078
-    USE_PRIVATE_CHANNELS: true
+    USE_PRIVATE_CHANNELS: true,
+    DEFAULT_CHANNEL_PARTICIPANTS: process.env.DEFAULT_CHANNEL_PARTICIPANTS?.split(",").map(u => u.trim())
 };
 
 export default AppConfig;
