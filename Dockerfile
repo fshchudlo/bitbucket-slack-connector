@@ -1,5 +1,9 @@
 FROM node:lts-alpine
 
+RUN adduser -S appuser
+
+USER appuser
+
 WORKDIR /app
 
 COPY package*.json ./
