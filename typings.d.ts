@@ -6,73 +6,76 @@ export type BitbucketNotification =
     | PullRequestReviewersUpdatedNotification
 
 export type PullRequestBasicNotification = PullRequestNotificationBasicPayload & {
-    eventKey: "pr:opened" | "pr:reviewer:unapproved" | "pr:reviewer:needs_work" | "pr:reviewer:approved" | "pr:from_ref_updated" | "pr:merged" | "pr:declined" | "pr:deleted";
+    readonly eventKey: "pr:opened" | "pr:reviewer:unapproved" | "pr:reviewer:needs_work" | "pr:reviewer:approved" | "pr:from_ref_updated" | "pr:merged" | "pr:declined" | "pr:deleted";
 }
 export type PullRequestModifiedNotification = PullRequestNotificationBasicPayload & {
-    eventKey: "pr:modified";
-    previousTitle: string;
-    previousDescription: string | null;
-    previousTarget: {
-        displayId: string;
-        latestCommit: string
+    readonly eventKey: "pr:modified";
+    readonly previousTitle: string;
+    readonly previousDescription: string | null;
+    readonly previousTarget: {
+        readonly displayId: string;
+        readonly latestCommit: string
     }
 }
 
 export type CommentSeverity = "NORMAL" | "BLOCKER"
 export type PullRequestCommentActionNotification = PullRequestNotificationBasicPayload & {
-    eventKey: "pr:comment:added" | "pr:comment:deleted" | "pr:comment:edited";
-    commentParentId?: number;
-    previousComment?: string;
-    comment: {
-        id: number;
-        text: string;
-        author: UserPayload;
-        severity: CommentSeverity;
-        resolvedDate?: number;
-        threadResolvedDate?: number;
+    readonly eventKey: "pr:comment:added" | "pr:comment:deleted" | "pr:comment:edited";
+    readonly commentParentId?: number;
+    readonly previousComment?: string;
+    readonly comment: {
+        readonly id: number;
+        readonly text: string;
+        readonly author: UserPayload;
+        readonly severity: CommentSeverity;
+        readonly resolvedDate?: number;
+        readonly threadResolvedDate?: number;
     };
 }
 
 export type PullRequestReviewersUpdatedNotification = PullRequestNotificationBasicPayload & {
-    eventKey: "pr:reviewer:updated";
-    addedReviewers: Array<UserPayload>;
-    removedReviewers: Array<UserPayload>;
+    readonly eventKey: "pr:reviewer:updated";
+    readonly addedReviewers: Array<UserPayload>;
+    readonly removedReviewers: Array<UserPayload>;
 }
 
 export type PullRequestNotificationBasicPayload = {
-    date: string;
-    actor: UserPayload;
-    pullRequest: PullRequestPayload;
+    readonly actor: UserPayload;
+    readonly pullRequest: PullRequestPayload;
 }
 
 export type UserPayload = {
-    displayName: string;
-    emailAddress: string;
+    readonly displayName: string;
+    readonly emailAddress: string;
 }
 
 export type ReviewerPayload = {
-    user: UserPayload,
-    approved: boolean,
-    status: "UNAPPROVED" | "NEEDS_WORK" | "APPROVED";
+    readonly user: UserPayload,
+    readonly status: "UNAPPROVED" | "NEEDS_WORK" | "APPROVED";
 }
 
 export type RefPayload = {
-    displayId: string;
-    latestCommit: string;
-    repository: {
-        slug: string;
-        project: { key: string; name: string };
+    readonly displayId: string;
+    readonly latestCommit: string;
+    readonly repository: {
+        readonly slug: string;
+        readonly project: {
+            readonly key: string;
+            readonly name: string
+        };
     };
 }
 
 export type PullRequestPayload = {
-    id: number;
-    title: string;
-    description: string | null;
-    author: { user: UserPayload };
-    reviewers: Array<ReviewerPayload>;
-    links: { self: Array<{ href: string }> };
-    fromRef: RefPayload;
-    toRef: RefPayload;
+    readonly id: number;
+    readonly title: string;
+    readonly description: string | null;
+    readonly author: { readonly user: UserPayload };
+    readonly reviewers: Array<ReviewerPayload>;
+    readonly links: {
+        readonly self: Array<{ readonly href: string }>
+    };
+    readonly fromRef: RefPayload;
+    readonly toRef: RefPayload;
 }
 

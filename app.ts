@@ -1,4 +1,3 @@
-import "dotenv/config";
 import { App, ExpressReceiver } from "@slack/bolt";
 import AppConfig from "./app.config";
 import { SlackWebClientAPIAdapter } from "./adapters/slack-api-adapter/SlackWebClientAPIAdapter";

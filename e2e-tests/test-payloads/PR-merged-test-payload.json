@@ -1,6 +1,5 @@
 {
   "eventKey": "pr:merged",
-  "date": "2024-03-01T18:19:32+0700",
   "actor": {
     "displayName": "{{PRAuthorName}}",
     "emailAddress": "{{PRAuthorEmail}}"
@@ -41,7 +40,6 @@
           "displayName": "{{FirstReviewerName}}",
           "emailAddress": "{{FirstReviewerEmail}}"
         },
-        "approved": false,
         "status": "APPROVED"
       }
     ],

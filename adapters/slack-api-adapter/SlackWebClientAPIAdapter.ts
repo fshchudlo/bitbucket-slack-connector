@@ -74,9 +74,10 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
                     id: response.channel.id,
                     name: response.channel.name
                 });
-                awaitingCreateChannelRequests.delete(options.name);
             } catch (error) {
                 reject(error);
+            } finally {
+                awaitingCreateChannelRequests.delete(options.name);
             }
         });
         awaitingCreateChannelRequests.set(options.name, createChannelPromise);

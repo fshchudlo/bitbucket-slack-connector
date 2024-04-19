@@ -19,7 +19,7 @@ export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotific
 function buildMessage(payload: PullRequestBasicNotification, commentInBitbucket: string, slackChannelId: string): SendMessageArguments {
     const pullRequest = payload.pullRequest;
     const viewCommitUrl = `${pullRequest.links.self[0].href.replace("/overview", "")}/commits/${pullRequest.fromRef.latestCommit}`;
-    const messageTitle = `A ${link(viewCommitUrl, "new commit")} was added to the pull request by ${formatUserName(payload.actor)}.`;
+    const messageTitle = `${formatUserName(payload.actor)} added ${link(viewCommitUrl, "new commit")} with the message:`;
     const pleaseReviewText = `Please ${link(pullRequest.links.self[0].href, "review the PR")}.`;
 
     const commentText = quote(reformatMarkdownToSlackMarkup(commentInBitbucket));

@@ -36,13 +36,33 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
   "searchedCommentSnapshots": [],
   "sentMessages": [
     {
-      "attachments": [
+      "blocks": [
         {
-          "color": "#0288D1",
-          "text": "Quite a long and comprehensive description to get channel title longer than 250 symbols which is a maximum length for the Slack",
+          "text": {
+            "text": "The pull request was opened by Test Author.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
         },
         {
-          "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
+          "type": "divider",
+        },
+        {
+          "text": {
+            "text": "Quite a long and comprehensive description to get channel title longer than 250 symbols which is a maximum length for the Slack",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "type": "divider",
+        },
+        {
+          "text": {
+            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
+            "type": "mrkdwn",
+          },
+          "type": "section",
         },
       ],
       "channelId": "12345",

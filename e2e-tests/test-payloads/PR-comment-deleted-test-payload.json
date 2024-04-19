@@ -1,6 +1,5 @@
 {
   "eventKey": "pr:comment:deleted",
-  "date": "2024-03-01T18:19:32+0700",
   "actor": {
     "displayName": "{{FirstReviewerName}}",
     "emailAddress": "{{FirstReviewerEmail}}"
@@ -41,7 +40,6 @@
           "displayName": "{{FirstReviewerName}}",
           "emailAddress": "{{FirstReviewerEmail}}"
         },
-        "approved": false,
         "status": "UNAPPROVED"
       }
     ],

@@ -1,5 +1,4 @@
 import handleBitbucketWebhook from "./webhook-handler/handleBitbucketWebhook";
-import appConfig from "./app.config";
 import { register } from "prom-client";
 import { buildChannelName } from "./webhook-handler/slack-helpers";
 import { ExpressReceiver } from "@slack/bolt";
@@ -14,7 +13,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackA
 
     expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
         try {
-            await handleBitbucketWebhook(req.body, slackAPI, bitbucketGateway, appConfig.USE_PRIVATE_CHANNELS, appConfig.DEFAULT_CHANNEL_PARTICIPANTS);
+            await handleBitbucketWebhook(req.body, slackAPI, bitbucketGateway);
             res.sendStatus(200);
         } catch (error) {
             next(error);

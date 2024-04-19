@@ -24,7 +24,6 @@ const reviewer3User = {
 function getBasicPayload(): PullRequestBasicNotification {
     return {
         eventKey: "pr:opened",
-        date: "2017-09-19T09:58:11+1000",
         actor: { ...authorUser },
         pullRequest: {
             id: 1,
@@ -58,12 +57,10 @@ function getBasicPayload(): PullRequestBasicNotification {
             reviewers: [
                 {
                     user: { ...reviewer1User },
-                    approved: false,
                     status: "UNAPPROVED"
                 },
                 {
                     user: { ...reviewer2User },
-                    approved: false,
                     status: "UNAPPROVED"
                 }
             ],
@@ -139,51 +136,86 @@ export default class TestPayloadBuilder {
 
     static pullRequestCommentEdited(): PullRequestCommentActionNotification {
         const payload = this.pullRequestCommentAdded();
-        payload.eventKey = "pr:comment:edited";
-        payload.comment.text = "Updated comment text";
-        return payload;
+        return {
+            ...payload,
+            eventKey: "pr:comment:edited",
+            comment: {
+                ...payload.comment,
+                text: "Updated comment text"
+            }
+        };
     }
 
     static pullRequestCommentConvertedToTheTask(): PullRequestCommentActionNotification {
         const payload = this.pullRequestCommentAdded();
-        payload.eventKey = "pr:comment:edited";
-        payload.comment.severity = "BLOCKER";
-        return payload;
+        return {
+            ...payload,
+            eventKey: "pr:comment:edited",
+            comment: {
+                ...payload.comment,
+                severity: "BLOCKER"
+            }
+        };
     }
 
     static pullRequestTaskConvertedToTheComment(): PullRequestCommentActionNotification {
         const payload = this.pullRequestTaskAdded();
-        payload.eventKey = "pr:comment:edited";
-        payload.comment.severity = "NORMAL";
-        return payload;
+        return {
+            ...payload,
+            eventKey: "pr:comment:edited",
+            comment: {
+                ...payload.comment,
+                severity: "NORMAL"
+            }
+        };
     }
 
     static pullRequestTaskResolved(): PullRequestCommentActionNotification {
         const payload = this.pullRequestTaskAdded();
-        payload.eventKey = "pr:comment:edited";
-        payload.comment.resolvedDate = 123456789;
-        return payload;
+        return {
+            ...payload,
+            eventKey: "pr:comment:edited",
+            comment: {
+                ...payload.comment,
+                resolvedDate: 123456789
+            }
+        };
     }
 
     static pullRequestTaskReopened(): PullRequestCommentActionNotification {
         const payload = this.pullRequestTaskAdded();
-        payload.eventKey = "pr:comment:edited";
-        payload.comment.resolvedDate = undefined;
-        return payload;
+        return {
+            ...payload,
+            eventKey: "pr:comment:edited",
+            comment: {
+                ...payload.comment,
+                resolvedDate: undefined
+            }
+        };
     }
 
     static pullRequestCommentResolved(): PullRequestCommentActionNotification {
         const payload = this.pullRequestCommentAdded();
-        payload.eventKey = "pr:comment:edited";
-        payload.comment.threadResolvedDate = 123456789;
-        return payload;
+        return {
+            ...payload,
+            eventKey: "pr:comment:edited",
+            comment: {
+                ...payload.comment,
+                threadResolvedDate: 123456789
+            }
+        };
     }
 
     static pullRequestCommentReopened(): PullRequestCommentActionNotification {
         const payload = this.pullRequestCommentAdded();
-        payload.eventKey = "pr:comment:edited";
-        payload.comment.threadResolvedDate = undefined;
-        return payload;
+        return {
+            ...payload,
+            eventKey: "pr:comment:edited",
+            comment: {
+                ...payload.comment,
+                threadResolvedDate: undefined
+            }
+        };
     }
 
     static pullRequestModified(): PullRequestModifiedNotification {
@@ -210,7 +242,10 @@ export default class TestPayloadBuilder {
     static pullRequestNeedsWork(): BitbucketNotification {
         const payload = getBasicPayload();
 
-        payload.pullRequest.reviewers[0].status = "NEEDS_WORK";
+        payload.pullRequest.reviewers[0] = {
+            ...payload.pullRequest.reviewers[0],
+            status: "NEEDS_WORK"
+        };
 
         return {
             ...payload,
@@ -221,7 +256,10 @@ export default class TestPayloadBuilder {
 
     static pullRequestApproved(): BitbucketNotification {
         const payload = getBasicPayload();
-        payload.pullRequest.reviewers[0].status = "APPROVED";
+        payload.pullRequest.reviewers[0] = {
+            ...payload.pullRequest.reviewers[0],
+            status: "APPROVED"
+        };
 
         return {
             ...payload,
@@ -233,7 +271,10 @@ export default class TestPayloadBuilder {
     static pullRequestUnapproved(): BitbucketNotification {
         const payload = getBasicPayload();
 
-        payload.pullRequest.reviewers[0].status = "UNAPPROVED";
+        payload.pullRequest.reviewers[0] = {
+            ...payload.pullRequest.reviewers[0],
+            status: "UNAPPROVED"
+        };
 
         return {
             ...payload,

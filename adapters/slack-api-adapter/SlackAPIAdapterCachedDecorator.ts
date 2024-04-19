@@ -38,7 +38,7 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
         }
         const channelInfo = await this.gateway.findChannel(channelName, excludeArchived);
 
-        if (channelInfo) {
+        if (channelInfo && !channelInfo.isArchived) {
             this.channelsCache.set(channelName, channelInfo);
         }
         return channelInfo;

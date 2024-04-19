@@ -1,16 +1,21 @@
 import * as useCases from "./use-cases";
 import { SlackAPIAdapter } from "./ports/SlackAPIAdapter";
 import { BitbucketGateway } from "./ports/BitbucketGateway";
-import { BitbucketNotification } from "../typings";
+import { BitbucketNotification, PullRequestBasicNotification, PullRequestPayload } from "../typings";
 import { buildChannelName } from "./slack-helpers";
+import AppConfig from "../app.config";
 
-export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackAPI: SlackAPIAdapter, bitbucketGateway: BitbucketGateway, usePrivateChannels: boolean = true, defaultChannelParticipants: string[] = null) {
+export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackAPI: SlackAPIAdapter, bitbucketGateway: BitbucketGateway) {
     const eventKey = payload.eventKey;
-    const channelInfo = await provisionPullRequestChannel(slackAPI, payload, usePrivateChannels);
+    let channelInfo = await provisionPullRequestChannel(slackAPI, payload);
+    if (channelInfo == null) {
+        await replayPullRequestOpenedEvent(payload, slackAPI, bitbucketGateway);
+        channelInfo = await provisionPullRequestChannel(slackAPI, payload);
+    }
 
     switch (eventKey) {
         case "pr:opened":
-            await useCases.setChannelTopicAndInviteParticipants(payload, slackAPI, defaultChannelParticipants, channelInfo.id);
+            await useCases.setChannelTopicAndInviteParticipants(payload, slackAPI, AppConfig.DEFAULT_CHANNEL_PARTICIPANTS, channelInfo.id);
             break;
         case "pr:modified":
             await useCases.sendMessageAboutPRModification(payload, slackAPI, channelInfo.id);
@@ -45,14 +50,23 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
     }
 }
 
-async function provisionPullRequestChannel(slackAPI: SlackAPIAdapter, payload: BitbucketNotification, usePrivateChannels: boolean) {
+async function provisionPullRequestChannel(slackAPI: SlackAPIAdapter, payload: BitbucketNotification) {
     const channelName = buildChannelName(payload.pullRequest);
     if (payload.eventKey == "pr:opened") {
-        return await slackAPI.createChannel({ name: channelName, isPrivate: usePrivateChannels });
+        return await slackAPI.createChannel({ name: channelName, isPrivate: AppConfig.USE_PRIVATE_CHANNELS });
     }
-    const channel = await slackAPI.findChannel(channelName, true);
-    if (channel == null) {
-        throw new Error(`Channel ${channelName} doesn't exist`);
-    }
-    return channel;
+    return await slackAPI.findChannel(channelName, true);
+}
+
+async function replayPullRequestOpenedEvent(payload: BitbucketNotification, slackAPI: SlackAPIAdapter, bitbucketGateway: BitbucketGateway) {
+    const pullRequestPayload = await bitbucketGateway.getPullRequest(payload.pullRequest.toRef.repository.project.key, payload.pullRequest.toRef.repository.slug, payload.pullRequest.id.toString());
+    const prOpenedPayload: PullRequestBasicNotification = {
+        eventKey: "pr:opened",
+        actor: {
+            displayName: pullRequestPayload.author.user.displayName,
+            emailAddress: pullRequestPayload.author.user.emailAddress
+        },
+        pullRequest: <PullRequestPayload>pullRequestPayload
+    };
+    await handleBitbucketWebhook(prOpenedPayload, slackAPI, bitbucketGateway);
 }
