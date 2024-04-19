@@ -1,8 +1,8 @@
 import {
     formatUserName,
     getPullRequestDescriptionForSlack,
-    slackLink,
-    iconEmoji
+    link,
+    iconEmoji, section, divider
 } from "../slack-helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
@@ -24,26 +24,19 @@ export async function setChannelTopicAndInviteParticipants(payload: PullRequestB
 
 function buildMessage(payload: PullRequestBasicNotification, channelId: string): SendMessageArguments {
     const messageTitle = `The pull request was opened by ${formatUserName(payload.actor)}.`;
-    const pleaseReviewText = `Please ${slackLink(payload.pullRequest.links.self[0].href, "review the PR")}`;
+    const pleaseReviewText = `Please ${link(payload.pullRequest.links.self[0].href, "review the PR")}`;
     const descriptionText = getPullRequestDescriptionForSlack(payload.pullRequest.description ?? payload.pullRequest.title);
     return {
         channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
-        attachments: [
-            {
-                text: descriptionText,
-                color: "#0288D1"
-            }, {
-                text: pleaseReviewText
-            }
-        ]
+        blocks: [section(messageTitle), divider(), section(descriptionText), divider(), section(pleaseReviewText)]
     };
 }
 
 function buildChannelTopic({ pullRequest }: PullRequestBasicNotification) {
     const header = `${pullRequest.toRef.repository.project.key}/${pullRequest.toRef.repository.slug}:${pullRequest.toRef.displayId}`;
-    let result = `:git: Pull request: ${slackLink(pullRequest.links.self[0].href, pullRequest.title)} | :git-branch: To branch: \`${header}\``;
+    let result = `:git: Pull request: ${link(pullRequest.links.self[0].href, pullRequest.title)} | :git-branch: To branch: \`${header}\``;
     if (result.length > 250) {
         result = `:git: Pull request: ${pullRequest.title} | :git-branch: To branch: \`${header}\``;
     }

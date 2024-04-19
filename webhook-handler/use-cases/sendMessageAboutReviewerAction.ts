@@ -1,5 +1,5 @@
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
-import { formatUserName, iconEmoji, slackLink, slackSection } from "../slack-helpers";
+import { formatUserName, iconEmoji, link, section } from "../slack-helpers";
 import { PullRequestBasicNotification, PullRequestPayload } from "../../typings";
 
 export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, slackChannelId: string) {
@@ -14,12 +14,12 @@ function buildMessage(payload: PullRequestBasicNotification, channelId: string):
         channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
-        blocks: [slackSection(messageTitle), slackSection(reviewStatus)]
+        blocks: [section(messageTitle), section(reviewStatus)]
     };
 }
 
 function getReviewerActionText(payload: PullRequestBasicNotification) {
-    const prLink = slackLink(payload.pullRequest.links.self[0].href, "pull request");
+    const prLink = link(payload.pullRequest.links.self[0].href, "pull request");
     switch (payload.eventKey) {
         case "pr:reviewer:unapproved":
             return `${formatUserName(payload.actor)} unapproved ${prLink}.`;
@@ -36,7 +36,7 @@ function getReviewStatus(pullRequest: PullRequestPayload) {
     const whoUnapproved = pullRequest.reviewers.filter(r => r.status == "UNAPPROVED");
 
     if (whoRequestedWork.length == 0 && whoUnapproved.length == 0) {
-        return `:large_green_circle: All reviewers approved PR. Seems like you can ${slackLink(pullRequest.links.self[0].href, "merge it")}.`;
+        return `:large_green_circle: All reviewers approved PR. Seems like you can ${link(pullRequest.links.self[0].href, "merge it")}.`;
     }
 
     let reviewStatus = whoApproved.length > 0 ? ` Approved: ${whoApproved.map(r => r.user.displayName).join(",")}` : "";

@@ -2,9 +2,9 @@ import {
     formatUserName,
     getTaskOrCommentTitle,
     reformatMarkdownToSlackMarkup,
-    slackLink,
-    slackQuote,
-    slackSection,
+    link,
+    quote,
+    section,
     snapshotCommentToSlackMetadata,
     iconEmoji
 } from "../slack-helpers";
@@ -19,14 +19,14 @@ export async function sendMessageAboutAddedComment(payload: PullRequestCommentAc
 function buildMessage(payload: PullRequestCommentActionNotification, parentCommentSnapshot: BitbucketCommentSnapshot, channelId: string): SendMessageArguments {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
     const action = parentCommentSnapshot ? "replied" : `added ${getTaskOrCommentTitle(payload)}`;
-    const messageTitle = `${formatUserName(payload.actor)} ${slackLink(commentUrl, action)}:`;
+    const messageTitle = `${formatUserName(payload.actor)} ${link(commentUrl, action)}:`;
     const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);
 
     return {
         channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
-        blocks: [slackSection(messageTitle), slackSection(slackQuote(commentText))],
+        blocks: [section(messageTitle), section(quote(commentText))],
         metadata: snapshotCommentToSlackMetadata(payload),
         threadId: parentCommentSnapshot?.slackThreadId || parentCommentSnapshot?.slackMessageId,
         replyBroadcast: parentCommentSnapshot ? true : undefined

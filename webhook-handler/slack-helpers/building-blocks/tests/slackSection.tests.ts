@@ -1,4 +1,4 @@
-import { slackSection } from "../slackSection";
+import { section } from "../section";
 
 describe("slackSection", () => {
     it("should return a Slack-formatted section with provided text", () => {
@@ -10,7 +10,7 @@ describe("slackSection", () => {
                 text: "This is a test section"
             }
         };
-        const result = slackSection(text);
+        const result = section(text);
         expect(result).toEqual(expected);
     });
 
@@ -24,7 +24,7 @@ describe("slackSection", () => {
                 text: "This is another test section"
             }
         };
-        const result = slackSection(text, type);
+        const result = section(text, type);
         expect(result).toEqual(expected);
     });
 });

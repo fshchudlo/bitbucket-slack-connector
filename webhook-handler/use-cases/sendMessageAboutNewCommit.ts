@@ -2,9 +2,9 @@ import {
     formatUserName,
     iconEmoji,
     reformatMarkdownToSlackMarkup,
-    slackLink,
-    slackQuote,
-    slackSection
+    link,
+    quote,
+    section
 } from "../slack-helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { BitbucketGateway } from "../ports/BitbucketGateway";
@@ -19,14 +19,14 @@ export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotific
 function buildMessage(payload: PullRequestBasicNotification, commentInBitbucket: string, slackChannelId: string): SendMessageArguments {
     const pullRequest = payload.pullRequest;
     const viewCommitUrl = `${pullRequest.links.self[0].href.replace("/overview", "")}/commits/${pullRequest.fromRef.latestCommit}`;
-    const messageTitle = `A ${slackLink(viewCommitUrl, "new commit")} was added to the pull request by ${formatUserName(payload.actor)}.`;
-    const pleaseReviewText = `Please ${slackLink(pullRequest.links.self[0].href, "review the PR")}.`;
+    const messageTitle = `A ${link(viewCommitUrl, "new commit")} was added to the pull request by ${formatUserName(payload.actor)}.`;
+    const pleaseReviewText = `Please ${link(pullRequest.links.self[0].href, "review the PR")}.`;
 
-    const commentText = slackQuote(reformatMarkdownToSlackMarkup(commentInBitbucket));
+    const commentText = quote(reformatMarkdownToSlackMarkup(commentInBitbucket));
     return {
         channelId: slackChannelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
-        blocks: [slackSection(messageTitle), slackSection(commentText), slackSection(pleaseReviewText)]
+        blocks: [section(messageTitle), section(commentText), section(pleaseReviewText)]
     };
 }

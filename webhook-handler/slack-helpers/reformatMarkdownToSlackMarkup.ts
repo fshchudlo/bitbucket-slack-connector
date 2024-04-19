@@ -1,4 +1,4 @@
-import { slackBold, slackLink } from "./index";
+import { bold, link } from "./index";
 
 export function reformatMarkdownToSlackMarkup(text: string): string {
     const boldRegex = /\*\*(.*?)\*\*/g;
@@ -7,8 +7,8 @@ export function reformatMarkdownToSlackMarkup(text: string): string {
     const headingRegex = /^(#+)\s+(.*)$/gm;
 
     return text
-        .replace(boldRegex, (_match, text) => slackBold(text))
+        .replace(boldRegex, (_match, text) => bold(text))
         .replace(strikethroughRegex, (_match, text) => `~${text}~`)
-        .replace(linkRegex, (_match, title, url) => slackLink(url, title))
-        .replace(headingRegex, (_match, _hashes, text) => `${slackBold(text)}\n\n`);
+        .replace(linkRegex, (_match, title, url) => link(url, title))
+        .replace(headingRegex, (_match, _hashes, text) => `${bold(text)}\n\n`);
 }

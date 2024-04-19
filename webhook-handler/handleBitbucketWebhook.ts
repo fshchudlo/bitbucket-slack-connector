@@ -46,11 +46,13 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
 }
 
 async function provisionPullRequestChannel(slackAPI: SlackAPIAdapter, payload: BitbucketNotification, usePrivateChannels: boolean) {
+    const channelName = buildChannelName(payload.pullRequest);
     if (payload.eventKey == "pr:opened") {
-        return await slackAPI.createChannel({
-            name: buildChannelName(payload.pullRequest),
-            isPrivate: usePrivateChannels
-        });
+        return await slackAPI.createChannel({ name: channelName, isPrivate: usePrivateChannels });
     }
-    return await slackAPI.findChannel(buildChannelName(payload.pullRequest), true);
+    const channel = await slackAPI.findChannel(channelName, true);
+    if (channel == null) {
+        throw new Error(`Channel ${channelName} doesn't exist`);
+    }
+    return channel;
 }
