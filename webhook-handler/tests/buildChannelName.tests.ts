@@ -47,7 +47,7 @@ describe("buildChannelName", () => {
             id: 456,
             toRef: {
                 repository: {
-                    slug: "REPOSITORY.SLUG",
+                    slug: "REPOSI.TORY.SLUG",
                     project: {
                         key: "~PROJECT"
                     }
@@ -55,7 +55,7 @@ describe("buildChannelName", () => {
             }
         };
 
-        expect(buildChannelName(payload)).toEqual("pr-project-repository-slug-456");
+        expect(buildChannelName(payload)).toEqual("pr-project-reposi-tory-slug-456");
     });
 
     it("should limit channel name to 80 symbols", () => {
