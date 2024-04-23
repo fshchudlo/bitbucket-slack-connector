@@ -7,7 +7,7 @@ import BitbucketWebAPIGateway from "./adapters/bitbucket-gateway/BitbucketWebAPI
 import AppConfig from "./app.config";
 import { NextFunction } from "express";
 
-const bitbucketGateway = new BitbucketWebAPIGateway(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_API_TOKEN);
+const bitbucketGateway = new BitbucketWebAPIGateway(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
 
 export default function configureRoutes(expressReceiver: ExpressReceiver, slackAPI: SlackAPIAdapterCachedDecorator) {
 

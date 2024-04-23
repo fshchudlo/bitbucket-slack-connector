@@ -1,7 +1,7 @@
 import * as useCases from "./use-cases";
 import { SlackAPIAdapter } from "./ports/SlackAPIAdapter";
 import { BitbucketGateway } from "./ports/BitbucketGateway";
-import { BitbucketNotification, PullRequestBasicNotification, PullRequestPayload } from "../typings";
+import { BitbucketNotification, PullRequestBasicNotification } from "../typings";
 import { buildChannelName } from "./slack-helpers";
 import AppConfig from "../app.config";
 
@@ -59,14 +59,13 @@ async function provisionPullRequestChannel(slackAPI: SlackAPIAdapter, payload: B
 }
 
 async function replayPullRequestOpenedEvent(payload: BitbucketNotification, slackAPI: SlackAPIAdapter, bitbucketGateway: BitbucketGateway) {
-    const pullRequestPayload = await bitbucketGateway.getPullRequest(payload.pullRequest.toRef.repository.project.key, payload.pullRequest.toRef.repository.slug, payload.pullRequest.id.toString());
     const prOpenedPayload: PullRequestBasicNotification = {
         eventKey: "pr:opened",
         actor: {
-            displayName: pullRequestPayload.author.user.displayName,
-            emailAddress: pullRequestPayload.author.user.emailAddress
+            displayName: payload.pullRequest.author.user.displayName,
+            emailAddress: payload.pullRequest.author.user.emailAddress
         },
-        pullRequest: <PullRequestPayload>pullRequestPayload
+        pullRequest: payload.pullRequest
     };
     await handleBitbucketWebhook(prOpenedPayload, slackAPI, bitbucketGateway);
 }
