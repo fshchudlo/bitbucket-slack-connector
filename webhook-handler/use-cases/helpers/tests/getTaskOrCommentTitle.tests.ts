@@ -1,7 +1,7 @@
 import { getTaskOrCommentTitle } from "../getTaskOrCommentTitle";
-import { PullRequestCommentActionNotification } from "../../../typings";
+import { PullRequestCommentActionNotification } from "../../../../typings";
 
-describe("getCommentType function", () => {
+describe("getTaskOrCommentTitle", () => {
     it("should return \"task\" for BLOCKER severity", () => {
         const payload = {
             comment: {

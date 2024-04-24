@@ -2,7 +2,7 @@ import * as useCases from "./use-cases";
 import { SlackAPIAdapter } from "./ports/SlackAPIAdapter";
 import { BitbucketGateway } from "./ports/BitbucketGateway";
 import { BitbucketNotification, PullRequestBasicNotification } from "../typings";
-import { buildChannelName } from "./slack-helpers";
+import { buildChannelName } from "./buildChannelName";
 import AppConfig from "../app.config";
 
 export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackAPI: SlackAPIAdapter, bitbucketGateway: BitbucketGateway) {

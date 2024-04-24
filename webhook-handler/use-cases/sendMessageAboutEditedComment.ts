@@ -3,16 +3,9 @@ import {
     BitbucketCommentSnapshot,
     SlackAPIAdapter
 } from "../ports/SlackAPIAdapter";
-import {
-    formatUserName,
-    getTaskOrCommentTitle,
-    iconEmoji,
-    reformatMarkdownToSlackMarkup,
-    link,
-    quote,
-    section,
-    snapshotCommentToSlackMetadata
-} from "../slack-helpers";
+import { getTaskOrCommentTitle, snapshotCommentState } from "./helpers";
+import { iconEmoji, link, quote, section } from "./slack-building-blocks";
+import { formatUserName, markdownToSlackMarkup } from "./helpers";
 
 export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackAPIAdapter, slackChannelId: string) {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
@@ -21,14 +14,14 @@ export async function sendMessageAboutEditedComment(payload: PullRequestCommentA
     const userAction = await getUserAction(payload, commentSnapshot);
 
     const messageTitle = `${formatUserName(payload.actor)} ${link(commentUrl, userAction)}:`;
-    const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);
+    const commentText = markdownToSlackMarkup(payload.comment.text);
 
     await slackAPI.sendMessage({
         channelId: slackChannelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), section(quote(commentText))],
-        metadata: snapshotCommentToSlackMetadata(payload),
+        metadata: snapshotCommentState(payload),
         threadId: commentSnapshot?.slackThreadId || commentSnapshot?.slackMessageId,
         replyBroadcast: commentSnapshot ? true : undefined
     });

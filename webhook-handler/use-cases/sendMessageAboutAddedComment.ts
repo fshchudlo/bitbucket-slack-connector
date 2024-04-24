@@ -1,13 +1,5 @@
-import {
-    formatUserName,
-    getTaskOrCommentTitle,
-    reformatMarkdownToSlackMarkup,
-    link,
-    quote,
-    section,
-    snapshotCommentToSlackMetadata,
-    iconEmoji
-} from "../slack-helpers";
+import { formatUserName, getTaskOrCommentTitle, markdownToSlackMarkup, snapshotCommentState } from "./helpers";
+import { link, quote, section, iconEmoji } from "./slack-building-blocks";
 import { BitbucketCommentSnapshot, SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { PullRequestCommentActionNotification } from "../../typings";
 
@@ -20,14 +12,14 @@ function buildMessage(payload: PullRequestCommentActionNotification, parentComme
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
     const action = parentCommentSnapshot ? "replied" : `added ${getTaskOrCommentTitle(payload)}`;
     const messageTitle = `${formatUserName(payload.actor)} ${link(commentUrl, action)}:`;
-    const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);
+    const commentText = markdownToSlackMarkup(payload.comment.text);
 
     return {
         channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), section(quote(commentText))],
-        metadata: snapshotCommentToSlackMetadata(payload),
+        metadata: snapshotCommentState(payload),
         threadId: parentCommentSnapshot?.slackThreadId || parentCommentSnapshot?.slackMessageId,
         replyBroadcast: parentCommentSnapshot ? true : undefined
     };

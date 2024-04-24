@@ -1,11 +1,5 @@
-import {
-    formatUserName,
-    iconEmoji,
-    reformatMarkdownToSlackMarkup,
-    link,
-    quote,
-    section
-} from "../slack-helpers";
+import { iconEmoji, link, quote, section } from "./slack-building-blocks";
+import { formatUserName, markdownToSlackMarkup } from "./helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { BitbucketGateway } from "../ports/BitbucketGateway";
 import { PullRequestBasicNotification } from "../../typings";
@@ -22,7 +16,7 @@ function buildMessage(payload: PullRequestBasicNotification, commentInBitbucket:
     const messageTitle = `${formatUserName(payload.actor)} added ${link(viewCommitUrl, "new commit")}.`;
     const pleaseReviewText = `Please ${link(pullRequest.links.self[0].href, "review the PR")}.`;
 
-    const commentSection = commentInBitbucket ? section(`Commit message: \n${quote(reformatMarkdownToSlackMarkup(commentInBitbucket))}`) : null;
+    const commentSection = commentInBitbucket ? section(`Commit message: \n${quote(markdownToSlackMarkup(commentInBitbucket))}`) : null;
     return {
         channelId: slackChannelId,
         iconEmoji: iconEmoji,

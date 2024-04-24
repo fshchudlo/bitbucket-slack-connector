@@ -1,10 +1,5 @@
-import {
-    formatUserName,
-    getPullRequestDescriptionForSlack,
-    iconEmoji,
-    link, quote,
-    section
-} from "../slack-helpers";
+import { iconEmoji, link, quote, section } from "./slack-building-blocks";
+import { formatUserName, formatPullRequestDescription } from "./helpers";
 import { SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { PullRequestModifiedNotification } from "../../typings";
 
@@ -37,7 +32,7 @@ function getChangesDescription(payload: PullRequestModifiedNotification) {
     }
     if (pullRequest.description != payload.previousDescription) {
         if (pullRequest.description) {
-            changesDescription.push(`Description is changed to:\n${quote(getPullRequestDescriptionForSlack(pullRequest.description))}`);
+            changesDescription.push(`Description is changed to:\n${quote(formatPullRequestDescription(pullRequest.description))}`);
         } else {
             changesDescription.push(`Description is deleted.`);
         }

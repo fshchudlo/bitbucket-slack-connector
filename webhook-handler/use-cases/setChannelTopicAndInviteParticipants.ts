@@ -1,9 +1,5 @@
-import {
-    formatUserName,
-    getPullRequestDescriptionForSlack,
-    link,
-    iconEmoji, section, divider
-} from "../slack-helpers";
+import { link, iconEmoji, section, divider } from "./slack-building-blocks";
+import { formatUserName, formatPullRequestDescription } from "./helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
 
@@ -25,7 +21,7 @@ export async function setChannelTopicAndInviteParticipants(payload: PullRequestB
 function buildMessage(payload: PullRequestBasicNotification, channelId: string): SendMessageArguments {
     const messageTitle = `The pull request was opened by ${formatUserName(payload.actor)}.`;
     const pleaseReviewText = `Please ${link(payload.pullRequest.links.self[0].href, "review the PR")}`;
-    const descriptionText = getPullRequestDescriptionForSlack(payload.pullRequest.description ?? payload.pullRequest.title);
+    const descriptionText = formatPullRequestDescription(payload.pullRequest.description ?? payload.pullRequest.title);
     return {
         channelId: channelId,
         iconEmoji: iconEmoji,

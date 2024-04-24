@@ -1,8 +1,6 @@
 import { BitbucketCommentSnapshot, SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
-import {
-    formatUserName, getTaskOrCommentTitle,
-    reformatMarkdownToSlackMarkup, quote, section, snapshotCommentToSlackMetadata, iconEmoji
-} from "../slack-helpers";
+import { formatUserName, getTaskOrCommentTitle, markdownToSlackMarkup, snapshotCommentState } from "./helpers";
+import { quote, section, iconEmoji } from "./slack-building-blocks";
 import { PullRequestCommentActionNotification } from "../../typings";
 
 export async function sendMessageAboutDeletedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackAPIAdapter, slackChannelId: string) {
@@ -12,13 +10,13 @@ export async function sendMessageAboutDeletedComment(payload: PullRequestComment
 
 function buildMessage(payload: PullRequestCommentActionNotification, commentSnapshot: BitbucketCommentSnapshot, slackChannelId: string): SendMessageArguments {
     const messageTitle = `${formatUserName(payload.actor)} deleted ${getTaskOrCommentTitle(payload)}:`;
-    const commentText = reformatMarkdownToSlackMarkup(payload.comment.text);
+    const commentText = markdownToSlackMarkup(payload.comment.text);
     return {
         channelId: slackChannelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), section(quote(commentText))],
-        metadata: snapshotCommentToSlackMetadata(payload),
+        metadata: snapshotCommentState(payload),
         threadId: commentSnapshot?.slackThreadId || commentSnapshot?.slackMessageId,
         replyBroadcast: commentSnapshot ? true : undefined
     };
