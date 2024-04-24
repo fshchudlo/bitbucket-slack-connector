@@ -13,10 +13,8 @@ export async function updateChannelMembers(payload: PullRequestReviewersUpdatedN
         });
     }
 
-    await Promise.all(userIdsToRemove.map(async userId => {
-        await slackAPI.kickFromChannel({
-            channelId: slackChannelId,
-            user: userId
-        });
-    }));
+    await slackAPI.kickFromChannel({
+        channelId: slackChannelId,
+        users: userIdsToRemove
+    });
 }

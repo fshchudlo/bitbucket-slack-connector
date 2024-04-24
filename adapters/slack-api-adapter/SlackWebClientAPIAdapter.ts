@@ -17,6 +17,9 @@ import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistor
 
 const awaitingCreateChannelRequests = new Map<string, Promise<SlackChannelInfo>>();
 
+/**
+ * Adapter for the Slack API that also acts as an {@link https://awesome-architecture.com/cloud-design-patterns/anti-corruption-layer-pattern/|anti-corruption layer} since Slack API is not always consistent
+ */
 export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
     private client: slack.WebClient;
 
@@ -96,14 +99,20 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
             channel: options.channelId,
             users: options.users.join(","),
             force: true
+        }).catch(error => {
+            return error.data.errors.every((innerError: any) => {
+                return innerError.error == "already_in_channel";
+            }) ? undefined : error;
         }) as unknown as Promise<void>;
     }
 
     kickFromChannel(options: KickFromChannelArguments): Promise<void> {
-        return this.client.conversations.kick({
-            channel: options.channelId,
-            user: options.user
-        }) as unknown as Promise<void>;
+        return Promise.all(options.users.map(async userId => {
+            return this.client.conversations.kick({
+                channel: options.channelId,
+                user: userId
+            }).catch(error => error.data.error == "not_in_channel" ? undefined : error);
+        })) as unknown as Promise<void>;
     }
 
     archiveChannel(channelId: string): Promise<void> {

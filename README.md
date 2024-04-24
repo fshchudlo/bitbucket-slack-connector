@@ -30,7 +30,7 @@ Built on top of [Slack bolt API](https://slack.dev/bolt-js/tutorial/getting-star
   should be installed.
 - Fill `http-client.env.json` file with parameters you find relevant. If you want to use real data, consider creating
   your own `http-client.private.env.json` config. It is added to the `.gitignore`
-- Run ```ijhttp e2e-tests/e2e-test-requests.http``` from the project root directory.
+- Run ```ijhttp .e2e-tests/e2e-test-requests.http``` from the project root directory.
 
 ### Running the service
 
@@ -41,3 +41,6 @@ Built on top of [Slack bolt API](https://slack.dev/bolt-js/tutorial/getting-star
   hundreds of pull requests. In case of service restart, cache will be gracefully restored. However,
   if you need to run multiple instances or experience `Slack API` requests limit exceeding, you'll need to implement
   some external cache.    
+### Useful links
+- [Slack apps configuration page](https://api.slack.com/apps)
+- [Slack blocks kit builder](https://app.slack.com/block-kit-builder) and [full controls reference](https://api.slack.com/reference/block-kit/block-elements)

@@ -16,7 +16,9 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
   "kicksFromChannels": [
     {
       "channelId": "12345",
-      "user": "test.reviewer1@test.com",
+      "users": [
+        "test.reviewer1@test.com",
+      ],
     },
   ],
   "lookedUpUsers": [

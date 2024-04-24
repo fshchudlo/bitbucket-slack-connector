@@ -39,4 +39,4 @@ node_modules/
 
 # project-specific directories
 dist
-e2e-tests
+.e2e-tests

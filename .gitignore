@@ -3,5 +3,5 @@ node_modules
 dist
 coverage
 .env
-/e2e-tests/http-client.private.env.json
+/.e2e-tests/http-client.private.env.json
 /build-and-publish.sh

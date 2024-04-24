@@ -54,7 +54,7 @@ export type InviteToChannelArguments = {
 }
 export type KickFromChannelArguments = {
     channelId: string;
-    user: string;
+    users: string[];
 }
 export type SendMessageArguments = {
     channelId: string;
