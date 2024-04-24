@@ -60,8 +60,7 @@ exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
         {
           "text": {
             "text": "Description is changed to:
-
-New pull request description",
+> New pull request description",
             "type": "mrkdwn",
           },
           "type": "section",

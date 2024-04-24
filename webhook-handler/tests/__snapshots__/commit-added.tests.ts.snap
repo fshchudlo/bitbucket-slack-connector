@@ -27,7 +27,6 @@ exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
         {
           "text": {
             "text": "Commit message: 
-
 > Test comment for TEST-PROJ, test-repository, from-ref-commit-hash",
             "type": "mrkdwn",
           },

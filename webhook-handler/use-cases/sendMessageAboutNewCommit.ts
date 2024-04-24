@@ -22,7 +22,7 @@ function buildMessage(payload: PullRequestBasicNotification, commentInBitbucket:
     const messageTitle = `${formatUserName(payload.actor)} added ${link(viewCommitUrl, "new commit")}.`;
     const pleaseReviewText = `Please ${link(pullRequest.links.self[0].href, "review the PR")}.`;
 
-    const commentSection = commentInBitbucket ? section(`Commit message: \n\n${quote(reformatMarkdownToSlackMarkup(commentInBitbucket))}`) : null;
+    const commentSection = commentInBitbucket ? section(`Commit message: \n${quote(reformatMarkdownToSlackMarkup(commentInBitbucket))}`) : null;
     return {
         channelId: slackChannelId,
         iconEmoji: iconEmoji,
