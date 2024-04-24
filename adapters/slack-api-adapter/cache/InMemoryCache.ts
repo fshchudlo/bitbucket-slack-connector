@@ -24,7 +24,7 @@ export class InMemoryCache<T> {
             help: "How many items were removed from cache because of it's max size exceeding"
         });
         this.utilizedCacheSizeGauge = new client.Gauge({
-            name: `${metricsNamePrefix}_cache_size`,
+            name: `${metricsNamePrefix}_cache_utilized_size`,
             help: "Utilized cache size"
         });
         new client.Counter({
