@@ -1,4 +1,4 @@
-import { link, iconEmoji, section, divider } from "./slack-building-blocks";
+import { link, iconEmoji, section, divider, contextBlock } from "./slack-building-blocks";
 import { formatUserName, formatPullRequestDescription } from "./helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
@@ -26,7 +26,7 @@ function buildMessage(payload: PullRequestBasicNotification, channelId: string):
         channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
-        blocks: [section(messageTitle), divider(), section(descriptionText), divider(), section(pleaseReviewText)]
+        blocks: [section(messageTitle), divider(), contextBlock(descriptionText), divider(), section(pleaseReviewText)]
     };
 }
 

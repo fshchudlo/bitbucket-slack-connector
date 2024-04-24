@@ -33,11 +33,16 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
           "type": "section",
         },
         {
-          "text": {
-            "text": ":large_yellow_circle:  Needs work: Test Reviewer 1 Unapproved: Test Reviewer 2",
-            "type": "mrkdwn",
-          },
-          "type": "section",
+          "type": "divider",
+        },
+        {
+          "elements": [
+            {
+              "text": ":large_yellow_circle:  Requested changes: Test Reviewer 1 Not reviewed: Test Reviewer 2",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
         },
       ],
       "channelId": "12345",
@@ -54,11 +59,16 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
           "type": "section",
         },
         {
-          "text": {
-            "text": ":large_yellow_circle:  Unapproved: Test Reviewer 1,Test Reviewer 2",
-            "type": "mrkdwn",
-          },
-          "type": "section",
+          "type": "divider",
+        },
+        {
+          "elements": [
+            {
+              "text": ":large_yellow_circle:  Not reviewed: Test Reviewer 1,Test Reviewer 2",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
         },
       ],
       "channelId": "12345",
@@ -75,11 +85,16 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
           "type": "section",
         },
         {
-          "text": {
-            "text": ":large_yellow_circle:  Approved: Test Reviewer 1 Unapproved: Test Reviewer 2",
-            "type": "mrkdwn",
-          },
-          "type": "section",
+          "type": "divider",
+        },
+        {
+          "elements": [
+            {
+              "text": ":large_yellow_circle:  Approved: Test Reviewer 1 Not reviewed: Test Reviewer 2",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
         },
       ],
       "channelId": "12345",

@@ -4,4 +4,6 @@ export * from "./bold";
 export * from "./section";
 export * from "./divider";
 export * from "./constants";
+export * from "./contextBlock";
+export { textBlock } from "./textBlock";
 

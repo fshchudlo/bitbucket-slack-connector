@@ -51,19 +51,42 @@ exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
           "type": "section",
         },
         {
+          "type": "divider",
+        },
+        {
           "text": {
-            "text": "Title is changed to: New pull request title",
+            "text": "Updated title:",
             "type": "mrkdwn",
           },
           "type": "section",
         },
         {
+          "elements": [
+            {
+              "text": "New pull request title",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
+        },
+        {
+          "type": "divider",
+        },
+        {
           "text": {
-            "text": "Description is changed to:
-> New pull request description",
+            "text": "Updated description:",
             "type": "mrkdwn",
           },
           "type": "section",
+        },
+        {
+          "elements": [
+            {
+              "text": "New pull request description",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
         },
         {
           "text": {

@@ -48,11 +48,13 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
           "type": "divider",
         },
         {
-          "text": {
-            "text": "Quite a long and comprehensive description to get channel title longer than 250 symbols which is a maximum length for the Slack",
-            "type": "mrkdwn",
-          },
-          "type": "section",
+          "elements": [
+            {
+              "text": "Quite a long and comprehensive description to get channel title longer than 250 symbols which is a maximum length for the Slack",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
         },
         {
           "type": "divider",

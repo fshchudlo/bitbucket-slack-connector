@@ -1,4 +1,4 @@
-import { iconEmoji, link, quote, section } from "./slack-building-blocks";
+import { contextBlock, divider, iconEmoji, link, section } from "./slack-building-blocks";
 import { formatUserName, formatPullRequestDescription } from "./helpers";
 import { SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { PullRequestModifiedNotification } from "../../typings";
@@ -16,25 +16,35 @@ export async function sendMessageAboutPRModification(payload: PullRequestModifie
         channelId: slackChannelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
-        blocks: [messageTitle, ...visibleChanges, pleaseReviewText].map(t => section(t))
+        blocks: [section(messageTitle), ...visibleChanges, section(pleaseReviewText)]
     });
 }
 
 function getChangesDescription(payload: PullRequestModifiedNotification) {
-    const changesDescription = new Array<string>();
+    const changesDescription = new Array<any>();
+    const addDivider = () => {
+        if (changesDescription.length > 0) {
+            changesDescription.push(divider());
+        }
+    };
     const pullRequest = payload.pullRequest;
 
     if (pullRequest.toRef.displayId != payload.previousTarget.displayId) {
-        changesDescription.push(`Target is changed to \`${pullRequest.toRef.displayId}\``);
+        addDivider();
+        changesDescription.push(section(`Target is changed to \`${pullRequest.toRef.displayId}\``));
     }
     if (pullRequest.title != payload.previousTitle) {
-        changesDescription.push(`Title is changed to: ${pullRequest.title}`);
+        addDivider();
+        changesDescription.push(section(`Updated title:`));
+        changesDescription.push(contextBlock(pullRequest.title));
     }
     if (pullRequest.description != payload.previousDescription) {
+        addDivider();
         if (pullRequest.description) {
-            changesDescription.push(`Description is changed to:\n${quote(formatPullRequestDescription(pullRequest.description))}`);
+            changesDescription.push(section("Updated description:"));
+            changesDescription.push(contextBlock(formatPullRequestDescription(pullRequest.description)));
         } else {
-            changesDescription.push(`Description is deleted.`);
+            changesDescription.push(section("Description is deleted."));
         }
     }
     return changesDescription;

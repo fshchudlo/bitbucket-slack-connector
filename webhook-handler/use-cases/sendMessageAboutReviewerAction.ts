@@ -1,5 +1,5 @@
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
-import { iconEmoji, link, section } from "./slack-building-blocks";
+import { contextBlock, divider, iconEmoji, link, section } from "./slack-building-blocks";
 import { formatUserName } from "./helpers";
 import { PullRequestBasicNotification, PullRequestPayload } from "../../typings";
 
@@ -15,7 +15,7 @@ function buildMessage(payload: PullRequestBasicNotification, channelId: string):
         channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
-        blocks: [section(messageTitle), section(reviewStatus)]
+        blocks: [section(messageTitle), divider(), contextBlock(reviewStatus)]
     };
 }
 
@@ -41,8 +41,8 @@ function getReviewStatus(pullRequest: PullRequestPayload) {
     }
 
     let reviewStatus = whoApproved.length > 0 ? ` Approved: ${whoApproved.map(r => r.user.displayName).join(",")}` : "";
-    reviewStatus += whoRequestedWork.length > 0 ? ` Needs work: ${whoRequestedWork.map(r => r.user.displayName).join(",")}` : "";
-    reviewStatus += whoUnapproved.length > 0 ? ` Unapproved: ${whoUnapproved.map(r => r.user.displayName).join(",")}` : "";
+    reviewStatus += whoRequestedWork.length > 0 ? ` Requested changes: ${whoRequestedWork.map(r => r.user.displayName).join(",")}` : "";
+    reviewStatus += whoUnapproved.length > 0 ? ` Not reviewed: ${whoUnapproved.map(r => r.user.displayName).join(",")}` : "";
 
     return `:large_yellow_circle: ${reviewStatus}`;
 }
