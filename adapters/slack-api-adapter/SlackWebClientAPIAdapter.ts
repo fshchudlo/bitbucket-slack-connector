@@ -7,7 +7,7 @@ import {
     KickFromChannelArguments,
     SendMessageArguments,
     SendMessageResponse,
-    SetChannelTopicArguments,
+    AddBookmarkArguments,
     SlackAPIAdapter,
     SlackChannelInfo
 } from "../../webhook-handler/ports/SlackAPIAdapter";
@@ -87,10 +87,12 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
         return createChannelPromise;
     }
 
-    setChannelTopic(options: SetChannelTopicArguments): Promise<void> {
-        return this.client.conversations.setTopic({
-            channel: options.channelId,
-            topic: options.topic
+    addBookmark(options: AddBookmarkArguments): Promise<void> {
+        return this.client.bookmarks.add({
+            channel_id: options.channelId,
+            link: options.link,
+            title: options.title,
+            type: "link"
         }) as unknown as Promise<void>;
     }
 

@@ -23,26 +23,26 @@ function getReviewerActionText(payload: PullRequestBasicNotification) {
     const prLink = link(payload.pullRequest.links.self[0].href, "pull request");
     switch (payload.eventKey) {
         case "pr:reviewer:unapproved":
-            return `${formatUserName(payload.actor)} unapproved ${prLink}.`;
+            return `:traffic_light: ${formatUserName(payload.actor)} unapproved ${prLink}.`;
         case "pr:reviewer:needs_work":
-            return `${formatUserName(payload.actor)} requested changes for ${prLink}.`;
+            return `:traffic_light: ${formatUserName(payload.actor)} requested changes for the ${prLink}.`;
         case "pr:reviewer:approved":
-            return `${formatUserName(payload.actor)} approved ${prLink}.`;
+            return `:traffic_light: ${formatUserName(payload.actor)} approved ${prLink}.`;
     }
 }
 
 function getReviewStatus(pullRequest: PullRequestPayload) {
-    const whoApproved = pullRequest.reviewers.filter(r => r.status == "APPROVED");
-    const whoRequestedWork = pullRequest.reviewers.filter(r => r.status == "NEEDS_WORK");
-    const whoUnapproved = pullRequest.reviewers.filter(r => r.status == "UNAPPROVED");
+    const whoApproved = pullRequest.reviewers.filter(r => r.status == "APPROVED").map(r => r.user.displayName);
+    const whoRequestedWork = pullRequest.reviewers.filter(r => r.status == "NEEDS_WORK").map(r => r.user.displayName);
+    const whoUnapproved = pullRequest.reviewers.filter(r => r.status == "UNAPPROVED").map(r => r.user.displayName);
 
     if (whoRequestedWork.length == 0 && whoUnapproved.length == 0) {
         return `:large_green_circle: All reviewers approved PR. Seems like you can ${link(pullRequest.links.self[0].href, "merge it")}.`;
     }
 
-    let reviewStatus = whoApproved.length > 0 ? ` Approved: ${whoApproved.map(r => r.user.displayName).join(",")}` : "";
-    reviewStatus += whoRequestedWork.length > 0 ? ` Requested changes: ${whoRequestedWork.map(r => r.user.displayName).join(",")}` : "";
-    reviewStatus += whoUnapproved.length > 0 ? ` Not reviewed: ${whoUnapproved.map(r => r.user.displayName).join(",")}` : "";
+    const reviewStatuses = [` Approved: ${whoApproved.length == 0 ? "0" : whoApproved.join(",")}`];
+    whoRequestedWork.length > 0 ? reviewStatuses.push(` Requested changes: ${whoRequestedWork.join(",")}`) : "";
+    whoUnapproved.length > 0 ? reviewStatuses.push(` Not reviewed: ${whoUnapproved.join(",")}`) : "";
 
-    return `:large_yellow_circle: ${reviewStatus}`;
+    return `:large_yellow_circle: ${reviewStatuses.join(" | ")}`;
 }

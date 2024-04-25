@@ -14,9 +14,9 @@ oauth_config:
     bot:
       - chat:write.customize #Only necessary to render custom emoji instead of the bot avatar, you can skip it if you like
       - channels:write.invite
-      - channels:write.topic #Remove after getting rid of topics
       - channels:history
       - channels:read
+      - bookmarks:write
       - groups:write
       - groups:read
       - groups:history

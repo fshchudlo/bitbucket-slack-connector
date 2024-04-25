@@ -1,5 +1,5 @@
-import { contextBlock, divider, iconEmoji, link, section } from "./slack-building-blocks";
-import { formatUserName, formatPullRequestDescription } from "./helpers";
+import { contextBlock, divider, iconEmoji, section } from "./slack-building-blocks";
+import { formatUserName, formatPullRequestDescription, reviewPRAction } from "./helpers";
 import { SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { PullRequestModifiedNotification } from "../../typings";
 
@@ -10,13 +10,12 @@ export async function sendMessageAboutPRModification(payload: PullRequestModifie
     }
 
     const messageTitle = `:writing_hand: ${formatUserName(payload.actor)} changed the pull request`;
-    const pleaseReviewText = `Please ${link(payload.pullRequest.links.self[0].href, "review the PR")}`;
 
     await slackAPI.sendMessage({
         channelId: slackChannelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
-        blocks: [section(messageTitle), ...visibleChanges, section(pleaseReviewText)]
+        blocks: [section(messageTitle), ...visibleChanges, divider(), reviewPRAction(payload.pullRequest)]
     });
 }
 

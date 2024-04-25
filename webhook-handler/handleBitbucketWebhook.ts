@@ -15,7 +15,7 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
 
     switch (eventKey) {
         case "pr:opened":
-            await useCases.setChannelTopicAndInviteParticipants(payload, slackAPI, AppConfig.DEFAULT_CHANNEL_PARTICIPANTS, channelInfo.id);
+            await useCases.inviteParticipantsAndSetChannelBookmark(payload, slackAPI, AppConfig.DEFAULT_CHANNEL_PARTICIPANTS, channelInfo.id);
             break;
         case "pr:modified":
             await useCases.sendMessageAboutPRModification(payload, slackAPI, channelInfo.id);

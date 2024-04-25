@@ -2,6 +2,7 @@
 
 exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/needs work 1`] = `
 {
+  "addedBookmarks": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -27,7 +28,7 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "text": ":traffic_light: Test Reviewer 1 requested changes for the <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -38,7 +39,7 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
         {
           "elements": [
             {
-              "text": ":large_yellow_circle:  Requested changes: Test Reviewer 1 Not reviewed: Test Reviewer 2",
+              "text": ":large_yellow_circle:  Approved: 0 |  Requested changes: Test Reviewer 1 |  Not reviewed: Test Reviewer 2",
               "type": "mrkdwn",
             },
           ],
@@ -47,13 +48,13 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
       ],
       "channelId": "12345",
       "iconEmoji": ":bitbucket:",
-      "text": "Test Reviewer 1 requested changes for <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+      "text": ":traffic_light: Test Reviewer 1 requested changes for the <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
     {
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "text": ":traffic_light: Test Reviewer 1 unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -64,7 +65,7 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
         {
           "elements": [
             {
-              "text": ":large_yellow_circle:  Not reviewed: Test Reviewer 1,Test Reviewer 2",
+              "text": ":large_yellow_circle:  Approved: 0 |  Not reviewed: Test Reviewer 1,Test Reviewer 2",
               "type": "mrkdwn",
             },
           ],
@@ -73,13 +74,13 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
       ],
       "channelId": "12345",
       "iconEmoji": ":bitbucket:",
-      "text": "Test Reviewer 1 unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+      "text": ":traffic_light: Test Reviewer 1 unapproved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
     {
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+            "text": ":traffic_light: Test Reviewer 1 approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -90,7 +91,7 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
         {
           "elements": [
             {
-              "text": ":large_yellow_circle:  Approved: Test Reviewer 1 Not reviewed: Test Reviewer 2",
+              "text": ":large_yellow_circle:  Approved: Test Reviewer 1 |  Not reviewed: Test Reviewer 2",
               "type": "mrkdwn",
             },
           ],
@@ -99,9 +100,8 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
       ],
       "channelId": "12345",
       "iconEmoji": ":bitbucket:",
-      "text": "Test Reviewer 1 approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
+      "text": ":traffic_light: Test Reviewer 1 approved <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>.",
     },
   ],
-  "setChannelTopics": [],
 }
 `;

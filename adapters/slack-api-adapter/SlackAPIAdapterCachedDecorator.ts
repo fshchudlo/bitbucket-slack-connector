@@ -5,7 +5,7 @@ import {
     CreateChannelArguments,
     InviteToChannelArguments,
     KickFromChannelArguments, SendMessageArguments, SendMessageResponse,
-    SetChannelTopicArguments,
+    AddBookmarkArguments,
     SlackAPIAdapter,
     SlackChannelInfo
 } from "../../webhook-handler/ports/SlackAPIAdapter";
@@ -54,8 +54,8 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
         return this.gateway.getSlackUserIds(userPayloads);
     }
 
-    setChannelTopic(options: SetChannelTopicArguments): Promise<void> {
-        return this.gateway.setChannelTopic(options);
+    addBookmark(options: AddBookmarkArguments): Promise<void> {
+        return this.gateway.addBookmark(options);
     }
 
     inviteToChannel(options: InviteToChannelArguments): Promise<void> {

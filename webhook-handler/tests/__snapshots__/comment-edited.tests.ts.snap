@@ -2,6 +2,7 @@
 
 exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
 {
+  "addedBookmarks": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -24,7 +25,7 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|edited comment>:",
+            "text": ":writing_hand: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|edited comment>:",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -50,16 +51,16 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
         "eventType": "bitbucket_comment_snapshot_saved",
       },
       "replyBroadcast": true,
-      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|edited comment>:",
+      "text": ":writing_hand: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|edited comment>:",
       "threadId": "ABCDE",
     },
   ],
-  "setChannelTopics": [],
 }
 `;
 
 exports[`handleBitbucketWebhook Should send message on comment conversion to the task 1`] = `
 {
+  "addedBookmarks": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -86,7 +87,7 @@ exports[`handleBitbucketWebhook Should send message on comment conversion to the
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added comment>:",
+            "text": ":loudspeaker: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added comment>:",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -112,14 +113,14 @@ exports[`handleBitbucketWebhook Should send message on comment conversion to the
         "eventType": "bitbucket_comment_snapshot_saved",
       },
       "replyBroadcast": undefined,
-      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added comment>:",
+      "text": ":loudspeaker: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added comment>:",
       "threadId": undefined,
     },
     {
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|converted comment to the task>:",
+            "text": ":pushpin: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|converted comment to the task>:",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -145,16 +146,16 @@ exports[`handleBitbucketWebhook Should send message on comment conversion to the
         "eventType": "bitbucket_comment_snapshot_saved",
       },
       "replyBroadcast": true,
-      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|converted comment to the task>:",
+      "text": ":pushpin: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|converted comment to the task>:",
       "threadId": "ABCDE",
     },
   ],
-  "setChannelTopics": [],
 }
 `;
 
 exports[`handleBitbucketWebhook Should send message on comment resolving and reopening 1`] = `
 {
+  "addedBookmarks": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -189,7 +190,7 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added comment>:",
+            "text": ":loudspeaker: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added comment>:",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -215,14 +216,14 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
         "eventType": "bitbucket_comment_snapshot_saved",
       },
       "replyBroadcast": undefined,
-      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added comment>:",
+      "text": ":loudspeaker: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added comment>:",
       "threadId": undefined,
     },
     {
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|resolved comment>:",
+            "text": ":white_check_mark: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|resolved comment>:",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -248,14 +249,14 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
         "eventType": "bitbucket_comment_snapshot_saved",
       },
       "replyBroadcast": true,
-      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|resolved comment>:",
+      "text": ":white_check_mark: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|resolved comment>:",
       "threadId": "ABCDE",
     },
     {
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|reopened comment>:",
+            "text": ":repeat: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|reopened comment>:",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -281,16 +282,16 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
         "eventType": "bitbucket_comment_snapshot_saved",
       },
       "replyBroadcast": true,
-      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|reopened comment>:",
+      "text": ":repeat: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|reopened comment>:",
       "threadId": "ABCDE",
     },
   ],
-  "setChannelTopics": [],
 }
 `;
 
 exports[`handleBitbucketWebhook Should send message on task conversion to the comment 1`] = `
 {
+  "addedBookmarks": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -317,7 +318,7 @@ exports[`handleBitbucketWebhook Should send message on task conversion to the co
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added task>:",
+            "text": ":loudspeaker: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added task>:",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -343,14 +344,14 @@ exports[`handleBitbucketWebhook Should send message on task conversion to the co
         "eventType": "bitbucket_comment_snapshot_saved",
       },
       "replyBroadcast": undefined,
-      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added task>:",
+      "text": ":loudspeaker: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added task>:",
       "threadId": undefined,
     },
     {
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|converted task to the comment>:",
+            "text": ":writing_hand: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|converted task to the comment>:",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -376,16 +377,16 @@ exports[`handleBitbucketWebhook Should send message on task conversion to the co
         "eventType": "bitbucket_comment_snapshot_saved",
       },
       "replyBroadcast": true,
-      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|converted task to the comment>:",
+      "text": ":writing_hand: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|converted task to the comment>:",
       "threadId": "ABCDE",
     },
   ],
-  "setChannelTopics": [],
 }
 `;
 
 exports[`handleBitbucketWebhook Should send message on task resolving and reopening 1`] = `
 {
+  "addedBookmarks": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -420,7 +421,7 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added task>:",
+            "text": ":loudspeaker: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added task>:",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -446,14 +447,14 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
         "eventType": "bitbucket_comment_snapshot_saved",
       },
       "replyBroadcast": undefined,
-      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added task>:",
+      "text": ":loudspeaker: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added task>:",
       "threadId": undefined,
     },
     {
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|resolved task>:",
+            "text": ":white_check_mark: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|resolved task>:",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -479,14 +480,14 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
         "eventType": "bitbucket_comment_snapshot_saved",
       },
       "replyBroadcast": true,
-      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|resolved task>:",
+      "text": ":white_check_mark: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|resolved task>:",
       "threadId": "ABCDE",
     },
     {
       "blocks": [
         {
           "text": {
-            "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|reopened task>:",
+            "text": ":repeat: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|reopened task>:",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -512,10 +513,9 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
         "eventType": "bitbucket_comment_snapshot_saved",
       },
       "replyBroadcast": true,
-      "text": "Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|reopened task>:",
+      "text": ":repeat: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|reopened task>:",
       "threadId": "ABCDE",
     },
   ],
-  "setChannelTopics": [],
 }
 `;

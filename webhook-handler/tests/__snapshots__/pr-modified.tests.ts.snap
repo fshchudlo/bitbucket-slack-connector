@@ -2,6 +2,7 @@
 
 exports[`handleBitbucketWebhook Doesn't send message if PR doesn't contain visible changes 1`] = `
 {
+  "addedBookmarks": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -15,12 +16,12 @@ exports[`handleBitbucketWebhook Doesn't send message if PR doesn't contain visib
   ],
   "searchedCommentSnapshots": [],
   "sentMessages": [],
-  "setChannelTopics": [],
 }
 `;
 
 exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
 {
+  "addedBookmarks": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -89,6 +90,9 @@ exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
           "type": "context",
         },
         {
+          "type": "divider",
+        },
+        {
           "text": {
             "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
             "type": "mrkdwn",
@@ -101,6 +105,5 @@ exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
       "text": ":writing_hand: Test Author changed the pull request",
     },
   ],
-  "setChannelTopics": [],
 }
 `;

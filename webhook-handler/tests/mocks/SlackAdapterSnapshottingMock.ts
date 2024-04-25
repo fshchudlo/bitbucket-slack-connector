@@ -5,7 +5,7 @@ import {
     SlackChannelInfo,
     BitbucketCommentSnapshot,
     CreateChannelArguments,
-    SetChannelTopicArguments,
+    AddBookmarkArguments,
     InviteToChannelArguments,
     KickFromChannelArguments, SendMessageArguments, SendMessageResponse, BitbucketCommentSnapshotInSlackMetadata
 } from "../../ports/SlackAPIAdapter";
@@ -18,7 +18,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
         searchedCommentSnapshots: any[];
         searchedChannels: any[];
         createdChannels: slack.ConversationsCreateArguments[];
-        setChannelTopics: SetChannelTopicArguments[];
+        addedBookmarks: AddBookmarkArguments[];
         invitesToChannels: InviteToChannelArguments[];
         kicksFromChannels: KickFromChannelArguments[];
         archivedChannels: slack.ConversationsCloseArguments[];
@@ -29,7 +29,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
     constructor() {
         this.snapshot = {
             createdChannels: new Array<slack.ConversationsCreateArguments>(),
-            setChannelTopics: new Array<SetChannelTopicArguments>(),
+            addedBookmarks: new Array<AddBookmarkArguments>(),
             invitesToChannels: new Array<InviteToChannelArguments>(),
             kicksFromChannels: new Array<KickFromChannelArguments>(),
             archivedChannels: new Array<slack.ConversationsCloseArguments>(),
@@ -55,8 +55,8 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
         return Promise.resolve({ id: channelId, name: options.name, isArchived: false });
     }
 
-    setChannelTopic(options: SetChannelTopicArguments): Promise<void> {
-        this.snapshot.setChannelTopics.push(options);
+    addBookmark(options: AddBookmarkArguments): Promise<void> {
+        this.snapshot.addedBookmarks.push(options);
         return Promise.resolve();
     }
 

@@ -13,7 +13,7 @@ export async function sendMessageAboutEditedComment(payload: PullRequestCommentA
     const commentSnapshot = await slackAPI.findLatestBitbucketCommentSnapshot(slackChannelId, payload.comment.id);
     const userAction = await getUserAction(payload, commentSnapshot);
 
-    const messageTitle = `${formatUserName(payload.actor)} ${link(commentUrl, userAction)}:`;
+    const messageTitle = `${userAction.emoji} ${formatUserName(payload.actor)} ${link(commentUrl, userAction.title)}:`;
     const commentText = markdownToSlackMarkup(payload.comment.text);
 
     await slackAPI.sendMessage({
@@ -27,27 +27,51 @@ export async function sendMessageAboutEditedComment(payload: PullRequestCommentA
     });
 }
 
-async function getUserAction(payload: PullRequestCommentActionNotification, previousCommentSnapshot: BitbucketCommentSnapshot) {
+async function getUserAction(payload: PullRequestCommentActionNotification, previousCommentSnapshot: BitbucketCommentSnapshot): Promise<{
+    title: string,
+    emoji: string
+}> {
     const commentType = getTaskOrCommentTitle(payload);
     if (previousCommentSnapshot) {
         if (previousCommentSnapshot.severity == "NORMAL" && payload.comment.severity == "BLOCKER") {
-            return "converted comment to the task";
+            return {
+                title: "converted comment to the task",
+                emoji: ":pushpin:"
+            };
         }
         if (previousCommentSnapshot.severity == "BLOCKER" && payload.comment.severity == "NORMAL") {
-            return "converted task to the comment";
+            return {
+                title: "converted task to the comment",
+                emoji: ":writing_hand:"
+            };
         }
         if (!previousCommentSnapshot.taskResolvedDate && payload.comment.resolvedDate) {
-            return `resolved ${commentType}`;
+            return {
+                title: `resolved ${commentType}`,
+                emoji: ":white_check_mark:"
+            };
         }
         if (previousCommentSnapshot.taskResolvedDate && !payload.comment.resolvedDate) {
-            return `reopened ${commentType}`;
+            return {
+                title: `reopened ${commentType}`,
+                emoji: ":repeat:"
+            };
         }
         if (!previousCommentSnapshot.threadResolvedDate && payload.comment.threadResolvedDate) {
-            return `resolved ${commentType}`;
+            return {
+                title: `resolved ${commentType}`,
+                emoji: ":white_check_mark:"
+            };
         }
         if (previousCommentSnapshot.threadResolvedDate && !payload.comment.threadResolvedDate) {
-            return `reopened ${commentType}`;
+            return {
+                title: `reopened ${commentType}`,
+                emoji: ":repeat:"
+            };
         }
-        return `edited ${commentType}`;
+        return {
+            title: `edited ${commentType}`,
+            emoji: ":writing_hand:"
+        };
     }
 }

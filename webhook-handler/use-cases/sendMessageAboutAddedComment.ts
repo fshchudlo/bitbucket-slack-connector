@@ -11,7 +11,8 @@ export async function sendMessageAboutAddedComment(payload: PullRequestCommentAc
 function buildMessage(payload: PullRequestCommentActionNotification, parentCommentSnapshot: BitbucketCommentSnapshot, channelId: string): SendMessageArguments {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
     const action = parentCommentSnapshot ? "replied" : `added ${getTaskOrCommentTitle(payload)}`;
-    const messageTitle = `${formatUserName(payload.actor)} ${link(commentUrl, action)}:`;
+    const emoji = parentCommentSnapshot ? ":left_speech_bubble:" : `:loudspeaker:`;
+    const messageTitle = `${emoji} ${formatUserName(payload.actor)} ${link(commentUrl, action)}:`;
     const commentText = markdownToSlackMarkup(payload.comment.text);
 
     return {

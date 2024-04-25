@@ -2,6 +2,14 @@
 
 exports[`handleBitbucketWebhook Should create channel, set topic and invite author and reviewers on PR opened 1`] = `
 {
+  "addedBookmarks": [
+    {
+      "channelId": "12345",
+      "emoji": ":git:",
+      "link": "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview",
+      "title": "Review Pull Request",
+    },
+  ],
   "archivedChannels": [],
   "createdChannels": [
     {
@@ -39,7 +47,7 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
       "blocks": [
         {
           "text": {
-            "text": "The pull request was opened by Test Author.",
+            "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
             "type": "mrkdwn",
           },
           "type": "section",
@@ -69,13 +77,7 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
       ],
       "channelId": "12345",
       "iconEmoji": ":bitbucket:",
-      "text": "The pull request was opened by Test Author.",
-    },
-  ],
-  "setChannelTopics": [
-    {
-      "channelId": "12345",
-      "topic": ":git: Pull request: Quite a long and comprehensive title to get channel title longer than 250 symbols which is a maximum length for the Slack | :git-branch: To branch: \`TEST-PROJ/test-repository:master\`",
+      "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
     },
   ],
 }

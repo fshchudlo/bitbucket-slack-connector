@@ -2,6 +2,7 @@
 
 exports[`handleBitbucketWebhook Should send completion message and close the channel on PR merge 1`] = `
 {
+  "addedBookmarks": [],
   "archivedChannels": [
     {
       "channel": "12345",
@@ -25,6 +26,5 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
       "text": ":white_check_mark: The pull request was merged by Test Author. Well done, thank you all.",
     },
   ],
-  "setChannelTopics": [],
 }
 `;

@@ -9,7 +9,7 @@ export async function sendMessageAboutDeletedComment(payload: PullRequestComment
 }
 
 function buildMessage(payload: PullRequestCommentActionNotification, commentSnapshot: BitbucketCommentSnapshot, slackChannelId: string): SendMessageArguments {
-    const messageTitle = `${formatUserName(payload.actor)} deleted ${getTaskOrCommentTitle(payload)}:`;
+    const messageTitle = `:broom: ${formatUserName(payload.actor)} deleted ${getTaskOrCommentTitle(payload)}:`;
     const commentText = markdownToSlackMarkup(payload.comment.text);
     return {
         channelId: slackChannelId,

@@ -2,6 +2,7 @@
 
 exports[`handleBitbucketWebhook Should update channel participants on reviewers list update 1`] = `
 {
+  "addedBookmarks": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [
@@ -37,6 +38,5 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
   ],
   "searchedCommentSnapshots": [],
   "sentMessages": [],
-  "setChannelTopics": [],
 }
 `;

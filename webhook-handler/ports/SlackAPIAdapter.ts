@@ -8,7 +8,7 @@ export interface SlackAPIAdapter {
 
     createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo>;
 
-    setChannelTopic(options: SetChannelTopicArguments): Promise<void>;
+    addBookmark(options: AddBookmarkArguments): Promise<void>;
 
     inviteToChannel(options: InviteToChannelArguments): Promise<void>;
 
@@ -42,9 +42,11 @@ export type CreateChannelArguments = {
     name: string;
     isPrivate?: boolean;
 }
-export type SetChannelTopicArguments = {
+export type AddBookmarkArguments = {
     channelId: string;
-    topic: string;
+    link: string;
+    title: string;
+    emoji?: string;
 }
 
 export type InviteToChannelArguments = {
