@@ -1,3 +1,3 @@
 export function quote(text: string) {
-    return text ? `> ${text}` : "";
+    return text ? `> ${text.replaceAll("\n", "\n>")}` : "";
 }

@@ -17,7 +17,7 @@ describe("slackQuote", () => {
 
     it("should handle text with line breaks", () => {
         const text = "Line 1\nLine 2";
-        const expectedResult = "> Line 1\nLine 2";
+        const expectedResult = "> Line 1\n>Line 2";
         const result = quote(text);
         expect(result).toBe(expectedResult);
     });
