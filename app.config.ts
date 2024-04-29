@@ -1,6 +1,17 @@
 import "dotenv/config";
 
-const AppConfig = {
+interface AppConfig {
+    readonly SLACK_SIGNING_SECRET: string;
+    readonly SLACK_BOT_TOKEN: string;
+    readonly SLACK_BOT_PORT: string | number;
+    readonly BITBUCKET_READ_API_TOKEN: string;
+    readonly BITBUCKET_BASE_URL: string;
+    readonly DIAGNOSTIC_CHANNEL: string;
+    readonly USE_PRIVATE_CHANNELS: boolean;
+    readonly DEFAULT_CHANNEL_PARTICIPANTS: string[];
+}
+
+const AppConfig: AppConfig = {
     SLACK_SIGNING_SECRET: process.env.SLACK_SIGNING_SECRET as string,
     SLACK_BOT_TOKEN: process.env.SLACK_BOT_TOKEN,
     SLACK_BOT_PORT: process.env.SLACK_BOT_PORT || 3000,
