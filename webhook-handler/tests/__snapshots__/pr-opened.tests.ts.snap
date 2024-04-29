@@ -82,3 +82,116 @@ exports[`handleBitbucketWebhook Should create channel, add bookmark and invite a
   ],
 }
 `;
+
+exports[`handleBitbucketWebhook Should send notification to the broadcast channel, if it is specified 1`] = `
+{
+  "addedBookmarks": [
+    {
+      "channelId": "12345",
+      "emoji": ":git:",
+      "link": "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview",
+      "title": "Review Pull Request",
+    },
+  ],
+  "archivedChannels": [],
+  "createdChannels": [
+    {
+      "isPrivate": true,
+      "name": "pr-test-proj-test-repository-1",
+    },
+  ],
+  "invitesToChannels": [
+    {
+      "channelId": "12345",
+      "force": true,
+      "users": [
+        "test.author@test.com",
+        "test.reviewer1@test.com",
+        "test.reviewer2@test.com",
+      ],
+    },
+  ],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [
+    {
+      "email": "test.author@test.com",
+    },
+    {
+      "email": "test.reviewer1@test.com",
+    },
+    {
+      "email": "test.reviewer2@test.com",
+    },
+  ],
+  "searchedChannels": [],
+  "searchedCommentSnapshots": [],
+  "sentMessages": [
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "type": "divider",
+        },
+        {
+          "elements": [
+            {
+              "text": "Test pull request description",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
+        },
+        {
+          "type": "divider",
+        },
+        {
+          "text": {
+            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channelId": "12345",
+      "iconEmoji": ":bitbucket:",
+      "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+    },
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": ":snowboarder: Test Author opened pull request "Test pull request title".",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "elements": [
+            {
+              "text": "Assigned reviewers: Test Reviewer 1,Test Reviewer 2.",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
+        },
+        {
+          "text": {
+            "text": ":open_hands: You're welcome to <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|join code review>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channelId": "test-broadcast-channel-id",
+      "iconEmoji": ":bitbucket:",
+      "text": ":snowboarder: Test Author opened pull request "Test pull request title".",
+    },
+  ],
+}
+`;
