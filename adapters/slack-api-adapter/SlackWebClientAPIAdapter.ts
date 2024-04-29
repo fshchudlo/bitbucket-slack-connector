@@ -12,7 +12,7 @@ import {
     SlackChannelInfo
 } from "../../webhook-handler/ports/SlackAPIAdapter";
 import { UserPayload } from "../../typings";
-import appConfig from "../../app.config";
+import { WebhookConfig } from "../../app.config";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
 
 const awaitingCreateChannelRequests = new Map<string, Promise<SlackChannelInfo>>();
@@ -40,7 +40,7 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
             return awaitingCreateChannelRequests.get(channelName);
         }
         let cursor: string | undefined = undefined;
-        const channelTypes = appConfig.USE_PRIVATE_CHANNELS ? "private_channel" : undefined;
+        const channelTypes = WebhookConfig.USE_PRIVATE_CHANNELS ? "private_channel" : undefined;
         while (true) {
             const response = await this.client.conversations.list({
                 exclude_archived: !!excludeArchived,

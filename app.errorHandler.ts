@@ -1,4 +1,4 @@
-import appConfig from "./app.config";
+import { AppConfig } from "./app.config";
 import util from "util";
 import { ExpressReceiver } from "@slack/bolt";
 import { SlackAPIAdapterCachedDecorator } from "./adapters/slack-api-adapter/SlackAPIAdapterCachedDecorator";
@@ -9,9 +9,9 @@ export default function configureErrorHandler(expressReceiver: ExpressReceiver, 
         const errorMessage = ["Error processing webhook.", `Error: ${util.inspect(error, false, 8)}.`, `Payload: ${util.inspect(req.body, false, 8)}`].join("\n\n");
         console.error(errorMessage);
         try {
-            if (appConfig.DIAGNOSTIC_CHANNEL) {
+            if (AppConfig.DIAGNOSTIC_CHANNEL) {
                 await slackAPI.sendMessage({
-                    channelId: appConfig.DIAGNOSTIC_CHANNEL,
+                    channelId: AppConfig.DIAGNOSTIC_CHANNEL,
                     text: errorMessage
                 });
             }

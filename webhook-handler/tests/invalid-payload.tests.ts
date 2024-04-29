@@ -3,7 +3,7 @@ import handleBitbucketWebhook from "../handleBitbucketWebhook";
 import { TestBitbucketGateway } from "./mocks/TestBitbucketGateway";
 import { PullRequestBasicNotification } from "../../typings";
 import TestPayloadBuilder from "./mocks/TestPayloadBuilder";
-import AppConfig from "../../app.config";
+import { TestWebhookHandlerConfig } from "./mocks/TestWebhookHandlerConfig";
 
 describe("handleBitbucketWebhook", () => {
     it("Should throw Error on unknown action type", async () => {
@@ -15,7 +15,7 @@ describe("handleBitbucketWebhook", () => {
         } as unknown) as PullRequestBasicNotification;
 
         try {
-            await handleBitbucketWebhook(invalidPayload, new SlackAdapterSnapshottingMock(), new TestBitbucketGateway(), AppConfig);
+            await handleBitbucketWebhook(invalidPayload, new SlackAdapterSnapshottingMock(), new TestBitbucketGateway(), TestWebhookHandlerConfig);
         } catch (error) {
             expect((error as Error).message).toBe("\"unknown action\" event key is unknown.");
         }

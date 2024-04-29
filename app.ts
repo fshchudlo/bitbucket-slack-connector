@@ -1,5 +1,5 @@
 import { App, ExpressReceiver } from "@slack/bolt";
-import AppConfig from "./app.config";
+import { AppConfig } from "./app.config";
 import { SlackWebClientAPIAdapter } from "./adapters/slack-api-adapter/SlackWebClientAPIAdapter";
 import express from "express";
 import { SlackAPIAdapterCachedDecorator } from "./adapters/slack-api-adapter/SlackAPIAdapterCachedDecorator";

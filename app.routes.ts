@@ -4,7 +4,7 @@ import { buildChannelName } from "./webhook-handler/buildChannelName";
 import { ExpressReceiver } from "@slack/bolt";
 import { SlackAPIAdapterCachedDecorator } from "./adapters/slack-api-adapter/SlackAPIAdapterCachedDecorator";
 import BitbucketWebAPIGateway from "./adapters/bitbucket-gateway/BitbucketWebAPIGateway";
-import AppConfig from "./app.config";
+import { AppConfig, WebhookConfig } from "./app.config";
 import { NextFunction } from "express";
 
 const bitbucketGateway = new BitbucketWebAPIGateway(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
@@ -13,7 +13,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackA
 
     expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
         try {
-            await handleBitbucketWebhook(req.body, slackAPI, bitbucketGateway, AppConfig);
+            await handleBitbucketWebhook(req.body, slackAPI, bitbucketGateway, WebhookConfig);
             res.sendStatus(200);
         } catch (error) {
             next(error);
