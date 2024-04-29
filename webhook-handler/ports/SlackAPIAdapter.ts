@@ -15,11 +15,10 @@ export interface SlackAPIAdapter {
     kickFromChannel(options: KickFromChannelArguments): Promise<void>;
 
     archiveChannel(channelId: string): Promise<void>;
-
+    addReaction(channelId: string, messageId: string, reaction: string): Promise<void>
     sendMessage(options: SendMessageArguments): Promise<SendMessageResponse>;
-
     findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null>;
-    tryFindPullRequestOpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null>;
+    findPROpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null>;
 }
 
 export type BitbucketCommentSnapshotInSlackMetadata = {

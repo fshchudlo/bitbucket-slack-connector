@@ -13,4 +13,20 @@ describe("handleBitbucketWebhook", () => {
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
     });
+
+    it("Should send notification to the broadcast channel, if it is specified", async () => {
+        const testSlackGateway = new SlackAdapterSnapshottingMock();
+        const testConfig = {
+            ...TestWebhookHandlerConfig,
+            BROADCAST_OPENED_PR_MESSAGES_TO_CHANNEL_ID: "test-broadcast-channel-id"
+        };
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), testSlackGateway, new TestBitbucketGateway(), testConfig);
+
+
+        const payload = TestPayloadBuilder.pullRequestMerged();
+        await handleBitbucketWebhook(payload, testSlackGateway, new TestBitbucketGateway(), testConfig);
+
+        expect(testSlackGateway.snapshot).toMatchSnapshot();
+    });
+
 });

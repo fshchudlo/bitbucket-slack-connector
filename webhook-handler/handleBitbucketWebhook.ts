@@ -46,6 +46,7 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
         case "pr:declined":
         case "pr:deleted":
             await useCases.sendCompletionMessageAndCloseTheChannel(payload, slackAPI, channelInfo.id);
+            await useCases.tryBroadcastMessageAboutClosedPR(payload, slackAPI, config.BROADCAST_OPENED_PR_MESSAGES_TO_CHANNEL_ID);
             break;
         default:
             throw new Error(`"${eventKey}" event key is unknown.`);

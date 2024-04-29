@@ -51,6 +51,10 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
         this.bitbucketCommentsCache.deleteWhere((k) => k.startsWith(getCommentCacheKey(channelId, "")));
     }
 
+    addReaction(channelId: string, messageId: string, reaction: string): Promise<void> {
+        return this.gateway.addReaction(channelId, messageId, reaction);
+    }
+
     getSlackUserIds(userPayloads: UserPayload[]): Promise<string[]> {
         return this.gateway.getSlackUserIds(userPayloads);
     }
@@ -99,7 +103,7 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
         return commentSnapshot;
     }
 
-    tryFindPullRequestOpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
-        return this.gateway.tryFindPullRequestOpenedBroadcastMessageId(channelId, pullRequestTraits);
+    findPROpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
+        return this.gateway.findPROpenedBroadcastMessageId(channelId, pullRequestTraits);
     }
 }

@@ -3,6 +3,7 @@
 exports[`handleBitbucketWebhook Should update channel participants on reviewers list update 1`] = `
 {
   "addedBookmarks": [],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [
@@ -23,12 +24,18 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
     },
   ],
   "lookedUpUsers": [
-    {
-      "email": "test.reviewer3@test.com",
-    },
-    {
-      "email": "test.reviewer1@test.com",
-    },
+    [
+      {
+        "displayName": "Test Reviewer 3",
+        "emailAddress": "test.reviewer3@test.com",
+      },
+    ],
+    [
+      {
+        "displayName": "Test Reviewer 1",
+        "emailAddress": "test.reviewer1@test.com",
+      },
+    ],
   ],
   "searchedChannels": [
     {

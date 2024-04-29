@@ -125,6 +125,14 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
         return this.client.conversations.archive({ channel: channelId }) as unknown as Promise<void>;
     }
 
+    addReaction(channelId: string, messageId: string, reaction: string): Promise<void> {
+        return this.client.reactions.add({
+            channel: channelId,
+            timestamp: messageId,
+            name: reaction
+        }) as unknown as Promise<void>;
+    }
+
     async sendMessage(options: SendMessageArguments): Promise<SendMessageResponse> {
         const response = await this.client.chat.postMessage({
             channel: options.channelId,
@@ -166,7 +174,7 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
         }
     }
 
-    async tryFindPullRequestOpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
+    async findPROpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
         const matchPredicate = (message: MessageElement) => {
             const eventPayload = message.metadata.event_type === SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE ? <PullRequestSnapshotInSlackMetadata>message.metadata?.event_payload : null;
             return eventPayload && eventPayload?.pullRequestId === pullRequestTraits.pullRequestId && eventPayload?.projectKey === pullRequestTraits.projectKey && eventPayload?.repositorySlug === pullRequestTraits.repositorySlug;

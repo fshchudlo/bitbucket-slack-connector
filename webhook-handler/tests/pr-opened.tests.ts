@@ -13,6 +13,7 @@ describe("handleBitbucketWebhook", () => {
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
     });
+
     it("Should send notification to the broadcast channel, if it is specified", async () => {
         const testSlackGateway = new SlackAdapterSnapshottingMock();
         const payload = TestPayloadBuilder.pullRequestOpened();

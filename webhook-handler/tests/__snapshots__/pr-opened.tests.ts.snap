@@ -10,6 +10,7 @@ exports[`handleBitbucketWebhook Should create channel, add bookmark and invite a
       "title": "Review Pull Request",
     },
   ],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [
     {
@@ -30,15 +31,20 @@ exports[`handleBitbucketWebhook Should create channel, add bookmark and invite a
   ],
   "kicksFromChannels": [],
   "lookedUpUsers": [
-    {
-      "email": "test.author@test.com",
-    },
-    {
-      "email": "test.reviewer1@test.com",
-    },
-    {
-      "email": "test.reviewer2@test.com",
-    },
+    [
+      {
+        "displayName": "Test Author",
+        "emailAddress": "test.author@test.com",
+      },
+      {
+        "displayName": "Test Reviewer 1",
+        "emailAddress": "test.reviewer1@test.com",
+      },
+      {
+        "displayName": "Test Reviewer 2",
+        "emailAddress": "test.reviewer2@test.com",
+      },
+    ],
   ],
   "searchedChannels": [],
   "searchedCommentSnapshots": [],
@@ -94,6 +100,7 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
       "title": "Review Pull Request",
     },
   ],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [
     {
@@ -114,15 +121,20 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
   ],
   "kicksFromChannels": [],
   "lookedUpUsers": [
-    {
-      "email": "test.author@test.com",
-    },
-    {
-      "email": "test.reviewer1@test.com",
-    },
-    {
-      "email": "test.reviewer2@test.com",
-    },
+    [
+      {
+        "displayName": "Test Author",
+        "emailAddress": "test.author@test.com",
+      },
+      {
+        "displayName": "Test Reviewer 1",
+        "emailAddress": "test.reviewer1@test.com",
+      },
+      {
+        "displayName": "Test Reviewer 2",
+        "emailAddress": "test.reviewer2@test.com",
+      },
+    ],
   ],
   "searchedChannels": [],
   "searchedCommentSnapshots": [],

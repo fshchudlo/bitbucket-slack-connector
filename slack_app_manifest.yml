@@ -24,6 +24,7 @@ oauth_config:
       - im:write
       - chat:write
       - chat:write.public
+      - reactions:write # Only necessary to set PR completion reaction to the broadcast message about opened PR
       - users:read
       - users:read.email
 settings:

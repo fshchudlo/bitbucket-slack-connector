@@ -3,6 +3,7 @@
 exports[`handleBitbucketWebhook Doesn't send message if PR doesn't contain visible changes 1`] = `
 {
   "addedBookmarks": [],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -23,6 +24,7 @@ exports[`handleBitbucketWebhook Doesn't send message if PR doesn't contain visib
 exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
 {
   "addedBookmarks": [],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],

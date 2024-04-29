@@ -3,6 +3,7 @@
 exports[`handleBitbucketWebhook Should send message on PR comment deletion 1`] = `
 {
   "addedBookmarks": [],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],

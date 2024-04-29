@@ -3,6 +3,7 @@
 exports[`handleBitbucketWebhook Should send message on PR comment 1`] = `
 {
   "addedBookmarks": [],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -57,6 +58,7 @@ exports[`handleBitbucketWebhook Should send message on PR comment 1`] = `
 exports[`handleBitbucketWebhook Should send message on PR task 1`] = `
 {
   "addedBookmarks": [],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],

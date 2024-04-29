@@ -3,6 +3,7 @@
 exports[`handleBitbucketWebhook Should return generic message if initial comment was not found 1`] = `
 {
   "addedBookmarks": [],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -62,6 +63,7 @@ exports[`handleBitbucketWebhook Should return generic message if initial comment
 exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
 {
   "addedBookmarks": [],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -158,6 +160,7 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
 exports[`handleBitbucketWebhook Should send message on comment conversion to the task 1`] = `
 {
   "addedBookmarks": [],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -254,6 +257,7 @@ exports[`handleBitbucketWebhook Should send message on comment conversion to the
 exports[`handleBitbucketWebhook Should send message on comment resolving and reopening 1`] = `
 {
   "addedBookmarks": [],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -391,6 +395,7 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
 exports[`handleBitbucketWebhook Should send message on task conversion to the comment 1`] = `
 {
   "addedBookmarks": [],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],
@@ -487,6 +492,7 @@ exports[`handleBitbucketWebhook Should send message on task conversion to the co
 exports[`handleBitbucketWebhook Should send message on task resolving and reopening 1`] = `
 {
   "addedBookmarks": [],
+  "addedReactions": [],
   "archivedChannels": [],
   "createdChannels": [],
   "invitesToChannels": [],

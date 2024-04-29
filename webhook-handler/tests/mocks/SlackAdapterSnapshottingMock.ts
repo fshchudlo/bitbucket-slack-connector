@@ -1,5 +1,3 @@
-import * as slack from "@slack/web-api";
-
 import {
     SlackAPIAdapter,
     SlackChannelInfo,
@@ -21,35 +19,37 @@ const channelId = "12345";
 const messageId = "ABCDE";
 export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
     snapshot: {
-        searchedPrOpenedBroadcastMessages: any[];
-        searchedCommentSnapshots: any[];
-        searchedChannels: any[];
-        createdChannels: slack.ConversationsCreateArguments[];
+        addedReactions: any[];
         addedBookmarks: AddBookmarkArguments[];
+        archivedChannels: string[];
+        createdChannels: CreateChannelArguments[];
         invitesToChannels: InviteToChannelArguments[];
         kicksFromChannels: KickFromChannelArguments[];
-        archivedChannels: slack.ConversationsCloseArguments[];
+        lookedUpUsers: Array<Array<UserPayload>>;
+        searchedChannels: any[];
+        searchedCommentSnapshots: any[];
+        searchedPrOpenedBroadcastMessages: any[];
         sentMessages: SendMessageArguments[];
-        lookedUpUsers: slack.UsersLookupByEmailArguments[];
     };
 
     constructor() {
         this.snapshot = {
-            createdChannels: new Array<slack.ConversationsCreateArguments>(),
+            addedReactions: new Array<any>(),
             addedBookmarks: new Array<AddBookmarkArguments>(),
+            archivedChannels: new Array<string>(),
+            createdChannels: new Array<CreateChannelArguments>(),
             invitesToChannels: new Array<InviteToChannelArguments>(),
             kicksFromChannels: new Array<KickFromChannelArguments>(),
-            archivedChannels: new Array<slack.ConversationsCloseArguments>(),
-            sentMessages: new Array<SendMessageArguments>(),
-            lookedUpUsers: new Array<slack.UsersLookupByEmailArguments>(),
+            lookedUpUsers: new Array<Array<UserPayload>>(),
             searchedCommentSnapshots: new Array<any>(),
             searchedPrOpenedBroadcastMessages: new Array<any>(),
-            searchedChannels: new Array<any>()
+            searchedChannels: new Array<any>(),
+            sentMessages: new Array<SendMessageArguments>()
         };
     }
 
     getSlackUserIds(userPayloads: UserPayload[]): Promise<string[]> {
-        userPayloads.forEach(u => this.snapshot.lookedUpUsers.push({ email: u.emailAddress }));
+        this.snapshot.lookedUpUsers.push(userPayloads);
         return Promise.resolve(userPayloads.map(u => u.emailAddress));
     }
 
@@ -79,7 +79,12 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
     }
 
     archiveChannel(channelId: string): Promise<void> {
-        this.snapshot.archivedChannels.push({ channel: channelId });
+        this.snapshot.archivedChannels.push(channelId);
+        return Promise.resolve();
+    }
+
+    addReaction(channelId: string, messageId: string, reaction: string): Promise<void> {
+        this.snapshot.addedReactions.push({ channelId, messageId, reaction });
         return Promise.resolve();
     }
 
@@ -91,7 +96,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
     findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
         this.snapshot.searchedCommentSnapshots.push({ channelId, bitbucketCommentId });
 
-        const snapshot = (<any>this.snapshot.sentMessages).findLast((m: SendMessageArguments) => m.metadata.eventType === SNAPSHOT_COMMENT_STATE_EVENT_TYPE && m.metadata?.eventPayload?.commentId === bitbucketCommentId.toString());
+        const snapshot = (<any>this.snapshot.sentMessages).findLast((m: SendMessageArguments) => m.metadata?.eventType === SNAPSHOT_COMMENT_STATE_EVENT_TYPE && m.metadata?.eventPayload?.commentId === bitbucketCommentId.toString());
 
         if (snapshot) {
             const metadata = <BitbucketCommentSnapshotInSlackMetadata>snapshot.metadata?.eventPayload;
@@ -108,10 +113,10 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
         return Promise.resolve(null);
     }
 
-    tryFindPullRequestOpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
+    findPROpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
         this.snapshot.searchedPrOpenedBroadcastMessages.push({ channelId, pullRequestTraits });
 
-        const snapshot = (<any>this.snapshot.sentMessages).findLast((m: SendMessageArguments) => m.metadata.eventType === SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE && m.metadata?.eventPayload?.pullRequestId === pullRequestTraits.pullRequestId && m.metadata?.eventPayload?.projectKey === pullRequestTraits.projectKey && m.metadata?.eventPayload?.repositorySlug === pullRequestTraits.repositorySlug);
+        const snapshot = (<any>this.snapshot.sentMessages).findLast((m: SendMessageArguments) => m.metadata?.eventType === SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE && m.metadata?.eventPayload?.pullRequestId === pullRequestTraits.pullRequestId && m.metadata?.eventPayload?.projectKey === pullRequestTraits.projectKey && m.metadata?.eventPayload?.repositorySlug === pullRequestTraits.repositorySlug);
 
         if (snapshot) {
             return Promise.resolve(messageId);
