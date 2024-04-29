@@ -28,6 +28,11 @@ export type BitbucketCommentSnapshotInSlackMetadata = {
     commentId: string;
     commentParentId?: string;
 }
+export type PullRequestSnapshotInSlackMetadata = {
+    pullRequestId: string,
+    projectKey: string,
+    repositorySlug: string
+}
 export type BitbucketCommentSnapshot = BitbucketCommentSnapshotInSlackMetadata & {
     slackMessageId: string;
     slackThreadId?: string;

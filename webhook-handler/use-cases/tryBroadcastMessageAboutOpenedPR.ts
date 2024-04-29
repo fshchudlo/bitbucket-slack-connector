@@ -1,5 +1,5 @@
 import { iconEmoji, link, section, contextBlock } from "./slack-building-blocks";
-import { formatUserName } from "./helpers";
+import { formatUserName, snapshotPullRequestState } from "./helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
 
@@ -22,6 +22,7 @@ function buildMessage(payload: PullRequestBasicNotification, channelId: string):
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), reviewersContextBlock, section(invitationText)]
-            .filter(b => !!b)
+            .filter(b => !!b),
+        metadata: snapshotPullRequestState(payload)
     };
 }

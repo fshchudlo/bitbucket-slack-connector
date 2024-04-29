@@ -190,6 +190,14 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
       ],
       "channelId": "test-broadcast-channel-id",
       "iconEmoji": ":bitbucket:",
+      "metadata": {
+        "eventPayload": {
+          "projectKey": "TEST-PROJ",
+          "pullRequestId": "1",
+          "repositorySlug": "test-repository",
+        },
+        "eventType": "bitbucket_pull_request_opened",
+      },
       "text": ":snowboarder: Test Author opened pull request "Test pull request title".",
     },
   ],
