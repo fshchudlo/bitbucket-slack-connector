@@ -15,6 +15,7 @@ exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
     },
   ],
   "searchedCommentSnapshots": [],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
       "blocks": [

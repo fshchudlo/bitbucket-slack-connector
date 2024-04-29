@@ -19,6 +19,7 @@ export interface SlackAPIAdapter {
     sendMessage(options: SendMessageArguments): Promise<SendMessageResponse>;
 
     findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null>;
+    tryFindPullRequestOpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null>;
 }
 
 export type BitbucketCommentSnapshotInSlackMetadata = {
@@ -28,14 +29,14 @@ export type BitbucketCommentSnapshotInSlackMetadata = {
     commentId: string;
     commentParentId?: string;
 }
+export type BitbucketCommentSnapshot = BitbucketCommentSnapshotInSlackMetadata & {
+    slackMessageId: string;
+    slackThreadId?: string;
+}
 export type PullRequestSnapshotInSlackMetadata = {
     pullRequestId: string,
     projectKey: string,
     repositorySlug: string
-}
-export type BitbucketCommentSnapshot = BitbucketCommentSnapshotInSlackMetadata & {
-    slackMessageId: string;
-    slackThreadId?: string;
 }
 
 export type SlackChannelInfo = {

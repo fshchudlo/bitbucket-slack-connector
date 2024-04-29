@@ -15,6 +15,7 @@ exports[`handleBitbucketWebhook Should send message on PR comment 1`] = `
     },
   ],
   "searchedCommentSnapshots": [],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
       "blocks": [
@@ -68,6 +69,7 @@ exports[`handleBitbucketWebhook Should send message on PR task 1`] = `
     },
   ],
   "searchedCommentSnapshots": [],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
       "blocks": [

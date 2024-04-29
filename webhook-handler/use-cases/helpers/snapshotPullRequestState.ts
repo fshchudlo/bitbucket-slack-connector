@@ -1,9 +1,10 @@
 import { PullRequestBasicNotification } from "../../../typings";
 import { PullRequestSnapshotInSlackMetadata } from "../../ports/SlackAPIAdapter";
 
+export const SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE = "bitbucket_pull_request_opened";
 export function snapshotPullRequestState(payload: PullRequestBasicNotification) {
     return {
-        eventType: "bitbucket_pull_request_opened",
+        eventType: SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE,
         eventPayload: <PullRequestSnapshotInSlackMetadata>{
             pullRequestId: payload.pullRequest.id.toString(),
             projectKey: payload.pullRequest.toRef.repository.project.key,

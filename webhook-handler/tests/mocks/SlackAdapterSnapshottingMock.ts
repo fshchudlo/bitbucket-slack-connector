@@ -7,14 +7,21 @@ import {
     CreateChannelArguments,
     AddBookmarkArguments,
     InviteToChannelArguments,
-    KickFromChannelArguments, SendMessageArguments, SendMessageResponse, BitbucketCommentSnapshotInSlackMetadata
+    KickFromChannelArguments,
+    SendMessageArguments,
+    SendMessageResponse,
+    BitbucketCommentSnapshotInSlackMetadata,
+    PullRequestSnapshotInSlackMetadata
 } from "../../ports/SlackAPIAdapter";
 import { UserPayload } from "../../../typings";
+import { SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE } from "../../use-cases/helpers/snapshotPullRequestState";
+import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../use-cases/helpers";
 
 const channelId = "12345";
 const messageId = "ABCDE";
 export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
     snapshot: {
+        searchedPrOpenedBroadcastMessages: any[];
         searchedCommentSnapshots: any[];
         searchedChannels: any[];
         createdChannels: slack.ConversationsCreateArguments[];
@@ -36,6 +43,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
             sentMessages: new Array<SendMessageArguments>(),
             lookedUpUsers: new Array<slack.UsersLookupByEmailArguments>(),
             searchedCommentSnapshots: new Array<any>(),
+            searchedPrOpenedBroadcastMessages: new Array<any>(),
             searchedChannels: new Array<any>()
         };
     }
@@ -83,7 +91,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
     findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
         this.snapshot.searchedCommentSnapshots.push({ channelId, bitbucketCommentId });
 
-        const snapshot = (<any>this.snapshot.sentMessages).findLast((m: SendMessageArguments) => m.metadata?.eventPayload?.commentId == bitbucketCommentId);
+        const snapshot = (<any>this.snapshot.sentMessages).findLast((m: SendMessageArguments) => m.metadata.eventType === SNAPSHOT_COMMENT_STATE_EVENT_TYPE && m.metadata?.eventPayload?.commentId === bitbucketCommentId.toString());
 
         if (snapshot) {
             const metadata = <BitbucketCommentSnapshotInSlackMetadata>snapshot.metadata?.eventPayload;
@@ -97,6 +105,17 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
                 slackThreadId: snapshot.threadId
             });
         }
-        return null;
+        return Promise.resolve(null);
+    }
+
+    tryFindPullRequestOpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
+        this.snapshot.searchedPrOpenedBroadcastMessages.push({ channelId, pullRequestTraits });
+
+        const snapshot = (<any>this.snapshot.sentMessages).findLast((m: SendMessageArguments) => m.metadata.eventType === SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE && m.metadata?.eventPayload?.pullRequestId === pullRequestTraits.pullRequestId && m.metadata?.eventPayload?.projectKey === pullRequestTraits.projectKey && m.metadata?.eventPayload?.repositorySlug === pullRequestTraits.repositorySlug);
+
+        if (snapshot) {
+            return Promise.resolve(messageId);
+        }
+        return Promise.resolve(null);
     }
 }

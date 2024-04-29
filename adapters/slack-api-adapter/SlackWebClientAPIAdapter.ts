@@ -9,11 +9,15 @@ import {
     SendMessageResponse,
     AddBookmarkArguments,
     SlackAPIAdapter,
-    SlackChannelInfo
+    SlackChannelInfo, PullRequestSnapshotInSlackMetadata
 } from "../../webhook-handler/ports/SlackAPIAdapter";
 import { UserPayload } from "../../typings";
 import { WebhookConfig } from "../../app.config";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
+import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../webhook-handler/use-cases/helpers";
+import {
+    SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
+} from "../../webhook-handler/use-cases/helpers/snapshotPullRequestState";
 
 const awaitingCreateChannelRequests = new Map<string, Promise<SlackChannelInfo>>();
 
@@ -142,11 +146,37 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
     }
 
     async findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
-        let cursor: string | undefined = undefined;
         const matchPredicate = (message: MessageElement) => {
-            const eventPayload = <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload;
-            return eventPayload && eventPayload.commentId === bitbucketCommentId.toString();
+            const eventPayload = message.metadata.event_type === SNAPSHOT_COMMENT_STATE_EVENT_TYPE ? <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload : null;
+            return eventPayload && eventPayload?.commentId === bitbucketCommentId.toString();
         };
+        const message = await this.findMessageInChannelHistory(channelId, matchPredicate);
+
+        if (message) {
+            const metadata = <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload;
+            return <BitbucketCommentSnapshot>{
+                commentId: metadata.commentId,
+                commentParentId: metadata.commentParentId,
+                threadResolvedDate: metadata.threadResolvedDate,
+                taskResolvedDate: metadata.taskResolvedDate,
+                severity: metadata.severity,
+                slackMessageId: message.ts,
+                slackThreadId: message.thread_ts
+            };
+        }
+    }
+
+    async tryFindPullRequestOpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
+        const matchPredicate = (message: MessageElement) => {
+            const eventPayload = message.metadata.event_type === SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE ? <PullRequestSnapshotInSlackMetadata>message.metadata?.event_payload : null;
+            return eventPayload && eventPayload?.pullRequestId === pullRequestTraits.pullRequestId && eventPayload?.projectKey === pullRequestTraits.projectKey && eventPayload?.repositorySlug === pullRequestTraits.repositorySlug;
+        };
+        const message = await this.findMessageInChannelHistory(channelId, matchPredicate);
+        return message?.ts || null;
+    }
+
+    private async findMessageInChannelHistory(channelId: string, matchPredicate: (message: MessageElement) => boolean) {
+        let cursor: string | undefined = undefined;
 
         while (true) {
             const response = await this.client.conversations.history({
@@ -155,21 +185,15 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
                 cursor
             });
 
-            const message = response.messages.find(matchPredicate);
+            const
+                message = response.messages.find(matchPredicate);
+
             if (message) {
-                const metadata = <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload;
-                return <BitbucketCommentSnapshot>{
-                    commentId: metadata.commentId,
-                    commentParentId: metadata.commentParentId,
-                    threadResolvedDate: metadata.threadResolvedDate,
-                    taskResolvedDate: metadata.taskResolvedDate,
-                    severity: metadata.severity,
-                    slackMessageId: message.ts,
-                    slackThreadId: message.thread_ts
-                };
+                return message;
             }
 
-            if (response.response_metadata && response.response_metadata.next_cursor) {
+            if (response.response_metadata && response.response_metadata.next_cursor
+            ) {
                 cursor = response.response_metadata.next_cursor;
             } else {
                 return null;

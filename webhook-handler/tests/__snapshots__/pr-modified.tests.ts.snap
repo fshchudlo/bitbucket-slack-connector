@@ -15,6 +15,7 @@ exports[`handleBitbucketWebhook Doesn't send message if PR doesn't contain visib
     },
   ],
   "searchedCommentSnapshots": [],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [],
 }
 `;
@@ -34,6 +35,7 @@ exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
     },
   ],
   "searchedCommentSnapshots": [],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
       "blocks": [

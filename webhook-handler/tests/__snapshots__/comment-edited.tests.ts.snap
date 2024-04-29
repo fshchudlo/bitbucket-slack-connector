@@ -20,6 +20,7 @@ exports[`handleBitbucketWebhook Should return generic message if initial comment
       "channelId": "12345",
     },
   ],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
       "blocks": [
@@ -82,6 +83,7 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
       "channelId": "12345",
     },
   ],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
       "blocks": [
@@ -177,6 +179,7 @@ exports[`handleBitbucketWebhook Should send message on comment conversion to the
       "channelId": "12345",
     },
   ],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
       "blocks": [
@@ -280,6 +283,7 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
       "channelId": "12345",
     },
   ],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
       "blocks": [
@@ -408,6 +412,7 @@ exports[`handleBitbucketWebhook Should send message on task conversion to the co
       "channelId": "12345",
     },
   ],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
       "blocks": [
@@ -511,6 +516,7 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
       "channelId": "12345",
     },
   ],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
       "blocks": [

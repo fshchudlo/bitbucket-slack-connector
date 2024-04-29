@@ -7,7 +7,7 @@ import {
     KickFromChannelArguments, SendMessageArguments, SendMessageResponse,
     AddBookmarkArguments,
     SlackAPIAdapter,
-    SlackChannelInfo
+    SlackChannelInfo, PullRequestSnapshotInSlackMetadata
 } from "../../webhook-handler/ports/SlackAPIAdapter";
 import { InMemoryCache } from "./cache/InMemoryCache";
 
@@ -31,6 +31,7 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
         this.channelsCache.set(options.name, response);
         return response;
     }
+
     async findChannel(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
         const cachedChannelInfo = this.channelsCache.get(channelName);
         if (cachedChannelInfo) {
@@ -96,5 +97,9 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
             this.bitbucketCommentsCache.set(cacheKey, commentSnapshot);
         }
         return commentSnapshot;
+    }
+
+    tryFindPullRequestOpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
+        return this.gateway.tryFindPullRequestOpenedBroadcastMessageId(channelId, pullRequestTraits);
     }
 }

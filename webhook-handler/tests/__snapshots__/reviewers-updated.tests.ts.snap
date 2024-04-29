@@ -37,6 +37,7 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
     },
   ],
   "searchedCommentSnapshots": [],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [],
 }
 `;

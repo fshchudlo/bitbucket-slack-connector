@@ -42,6 +42,7 @@ exports[`handleBitbucketWebhook Should create channel, add bookmark and invite a
   ],
   "searchedChannels": [],
   "searchedCommentSnapshots": [],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
       "blocks": [
@@ -125,6 +126,7 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
   ],
   "searchedChannels": [],
   "searchedCommentSnapshots": [],
+  "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
       "blocks": [
