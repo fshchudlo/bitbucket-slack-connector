@@ -13,7 +13,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackA
 
     expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
         try {
-            await handleBitbucketWebhook(req.body, slackAPI, bitbucketGateway);
+            await handleBitbucketWebhook(req.body, slackAPI, bitbucketGateway, AppConfig);
             res.sendStatus(200);
         } catch (error) {
             next(error);

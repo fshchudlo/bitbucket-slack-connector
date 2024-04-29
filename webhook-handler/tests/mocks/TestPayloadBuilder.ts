@@ -27,8 +27,8 @@ function getBasicPayload(): PullRequestBasicNotification {
         actor: { ...authorUser },
         pullRequest: {
             id: 1,
-            title: "Quite a long and comprehensive title to get channel title longer than 250 symbols which is a maximum length for the Slack",
-            description: "Quite a long and comprehensive description to get channel title longer than 250 symbols which is a maximum length for the Slack",
+            title: "Test pull request title",
+            description: "Test pull request description",
             fromRef: {
                 displayId: "feature/test-branch",
                 latestCommit: "from-ref-commit-hash",

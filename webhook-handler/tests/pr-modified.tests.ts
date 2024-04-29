@@ -3,12 +3,13 @@ import TestPayloadBuilder from "./mocks/TestPayloadBuilder";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
 import { TestBitbucketGateway } from "./mocks/TestBitbucketGateway";
 import { BitbucketNotification } from "../../typings";
+import AppConfig from "../../app.config";
 
 describe("handleBitbucketWebhook", () => {
     it("Should send message when PR modified", async () => {
         const testSlackGateway = new SlackAdapterSnapshottingMock();
         const payload = TestPayloadBuilder.pullRequestModified();
-        await handleBitbucketWebhook(payload, testSlackGateway, new TestBitbucketGateway());
+        await handleBitbucketWebhook(payload, testSlackGateway, new TestBitbucketGateway(), AppConfig);
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
     });
@@ -25,7 +26,7 @@ describe("handleBitbucketWebhook", () => {
                 latestCommit: prCreatedPayload.pullRequest.toRef.latestCommit
             }
         } as BitbucketNotification;
-        await handleBitbucketWebhook(modifiedPayload, testSlackGateway, new TestBitbucketGateway());
+        await handleBitbucketWebhook(modifiedPayload, testSlackGateway, new TestBitbucketGateway(), AppConfig);
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
     });

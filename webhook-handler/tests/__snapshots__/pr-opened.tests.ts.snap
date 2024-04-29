@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`handleBitbucketWebhook Should create channel, set topic and invite author and reviewers on PR opened 1`] = `
+exports[`handleBitbucketWebhook Should create channel, add bookmark and invite author and reviewers on PR opened 1`] = `
 {
   "addedBookmarks": [
     {
@@ -58,7 +58,7 @@ exports[`handleBitbucketWebhook Should create channel, set topic and invite auth
         {
           "elements": [
             {
-              "text": "Quite a long and comprehensive description to get channel title longer than 250 symbols which is a maximum length for the Slack",
+              "text": "Test pull request description",
               "type": "mrkdwn",
             },
           ],
