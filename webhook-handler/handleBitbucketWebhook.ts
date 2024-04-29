@@ -9,16 +9,15 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
     const eventKey = payload.eventKey;
     let channelInfo = await provisionPullRequestChannel(slackAPI, payload, config);
     if (channelInfo == null) {
-        await replayPullRequestOpenedEvent(payload, slackAPI, bitbucketGateway, config);
+        const replayPayload = getPayloadToReplayPullRequestOpenedEvent(payload);
+        await handleBitbucketWebhook(replayPayload, slackAPI, bitbucketGateway, config);
         channelInfo = await provisionPullRequestChannel(slackAPI, payload, config);
     }
 
     switch (eventKey) {
         case "pr:opened":
             await useCases.inviteParticipantsAndSetChannelBookmark(payload, slackAPI, config.DEFAULT_CHANNEL_PARTICIPANTS, channelInfo.id);
-            if (config.BROADCAST_OPENED_PR_MESSAGES_TO_CHANNEL_ID) {
-                await useCases.broadcastMessageAboutOpenedPR(payload, slackAPI, config.DEFAULT_CHANNEL_PARTICIPANTS, config.BROADCAST_OPENED_PR_MESSAGES_TO_CHANNEL_ID);
-            }
+            await useCases.tryBroadcastMessageAboutOpenedPR(payload, slackAPI, config.BROADCAST_OPENED_PR_MESSAGES_TO_CHANNEL_ID);
             break;
         case "pr:modified":
             await useCases.sendMessageAboutPRModification(payload, slackAPI, channelInfo.id);
@@ -61,8 +60,8 @@ async function provisionPullRequestChannel(slackAPI: SlackAPIAdapter, payload: B
     return await slackAPI.findChannel(channelName, true);
 }
 
-async function replayPullRequestOpenedEvent(payload: BitbucketNotification, slackAPI: SlackAPIAdapter, bitbucketGateway: BitbucketGateway, config: WebhookHandlerConfig) {
-    const prOpenedPayload: PullRequestBasicNotification = {
+function getPayloadToReplayPullRequestOpenedEvent(payload: BitbucketNotification) {
+    return <PullRequestBasicNotification>{
         eventKey: "pr:opened",
         actor: {
             displayName: payload.pullRequest.author.user.displayName,
@@ -70,5 +69,4 @@ async function replayPullRequestOpenedEvent(payload: BitbucketNotification, slac
         },
         pullRequest: payload.pullRequest
     };
-    await handleBitbucketWebhook(prOpenedPayload, slackAPI, bitbucketGateway, config);
 }

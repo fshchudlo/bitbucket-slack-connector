@@ -1,4 +1,4 @@
-export { broadcastMessageAboutOpenedPR } from "./broadcastMessageAboutOpenedPR";
+export { tryBroadcastMessageAboutOpenedPR } from "./tryBroadcastMessageAboutOpenedPR";
 export { inviteParticipantsAndSetChannelBookmark } from "./inviteParticipantsAndSetChannelBookmark";
 export { sendCompletionMessageAndCloseTheChannel } from "./sendCompletionMessageAndCloseTheChannel";
 export { sendMessageAboutNewCommit } from "./sendMessageAboutNewCommit";
