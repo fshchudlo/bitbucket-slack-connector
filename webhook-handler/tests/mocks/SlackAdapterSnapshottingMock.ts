@@ -96,12 +96,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
                 slackMessageId: messageId,
                 slackThreadId: snapshot.threadId
             });
-        } else {
-            return Promise.resolve({
-                commentId: bitbucketCommentId.toString(),
-                severity: "NORMAL",
-                slackMessageId: messageId
-            });
         }
+        return null;
     }
 }

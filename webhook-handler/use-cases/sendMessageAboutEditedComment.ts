@@ -69,9 +69,9 @@ async function getUserAction(payload: PullRequestCommentActionNotification, prev
                 emoji: ":repeat:"
             };
         }
-        return {
-            title: `edited ${commentType}`,
-            emoji: ":writing_hand:"
-        };
     }
+    return {
+        title: `edited ${commentType}`,
+        emoji: ":writing_hand:"
+    };
 }

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
+exports[`handleBitbucketWebhook Should return generic message if initial comment was not found 1`] = `
 {
   "addedBookmarks": [],
   "archivedChannels": [],
@@ -21,6 +21,101 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
     },
   ],
   "sentMessages": [
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": ":writing_hand: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|edited task>:",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "> Test comment",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channelId": "12345",
+      "iconEmoji": ":bitbucket:",
+      "metadata": {
+        "eventPayload": {
+          "commentId": "1",
+          "commentParentId": undefined,
+          "severity": "BLOCKER",
+          "taskResolvedDate": undefined,
+          "threadResolvedDate": undefined,
+        },
+        "eventType": "bitbucket_comment_snapshot_saved",
+      },
+      "replyBroadcast": undefined,
+      "text": ":writing_hand: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|edited task>:",
+      "threadId": undefined,
+    },
+  ],
+}
+`;
+
+exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
+{
+  "addedBookmarks": [],
+  "archivedChannels": [],
+  "createdChannels": [],
+  "invitesToChannels": [],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [],
+  "searchedChannels": [
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "excludeArchived": true,
+    },
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "excludeArchived": true,
+    },
+  ],
+  "searchedCommentSnapshots": [
+    {
+      "bitbucketCommentId": 1,
+      "channelId": "12345",
+    },
+  ],
+  "sentMessages": [
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": ":loudspeaker: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added comment>:",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "text": {
+            "text": "> Test comment",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channelId": "12345",
+      "iconEmoji": ":bitbucket:",
+      "metadata": {
+        "eventPayload": {
+          "commentId": "1",
+          "commentParentId": undefined,
+          "severity": "NORMAL",
+          "taskResolvedDate": undefined,
+          "threadResolvedDate": undefined,
+        },
+        "eventType": "bitbucket_comment_snapshot_saved",
+      },
+      "replyBroadcast": undefined,
+      "text": ":loudspeaker: Test Reviewer 1 <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview?commentId=1|added comment>:",
+      "threadId": undefined,
+    },
     {
       "blocks": [
         {
