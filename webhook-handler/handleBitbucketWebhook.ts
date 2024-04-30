@@ -17,7 +17,7 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
     switch (eventKey) {
         case "pr:opened":
             await useCases.inviteParticipantsAndSetChannelBookmark(payload, slackAPI, config.DEFAULT_CHANNEL_PARTICIPANTS, channelInfo.id);
-            await useCases.tryBroadcastMessageAboutOpenedPR(payload, slackAPI, config.BROADCAST_OPENED_PR_MESSAGES_TO_CHANNEL_ID);
+            await useCases.tryBroadcastMessageAboutOpenedPR(payload, slackAPI, config.getOpenedPRBroadcastChannelId(payload));
             break;
         case "pr:modified":
             await useCases.sendMessageAboutPRModification(payload, slackAPI, channelInfo.id);
@@ -46,7 +46,7 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
         case "pr:declined":
         case "pr:deleted":
             await useCases.sendCompletionMessageAndCloseTheChannel(payload, slackAPI, channelInfo.id);
-            await useCases.tryBroadcastMessageAboutClosedPR(payload, slackAPI, config.BROADCAST_OPENED_PR_MESSAGES_TO_CHANNEL_ID);
+            await useCases.tryBroadcastMessageAboutClosedPR(payload, slackAPI, config.getOpenedPRBroadcastChannelId(payload));
             break;
         default:
             throw new Error(`"${eventKey}" event key is unknown.`);

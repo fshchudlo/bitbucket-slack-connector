@@ -20,7 +20,7 @@ describe("handleBitbucketWebhook", () => {
 
         await handleBitbucketWebhook(payload, testSlackGateway, new TestBitbucketGateway(), {
             ...TestWebhookHandlerConfig,
-            BROADCAST_OPENED_PR_MESSAGES_TO_CHANNEL_ID: "test-broadcast-channel-id"
+            getOpenedPRBroadcastChannelId: () => "test-broadcast-channel-id"
         });
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();

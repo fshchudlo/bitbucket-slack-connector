@@ -1,11 +1,31 @@
 import "dotenv/config";
 import { WebhookHandlerConfig } from "./webhook-handler/webhookHandlerConfig";
+import { BitbucketNotification } from "./typings";
 
 export const WebhookConfig: WebhookHandlerConfig = {
     // If you want to use public channels, you need to configure Slack permissions properly - https://stackoverflow.com/a/75442078
     USE_PRIVATE_CHANNELS: true,
     DEFAULT_CHANNEL_PARTICIPANTS: process.env.DEFAULT_CHANNEL_PARTICIPANTS?.split(",").map(u => u.trim()),
-    BROADCAST_OPENED_PR_MESSAGES_TO_CHANNEL_ID: process.env.BROADCAST_OPENED_PR_MESSAGES_TO_CHANNEL_ID
+    /*
+    * You can implement any other logic depending on the granularity level you need
+    * */
+    getOpenedPRBroadcastChannelId(payload: BitbucketNotification): string | null {
+        const configuredBotUsers = process.env.BITBUCKET_BOT_USERS?.split(",").map(u => u.trim());
+        const projectKey = payload.pullRequest.toRef.repository.project.key;
+        const prAuthor = payload.pullRequest.author.user.displayName;
+
+        let channelName = null;
+
+        if (configuredBotUsers?.find(u => u == prAuthor)) {
+            channelName = process.env[`${projectKey.toUpperCase()}_BOT_OPENED_PRS_BROADCAST_CHANNEL_ID`]
+                ?? process.env.BOT_OPENED_PRS_BROADCAST_CHANNEL_ID;
+        }
+        if (!channelName) {
+            channelName = process.env[`${projectKey.toUpperCase()}_OPENED_PRS_BROADCAST_CHANNEL_ID`]
+                ?? process.env.OPENED_PRS_BROADCAST_CHANNEL_ID;
+        }
+        return channelName ?? null;
+    }
 };
 
 export const AppConfig = {

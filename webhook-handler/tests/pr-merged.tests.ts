@@ -3,6 +3,7 @@ import TestPayloadBuilder from "./mocks/TestPayloadBuilder";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
 import { TestBitbucketGateway } from "./mocks/TestBitbucketGateway";
 import { TestWebhookHandlerConfig } from "./mocks/TestWebhookHandlerConfig";
+import { WebhookHandlerConfig } from "../webhookHandlerConfig";
 
 describe("handleBitbucketWebhook", () => {
     it("Should send completion message and close the channel on PR merge", async () => {
@@ -16,9 +17,9 @@ describe("handleBitbucketWebhook", () => {
 
     it("Should send notification to the broadcast channel, if it is specified", async () => {
         const testSlackGateway = new SlackAdapterSnapshottingMock();
-        const testConfig = {
+        const testConfig:WebhookHandlerConfig = {
             ...TestWebhookHandlerConfig,
-            BROADCAST_OPENED_PR_MESSAGES_TO_CHANNEL_ID: "test-broadcast-channel-id"
+            getOpenedPRBroadcastChannelId: () => "test-broadcast-channel-id"
         };
         await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), testSlackGateway, new TestBitbucketGateway(), testConfig);
 
