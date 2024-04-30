@@ -27,6 +27,7 @@ function getBasicPayload(): PullRequestBasicNotification {
         actor: { ...authorUser },
         pullRequest: {
             id: 1,
+            createdDate: 1714381184802,
             title: "Test pull request title",
             description: "Test pull request description",
             fromRef: {

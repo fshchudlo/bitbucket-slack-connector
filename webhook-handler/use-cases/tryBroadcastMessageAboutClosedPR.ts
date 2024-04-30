@@ -7,7 +7,7 @@ export async function tryBroadcastMessageAboutClosedPR(payload: PullRequestBasic
     if (!broadcastChannelId) {
         return;
     }
-    const initialBroadcastMessageId = await slackAPI.findPROpenedBroadcastMessageId(broadcastChannelId, {
+    const initialBroadcastMessageId = await slackAPI.findPROpenedBroadcastMessageId(broadcastChannelId, new Date(payload.pullRequest.createdDate), {
         pullRequestId: payload.pullRequest.id.toString(),
         projectKey: payload.pullRequest.toRef.repository.project.key,
         repositorySlug: payload.pullRequest.toRef.repository.slug

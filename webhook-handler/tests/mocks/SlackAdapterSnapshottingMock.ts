@@ -113,8 +113,8 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
         return Promise.resolve(null);
     }
 
-    findPROpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
-        this.snapshot.searchedPrOpenedBroadcastMessages.push({ channelId, pullRequestTraits });
+    findPROpenedBroadcastMessageId(channelId: string, prCreationDate: Date, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
+        this.snapshot.searchedPrOpenedBroadcastMessages.push({ channelId, prCreationDate, pullRequestTraits });
 
         const snapshot = (<any>this.snapshot.sentMessages).findLast((m: SendMessageArguments) => m.metadata?.eventType === SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE && m.metadata?.eventPayload?.pullRequestId === pullRequestTraits.pullRequestId && m.metadata?.eventPayload?.projectKey === pullRequestTraits.projectKey && m.metadata?.eventPayload?.repositorySlug === pullRequestTraits.repositorySlug);
 

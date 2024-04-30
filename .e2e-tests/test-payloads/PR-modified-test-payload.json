@@ -6,6 +6,7 @@
   },
   "pullRequest": {
     "id": "{{PullRequestId}}",
+    "createdDate": 1714381184802,
     "title": "New pull request title",
     "description": "New pull request description",
     "fromRef": {

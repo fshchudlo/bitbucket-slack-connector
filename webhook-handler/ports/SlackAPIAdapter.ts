@@ -18,7 +18,7 @@ export interface SlackAPIAdapter {
     addReaction(channelId: string, messageId: string, reaction: string): Promise<void>
     sendMessage(options: SendMessageArguments): Promise<SendMessageResponse>;
     findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null>;
-    findPROpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null>;
+    findPROpenedBroadcastMessageId(channelId: string, prCreationDate: Date, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null>;
 }
 
 export type BitbucketCommentSnapshotInSlackMetadata = {

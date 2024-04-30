@@ -68,6 +68,7 @@ export type RefPayload = {
 
 export type PullRequestPayload = {
     readonly id: number;
+    readonly createdDate: number,
     readonly title: string;
     readonly description: string | null;
     readonly author: { readonly user: UserPayload };

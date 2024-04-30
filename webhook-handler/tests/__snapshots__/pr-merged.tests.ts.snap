@@ -93,6 +93,7 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
   "searchedPrOpenedBroadcastMessages": [
     {
       "channelId": "test-broadcast-channel-id",
+      "prCreationDate": 2024-04-29T08:59:44.802Z,
       "pullRequestTraits": {
         "projectKey": "TEST-PROJ",
         "pullRequestId": "1",

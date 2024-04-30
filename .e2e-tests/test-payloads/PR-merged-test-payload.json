@@ -6,6 +6,7 @@
   },
   "pullRequest": {
     "id": "{{PullRequestId}}",
+    "createdDate": 1714381184802,
     "title": "test pull request",
     "fromRef": {
       "displayId": "test pull request",

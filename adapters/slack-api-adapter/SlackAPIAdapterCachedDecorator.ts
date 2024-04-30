@@ -103,7 +103,7 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
         return commentSnapshot;
     }
 
-    findPROpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
-        return this.gateway.findPROpenedBroadcastMessageId(channelId, pullRequestTraits);
+    findPROpenedBroadcastMessageId(channelId: string, prCreationDate: Date, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
+        return this.gateway.findPROpenedBroadcastMessageId(channelId, prCreationDate, pullRequestTraits);
     }
 }

@@ -174,27 +174,29 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
         }
     }
 
-    async findPROpenedBroadcastMessageId(channelId: string, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
+    async findPROpenedBroadcastMessageId(channelId: string, prCreationDate: Date, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
         const matchPredicate = (message: MessageElement) => {
             const eventPayload = message.metadata?.event_type === SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE ? <PullRequestSnapshotInSlackMetadata>message.metadata?.event_payload : null;
             return eventPayload && eventPayload?.pullRequestId === pullRequestTraits.pullRequestId && eventPayload?.projectKey === pullRequestTraits.projectKey && eventPayload?.repositorySlug === pullRequestTraits.repositorySlug;
         };
-        const message = await this.findMessageInChannelHistory(channelId, matchPredicate);
+        const message = await this.findMessageInChannelHistory(channelId, matchPredicate, prCreationDate);
         return message?.ts || null;
     }
 
-    private async findMessageInChannelHistory(channelId: string, matchPredicate: (message: MessageElement) => boolean) {
+    private async findMessageInChannelHistory(channelId: string, matchPredicate: (message: MessageElement) => boolean, oldestDate: Date | undefined = undefined) {
         let cursor: string | undefined = undefined;
+        const slackTimestamp = oldestDate ? Math.floor(oldestDate.getTime() / 1000) + ".000000" : undefined;
 
         while (true) {
             const response = await this.client.conversations.history({
                 channel: channelId,
                 include_all_metadata: true,
+                oldest: slackTimestamp,
+                inclusive: true,
                 cursor
             });
 
-            const
-                message = response.messages.find(matchPredicate);
+            const message = response.messages.find(matchPredicate);
 
             if (message) {
                 return message;
