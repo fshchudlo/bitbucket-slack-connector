@@ -5,18 +5,22 @@ import {
 } from "../../../typings";
 
 const authorUser = {
+    name: "TestAuthor",
     displayName: "Test Author",
     emailAddress: "test.author@test.com"
 };
 const reviewer1User = {
+    name: "TestReviewer1",
     displayName: "Test Reviewer 1",
     emailAddress: "test.reviewer1@test.com"
 };
 const reviewer2User = {
+    name: "TestReviewer2",
     displayName: "Test Reviewer 2",
     emailAddress: "test.reviewer2@test.com"
 };
 const reviewer3User = {
+    name: "TestReviewer3",
     displayName: "Test Reviewer 3",
     emailAddress: "test.reviewer3@test.com"
 };

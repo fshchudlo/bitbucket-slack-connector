@@ -1,6 +1,7 @@
 {
   "eventKey": "pr:merged",
   "actor": {
+    "name": "{{PRAuthorName}}",
     "displayName": "{{PRAuthorName}}",
     "emailAddress": "{{PRAuthorEmail}}"
   },
@@ -31,6 +32,7 @@
     },
     "author": {
       "user": {
+        "name": "{{PRAuthorName}}",
         "displayName": "{{PRAuthorName}}",
         "emailAddress": "{{PRAuthorEmail}}"
       }
@@ -38,6 +40,7 @@
     "reviewers": [
       {
         "user": {
+          "name": "{{FirstReviewerName}}",
           "displayName": "{{FirstReviewerName}}",
           "emailAddress": "{{FirstReviewerEmail}}"
         },

@@ -45,6 +45,7 @@ export type PullRequestNotificationBasicPayload = {
 }
 
 export type UserPayload = {
+    readonly name: string;
     readonly displayName: string;
     readonly emailAddress: string;
 }

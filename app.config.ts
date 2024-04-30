@@ -12,7 +12,7 @@ export const WebhookConfig: WebhookHandlerConfig = {
     getOpenedPRBroadcastChannelId(payload: BitbucketNotification): string | null {
         const configuredBotUsers = process.env.BITBUCKET_BOT_USERS?.split(",").map(u => u.trim());
         const projectKey = payload.pullRequest.toRef.repository.project.key;
-        const prAuthor = payload.pullRequest.author.user.displayName;
+        const prAuthor = payload.pullRequest.author.user.name;
 
         let channelName = null;
 

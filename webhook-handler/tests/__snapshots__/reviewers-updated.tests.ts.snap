@@ -28,12 +28,14 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
       {
         "displayName": "Test Reviewer 3",
         "emailAddress": "test.reviewer3@test.com",
+        "name": "TestReviewer3",
       },
     ],
     [
       {
         "displayName": "Test Reviewer 1",
         "emailAddress": "test.reviewer1@test.com",
+        "name": "TestReviewer1",
       },
     ],
   ],

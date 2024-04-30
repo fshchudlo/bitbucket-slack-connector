@@ -1,6 +1,7 @@
 {
   "eventKey": "pr:reviewer:approved",
   "actor": {
+    "name": "{{SecondReviewerName}}",
     "displayName": "{{SecondReviewerName}}",
     "emailAddress": "{{SecondReviewerEmail}}"
   },
@@ -31,6 +32,7 @@
     },
     "author": {
       "user": {
+        "name": "{{PRAuthorName}}",
         "displayName": "{{PRAuthorName}}",
         "emailAddress": "{{PRAuthorEmail}}"
       }
@@ -38,6 +40,7 @@
     "reviewers": [
       {
         "user": {
+          "name": "{{SecondReviewerName}}",
           "displayName": "{{SecondReviewerName}}",
           "emailAddress": "{{SecondReviewerEmail}}"
         },

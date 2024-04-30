@@ -35,14 +35,17 @@ exports[`handleBitbucketWebhook Should create channel, add bookmark and invite a
       {
         "displayName": "Test Author",
         "emailAddress": "test.author@test.com",
+        "name": "TestAuthor",
       },
       {
         "displayName": "Test Reviewer 1",
         "emailAddress": "test.reviewer1@test.com",
+        "name": "TestReviewer1",
       },
       {
         "displayName": "Test Reviewer 2",
         "emailAddress": "test.reviewer2@test.com",
+        "name": "TestReviewer2",
       },
     ],
   ],
@@ -125,14 +128,17 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
       {
         "displayName": "Test Author",
         "emailAddress": "test.author@test.com",
+        "name": "TestAuthor",
       },
       {
         "displayName": "Test Reviewer 1",
         "emailAddress": "test.reviewer1@test.com",
+        "name": "TestReviewer1",
       },
       {
         "displayName": "Test Reviewer 2",
         "emailAddress": "test.reviewer2@test.com",
+        "name": "TestReviewer2",
       },
     ],
   ],
