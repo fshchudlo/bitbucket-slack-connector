@@ -22,8 +22,8 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
 
     constructor(gateway: SlackAPIAdapter) {
         this.gateway = gateway;
-        this.channelsCache = new InMemoryCache("channels", 200);
-        this.bitbucketCommentsCache = new InMemoryCache("comments", 500);
+        this.channelsCache = new InMemoryCache("channels");
+        this.bitbucketCommentsCache = new InMemoryCache("comments");
     }
 
     async createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
