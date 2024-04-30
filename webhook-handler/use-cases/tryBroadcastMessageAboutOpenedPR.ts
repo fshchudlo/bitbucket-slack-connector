@@ -12,16 +12,17 @@ export async function tryBroadcastMessageAboutOpenedPR(payload: PullRequestBasic
 function buildMessage(payload: PullRequestBasicNotification, channelId: string): SendMessageArguments {
     const messageTitle = `:snowboarder: ${formatUserName(payload.actor)} opened pull request "${payload.pullRequest.title}".`;
 
+    const targetText = `Target: \`${payload.pullRequest.toRef.repository.slug}/${payload.pullRequest.toRef.displayId}\``;
     const reviewers = payload.pullRequest.reviewers.map(r => formatUserName(r.user));
     const reviewersContextBlock = reviewers.length == 0 ? null : contextBlock(`Assigned reviewers: ${reviewers.join(",")}.`);
 
-    const invitationText = `:open_hands: You're welcome to ${link(payload.pullRequest.links.self[0].href, "join code review")}.`;
+    const invitationText = `You're welcome to ${link(payload.pullRequest.links.self[0].href, "join code review")}.`;
 
     return {
         channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
-        blocks: [section(messageTitle), reviewersContextBlock, section(invitationText)]
+        blocks: [section(messageTitle), contextBlock(targetText), reviewersContextBlock, section(invitationText)]
             .filter(b => !!b),
         metadata: snapshotPullRequestState(payload)
     };

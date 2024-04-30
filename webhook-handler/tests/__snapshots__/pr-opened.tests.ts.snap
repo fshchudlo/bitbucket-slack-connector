@@ -188,6 +188,15 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
         {
           "elements": [
             {
+              "text": "Target: \`test-repository/master\`",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
+        },
+        {
+          "elements": [
+            {
               "text": "Assigned reviewers: Test Reviewer 1,Test Reviewer 2.",
               "type": "mrkdwn",
             },
@@ -196,7 +205,7 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
         },
         {
           "text": {
-            "text": ":open_hands: You're welcome to <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|join code review>.",
+            "text": "You're welcome to <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|join code review>.",
             "type": "mrkdwn",
           },
           "type": "section",
