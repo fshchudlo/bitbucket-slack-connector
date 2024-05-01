@@ -37,7 +37,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackA
                 repositorySlug: <string>repositorySlug,
                 projectKey: <string>projectKey
             });
-            const channelInfo = await slackAPI.findChannel(channelName, false);
+            const channelInfo = await slackAPI.findChannel(channelName);
             channelInfo ? res.send(channelInfo) : res.sendStatus(404);
         } catch (error) {
             next(error);

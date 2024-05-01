@@ -40,10 +40,7 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
     ],
   ],
   "searchedChannels": [
-    {
-      "channelName": "pr-test-proj-test-repository-1",
-      "excludeArchived": true,
-    },
+    "pr-test-proj-test-repository-1",
   ],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],

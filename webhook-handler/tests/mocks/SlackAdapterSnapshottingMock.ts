@@ -53,8 +53,8 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
         return Promise.resolve(userPayloads.map(u => u.emailAddress));
     }
 
-    findChannel(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
-        this.snapshot.searchedChannels.push({ channelName, excludeArchived });
+    findChannel(channelName: string): Promise<SlackChannelInfo | null> {
+        this.snapshot.searchedChannels.push(channelName);
         return Promise.resolve({ id: channelId, name: channelName, isArchived: false });
     }
 

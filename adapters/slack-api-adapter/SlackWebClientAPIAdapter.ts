@@ -39,7 +39,7 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
         return slackUserIds.filter(r => !!r).map(r => r.user.id);
     }
 
-    async findChannel(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
+    async findChannel(channelName: string): Promise<SlackChannelInfo | null> {
         if (awaitingCreateChannelRequests.has(channelName)) {
             return awaitingCreateChannelRequests.get(channelName);
         }
@@ -47,7 +47,7 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
         const channelTypes = WebhookConfig.USE_PRIVATE_CHANNELS ? "private_channel" : undefined;
         while (true) {
             const response = await this.client.conversations.list({
-                exclude_archived: !!excludeArchived,
+                exclude_archived: false,
                 types: channelTypes,
                 cursor
             });

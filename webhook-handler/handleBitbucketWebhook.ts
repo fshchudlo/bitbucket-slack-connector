@@ -58,7 +58,7 @@ async function provisionPullRequestChannel(slackAPI: SlackAPIAdapter, payload: B
     if (payload.eventKey == "pr:opened") {
         return await slackAPI.createChannel({ name: channelName, isPrivate: config.USE_PRIVATE_CHANNELS });
     }
-    return await slackAPI.findChannel(channelName, true);
+    return await slackAPI.findChannel(channelName);
 }
 
 function getPayloadToReplayPullRequestOpenedEvent(payload: BitbucketNotification) {

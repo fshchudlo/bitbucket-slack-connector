@@ -12,10 +12,7 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
   "kicksFromChannels": [],
   "lookedUpUsers": [],
   "searchedChannels": [
-    {
-      "channelName": "pr-test-proj-test-repository-1",
-      "excludeArchived": true,
-    },
+    "pr-test-proj-test-repository-1",
   ],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
@@ -87,10 +84,7 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
     ],
   ],
   "searchedChannels": [
-    {
-      "channelName": "pr-test-proj-test-repository-1",
-      "excludeArchived": true,
-    },
+    "pr-test-proj-test-repository-1",
   ],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [

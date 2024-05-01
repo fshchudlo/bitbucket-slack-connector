@@ -32,12 +32,12 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
         return response;
     }
 
-    async findChannel(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null> {
+    async findChannel(channelName: string): Promise<SlackChannelInfo | null> {
         const cachedChannelInfo = this.channelsCache.get(channelName);
         if (cachedChannelInfo) {
             return Promise.resolve(cachedChannelInfo);
         }
-        const channelInfo = await this.gateway.findChannel(channelName, excludeArchived);
+        const channelInfo = await this.gateway.findChannel(channelName);
 
         if (channelInfo && !channelInfo.isArchived) {
             this.channelsCache.set(channelName, channelInfo);

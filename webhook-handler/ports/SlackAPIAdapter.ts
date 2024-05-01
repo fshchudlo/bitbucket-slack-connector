@@ -2,7 +2,7 @@ import { CommentSeverity, UserPayload } from "../../typings";
 import { Block, KnownBlock } from "@slack/bolt";
 
 export interface SlackAPIAdapter {
-    findChannel(channelName: string, excludeArchived?: boolean): Promise<SlackChannelInfo | null>;
+    findChannel(channelName: string): Promise<SlackChannelInfo | null>;
 
     getSlackUserIds(userPayloads: Array<UserPayload>): Promise<string[]>;
 

@@ -10,10 +10,7 @@ exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
   "kicksFromChannels": [],
   "lookedUpUsers": [],
   "searchedChannels": [
-    {
-      "channelName": "pr-test-proj-test-repository-1",
-      "excludeArchived": true,
-    },
+    "pr-test-proj-test-repository-1",
   ],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
