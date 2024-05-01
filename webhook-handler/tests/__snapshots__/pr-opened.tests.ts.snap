@@ -14,7 +14,8 @@ exports[`handleBitbucketWebhook Should create channel, add bookmark and invite a
   "archivedChannels": [],
   "createdChannels": [
     {
-      "isPrivate": true,
+      "id": "12345",
+      "isArchived": false,
       "name": "pr-test-proj-test-repository-1",
     },
   ],
@@ -107,7 +108,8 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
   "archivedChannels": [],
   "createdChannels": [
     {
-      "isPrivate": true,
+      "id": "12345",
+      "isArchived": false,
       "name": "pr-test-proj-test-repository-1",
     },
   ],

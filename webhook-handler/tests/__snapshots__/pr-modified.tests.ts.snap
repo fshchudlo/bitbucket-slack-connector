@@ -2,37 +2,192 @@
 
 exports[`handleBitbucketWebhook Doesn't send message if PR doesn't contain visible changes 1`] = `
 {
-  "addedBookmarks": [],
-  "addedReactions": [],
-  "archivedChannels": [],
-  "createdChannels": [],
-  "invitesToChannels": [],
-  "kicksFromChannels": [],
-  "lookedUpUsers": [],
-  "searchedChannels": [
-    "pr-test-proj-test-repository-1",
+  "addedBookmarks": [
+    {
+      "channelId": "12345",
+      "emoji": ":git:",
+      "link": "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview",
+      "title": "Review Pull Request",
+    },
   ],
-  "searchedCommentSnapshots": [],
-  "searchedPrOpenedBroadcastMessages": [],
-  "sentMessages": [],
-}
-`;
-
-exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
-{
-  "addedBookmarks": [],
   "addedReactions": [],
   "archivedChannels": [],
-  "createdChannels": [],
-  "invitesToChannels": [],
+  "createdChannels": [
+    {
+      "id": "12345",
+      "isArchived": false,
+      "name": "pr-test-proj-test-repository-1",
+    },
+  ],
+  "invitesToChannels": [
+    {
+      "channelId": "12345",
+      "force": true,
+      "users": [
+        "test.author@test.com",
+        "test.reviewer1@test.com",
+        "test.reviewer2@test.com",
+      ],
+    },
+  ],
   "kicksFromChannels": [],
-  "lookedUpUsers": [],
+  "lookedUpUsers": [
+    [
+      {
+        "displayName": "Test Author",
+        "emailAddress": "test.author@test.com",
+        "name": "TestAuthor",
+      },
+      {
+        "displayName": "Test Reviewer 1",
+        "emailAddress": "test.reviewer1@test.com",
+        "name": "TestReviewer1",
+      },
+      {
+        "displayName": "Test Reviewer 2",
+        "emailAddress": "test.reviewer2@test.com",
+        "name": "TestReviewer2",
+      },
+    ],
+  ],
   "searchedChannels": [
     "pr-test-proj-test-repository-1",
   ],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "type": "divider",
+        },
+        {
+          "elements": [
+            {
+              "text": "Test pull request description",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
+        },
+        {
+          "type": "divider",
+        },
+        {
+          "text": {
+            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channelId": "12345",
+      "iconEmoji": ":bitbucket:",
+      "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+    },
+  ],
+}
+`;
+
+exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
+{
+  "addedBookmarks": [
+    {
+      "channelId": "12345",
+      "emoji": ":git:",
+      "link": "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview",
+      "title": "Review Pull Request",
+    },
+  ],
+  "addedReactions": [],
+  "archivedChannels": [],
+  "createdChannels": [
+    {
+      "id": "12345",
+      "isArchived": false,
+      "name": "pr-test-proj-test-repository-1",
+    },
+  ],
+  "invitesToChannels": [
+    {
+      "channelId": "12345",
+      "force": true,
+      "users": [
+        "test.author@test.com",
+        "test.reviewer1@test.com",
+        "test.reviewer2@test.com",
+      ],
+    },
+  ],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [
+    [
+      {
+        "displayName": "Test Author",
+        "emailAddress": "test.author@test.com",
+        "name": "TestAuthor",
+      },
+      {
+        "displayName": "Test Reviewer 1",
+        "emailAddress": "test.reviewer1@test.com",
+        "name": "TestReviewer1",
+      },
+      {
+        "displayName": "Test Reviewer 2",
+        "emailAddress": "test.reviewer2@test.com",
+        "name": "TestReviewer2",
+      },
+    ],
+  ],
+  "searchedChannels": [
+    "pr-test-proj-test-repository-1",
+  ],
+  "searchedCommentSnapshots": [],
+  "searchedPrOpenedBroadcastMessages": [],
+  "sentMessages": [
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "type": "divider",
+        },
+        {
+          "elements": [
+            {
+              "text": "Test pull request description",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
+        },
+        {
+          "type": "divider",
+        },
+        {
+          "text": {
+            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "channelId": "12345",
+      "iconEmoji": ":bitbucket:",
+      "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+    },
     {
       "blocks": [
         {

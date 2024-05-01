@@ -6,10 +6,11 @@ import { TestWebhookHandlerConfig } from "./mocks/TestWebhookHandlerConfig";
 
 describe("handleBitbucketWebhook", () => {
     it("Should update channel participants on reviewers list update", async () => {
-        const testSlackGateway = new SlackAdapterSnapshottingMock();
-        const payload = TestPayloadBuilder.reviewersUpdated();
+        const testSlackGateway = await new SlackAdapterSnapshottingMock().setupBasicChannel();
 
-        await handleBitbucketWebhook(payload, testSlackGateway, new TestBitbucketGateway(), TestWebhookHandlerConfig);
+
+        await handleBitbucketWebhook(TestPayloadBuilder.reviewersUpdated(), testSlackGateway, new TestBitbucketGateway(), TestWebhookHandlerConfig);
+
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
     });

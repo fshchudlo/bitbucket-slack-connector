@@ -6,9 +6,11 @@ import { TestWebhookHandlerConfig } from "./mocks/TestWebhookHandlerConfig";
 
 describe("handleBitbucketWebhook", () => {
     it("Should send message on PR commit", async () => {
-        const testSlackGateway = new SlackAdapterSnapshottingMock();
-        const payload = TestPayloadBuilder.pullRequestFromRefUpdated();
-        await handleBitbucketWebhook(payload, testSlackGateway, new TestBitbucketGateway(), TestWebhookHandlerConfig);
+        const testSlackGateway = await new SlackAdapterSnapshottingMock().setupBasicChannel();
+
+
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestFromRefUpdated(), testSlackGateway, new TestBitbucketGateway(), TestWebhookHandlerConfig);
+
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
     });

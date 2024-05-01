@@ -14,6 +14,10 @@ import {
 import { UserPayload } from "../../../typings";
 import { SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE } from "../../use-cases/helpers/snapshotPullRequestState";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../use-cases/helpers";
+import handleBitbucketWebhook from "../../handleBitbucketWebhook";
+import TestPayloadBuilder from "./TestPayloadBuilder";
+import { TestBitbucketGateway } from "./TestBitbucketGateway";
+import { TestWebhookHandlerConfig } from "./TestWebhookHandlerConfig";
 
 const channelId = "12345";
 const messageId = "ABCDE";
@@ -22,7 +26,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
         addedReactions: any[];
         addedBookmarks: AddBookmarkArguments[];
         archivedChannels: string[];
-        createdChannels: CreateChannelArguments[];
+        createdChannels: SlackChannelInfo[];
         invitesToChannels: InviteToChannelArguments[];
         kicksFromChannels: KickFromChannelArguments[];
         lookedUpUsers: Array<Array<UserPayload>>;
@@ -37,7 +41,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
             addedReactions: new Array<any>(),
             addedBookmarks: new Array<AddBookmarkArguments>(),
             archivedChannels: new Array<string>(),
-            createdChannels: new Array<CreateChannelArguments>(),
+            createdChannels: new Array<SlackChannelInfo>(),
             invitesToChannels: new Array<InviteToChannelArguments>(),
             kicksFromChannels: new Array<KickFromChannelArguments>(),
             lookedUpUsers: new Array<Array<UserPayload>>(),
@@ -48,6 +52,11 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
         };
     }
 
+    async setupBasicChannel(webhookHandlerConfig = TestWebhookHandlerConfig): Promise<SlackAdapterSnapshottingMock> {
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), this, new TestBitbucketGateway(), webhookHandlerConfig);
+        return this;
+    }
+
     getSlackUserIds(userPayloads: UserPayload[]): Promise<string[]> {
         this.snapshot.lookedUpUsers.push(userPayloads);
         return Promise.resolve(userPayloads.map(u => u.emailAddress));
@@ -55,12 +64,13 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
 
     findChannel(channelName: string): Promise<SlackChannelInfo | null> {
         this.snapshot.searchedChannels.push(channelName);
-        return Promise.resolve({ id: channelId, name: channelName, isArchived: false });
+        return Promise.resolve(this.snapshot.createdChannels.find(c => c.name == channelName) ?? null);
     }
 
     createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
-        this.snapshot.createdChannels.push(options);
-        return Promise.resolve({ id: channelId, name: options.name, isArchived: false });
+        const channel = { id: channelId, name: options.name, isArchived: false };
+        this.snapshot.createdChannels.push(channel);
+        return Promise.resolve(channel);
     }
 
     addBookmark(options: AddBookmarkArguments): Promise<void> {

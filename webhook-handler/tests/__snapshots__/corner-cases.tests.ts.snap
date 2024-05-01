@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
+exports[`handleBitbucketWebhook Should replay channel creation if channel doesn't exist and handle initial payload after that 1`] = `
 {
   "addedBookmarks": [
     {
@@ -29,8 +29,22 @@ exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
         "test.reviewer2@test.com",
       ],
     },
+    {
+      "channelId": "12345",
+      "force": true,
+      "users": [
+        "test.reviewer3@test.com",
+      ],
+    },
   ],
-  "kicksFromChannels": [],
+  "kicksFromChannels": [
+    {
+      "channelId": "12345",
+      "users": [
+        "test.reviewer1@test.com",
+      ],
+    },
+  ],
   "lookedUpUsers": [
     [
       {
@@ -49,8 +63,23 @@ exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
         "name": "TestReviewer2",
       },
     ],
+    [
+      {
+        "displayName": "Test Reviewer 3",
+        "emailAddress": "test.reviewer3@test.com",
+        "name": "TestReviewer3",
+      },
+    ],
+    [
+      {
+        "displayName": "Test Reviewer 1",
+        "emailAddress": "test.reviewer1@test.com",
+        "name": "TestReviewer1",
+      },
+    ],
   ],
   "searchedChannels": [
+    "pr-test-proj-test-repository-1",
     "pr-test-proj-test-repository-1",
   ],
   "searchedCommentSnapshots": [],
@@ -91,35 +120,6 @@ exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
       "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
-    },
-    {
-      "blocks": [
-        {
-          "text": {
-            "text": ":new: Test Author added <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/commits/from-ref-commit-hash|new commit>.",
-            "type": "mrkdwn",
-          },
-          "type": "section",
-        },
-        {
-          "text": {
-            "text": "Commit message: 
-> Test comment for TEST-PROJ, test-repository, from-ref-commit-hash",
-            "type": "mrkdwn",
-          },
-          "type": "section",
-        },
-        {
-          "text": {
-            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
-            "type": "mrkdwn",
-          },
-          "type": "section",
-        },
-      ],
-      "channelId": "12345",
-      "iconEmoji": ":bitbucket:",
-      "text": ":new: Test Author added <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/commits/from-ref-commit-hash|new commit>.",
     },
   ],
 }

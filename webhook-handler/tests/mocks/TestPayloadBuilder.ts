@@ -223,6 +223,19 @@ export default class TestPayloadBuilder {
         };
     }
 
+    static pullRequestModifiedWithoutVisibleChanges(): PullRequestModifiedNotification {
+        const prCreatedPayload = TestPayloadBuilder.pullRequestOpened();
+        return <PullRequestModifiedNotification>{
+            ...prCreatedPayload,
+            eventKey: "pr:modified",
+            previousDescription: prCreatedPayload.pullRequest.description,
+            previousTitle: prCreatedPayload.pullRequest.title,
+            previousTarget: {
+                displayId: prCreatedPayload.pullRequest.toRef.displayId,
+                latestCommit: prCreatedPayload.pullRequest.toRef.latestCommit
+            }
+        };
+    }
     static pullRequestModified(): PullRequestModifiedNotification {
         const payload = getBasicPayload();
 

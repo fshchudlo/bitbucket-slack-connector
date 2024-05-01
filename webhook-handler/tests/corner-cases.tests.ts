@@ -20,4 +20,14 @@ describe("handleBitbucketWebhook", () => {
             expect((error as Error).message).toBe("\"unknown action\" event key is unknown.");
         }
     });
+
+    it("Should replay channel creation if channel doesn't exist and handle initial payload after that", async () => {
+        const testSlackGateway = new SlackAdapterSnapshottingMock();
+
+
+        await handleBitbucketWebhook(TestPayloadBuilder.reviewersUpdated(), testSlackGateway, new TestBitbucketGateway(), TestWebhookHandlerConfig);
+
+
+        expect(testSlackGateway.snapshot).toMatchSnapshot();
+    });
 });
