@@ -4,8 +4,9 @@ import { buildChannelName } from "./bitbucket-webhook-handler/buildChannelName";
 import { ExpressReceiver } from "@slack/bolt";
 import { SlackAPIAdapterCachedDecorator } from "./api-adapters/slack-api-adapter/SlackAPIAdapterCachedDecorator";
 import BitbucketWebAPIAdapter from "./api-adapters/bitbucket-gateway/BitbucketWebAPIAdapter";
-import { AppConfig, WebhookConfig } from "./app.config";
+import { AppConfig } from "./app.config";
 import { NextFunction } from "express";
+import { WebhookHandlerConfig } from "./bitbucket-webhook-handler/webhookHandlerConfig";
 
 const bitbucketAPI = new BitbucketWebAPIAdapter(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
 
@@ -13,8 +14,15 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackA
 
     expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
         try {
-            await handleBitbucketWebhook(req.body, slackAPI, bitbucketAPI, WebhookConfig);
+            const config = <WebhookHandlerConfig>{
+                usePrivateChannels: AppConfig.USE_PRIVATE_CHANNELS,
+                defaultChannelParticipants: AppConfig.DEFAULT_CHANNEL_PARTICIPANTS,
+                getOpenedPRBroadcastChannelId: AppConfig.getOpenedPRBroadcastChannelId
+            };
+
+            await handleBitbucketWebhook(req.body, slackAPI, bitbucketAPI, config);
             res.sendStatus(200);
+
         } catch (error) {
             next(error);
         }
@@ -39,7 +47,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackA
                 projectKey: <string>projectKey
             });
 
-            const channelInfo = await slackAPI.findChannel(channelName, WebhookConfig.usePrivateChannels);
+            const channelInfo = await slackAPI.findChannel(channelName, AppConfig.USE_PRIVATE_CHANNELS);
 
             channelInfo ? res.send(channelInfo) : res.sendStatus(404);
         } catch (error) {

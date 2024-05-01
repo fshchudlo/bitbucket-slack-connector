@@ -10,9 +10,9 @@ export async function provisionPullRequestChannel(slackAPI: SlackAPIAdapter, bit
     if (payload.eventKey == "pr:opened") {
         return await slackAPI.createChannel({ name: channelName, isPrivate: config.usePrivateChannels });
     }
-    const channelInfo = await slackAPI.findChannel(channelName, config.usePrivateChannels);
-    if (channelInfo != null) {
-        return channelInfo;
+    const existingChannel = await slackAPI.findChannel(channelName, config.usePrivateChannels);
+    if (existingChannel != null) {
+        return existingChannel;
     }
 
     const prOpenedPayload = <PullRequestBasicNotification>{
@@ -24,5 +24,5 @@ export async function provisionPullRequestChannel(slackAPI: SlackAPIAdapter, bit
         pullRequest: payload.pullRequest
     };
     await handleBitbucketWebhook(prOpenedPayload, slackAPI, bitbucketAPI, config);
-    return await provisionPullRequestChannel(slackAPI, bitbucketAPI, payload, config);
+    return await slackAPI.findChannel(channelName, config.usePrivateChannels);
 }
