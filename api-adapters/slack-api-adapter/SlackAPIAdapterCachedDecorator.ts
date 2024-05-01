@@ -8,7 +8,7 @@ import {
     AddBookmarkArguments,
     SlackAPIAdapter,
     SlackChannelInfo, PullRequestSnapshotInSlackMetadata
-} from "../../webhook-handler/ports/SlackAPIAdapter";
+} from "../../bitbucket-webhook-handler/ports/SlackAPIAdapter";
 import { InMemoryCache } from "./cache/InMemoryCache";
 
 function getCommentCacheKey(channelId: string, bitbucketCommentId: number | string) {

@@ -1,6 +1,6 @@
-import { BitbucketGateway } from "../../ports/BitbucketGateway";
+import { BitbucketAPIAdapter } from "../../ports/BitbucketAPIAdapter";
 
-export class TestBitbucketGateway implements BitbucketGateway {
+export class MockBitbucketAPIAdapter implements BitbucketAPIAdapter {
     canRead(): boolean {
         return true;
     }

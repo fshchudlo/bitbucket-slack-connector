@@ -1,13 +1,13 @@
-import handleBitbucketWebhook from "./webhook-handler/handleBitbucketWebhook";
+import handleBitbucketWebhook from "./bitbucket-webhook-handler/handleBitbucketWebhook";
 import { register } from "prom-client";
-import { buildChannelName } from "./webhook-handler/buildChannelName";
+import { buildChannelName } from "./bitbucket-webhook-handler/buildChannelName";
 import { ExpressReceiver } from "@slack/bolt";
-import { SlackAPIAdapterCachedDecorator } from "./adapters/slack-api-adapter/SlackAPIAdapterCachedDecorator";
-import BitbucketWebAPIGateway from "./adapters/bitbucket-gateway/BitbucketWebAPIGateway";
+import { SlackAPIAdapterCachedDecorator } from "./api-adapters/slack-api-adapter/SlackAPIAdapterCachedDecorator";
+import BitbucketWebAPIAdapter from "./api-adapters/bitbucket-gateway/BitbucketWebAPIAdapter";
 import { AppConfig, WebhookConfig } from "./app.config";
 import { NextFunction } from "express";
 
-const bitbucketGateway = new BitbucketWebAPIGateway(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
+const bitbucketGateway = new BitbucketWebAPIAdapter(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
 
 export default function configureRoutes(expressReceiver: ExpressReceiver, slackAPI: SlackAPIAdapterCachedDecorator) {
 

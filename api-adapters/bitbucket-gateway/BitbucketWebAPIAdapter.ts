@@ -1,7 +1,7 @@
-import { BitbucketGateway } from "../../webhook-handler/ports/BitbucketGateway";
+import { BitbucketAPIAdapter } from "../../bitbucket-webhook-handler/ports/BitbucketAPIAdapter";
 import axios, { AxiosRequestConfig } from "axios";
 
-export default class BitbucketWebAPIGateway implements BitbucketGateway {
+export default class BitbucketWebAPIAdapter implements BitbucketAPIAdapter {
     private readonly apiURL: string;
     private readonly readApiToken: string;
 

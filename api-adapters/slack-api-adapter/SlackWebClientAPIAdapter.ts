@@ -10,14 +10,14 @@ import {
     AddBookmarkArguments,
     SlackAPIAdapter,
     SlackChannelInfo, PullRequestSnapshotInSlackMetadata
-} from "../../webhook-handler/ports/SlackAPIAdapter";
+} from "../../bitbucket-webhook-handler/ports/SlackAPIAdapter";
 import { UserPayload } from "../../typings";
 import { WebhookConfig } from "../../app.config";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
-import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../webhook-handler/use-cases/helpers";
+import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../bitbucket-webhook-handler/use-cases/helpers";
 import {
     SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
-} from "../../webhook-handler/use-cases/helpers/snapshotPullRequestState";
+} from "../../bitbucket-webhook-handler/use-cases/helpers/snapshotPullRequestState";
 
 const awaitingCreateChannelRequests = new Map<string, Promise<SlackChannelInfo>>();
 

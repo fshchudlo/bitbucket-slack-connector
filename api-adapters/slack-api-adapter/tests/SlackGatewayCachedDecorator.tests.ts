@@ -1,11 +1,11 @@
 import { SlackAPIAdapterCachedDecorator } from "../SlackAPIAdapterCachedDecorator";
-import { snapshotCommentState } from "../../../webhook-handler/use-cases/helpers";
+import { snapshotCommentState } from "../../../bitbucket-webhook-handler/use-cases/helpers";
 import { PullRequestCommentActionNotification } from "../../../typings";
 import { register } from "prom-client";
 import {
     BitbucketCommentSnapshot,
     BitbucketCommentSnapshotInSlackMetadata, SendMessageResponse
-} from "../../../webhook-handler/ports/SlackAPIAdapter";
+} from "../../../bitbucket-webhook-handler/ports/SlackAPIAdapter";
 
 
 const decoratedGatewayMock = {

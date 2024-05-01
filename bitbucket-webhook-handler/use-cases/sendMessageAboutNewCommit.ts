@@ -1,11 +1,11 @@
 import { iconEmoji, link, quote, section } from "./slack-building-blocks";
 import { formatUserName, markdownToSlackMarkup, reviewPRAction } from "./helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
-import { BitbucketGateway } from "../ports/BitbucketGateway";
+import { BitbucketAPIAdapter } from "../ports/BitbucketAPIAdapter";
 import { PullRequestBasicNotification } from "../../typings";
 
-export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, bitbucketGateway: BitbucketGateway, slackChannelId: string) {
-    const commentInBitbucket = bitbucketGateway.canRead() ? await bitbucketGateway.fetchCommitMessage(payload.pullRequest.fromRef.repository.project.key, payload.pullRequest.fromRef.repository.slug, payload.pullRequest.fromRef.latestCommit) : null;
+export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, bitbucketAPI: BitbucketAPIAdapter, slackChannelId: string) {
+    const commentInBitbucket = bitbucketAPI.canRead() ? await bitbucketAPI.fetchCommitMessage(payload.pullRequest.fromRef.repository.project.key, payload.pullRequest.fromRef.repository.slug, payload.pullRequest.fromRef.latestCommit) : null;
     const message = buildMessage(payload, commentInBitbucket, slackChannelId);
     await slackAPI.sendMessage(message);
 }

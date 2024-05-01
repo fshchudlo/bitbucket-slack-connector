@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { WebhookHandlerConfig } from "./webhook-handler/webhookHandlerConfig";
+import { WebhookHandlerConfig } from "./bitbucket-webhook-handler/webhookHandlerConfig";
 import { BitbucketNotification } from "./typings";
 
 export const WebhookConfig: WebhookHandlerConfig = {
