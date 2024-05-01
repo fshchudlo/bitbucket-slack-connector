@@ -51,7 +51,10 @@ exports[`handleBitbucketWebhook Doesn't send message if PR doesn't contain visib
     ],
   ],
   "searchedChannels": [
-    "pr-test-proj-test-repository-1",
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
   ],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
@@ -147,7 +150,10 @@ exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
     ],
   ],
   "searchedChannels": [
-    "pr-test-proj-test-repository-1",
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
   ],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],

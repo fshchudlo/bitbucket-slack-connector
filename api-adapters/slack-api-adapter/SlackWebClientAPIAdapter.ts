@@ -12,7 +12,6 @@ import {
     SlackChannelInfo, PullRequestSnapshotInSlackMetadata
 } from "../../bitbucket-webhook-handler/ports/SlackAPIAdapter";
 import { UserPayload } from "../../typings";
-import { WebhookConfig } from "../../app.config";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../bitbucket-webhook-handler/use-cases/helpers";
 import {
@@ -39,12 +38,12 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
         return slackUserIds.filter(r => !!r).map(r => r.user.id);
     }
 
-    async findChannel(channelName: string): Promise<SlackChannelInfo | null> {
+    async findChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelInfo | null> {
         if (awaitingCreateChannelRequests.has(channelName)) {
             return awaitingCreateChannelRequests.get(channelName);
         }
         let cursor: string | undefined = undefined;
-        const channelTypes = WebhookConfig.USE_PRIVATE_CHANNELS ? "private_channel" : undefined;
+        const channelTypes = findPrivateChannels ? "private_channel" : undefined;
         while (true) {
             const response = await this.client.conversations.list({
                 exclude_archived: false,

@@ -79,8 +79,14 @@ exports[`handleBitbucketWebhook Should replay channel creation if channel doesn'
     ],
   ],
   "searchedChannels": [
-    "pr-test-proj-test-repository-1",
-    "pr-test-proj-test-repository-1",
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
   ],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],

@@ -3,9 +3,9 @@ import { WebhookHandlerConfig } from "./bitbucket-webhook-handler/webhookHandler
 import { BitbucketNotification } from "./typings";
 
 export const WebhookConfig: WebhookHandlerConfig = {
-    // If you want to use public channels, you need to configure Slack permissions properly - https://stackoverflow.com/a/75442078
-    USE_PRIVATE_CHANNELS: true,
-    DEFAULT_CHANNEL_PARTICIPANTS: process.env.DEFAULT_CHANNEL_PARTICIPANTS?.split(",").map(u => u.trim()),
+    // If you want to use public channels and kick the users removed from PR review, you need to configure Slack permissions properly - https://stackoverflow.com/a/75442078
+    usePrivateChannels: true,
+    defaultChannelParticipants: process.env.DEFAULT_CHANNEL_PARTICIPANTS?.split(",").map(u => u.trim()),
     /*
     * You can implement any other logic depending on the granularity level you need
     * */

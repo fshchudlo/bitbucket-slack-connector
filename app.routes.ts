@@ -7,13 +7,13 @@ import BitbucketWebAPIAdapter from "./api-adapters/bitbucket-gateway/BitbucketWe
 import { AppConfig, WebhookConfig } from "./app.config";
 import { NextFunction } from "express";
 
-const bitbucketGateway = new BitbucketWebAPIAdapter(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
+const bitbucketAPI = new BitbucketWebAPIAdapter(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
 
 export default function configureRoutes(expressReceiver: ExpressReceiver, slackAPI: SlackAPIAdapterCachedDecorator) {
 
     expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
         try {
-            await handleBitbucketWebhook(req.body, slackAPI, bitbucketGateway, WebhookConfig);
+            await handleBitbucketWebhook(req.body, slackAPI, bitbucketAPI, WebhookConfig);
             res.sendStatus(200);
         } catch (error) {
             next(error);
@@ -27,6 +27,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackA
 
     expressReceiver.router.get("/slack-channel", async (req, res, next: NextFunction) => {
         const { pullRequestId, repositorySlug, projectKey } = req.query;
+
         if (!pullRequestId || !repositorySlug || !projectKey) {
             return res.status(400).send("Please, specify valid \"pullRequestId\", \"repositorySlug\" and \"projectKey\" as query parameters.");
         }
@@ -37,7 +38,9 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackA
                 repositorySlug: <string>repositorySlug,
                 projectKey: <string>projectKey
             });
-            const channelInfo = await slackAPI.findChannel(channelName);
+
+            const channelInfo = await slackAPI.findChannel(channelName, WebhookConfig.usePrivateChannels);
+
             channelInfo ? res.send(channelInfo) : res.sendStatus(404);
         } catch (error) {
             next(error);

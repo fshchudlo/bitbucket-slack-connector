@@ -53,7 +53,10 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
     ],
   ],
   "searchedChannels": [
-    "pr-test-proj-test-repository-1",
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
   ],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
@@ -162,7 +165,10 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
     ],
   ],
   "searchedChannels": [
-    "pr-test-proj-test-repository-1",
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
   ],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [

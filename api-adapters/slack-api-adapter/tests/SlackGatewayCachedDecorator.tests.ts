@@ -70,7 +70,7 @@ describe("SlackGatewayCachedDecorator", () => {
         };
         systemUnderTest.channelsCache.set(channelData.name, channelData);
 
-        const result = await systemUnderTest.findChannel(channelData.name);
+        const result = await systemUnderTest.findChannel(channelData.name, true);
 
         expect(result).toEqual(channelData);
         expect(decoratedGatewayMock.findChannel).not.toHaveBeenCalled();
@@ -85,7 +85,7 @@ describe("SlackGatewayCachedDecorator", () => {
         decoratedGatewayMock.findChannel.mockResolvedValueOnce(channelData);
         expect(systemUnderTest.channelsCache.get(channelData.name)).toBeUndefined();
 
-        const result = await systemUnderTest.findChannel("channelName");
+        const result = await systemUnderTest.findChannel("channelName", true);
 
         expect(result).toEqual(channelData);
         expect(systemUnderTest.channelsCache.get(channelData.name)).toEqual(channelData);

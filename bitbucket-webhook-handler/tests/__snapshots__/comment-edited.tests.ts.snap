@@ -51,7 +51,10 @@ exports[`handleBitbucketWebhook Should return generic message if initial comment
     ],
   ],
   "searchedChannels": [
-    "pr-test-proj-test-repository-1",
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
   ],
   "searchedCommentSnapshots": [
     {
@@ -185,8 +188,14 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
     ],
   ],
   "searchedChannels": [
-    "pr-test-proj-test-repository-1",
-    "pr-test-proj-test-repository-1",
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
   ],
   "searchedCommentSnapshots": [
     {
@@ -353,8 +362,14 @@ exports[`handleBitbucketWebhook Should send message on comment conversion to the
     ],
   ],
   "searchedChannels": [
-    "pr-test-proj-test-repository-1",
-    "pr-test-proj-test-repository-1",
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
   ],
   "searchedCommentSnapshots": [
     {
@@ -521,9 +536,18 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
     ],
   ],
   "searchedChannels": [
-    "pr-test-proj-test-repository-1",
-    "pr-test-proj-test-repository-1",
-    "pr-test-proj-test-repository-1",
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
   ],
   "searchedCommentSnapshots": [
     {
@@ -727,8 +751,14 @@ exports[`handleBitbucketWebhook Should send message on task conversion to the co
     ],
   ],
   "searchedChannels": [
-    "pr-test-proj-test-repository-1",
-    "pr-test-proj-test-repository-1",
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
   ],
   "searchedCommentSnapshots": [
     {
@@ -895,9 +925,18 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
     ],
   ],
   "searchedChannels": [
-    "pr-test-proj-test-repository-1",
-    "pr-test-proj-test-repository-1",
-    "pr-test-proj-test-repository-1",
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
   ],
   "searchedCommentSnapshots": [
     {
