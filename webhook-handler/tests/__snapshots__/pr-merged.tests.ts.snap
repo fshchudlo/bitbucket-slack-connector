@@ -97,7 +97,7 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
     {
       "channelId": "12345",
       "iconEmoji": ":bitbucket:",
-      "text": ":white_check_mark: The pull request was merged by Test Author. Well done, thank you all.",
+      "text": ":white_check_mark: Pull request was merged by Test Author. Well done, thank you all.",
     },
   ],
 }
@@ -263,12 +263,12 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
     {
       "channelId": "12345",
       "iconEmoji": ":bitbucket:",
-      "text": ":white_check_mark: The pull request was merged by Test Author. Well done, thank you all.",
+      "text": ":white_check_mark: Pull request was merged by Test Author. Well done, thank you all.",
     },
     {
       "channelId": "test-broadcast-channel-id",
       "iconEmoji": ":bitbucket:",
-      "text": ":white_check_mark: The pull request was merged by Test Author. Well done, thank you all.",
+      "text": ":white_check_mark: Pull request was merged by Test Author. Well done, thank you all.",
       "threadId": "ABCDE",
     },
   ],
