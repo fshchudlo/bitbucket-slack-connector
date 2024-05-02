@@ -1,9 +1,9 @@
 import { formatUserName, getTaskOrCommentTitle, markdownToSlackMarkup, snapshotCommentState } from "./helpers";
 import { link, quote, section, iconEmoji } from "./slack-building-blocks";
-import { BitbucketCommentSnapshot, SendMessageArguments, SlackNotificationChannel } from "../SlackNotificationChannel";
+import { BitbucketCommentSnapshot, SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { PullRequestCommentActionNotification } from "../../bitbucket-payload-types";
 
-export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackNotificationChannel, slackChannelId: string) {
+export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackChannel, slackChannelId: string) {
     const parentCommentSnapshot = payload.commentParentId ? await slackAPI.findLatestBitbucketCommentSnapshot(slackChannelId, payload.commentParentId) : null;
     await slackAPI.sendMessage(buildMessage(payload, parentCommentSnapshot, slackChannelId));
 }

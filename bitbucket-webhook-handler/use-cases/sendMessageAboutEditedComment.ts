@@ -1,13 +1,13 @@
 import { PullRequestCommentActionNotification } from "../../bitbucket-payload-types";
 import {
     BitbucketCommentSnapshot,
-    SlackNotificationChannel
-} from "../SlackNotificationChannel";
+    SlackChannel
+} from "../SlackChannel";
 import { getTaskOrCommentTitle, snapshotCommentState } from "./helpers";
 import { iconEmoji, link, quote, section } from "./slack-building-blocks";
 import { formatUserName, markdownToSlackMarkup } from "./helpers";
 
-export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackNotificationChannel, slackChannelId: string) {
+export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackChannel, slackChannelId: string) {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
 
     const commentSnapshot = await slackAPI.findLatestBitbucketCommentSnapshot(slackChannelId, payload.comment.id);

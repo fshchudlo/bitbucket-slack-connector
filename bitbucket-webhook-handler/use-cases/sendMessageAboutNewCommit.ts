@@ -1,9 +1,9 @@
 import { iconEmoji, link, quote, section } from "./slack-building-blocks";
 import { formatUserName, markdownToSlackMarkup, reviewPRAction } from "./helpers";
-import { SendMessageArguments, SlackNotificationChannel } from "../SlackNotificationChannel";
+import { SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { PullRequestFromRefUpdatedPayload } from "../../bitbucket-payload-types";
 
-export async function sendMessageAboutNewCommit(payload: PullRequestFromRefUpdatedPayload, slackAPI: SlackNotificationChannel, slackChannelId: string) {
+export async function sendMessageAboutNewCommit(payload: PullRequestFromRefUpdatedPayload, slackAPI: SlackChannel, slackChannelId: string) {
     const message = buildMessage(payload, slackChannelId);
     await slackAPI.sendMessage(message);
 }

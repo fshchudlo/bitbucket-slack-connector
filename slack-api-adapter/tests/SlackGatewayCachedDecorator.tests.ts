@@ -4,12 +4,12 @@ import { PullRequestCommentActionNotification } from "../../bitbucket-payload-ty
 import { register } from "prom-client";
 import {
     BitbucketCommentSnapshot,
-    BitbucketCommentSnapshotInSlackMetadata, SendMessageResponse, SlackNotificationChannel
-} from "../../bitbucket-webhook-handler/SlackNotificationChannel";
+    BitbucketCommentSnapshotInSlackMetadata, SendMessageResponse, SlackChannel
+} from "../../bitbucket-webhook-handler/SlackChannel";
 import { SlackChannelFactory } from "../../channel-provisioning/SlackChannelFactory";
 
 
-const decoratedGatewayMock = (<SlackChannelFactory & SlackNotificationChannel>{
+const decoratedGatewayMock = (<SlackChannelFactory & SlackChannel>{
     addBookmark: jest.fn(),
     addReaction: jest.fn(),
     closeChannel: jest.fn(),

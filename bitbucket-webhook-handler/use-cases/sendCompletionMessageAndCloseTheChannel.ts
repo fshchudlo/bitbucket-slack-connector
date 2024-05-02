@@ -1,9 +1,9 @@
 import { iconEmoji } from "./slack-building-blocks";
-import { SendMessageArguments, SlackNotificationChannel } from "../SlackNotificationChannel";
+import { SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 import { getPullRequestCompletionAction } from "./helpers/getPullRequestCompletionAction";
 
-export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackAPI: SlackNotificationChannel, slackChannelId: string) {
+export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackAPI: SlackChannel, slackChannelId: string) {
     await slackAPI.sendMessage(buildMessage(payload, slackChannelId));
     await slackAPI.closeChannel(slackChannelId);
 }

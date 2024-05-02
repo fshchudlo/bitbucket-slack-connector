@@ -1,7 +1,7 @@
 import { CommentSeverity } from "../bitbucket-payload-types";
 import { Block, KnownBlock } from "@slack/bolt";
 
-export interface SlackNotificationChannel {
+export interface SlackChannel {
     getSlackUserIds(userEmails: Array<string>): Promise<string[]>;
     addBookmark(options: AddBookmarkArguments): Promise<void>;
     inviteToChannel(options: InviteToChannelArguments): Promise<void>;

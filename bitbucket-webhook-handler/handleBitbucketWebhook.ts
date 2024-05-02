@@ -1,10 +1,10 @@
 import * as useCases from "./use-cases";
-import { SlackNotificationChannel } from "./SlackNotificationChannel";
+import { SlackChannel } from "./SlackChannel";
 import { BitbucketNotification } from "../bitbucket-payload-types";
 import { WebhookHandlerConfig } from "./webhookHandlerConfig";
 import { SlackChannelInfo } from "../channel-provisioning/SlackChannelFactory";
 
-export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackAPI: SlackNotificationChannel, channelInfo:SlackChannelInfo, config: WebhookHandlerConfig) {
+export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackAPI: SlackChannel, channelInfo:SlackChannelInfo, config: WebhookHandlerConfig) {
     const eventKey = payload.eventKey;
 
     switch (eventKey) {

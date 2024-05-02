@@ -9,12 +9,17 @@ import { NextFunction } from "express";
 import { WebhookHandlerConfig } from "./bitbucket-webhook-handler/webhookHandlerConfig";
 import { normalizeBitbucketWebhookPayload } from "./payload-normalization/normalizeBitbucketWebhookPayload";
 import { provisionPullRequestChannel } from "./channel-provisioning/provisionPullRequestChannel";
+import { WebClient } from "@slack/web-api";
+import { SlackWebClientChannel } from "./slack-api-adapter/SlackWebClientChannel";
+import { SlackWebClientChannelFactory } from "./slack-api-adapter/SlackWebClientChannelFactory";
 
 const bitbucketAPI = new BitbucketWebAPIAdapter(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
 
-export default function configureRoutes(expressReceiver: ExpressReceiver, slackAPI: SlackAPIAdapterCachedDecorator) {
-
+export default function configureRoutes(expressReceiver: ExpressReceiver, slackClient: WebClient) {
     expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
+        const slackChannel = new SlackWebClientChannel(slackClient);
+        const slackChannelFactory = new SlackWebClientChannelFactory(slackClient);
+        const slackAPI = new SlackAPIAdapterCachedDecorator(slackChannel, slackChannelFactory);
         try {
             const config = <WebhookHandlerConfig>{
                 usePrivateChannels: AppConfig.USE_PRIVATE_CHANNELS,
@@ -50,6 +55,11 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackA
                 repositorySlug: <string>repositorySlug,
                 projectKey: <string>projectKey
             });
+
+            const slackChannel = new SlackWebClientChannel(slackClient);
+            const slackChannelFactory = new SlackWebClientChannelFactory(slackClient);
+            const slackAPI = new SlackAPIAdapterCachedDecorator(slackChannel, slackChannelFactory);
+
 
             const channelInfo = await slackAPI.findChannel(channelName, AppConfig.USE_PRIVATE_CHANNELS);
 

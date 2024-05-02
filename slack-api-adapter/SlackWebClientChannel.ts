@@ -7,9 +7,9 @@ import {
     SendMessageArguments,
     SendMessageResponse,
     AddBookmarkArguments,
-    SlackNotificationChannel,
+    SlackChannel,
     PullRequestSnapshotInSlackMetadata
-} from "../bitbucket-webhook-handler/SlackNotificationChannel";
+} from "../bitbucket-webhook-handler/SlackChannel";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../bitbucket-webhook-handler/use-cases/helpers";
 import {
@@ -20,7 +20,7 @@ import {
 /**
  * Adapter for the Slack API that also acts as an {@link https://awesome-architecture.com/cloud-design-patterns/anti-corruption-layer-pattern/|anti-corruption layer} since Slack API is not always consistent
  */
-export class SlackWebClientNotificationChannelManager implements SlackNotificationChannel {
+export class SlackWebClientChannel implements SlackChannel {
     private client: slack.WebClient;
 
     constructor(client: slack.WebClient) {

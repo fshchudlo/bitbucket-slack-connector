@@ -4,9 +4,9 @@ import {
     InviteToChannelArguments,
     KickFromChannelArguments, SendMessageArguments, SendMessageResponse,
     AddBookmarkArguments,
-    SlackNotificationChannel,
+    SlackChannel,
     PullRequestSnapshotInSlackMetadata
-} from "../bitbucket-webhook-handler/SlackNotificationChannel";
+} from "../bitbucket-webhook-handler/SlackChannel";
 import { InMemoryCache } from "./cache/InMemoryCache";
 import {
     CreateChannelArguments,
@@ -18,13 +18,13 @@ function getCommentCacheKey(channelId: string, bitbucketCommentId: number | stri
     return `${channelId}-${bitbucketCommentId}`;
 }
 
-export class SlackAPIAdapterCachedDecorator implements SlackNotificationChannel, SlackChannelFactory {
-    private gateway: SlackNotificationChannel;
+export class SlackAPIAdapterCachedDecorator implements SlackChannel, SlackChannelFactory {
+    private gateway: SlackChannel;
     private factory: SlackChannelFactory;
     static readonly channelsCache = new InMemoryCache<SlackChannelInfo>("channels");
     static readonly commentsCache = new InMemoryCache<BitbucketCommentSnapshot>("comments");
 
-    constructor(gateway: SlackNotificationChannel, factory: SlackChannelFactory) {
+    constructor(gateway: SlackChannel, factory: SlackChannelFactory) {
         this.gateway = gateway;
         this.factory = factory;
     }

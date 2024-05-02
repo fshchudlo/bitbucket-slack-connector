@@ -1,5 +1,5 @@
 import {
-    SlackNotificationChannel,
+    SlackChannel,
     BitbucketCommentSnapshot,
     AddBookmarkArguments,
     InviteToChannelArguments,
@@ -8,7 +8,7 @@ import {
     SendMessageResponse,
     BitbucketCommentSnapshotInSlackMetadata,
     PullRequestSnapshotInSlackMetadata
-} from "../bitbucket-webhook-handler/SlackNotificationChannel";
+} from "../bitbucket-webhook-handler/SlackChannel";
 import { SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE } from "../bitbucket-webhook-handler/use-cases/helpers/snapshotPullRequestState";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../bitbucket-webhook-handler/use-cases/helpers";
 import TestPayloadBuilder from "./TestPayloadBuilder";
@@ -22,7 +22,7 @@ import { provisionPullRequestChannel } from "../channel-provisioning/provisionPu
 
 const channelId = "12345";
 const messageId = "ABCDE";
-export default class SlackAdapterSnapshottingMock implements SlackNotificationChannel, SlackChannelFactory {
+export default class SlackAdapterSnapshottingMock implements SlackChannel, SlackChannelFactory {
     snapshot: {
         addedReactions: any[];
         addedBookmarks: AddBookmarkArguments[];
