@@ -1,6 +1,6 @@
 import handleBitbucketWebhook from "./bitbucket-webhook-handler/handleBitbucketWebhook";
 import { register } from "prom-client";
-import { buildChannelName } from "./bitbucket-webhook-handler/buildChannelName";
+import { buildChannelName } from "./channel-provisioning/buildChannelName";
 import { ExpressReceiver } from "@slack/bolt";
 import { SlackAPIAdapterCachedDecorator } from "./slack-api-adapter/SlackAPIAdapterCachedDecorator";
 import BitbucketWebAPIAdapter from "./payload-normalization/BitbucketWebAPIAdapter";

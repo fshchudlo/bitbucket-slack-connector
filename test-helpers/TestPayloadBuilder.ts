@@ -2,7 +2,7 @@ import {
     BitbucketNotification,
     PullRequestBasicNotification, PullRequestCommentActionNotification, PullRequestModifiedNotification,
     PullRequestReviewersUpdatedNotification
-} from "../../../bitbucket-payload-types";
+} from "../bitbucket-payload-types";
 
 const authorUser = {
     name: "TestAuthor",

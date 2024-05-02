@@ -1,7 +1,7 @@
-import SlackAdapterSnapshottingMock from "./mocks/SlackAdapterSnapshottingMock";
-import TestPayloadBuilder from "./mocks/TestPayloadBuilder";
+import SlackAdapterSnapshottingMock from "../../test-helpers/SlackAdapterSnapshottingMock";
+import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
-import { TestWebhookHandlerConfig } from "./mocks/TestWebhookHandlerConfig";
+import { TestWebhookHandlerConfig } from "../../test-helpers/TestWebhookHandlerConfig";
 
 describe("handleBitbucketWebhook", () => {
 

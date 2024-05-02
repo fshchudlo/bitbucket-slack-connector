@@ -1,7 +1,7 @@
-import SlackAdapterSnapshottingMock from "../../bitbucket-webhook-handler/tests/mocks/SlackAdapterSnapshottingMock";
+import SlackAdapterSnapshottingMock from "../../test-helpers/SlackAdapterSnapshottingMock";
 import { provisionPullRequestChannel } from "../provisionPullRequestChannel";
-import { TestWebhookHandlerConfig } from "../../bitbucket-webhook-handler/tests/mocks/TestWebhookHandlerConfig";
-import TestPayloadBuilder from "../../bitbucket-webhook-handler/tests/mocks/TestPayloadBuilder";
+import { TestWebhookHandlerConfig } from "../../test-helpers/TestWebhookHandlerConfig";
+import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
 
 describe("handleBitbucketWebhook", () => {
     it("Should create channel", async () => {

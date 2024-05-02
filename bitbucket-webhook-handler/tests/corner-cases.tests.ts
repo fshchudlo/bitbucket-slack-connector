@@ -1,8 +1,8 @@
-import SlackAdapterSnapshottingMock from "./mocks/SlackAdapterSnapshottingMock";
+import SlackAdapterSnapshottingMock from "../../test-helpers/SlackAdapterSnapshottingMock";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
-import TestPayloadBuilder from "./mocks/TestPayloadBuilder";
-import { TestWebhookHandlerConfig } from "./mocks/TestWebhookHandlerConfig";
+import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
+import { TestWebhookHandlerConfig } from "../../test-helpers/TestWebhookHandlerConfig";
 
 describe("handleBitbucketWebhook", () => {
     it("Should throw Error on unknown action type", async () => {

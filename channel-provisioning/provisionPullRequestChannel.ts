@@ -1,7 +1,7 @@
 import { SlackNotificationChannel } from "../bitbucket-webhook-handler/SlackNotificationChannel";
 import { BitbucketNotification, PullRequestBasicNotification } from "../bitbucket-payload-types";
 import { WebhookHandlerConfig } from "../bitbucket-webhook-handler/webhookHandlerConfig";
-import { buildChannelName } from "../bitbucket-webhook-handler/buildChannelName";
+import { buildChannelName } from "./buildChannelName";
 import handleBitbucketWebhook from "../bitbucket-webhook-handler/handleBitbucketWebhook";
 import { SlackChannelFactory } from "./SlackChannelFactory";
 
