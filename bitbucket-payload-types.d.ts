@@ -1,12 +1,17 @@
 // see https://confluence.atlassian.com/bitbucketserver0816/event-payload-1333334207.html#Eventpayload-pullrequest
 export type BitbucketNotification =
     PullRequestBasicNotification
+    | PullRequestFromRefUpdatedPayload
     | PullRequestModifiedNotification
     | PullRequestCommentActionNotification
     | PullRequestReviewersUpdatedNotification
 
 export type PullRequestBasicNotification = PullRequestNotificationBasicPayload & {
-    readonly eventKey: "pr:opened" | "pr:reviewer:unapproved" | "pr:reviewer:needs_work" | "pr:reviewer:approved" | "pr:from_ref_updated" | "pr:merged" | "pr:declined" | "pr:deleted";
+    readonly eventKey: "pr:opened" | "pr:reviewer:unapproved" | "pr:reviewer:needs_work" | "pr:reviewer:approved" | "pr:merged" | "pr:declined" | "pr:deleted";
+}
+export type PullRequestFromRefUpdatedPayload = PullRequestNotificationBasicPayload & {
+    readonly eventKey: "pr:from_ref_updated";
+    readonly latestCommitMessage: string | null;
 }
 export type PullRequestModifiedNotification = PullRequestNotificationBasicPayload & {
     readonly eventKey: "pr:modified";

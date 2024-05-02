@@ -1,6 +1,5 @@
 import SlackAdapterSnapshottingMock from "./mocks/SlackAdapterSnapshottingMock";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
-import { MockBitbucketAPIAdapter } from "./mocks/MockBitbucketAPIAdapter";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 import TestPayloadBuilder from "./mocks/TestPayloadBuilder";
 import { TestWebhookHandlerConfig } from "./mocks/TestWebhookHandlerConfig";
@@ -15,7 +14,7 @@ describe("handleBitbucketWebhook", () => {
         } as unknown) as PullRequestBasicNotification;
 
         try {
-            await handleBitbucketWebhook(invalidPayload, new SlackAdapterSnapshottingMock(), new MockBitbucketAPIAdapter(), TestWebhookHandlerConfig);
+            await handleBitbucketWebhook(invalidPayload, new SlackAdapterSnapshottingMock(), TestWebhookHandlerConfig);
         } catch (error) {
             expect((error as Error).message).toBe("\"unknown action\" event key is unknown.");
         }
@@ -25,7 +24,7 @@ describe("handleBitbucketWebhook", () => {
         const testSlackGateway = new SlackAdapterSnapshottingMock();
 
 
-        await handleBitbucketWebhook(TestPayloadBuilder.reviewersUpdated(), testSlackGateway, new MockBitbucketAPIAdapter(), TestWebhookHandlerConfig);
+        await handleBitbucketWebhook(TestPayloadBuilder.reviewersUpdated(), testSlackGateway, TestWebhookHandlerConfig);
 
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();

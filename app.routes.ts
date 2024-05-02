@@ -7,6 +7,7 @@ import BitbucketWebAPIAdapter from "./api-adapters/bitbucket-gateway/BitbucketWe
 import { AppConfig } from "./app.config";
 import { NextFunction } from "express";
 import { WebhookHandlerConfig } from "./bitbucket-webhook-handler/webhookHandlerConfig";
+import { normalizeBitbucketWebhookPayload } from "./payload-normalization/normalizeBitbucketWebhookPayload";
 
 const bitbucketAPI = new BitbucketWebAPIAdapter(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
 
@@ -19,8 +20,10 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackA
                 defaultChannelParticipants: AppConfig.DEFAULT_CHANNEL_PARTICIPANTS,
                 getOpenedPRBroadcastChannelId: AppConfig.getOpenedPRBroadcastChannelId
             };
+            const payload = await normalizeBitbucketWebhookPayload(req.body, bitbucketAPI);
 
-            await handleBitbucketWebhook(req.body, slackAPI, bitbucketAPI, config);
+
+            await handleBitbucketWebhook(payload, slackAPI, config);
             res.sendStatus(200);
 
         } catch (error) {

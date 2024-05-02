@@ -1,7 +1,6 @@
 import SlackAdapterSnapshottingMock from "./mocks/SlackAdapterSnapshottingMock";
 import TestPayloadBuilder from "./mocks/TestPayloadBuilder";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
-import { MockBitbucketAPIAdapter } from "./mocks/MockBitbucketAPIAdapter";
 import { TestWebhookHandlerConfig } from "./mocks/TestWebhookHandlerConfig";
 import { WebhookHandlerConfig } from "../webhookHandlerConfig";
 
@@ -11,7 +10,7 @@ describe("handleBitbucketWebhook", () => {
         const payload = TestPayloadBuilder.pullRequestDeleted();
 
 
-        await handleBitbucketWebhook(payload, testSlackGateway, new MockBitbucketAPIAdapter(), TestWebhookHandlerConfig);
+        await handleBitbucketWebhook(payload, testSlackGateway, TestWebhookHandlerConfig);
 
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
@@ -26,7 +25,7 @@ describe("handleBitbucketWebhook", () => {
 
 
         const payload = TestPayloadBuilder.pullRequestDeleted();
-        await handleBitbucketWebhook(payload, testSlackGateway, new MockBitbucketAPIAdapter(), testConfig);
+        await handleBitbucketWebhook(payload, testSlackGateway, testConfig);
 
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();

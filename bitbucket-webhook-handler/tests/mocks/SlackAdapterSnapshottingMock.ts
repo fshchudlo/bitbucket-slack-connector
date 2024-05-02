@@ -15,7 +15,6 @@ import { SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE } from "../../use-cases/helpers/
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../use-cases/helpers";
 import handleBitbucketWebhook from "../../handleBitbucketWebhook";
 import TestPayloadBuilder from "./TestPayloadBuilder";
-import { MockBitbucketAPIAdapter } from "./MockBitbucketAPIAdapter";
 import { TestWebhookHandlerConfig } from "./TestWebhookHandlerConfig";
 
 const channelId = "12345";
@@ -52,7 +51,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
     }
 
     async setupBasicChannel(webhookHandlerConfig = TestWebhookHandlerConfig): Promise<SlackAdapterSnapshottingMock> {
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), this, new MockBitbucketAPIAdapter(), webhookHandlerConfig);
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), this, webhookHandlerConfig);
         return this;
     }
 

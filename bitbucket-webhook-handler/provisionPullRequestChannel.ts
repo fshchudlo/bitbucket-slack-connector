@@ -1,11 +1,10 @@
 import { SlackAPIAdapter } from "./ports/SlackAPIAdapter";
-import { BitbucketAPIAdapter } from "./ports/BitbucketAPIAdapter";
 import { BitbucketNotification, PullRequestBasicNotification } from "../bitbucket-payload-types";
 import { WebhookHandlerConfig } from "./webhookHandlerConfig";
 import { buildChannelName } from "./buildChannelName";
 import handleBitbucketWebhook from "./handleBitbucketWebhook";
 
-export async function provisionPullRequestChannel(slackAPI: SlackAPIAdapter, bitbucketAPI: BitbucketAPIAdapter, payload: BitbucketNotification, config: WebhookHandlerConfig) {
+export async function provisionPullRequestChannel(slackAPI: SlackAPIAdapter, payload: BitbucketNotification, config: WebhookHandlerConfig) {
     const channelName = buildChannelName(payload.pullRequest);
     if (payload.eventKey == "pr:opened") {
         return await slackAPI.createChannel({ name: channelName, isPrivate: config.usePrivateChannels });
@@ -23,6 +22,6 @@ export async function provisionPullRequestChannel(slackAPI: SlackAPIAdapter, bit
         },
         pullRequest: payload.pullRequest
     };
-    await handleBitbucketWebhook(prOpenedPayload, slackAPI, bitbucketAPI, config);
+    await handleBitbucketWebhook(prOpenedPayload, slackAPI, config);
     return await slackAPI.findChannel(channelName, config.usePrivateChannels);
 }

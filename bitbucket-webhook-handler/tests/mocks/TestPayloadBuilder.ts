@@ -302,10 +302,12 @@ export default class TestPayloadBuilder {
     }
 
     static pullRequestFromRefUpdated(): BitbucketNotification {
+        const basicPayload =getBasicPayload();
         return {
-            ...getBasicPayload(),
+            ...basicPayload,
             ...{ fromRef: { latestCommit: "from-ref-updated-hash" } },
-            eventKey: "pr:from_ref_updated"
+            eventKey: "pr:from_ref_updated",
+            latestCommitMessage: `Test comment for ${basicPayload.pullRequest.fromRef.repository.project.key}, ${basicPayload.pullRequest.fromRef.repository.slug}, ${basicPayload.pullRequest.fromRef.latestCommit}`
         };
     }
 

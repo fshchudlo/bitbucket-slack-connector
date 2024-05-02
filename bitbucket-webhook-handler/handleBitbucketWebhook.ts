@@ -1,13 +1,12 @@
 import * as useCases from "./use-cases";
 import { SlackAPIAdapter } from "./ports/SlackAPIAdapter";
-import { BitbucketAPIAdapter } from "./ports/BitbucketAPIAdapter";
 import { BitbucketNotification } from "../bitbucket-payload-types";
 import { WebhookHandlerConfig } from "./webhookHandlerConfig";
 import { provisionPullRequestChannel } from "./provisionPullRequestChannel";
 
-export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackAPI: SlackAPIAdapter, bitbucketAPI: BitbucketAPIAdapter, config: WebhookHandlerConfig) {
+export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackAPI: SlackAPIAdapter, config: WebhookHandlerConfig) {
     const eventKey = payload.eventKey;
-    const channelInfo = await provisionPullRequestChannel(slackAPI, bitbucketAPI, payload, config);
+    const channelInfo = await provisionPullRequestChannel(slackAPI, payload, config);
 
     switch (eventKey) {
         case "pr:opened":
@@ -35,7 +34,7 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
             await useCases.sendMessageAboutDeletedComment(payload, slackAPI, channelInfo.id);
             break;
         case "pr:from_ref_updated":
-            await useCases.sendMessageAboutNewCommit(payload, slackAPI, bitbucketAPI, channelInfo.id);
+            await useCases.sendMessageAboutNewCommit(payload, slackAPI, channelInfo.id);
             break;
         case "pr:merged":
         case "pr:declined":

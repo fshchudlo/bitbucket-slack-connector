@@ -1,4 +1,4 @@
-import { BitbucketAPIAdapter } from "../../bitbucket-webhook-handler/ports/BitbucketAPIAdapter";
+import { BitbucketAPIAdapter } from "../../payload-normalization/BitbucketAPIAdapter";
 import axios, { AxiosRequestConfig } from "axios";
 
 export default class BitbucketWebAPIAdapter implements BitbucketAPIAdapter {
