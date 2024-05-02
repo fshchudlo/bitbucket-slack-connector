@@ -21,39 +21,37 @@ function getCommentCacheKey(channelId: string, bitbucketCommentId: number | stri
 export class SlackAPIAdapterCachedDecorator implements SlackNotificationChannel, SlackChannelFactory {
     private gateway: SlackNotificationChannel;
     private factory: SlackChannelFactory;
-    readonly channelsCache: InMemoryCache<SlackChannelInfo>;
-    readonly bitbucketCommentsCache: InMemoryCache<BitbucketCommentSnapshot>;
+    static readonly channelsCache = new InMemoryCache<SlackChannelInfo>("channels");
+    static readonly commentsCache = new InMemoryCache<BitbucketCommentSnapshot>("comments");
 
     constructor(gateway: SlackNotificationChannel, factory: SlackChannelFactory) {
         this.gateway = gateway;
         this.factory = factory;
-        this.channelsCache = new InMemoryCache("channels");
-        this.bitbucketCommentsCache = new InMemoryCache("comments");
     }
 
     async createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
         const response = await this.factory.createChannel(options);
-        this.channelsCache.set(options.name, response);
+        SlackAPIAdapterCachedDecorator.channelsCache.set(options.name, response);
         return response;
     }
 
     async findChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelInfo | null> {
-        const cachedChannelInfo = this.channelsCache.get(channelName);
+        const cachedChannelInfo = SlackAPIAdapterCachedDecorator.channelsCache.get(channelName);
         if (cachedChannelInfo) {
             return Promise.resolve(cachedChannelInfo);
         }
         const channelInfo = await this.factory.findChannel(channelName, findPrivateChannels);
 
         if (channelInfo && !channelInfo.isArchived) {
-            this.channelsCache.set(channelName, channelInfo);
+            SlackAPIAdapterCachedDecorator.channelsCache.set(channelName, channelInfo);
         }
         return channelInfo;
     }
 
     async closeChannel(channelId: string): Promise<void> {
         await this.gateway.closeChannel(channelId);
-        this.channelsCache.deleteWhere((k, v) => v.id == channelId);
-        this.bitbucketCommentsCache.deleteWhere((k) => k.startsWith(getCommentCacheKey(channelId, "")));
+        SlackAPIAdapterCachedDecorator.channelsCache.deleteWhere((k, v) => v.id == channelId);
+        SlackAPIAdapterCachedDecorator.commentsCache.deleteWhere((k) => k.startsWith(getCommentCacheKey(channelId, "")));
     }
 
     addReaction(channelId: string, messageId: string, reaction: string): Promise<void> {
@@ -89,21 +87,21 @@ export class SlackAPIAdapterCachedDecorator implements SlackNotificationChannel,
                 slackMessageId: response.messageId,
                 slackThreadId: response.threadId
             };
-            this.bitbucketCommentsCache.set(getCommentCacheKey(options.channelId, commentSnapshot.commentId), commentSnapshot);
+            SlackAPIAdapterCachedDecorator.commentsCache.set(getCommentCacheKey(options.channelId, commentSnapshot.commentId), commentSnapshot);
         }
         return response;
     }
 
     async findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
         const cacheKey = getCommentCacheKey(channelId, bitbucketCommentId);
-        const cachedCommentInfo = this.bitbucketCommentsCache.get(cacheKey);
+        const cachedCommentInfo = SlackAPIAdapterCachedDecorator.commentsCache.get(cacheKey);
         if (cachedCommentInfo) {
             return Promise.resolve(cachedCommentInfo);
         }
         const commentSnapshot = await this.gateway.findLatestBitbucketCommentSnapshot(channelId, bitbucketCommentId);
 
         if (commentSnapshot) {
-            this.bitbucketCommentsCache.set(cacheKey, commentSnapshot);
+            SlackAPIAdapterCachedDecorator.commentsCache.set(cacheKey, commentSnapshot);
         }
         return commentSnapshot;
     }

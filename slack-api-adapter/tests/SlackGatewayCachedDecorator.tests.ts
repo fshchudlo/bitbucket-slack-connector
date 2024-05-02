@@ -28,6 +28,8 @@ describe("SlackGatewayCachedDecorator", () => {
 
     beforeEach(() => {
         systemUnderTest = new SlackAPIAdapterCachedDecorator(decoratedGatewayMock as any, decoratedGatewayMock as any);
+        SlackAPIAdapterCachedDecorator.channelsCache.deleteWhere(() => true);
+        SlackAPIAdapterCachedDecorator.commentsCache.deleteWhere(() => true);
     });
 
     afterEach(() => {
@@ -45,7 +47,7 @@ describe("SlackGatewayCachedDecorator", () => {
 
         await systemUnderTest.createChannel({ name: channelData.name });
 
-        expect(systemUnderTest.channelsCache.get(channelData.name)).toEqual(channelData);
+        expect(SlackAPIAdapterCachedDecorator.channelsCache.get(channelData.name)).toEqual(channelData);
     });
 
     it("should delete channel info from cache when archiving a channel", async () => {
@@ -58,10 +60,10 @@ describe("SlackGatewayCachedDecorator", () => {
         decoratedGatewayMock.closeChannel.mockResolvedValue({});
 
         await systemUnderTest.createChannel({ name: channelData.name });
-        expect(systemUnderTest.channelsCache.get(channelData.name)).not.toBeUndefined();
+        expect(SlackAPIAdapterCachedDecorator.channelsCache.get(channelData.name)).not.toBeUndefined();
 
         await systemUnderTest.closeChannel(channelData.id);
-        expect(systemUnderTest.channelsCache.get(channelData.name)).toBeUndefined();
+        expect(SlackAPIAdapterCachedDecorator.channelsCache.get(channelData.name)).toBeUndefined();
     });
 
     it("should get channel info from cache if available", async () => {
@@ -70,7 +72,7 @@ describe("SlackGatewayCachedDecorator", () => {
             name: "channelName",
             isArchived: false
         };
-        systemUnderTest.channelsCache.set(channelData.name, channelData);
+        SlackAPIAdapterCachedDecorator.channelsCache.set(channelData.name, channelData);
 
         const result = await systemUnderTest.findChannel(channelData.name, true);
 
@@ -85,12 +87,12 @@ describe("SlackGatewayCachedDecorator", () => {
             isArchived: false
         };
         decoratedGatewayMock.findChannel.mockResolvedValueOnce(channelData);
-        expect(systemUnderTest.channelsCache.get(channelData.name)).toBeUndefined();
+        expect(SlackAPIAdapterCachedDecorator.channelsCache.get(channelData.name)).toBeUndefined();
 
         const result = await systemUnderTest.findChannel("channelName", true);
 
         expect(result).toEqual(channelData);
-        expect(systemUnderTest.channelsCache.get(channelData.name)).toEqual(channelData);
+        expect(SlackAPIAdapterCachedDecorator.channelsCache.get(channelData.name)).toEqual(channelData);
     });
 
     it("should cache comment info when sending a message", async () => {
@@ -153,7 +155,7 @@ describe("SlackGatewayCachedDecorator", () => {
 
         expect(decoratedGatewayMock.findLatestBitbucketCommentSnapshot).toHaveBeenCalledWith(channelData.id, commentSnapshot.commentId);
         expect(result).toEqual(commentSnapshot);
-        expect(systemUnderTest.bitbucketCommentsCache.get("channelId-1")).toEqual(commentSnapshot);
+        expect(SlackAPIAdapterCachedDecorator.commentsCache.get("channelId-1")).toEqual(commentSnapshot);
     });
 
     it("should delete comment snapshots from cache when archiving a channel", async () => {
@@ -173,13 +175,13 @@ describe("SlackGatewayCachedDecorator", () => {
 
         await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.id, commentSnapshot.commentId);
 
-        expect(systemUnderTest.bitbucketCommentsCache.get("channelId-1")).toEqual(commentSnapshot);
+        expect(SlackAPIAdapterCachedDecorator.commentsCache.get("channelId-1")).toEqual(commentSnapshot);
 
         decoratedGatewayMock.closeChannel.mockResolvedValue({});
 
         await systemUnderTest.closeChannel("channelId");
 
-        expect(systemUnderTest.bitbucketCommentsCache.get("channelId-1")).toBeUndefined();
+        expect(SlackAPIAdapterCachedDecorator.commentsCache.get("channelId-1")).toBeUndefined();
 
     });
 });
