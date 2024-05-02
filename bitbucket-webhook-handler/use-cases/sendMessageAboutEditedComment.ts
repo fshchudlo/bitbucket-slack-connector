@@ -1,4 +1,4 @@
-import { PullRequestCommentActionNotification } from "../../typings";
+import { PullRequestCommentActionNotification } from "../../bitbucket-payload-types";
 import {
     BitbucketCommentSnapshot,
     SlackAPIAdapter

@@ -2,7 +2,7 @@ import { iconEmoji, link, quote, section } from "./slack-building-blocks";
 import { formatUserName, markdownToSlackMarkup, reviewPRAction } from "./helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { BitbucketAPIAdapter } from "../ports/BitbucketAPIAdapter";
-import { PullRequestBasicNotification } from "../../typings";
+import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 
 export async function sendMessageAboutNewCommit(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, bitbucketAPI: BitbucketAPIAdapter, slackChannelId: string) {
     const commentInBitbucket = bitbucketAPI.canRead() ? await bitbucketAPI.fetchCommitMessage(payload.pullRequest.fromRef.repository.project.key, payload.pullRequest.fromRef.repository.slug, payload.pullRequest.fromRef.latestCommit) : null;

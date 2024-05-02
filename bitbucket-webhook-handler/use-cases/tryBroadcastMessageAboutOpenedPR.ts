@@ -1,7 +1,7 @@
 import { iconEmoji, link, section, contextBlock } from "./slack-building-blocks";
 import { formatUserName, snapshotPullRequestState } from "./helpers";
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
-import { PullRequestBasicNotification } from "../../typings";
+import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 
 export async function tryBroadcastMessageAboutOpenedPR(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, broadcastChannelId: string) {
     if (broadcastChannelId) {

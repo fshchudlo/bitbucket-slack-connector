@@ -11,7 +11,6 @@ import {
     BitbucketCommentSnapshotInSlackMetadata,
     PullRequestSnapshotInSlackMetadata
 } from "../../ports/SlackAPIAdapter";
-import { UserPayload } from "../../../typings";
 import { SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE } from "../../use-cases/helpers/snapshotPullRequestState";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../use-cases/helpers";
 import handleBitbucketWebhook from "../../handleBitbucketWebhook";
@@ -29,7 +28,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
         createdChannels: SlackChannelInfo[];
         invitesToChannels: InviteToChannelArguments[];
         kicksFromChannels: KickFromChannelArguments[];
-        lookedUpUsers: Array<Array<UserPayload>>;
+        lookedUpUsers: Array<Array<string>>;
         searchedChannels: any[];
         searchedCommentSnapshots: any[];
         searchedPrOpenedBroadcastMessages: any[];
@@ -44,7 +43,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
             createdChannels: new Array<SlackChannelInfo>(),
             invitesToChannels: new Array<InviteToChannelArguments>(),
             kicksFromChannels: new Array<KickFromChannelArguments>(),
-            lookedUpUsers: new Array<Array<UserPayload>>(),
+            lookedUpUsers: new Array<Array<string>>(),
             searchedCommentSnapshots: new Array<any>(),
             searchedPrOpenedBroadcastMessages: new Array<any>(),
             searchedChannels: new Array<any>(),
@@ -57,9 +56,9 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
         return this;
     }
 
-    getSlackUserIds(userPayloads: UserPayload[]): Promise<string[]> {
-        this.snapshot.lookedUpUsers.push(userPayloads);
-        return Promise.resolve(userPayloads.map(u => u.emailAddress));
+    getSlackUserIds(userEmails: string[]): Promise<string[]> {
+        this.snapshot.lookedUpUsers.push(userEmails);
+        return Promise.resolve(userEmails);
     }
 
     findChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelInfo | null> {

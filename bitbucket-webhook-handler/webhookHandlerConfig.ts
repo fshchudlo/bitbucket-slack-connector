@@ -1,4 +1,4 @@
-import { BitbucketNotification } from "../typings";
+import { BitbucketNotification } from "../bitbucket-payload-types";
 
 export interface WebhookHandlerConfig {
     readonly usePrivateChannels: boolean;

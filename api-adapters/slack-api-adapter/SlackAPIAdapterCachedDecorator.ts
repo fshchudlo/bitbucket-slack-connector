@@ -1,4 +1,3 @@
-import { UserPayload } from "../../typings";
 import {
     BitbucketCommentSnapshot,
     BitbucketCommentSnapshotInSlackMetadata,
@@ -55,8 +54,8 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
         return this.gateway.addReaction(channelId, messageId, reaction);
     }
 
-    getSlackUserIds(userPayloads: UserPayload[]): Promise<string[]> {
-        return this.gateway.getSlackUserIds(userPayloads);
+    getSlackUserIds(userEmails: string[]): Promise<string[]> {
+        return this.gateway.getSlackUserIds(userEmails);
     }
 
     addBookmark(options: AddBookmarkArguments): Promise<void> {

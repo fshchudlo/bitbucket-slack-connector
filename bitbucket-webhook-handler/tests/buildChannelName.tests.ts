@@ -1,5 +1,5 @@
 import { buildChannelName } from "../buildChannelName";
-import { PullRequestPayload } from "../../typings";
+import { PullRequestPayload } from "../../bitbucket-payload-types";
 
 describe("buildChannelName", () => {
     it("should generate the correct channel name", () => {

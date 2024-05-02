@@ -1,7 +1,7 @@
 import { BitbucketCommentSnapshot, SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { formatUserName, getTaskOrCommentTitle, markdownToSlackMarkup, snapshotCommentState } from "./helpers";
 import { quote, section, iconEmoji } from "./slack-building-blocks";
-import { PullRequestCommentActionNotification } from "../../typings";
+import { PullRequestCommentActionNotification } from "../../bitbucket-payload-types";
 
 export async function sendMessageAboutDeletedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackAPIAdapter, slackChannelId: string) {
     const previousCommentSnapshot = await slackAPI.findLatestBitbucketCommentSnapshot(slackChannelId, payload.comment.id);

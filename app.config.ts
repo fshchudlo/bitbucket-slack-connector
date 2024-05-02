@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { BitbucketNotification } from "./typings";
+import { BitbucketNotification } from "./bitbucket-payload-types";
 
 export const AppConfig = {
     SLACK_SIGNING_SECRET: process.env.SLACK_SIGNING_SECRET as string,

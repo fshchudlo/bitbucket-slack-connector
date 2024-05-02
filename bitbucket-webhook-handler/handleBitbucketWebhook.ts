@@ -1,7 +1,7 @@
 import * as useCases from "./use-cases";
 import { SlackAPIAdapter } from "./ports/SlackAPIAdapter";
 import { BitbucketAPIAdapter } from "./ports/BitbucketAPIAdapter";
-import { BitbucketNotification } from "../typings";
+import { BitbucketNotification } from "../bitbucket-payload-types";
 import { WebhookHandlerConfig } from "./webhookHandlerConfig";
 import { provisionPullRequestChannel } from "./provisionPullRequestChannel";
 

@@ -1,10 +1,10 @@
-import { CommentSeverity, UserPayload } from "../../typings";
+import { CommentSeverity } from "../../bitbucket-payload-types";
 import { Block, KnownBlock } from "@slack/bolt";
 
 export interface SlackAPIAdapter {
     findChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelInfo | null>;
 
-    getSlackUserIds(userPayloads: Array<UserPayload>): Promise<string[]>;
+    getSlackUserIds(userEmails: Array<string>): Promise<string[]>;
 
     createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo>;
 

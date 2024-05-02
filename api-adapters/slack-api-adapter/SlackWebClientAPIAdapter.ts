@@ -11,7 +11,6 @@ import {
     SlackAPIAdapter,
     SlackChannelInfo, PullRequestSnapshotInSlackMetadata
 } from "../../bitbucket-webhook-handler/ports/SlackAPIAdapter";
-import { UserPayload } from "../../typings";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../bitbucket-webhook-handler/use-cases/helpers";
 import {
@@ -30,8 +29,8 @@ export class SlackWebClientAPIAdapter implements SlackAPIAdapter {
         this.client = client;
     }
 
-    async getSlackUserIds(userPayloads: UserPayload[]): Promise<string[]> {
-        const emailAddresses = [...new Set(userPayloads.map(payload => payload.emailAddress))];
+    async getSlackUserIds(userEmails: string[]): Promise<string[]> {
+        const emailAddresses = [...new Set(userEmails)];
         const slackUserIds = await Promise.all(emailAddresses
             .map(email => this.client.users.lookupByEmail({ email })
                 .catch(e => e.data?.error == "users_not_found" ? undefined : e)));

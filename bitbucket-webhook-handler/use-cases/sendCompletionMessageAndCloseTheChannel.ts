@@ -1,6 +1,6 @@
 import { iconEmoji } from "./slack-building-blocks";
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
-import { PullRequestBasicNotification } from "../../typings";
+import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 import { getPullRequestCompletionAction } from "./helpers/getPullRequestCompletionAction";
 
 export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, slackChannelId: string) {

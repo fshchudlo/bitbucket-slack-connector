@@ -1,7 +1,7 @@
 import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
 import { contextBlock, divider, iconEmoji, link, section } from "./slack-building-blocks";
 import { formatUserName } from "./helpers";
-import { PullRequestBasicNotification, PullRequestPayload } from "../../typings";
+import { PullRequestBasicNotification, PullRequestPayload } from "../../bitbucket-payload-types";
 
 export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, slackChannelId: string) {
     await slackAPI.sendMessage(buildMessage(payload, slackChannelId));

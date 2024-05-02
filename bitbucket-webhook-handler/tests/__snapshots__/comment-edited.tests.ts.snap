@@ -33,21 +33,9 @@ exports[`handleBitbucketWebhook Should return generic message if initial comment
   "kicksFromChannels": [],
   "lookedUpUsers": [
     [
-      {
-        "displayName": "Test Author",
-        "emailAddress": "test.author@test.com",
-        "name": "TestAuthor",
-      },
-      {
-        "displayName": "Test Reviewer 1",
-        "emailAddress": "test.reviewer1@test.com",
-        "name": "TestReviewer1",
-      },
-      {
-        "displayName": "Test Reviewer 2",
-        "emailAddress": "test.reviewer2@test.com",
-        "name": "TestReviewer2",
-      },
+      "test.author@test.com",
+      "test.reviewer1@test.com",
+      "test.reviewer2@test.com",
     ],
   ],
   "searchedChannels": [
@@ -170,21 +158,9 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
   "kicksFromChannels": [],
   "lookedUpUsers": [
     [
-      {
-        "displayName": "Test Author",
-        "emailAddress": "test.author@test.com",
-        "name": "TestAuthor",
-      },
-      {
-        "displayName": "Test Reviewer 1",
-        "emailAddress": "test.reviewer1@test.com",
-        "name": "TestReviewer1",
-      },
-      {
-        "displayName": "Test Reviewer 2",
-        "emailAddress": "test.reviewer2@test.com",
-        "name": "TestReviewer2",
-      },
+      "test.author@test.com",
+      "test.reviewer1@test.com",
+      "test.reviewer2@test.com",
     ],
   ],
   "searchedChannels": [
@@ -344,21 +320,9 @@ exports[`handleBitbucketWebhook Should send message on comment conversion to the
   "kicksFromChannels": [],
   "lookedUpUsers": [
     [
-      {
-        "displayName": "Test Author",
-        "emailAddress": "test.author@test.com",
-        "name": "TestAuthor",
-      },
-      {
-        "displayName": "Test Reviewer 1",
-        "emailAddress": "test.reviewer1@test.com",
-        "name": "TestReviewer1",
-      },
-      {
-        "displayName": "Test Reviewer 2",
-        "emailAddress": "test.reviewer2@test.com",
-        "name": "TestReviewer2",
-      },
+      "test.author@test.com",
+      "test.reviewer1@test.com",
+      "test.reviewer2@test.com",
     ],
   ],
   "searchedChannels": [
@@ -518,21 +482,9 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
   "kicksFromChannels": [],
   "lookedUpUsers": [
     [
-      {
-        "displayName": "Test Author",
-        "emailAddress": "test.author@test.com",
-        "name": "TestAuthor",
-      },
-      {
-        "displayName": "Test Reviewer 1",
-        "emailAddress": "test.reviewer1@test.com",
-        "name": "TestReviewer1",
-      },
-      {
-        "displayName": "Test Reviewer 2",
-        "emailAddress": "test.reviewer2@test.com",
-        "name": "TestReviewer2",
-      },
+      "test.author@test.com",
+      "test.reviewer1@test.com",
+      "test.reviewer2@test.com",
     ],
   ],
   "searchedChannels": [
@@ -733,21 +685,9 @@ exports[`handleBitbucketWebhook Should send message on task conversion to the co
   "kicksFromChannels": [],
   "lookedUpUsers": [
     [
-      {
-        "displayName": "Test Author",
-        "emailAddress": "test.author@test.com",
-        "name": "TestAuthor",
-      },
-      {
-        "displayName": "Test Reviewer 1",
-        "emailAddress": "test.reviewer1@test.com",
-        "name": "TestReviewer1",
-      },
-      {
-        "displayName": "Test Reviewer 2",
-        "emailAddress": "test.reviewer2@test.com",
-        "name": "TestReviewer2",
-      },
+      "test.author@test.com",
+      "test.reviewer1@test.com",
+      "test.reviewer2@test.com",
     ],
   ],
   "searchedChannels": [
@@ -907,21 +847,9 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
   "kicksFromChannels": [],
   "lookedUpUsers": [
     [
-      {
-        "displayName": "Test Author",
-        "emailAddress": "test.author@test.com",
-        "name": "TestAuthor",
-      },
-      {
-        "displayName": "Test Reviewer 1",
-        "emailAddress": "test.reviewer1@test.com",
-        "name": "TestReviewer1",
-      },
-      {
-        "displayName": "Test Reviewer 2",
-        "emailAddress": "test.reviewer2@test.com",
-        "name": "TestReviewer2",
-      },
+      "test.author@test.com",
+      "test.reviewer1@test.com",
+      "test.reviewer2@test.com",
     ],
   ],
   "searchedChannels": [

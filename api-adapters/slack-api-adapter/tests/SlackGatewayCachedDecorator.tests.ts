@@ -1,6 +1,6 @@
 import { SlackAPIAdapterCachedDecorator } from "../SlackAPIAdapterCachedDecorator";
 import { snapshotCommentState } from "../../../bitbucket-webhook-handler/use-cases/helpers";
-import { PullRequestCommentActionNotification } from "../../../typings";
+import { PullRequestCommentActionNotification } from "../../../bitbucket-payload-types";
 import { register } from "prom-client";
 import {
     BitbucketCommentSnapshot,

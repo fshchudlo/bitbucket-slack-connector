@@ -1,7 +1,7 @@
 import SlackAdapterSnapshottingMock from "./mocks/SlackAdapterSnapshottingMock";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
 import { MockBitbucketAPIAdapter } from "./mocks/MockBitbucketAPIAdapter";
-import { PullRequestBasicNotification } from "../../typings";
+import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 import TestPayloadBuilder from "./mocks/TestPayloadBuilder";
 import { TestWebhookHandlerConfig } from "./mocks/TestWebhookHandlerConfig";
 

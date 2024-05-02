@@ -1,6 +1,6 @@
 import { SlackAPIAdapter } from "./ports/SlackAPIAdapter";
 import { BitbucketAPIAdapter } from "./ports/BitbucketAPIAdapter";
-import { BitbucketNotification, PullRequestBasicNotification } from "../typings";
+import { BitbucketNotification, PullRequestBasicNotification } from "../bitbucket-payload-types";
 import { WebhookHandlerConfig } from "./webhookHandlerConfig";
 import { buildChannelName } from "./buildChannelName";
 import handleBitbucketWebhook from "./handleBitbucketWebhook";

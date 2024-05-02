@@ -47,35 +47,15 @@ exports[`handleBitbucketWebhook Should replay channel creation if channel doesn'
   ],
   "lookedUpUsers": [
     [
-      {
-        "displayName": "Test Author",
-        "emailAddress": "test.author@test.com",
-        "name": "TestAuthor",
-      },
-      {
-        "displayName": "Test Reviewer 1",
-        "emailAddress": "test.reviewer1@test.com",
-        "name": "TestReviewer1",
-      },
-      {
-        "displayName": "Test Reviewer 2",
-        "emailAddress": "test.reviewer2@test.com",
-        "name": "TestReviewer2",
-      },
+      "test.author@test.com",
+      "test.reviewer1@test.com",
+      "test.reviewer2@test.com",
     ],
     [
-      {
-        "displayName": "Test Reviewer 3",
-        "emailAddress": "test.reviewer3@test.com",
-        "name": "TestReviewer3",
-      },
+      "test.reviewer3@test.com",
     ],
     [
-      {
-        "displayName": "Test Reviewer 1",
-        "emailAddress": "test.reviewer1@test.com",
-        "name": "TestReviewer1",
-      },
+      "test.reviewer1@test.com",
     ],
   ],
   "searchedChannels": [
