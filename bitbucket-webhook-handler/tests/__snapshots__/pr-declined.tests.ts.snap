@@ -2,14 +2,7 @@
 
 exports[`handleBitbucketWebhook Should send completion message and close the channel on PR declining 1`] = `
 {
-  "addedBookmarks": [
-    {
-      "channelId": "12345",
-      "emoji": ":git:",
-      "link": "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview",
-      "title": "Review Pull Request",
-    },
-  ],
+  "addedBookmarks": [],
   "addedReactions": [],
   "archivedChannels": [
     "12345",
@@ -21,70 +14,13 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
       "name": "pr-test-proj-test-repository-1",
     },
   ],
-  "invitesToChannels": [
-    {
-      "channelId": "12345",
-      "force": true,
-      "users": [
-        "test.author@test.com",
-        "test.reviewer1@test.com",
-        "test.reviewer2@test.com",
-      ],
-    },
-  ],
+  "invitesToChannels": [],
   "kicksFromChannels": [],
-  "lookedUpUsers": [
-    [
-      "test.author@test.com",
-      "test.reviewer1@test.com",
-      "test.reviewer2@test.com",
-    ],
-  ],
-  "searchedChannels": [
-    {
-      "channelName": "pr-test-proj-test-repository-1",
-      "findPrivateChannels": true,
-    },
-  ],
+  "lookedUpUsers": [],
+  "searchedChannels": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
-    {
-      "blocks": [
-        {
-          "text": {
-            "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
-            "type": "mrkdwn",
-          },
-          "type": "section",
-        },
-        {
-          "type": "divider",
-        },
-        {
-          "elements": [
-            {
-              "text": "Test pull request description",
-              "type": "mrkdwn",
-            },
-          ],
-          "type": "context",
-        },
-        {
-          "type": "divider",
-        },
-        {
-          "text": {
-            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
-            "type": "mrkdwn",
-          },
-          "type": "section",
-        },
-      ],
-      "channelId": "12345",
-      "iconEmoji": ":bitbucket:",
-      "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
-    },
     {
       "channelId": "12345",
       "iconEmoji": ":bitbucket:",
@@ -96,21 +32,8 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
 
 exports[`handleBitbucketWebhook Should send notification to the broadcast channel, if it is specified 1`] = `
 {
-  "addedBookmarks": [
-    {
-      "channelId": "12345",
-      "emoji": ":git:",
-      "link": "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview",
-      "title": "Review Pull Request",
-    },
-  ],
-  "addedReactions": [
-    {
-      "channelId": "test-broadcast-channel-id",
-      "messageId": "ABCDE",
-      "reaction": "no_entry_sign",
-    },
-  ],
+  "addedBookmarks": [],
+  "addedReactions": [],
   "archivedChannels": [
     "12345",
   ],
@@ -121,31 +44,10 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
       "name": "pr-test-proj-test-repository-1",
     },
   ],
-  "invitesToChannels": [
-    {
-      "channelId": "12345",
-      "force": true,
-      "users": [
-        "test.author@test.com",
-        "test.reviewer1@test.com",
-        "test.reviewer2@test.com",
-      ],
-    },
-  ],
+  "invitesToChannels": [],
   "kicksFromChannels": [],
-  "lookedUpUsers": [
-    [
-      "test.author@test.com",
-      "test.reviewer1@test.com",
-      "test.reviewer2@test.com",
-    ],
-  ],
-  "searchedChannels": [
-    {
-      "channelName": "pr-test-proj-test-repository-1",
-      "findPrivateChannels": true,
-    },
-  ],
+  "lookedUpUsers": [],
+  "searchedChannels": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [
     {
@@ -160,98 +62,9 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
   ],
   "sentMessages": [
     {
-      "blocks": [
-        {
-          "text": {
-            "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
-            "type": "mrkdwn",
-          },
-          "type": "section",
-        },
-        {
-          "type": "divider",
-        },
-        {
-          "elements": [
-            {
-              "text": "Test pull request description",
-              "type": "mrkdwn",
-            },
-          ],
-          "type": "context",
-        },
-        {
-          "type": "divider",
-        },
-        {
-          "text": {
-            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
-            "type": "mrkdwn",
-          },
-          "type": "section",
-        },
-      ],
-      "channelId": "12345",
-      "iconEmoji": ":bitbucket:",
-      "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
-    },
-    {
-      "blocks": [
-        {
-          "text": {
-            "text": ":snowboarder: Test Author opened pull request "Test pull request title".",
-            "type": "mrkdwn",
-          },
-          "type": "section",
-        },
-        {
-          "elements": [
-            {
-              "text": "Target: \`test-repository/master\`",
-              "type": "mrkdwn",
-            },
-          ],
-          "type": "context",
-        },
-        {
-          "elements": [
-            {
-              "text": "Assigned reviewers: Test Reviewer 1,Test Reviewer 2.",
-              "type": "mrkdwn",
-            },
-          ],
-          "type": "context",
-        },
-        {
-          "text": {
-            "text": "You're welcome to <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|join code review>.",
-            "type": "mrkdwn",
-          },
-          "type": "section",
-        },
-      ],
-      "channelId": "test-broadcast-channel-id",
-      "iconEmoji": ":bitbucket:",
-      "metadata": {
-        "eventPayload": {
-          "projectKey": "TEST-PROJ",
-          "pullRequestId": "1",
-          "repositorySlug": "test-repository",
-        },
-        "eventType": "bitbucket_pull_request_opened",
-      },
-      "text": ":snowboarder: Test Author opened pull request "Test pull request title".",
-    },
-    {
       "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "text": ":no_entry_sign: Pull request was declined by Test Author.",
-    },
-    {
-      "channelId": "test-broadcast-channel-id",
-      "iconEmoji": ":bitbucket:",
-      "text": ":no_entry_sign: Pull request was declined by Test Author.",
-      "threadId": "ABCDE",
     },
   ],
 }

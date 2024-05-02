@@ -1,9 +1,9 @@
 import { iconEmoji, link, section, divider, contextBlock } from "./slack-building-blocks";
 import { formatUserName, formatPullRequestDescription, reviewPRAction } from "./helpers";
-import { SendMessageArguments, SlackAPIAdapter } from "../ports/SlackAPIAdapter";
+import { SendMessageArguments, SlackNotificationChannel } from "../SlackNotificationChannel";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 
-export async function inviteParticipantsAndSetChannelBookmark(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, defaultChannelParticipants: string[], slackChannelId: string) {
+export async function inviteParticipantsAndSetChannelBookmark(payload: PullRequestBasicNotification, slackAPI: SlackNotificationChannel, defaultChannelParticipants: string[], slackChannelId: string) {
     const allParticipants = [payload.pullRequest.author.user]
         .concat(payload.pullRequest.reviewers.map(r => r.user));
 

@@ -8,7 +8,7 @@ describe("handleBitbucketWebhook", () => {
         const testSlackGateway = await new SlackAdapterSnapshottingMock().setupBasicChannel();
 
 
-        await handleBitbucketWebhook(TestPayloadBuilder.reviewersUpdated(), testSlackGateway, TestWebhookHandlerConfig);
+        await handleBitbucketWebhook(TestPayloadBuilder.reviewersUpdated(), testSlackGateway, testSlackGateway.testChannel, TestWebhookHandlerConfig);
 
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();

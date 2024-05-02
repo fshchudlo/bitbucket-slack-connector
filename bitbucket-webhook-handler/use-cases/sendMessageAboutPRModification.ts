@@ -1,9 +1,9 @@
 import { contextBlock, divider, iconEmoji, section } from "./slack-building-blocks";
 import { formatUserName, formatPullRequestDescription, reviewPRAction } from "./helpers";
-import { SlackAPIAdapter } from "../ports/SlackAPIAdapter";
+import { SlackNotificationChannel } from "../SlackNotificationChannel";
 import { PullRequestModifiedNotification } from "../../bitbucket-payload-types";
 
-export async function sendMessageAboutPRModification(payload: PullRequestModifiedNotification, slackAPI: SlackAPIAdapter, slackChannelId: string) {
+export async function sendMessageAboutPRModification(payload: PullRequestModifiedNotification, slackAPI: SlackNotificationChannel, slackChannelId: string) {
     const visibleChanges = getChangesDescription(payload);
     if (visibleChanges.length == 0) {
         return;

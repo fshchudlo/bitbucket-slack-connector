@@ -4,18 +4,18 @@ import handleBitbucketWebhook from "../handleBitbucketWebhook";
 import { TestWebhookHandlerConfig } from "./mocks/TestWebhookHandlerConfig";
 
 describe("handleBitbucketWebhook", () => {
-    it("Should create channel, add bookmark and invite author and reviewers on PR opened", async () => {
-        const testSlackGateway = new SlackAdapterSnapshottingMock();
+    it("Should add bookmark and invite author and reviewers on PR opened", async () => {
+        const testSlackGateway = await new SlackAdapterSnapshottingMock().setupBasicChannel();
 
 
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), testSlackGateway, TestWebhookHandlerConfig);
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), testSlackGateway, testSlackGateway.testChannel, TestWebhookHandlerConfig);
 
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
     });
 
     it("Should send notification to the broadcast channel, if it is specified", async () => {
-        const testSlackGateway = new SlackAdapterSnapshottingMock();
+        const testSlackGateway = await new SlackAdapterSnapshottingMock().setupBasicChannel();
         // noinspection JSUnusedGlobalSymbols
         const testConfig = {
             ...TestWebhookHandlerConfig,
@@ -23,7 +23,7 @@ describe("handleBitbucketWebhook", () => {
         };
 
 
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), testSlackGateway, testConfig);
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), testSlackGateway, testSlackGateway.testChannel, testConfig);
 
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();

@@ -1,8 +1,6 @@
 import {
-    SlackAPIAdapter,
-    SlackChannelInfo,
+    SlackNotificationChannel,
     BitbucketCommentSnapshot,
-    CreateChannelArguments,
     AddBookmarkArguments,
     InviteToChannelArguments,
     KickFromChannelArguments,
@@ -10,16 +8,21 @@ import {
     SendMessageResponse,
     BitbucketCommentSnapshotInSlackMetadata,
     PullRequestSnapshotInSlackMetadata
-} from "../../ports/SlackAPIAdapter";
+} from "../../SlackNotificationChannel";
 import { SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE } from "../../use-cases/helpers/snapshotPullRequestState";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../use-cases/helpers";
-import handleBitbucketWebhook from "../../handleBitbucketWebhook";
 import TestPayloadBuilder from "./TestPayloadBuilder";
 import { TestWebhookHandlerConfig } from "./TestWebhookHandlerConfig";
+import {
+    CreateChannelArguments,
+    SlackChannelFactory,
+    SlackChannelInfo
+} from "../../../channel-provisioning/SlackChannelFactory";
+import { provisionPullRequestChannel } from "../../../channel-provisioning/provisionPullRequestChannel";
 
 const channelId = "12345";
 const messageId = "ABCDE";
-export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
+export default class SlackAdapterSnapshottingMock implements SlackNotificationChannel, SlackChannelFactory {
     snapshot: {
         addedReactions: any[];
         addedBookmarks: AddBookmarkArguments[];
@@ -33,6 +36,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
         searchedPrOpenedBroadcastMessages: any[];
         sentMessages: SendMessageArguments[];
     };
+    public testChannel: SlackChannelInfo = null;
 
     constructor() {
         this.snapshot = {
@@ -51,7 +55,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
     }
 
     async setupBasicChannel(webhookHandlerConfig = TestWebhookHandlerConfig): Promise<SlackAdapterSnapshottingMock> {
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), this, webhookHandlerConfig);
+        this.testChannel = await provisionPullRequestChannel(this, this, TestPayloadBuilder.pullRequestOpened(), webhookHandlerConfig);
         return this;
     }
 
@@ -86,7 +90,7 @@ export default class SlackAdapterSnapshottingMock implements SlackAPIAdapter {
         return Promise.resolve();
     }
 
-    archiveChannel(channelId: string): Promise<void> {
+    closeChannel(channelId: string): Promise<void> {
         this.snapshot.archivedChannels.push(channelId);
         return Promise.resolve();
     }

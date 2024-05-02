@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`handleBitbucketWebhook Should create channel, add bookmark and invite author and reviewers on PR opened 1`] = `
+exports[`handleBitbucketWebhook Should add bookmark and invite author and reviewers on PR opened 1`] = `
 {
   "addedBookmarks": [
     {

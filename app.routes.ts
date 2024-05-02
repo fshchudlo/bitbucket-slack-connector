@@ -2,12 +2,13 @@ import handleBitbucketWebhook from "./bitbucket-webhook-handler/handleBitbucketW
 import { register } from "prom-client";
 import { buildChannelName } from "./bitbucket-webhook-handler/buildChannelName";
 import { ExpressReceiver } from "@slack/bolt";
-import { SlackAPIAdapterCachedDecorator } from "./api-adapters/slack-api-adapter/SlackAPIAdapterCachedDecorator";
-import BitbucketWebAPIAdapter from "./api-adapters/bitbucket-gateway/BitbucketWebAPIAdapter";
+import { SlackAPIAdapterCachedDecorator } from "./slack-api-adapter/SlackAPIAdapterCachedDecorator";
+import BitbucketWebAPIAdapter from "./payload-normalization/BitbucketWebAPIAdapter";
 import { AppConfig } from "./app.config";
 import { NextFunction } from "express";
 import { WebhookHandlerConfig } from "./bitbucket-webhook-handler/webhookHandlerConfig";
 import { normalizeBitbucketWebhookPayload } from "./payload-normalization/normalizeBitbucketWebhookPayload";
+import { provisionPullRequestChannel } from "./channel-provisioning/provisionPullRequestChannel";
 
 const bitbucketAPI = new BitbucketWebAPIAdapter(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
 
@@ -21,9 +22,9 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackA
                 getOpenedPRBroadcastChannelId: AppConfig.getOpenedPRBroadcastChannelId
             };
             const payload = await normalizeBitbucketWebhookPayload(req.body, bitbucketAPI);
+            const channelInfo = await provisionPullRequestChannel(slackAPI, slackAPI, payload, config);
 
-
-            await handleBitbucketWebhook(payload, slackAPI, config);
+            await handleBitbucketWebhook(payload, slackAPI, channelInfo, config);
             res.sendStatus(200);
 
         } catch (error) {

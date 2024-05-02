@@ -1,12 +1,11 @@
 import * as useCases from "./use-cases";
-import { SlackAPIAdapter } from "./ports/SlackAPIAdapter";
+import { SlackNotificationChannel } from "./SlackNotificationChannel";
 import { BitbucketNotification } from "../bitbucket-payload-types";
 import { WebhookHandlerConfig } from "./webhookHandlerConfig";
-import { provisionPullRequestChannel } from "./provisionPullRequestChannel";
+import { SlackChannelInfo } from "../channel-provisioning/SlackChannelFactory";
 
-export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackAPI: SlackAPIAdapter, config: WebhookHandlerConfig) {
+export default async function handleBitbucketWebhook(payload: BitbucketNotification, slackAPI: SlackNotificationChannel, channelInfo:SlackChannelInfo, config: WebhookHandlerConfig) {
     const eventKey = payload.eventKey;
-    const channelInfo = await provisionPullRequestChannel(slackAPI, payload, config);
 
     switch (eventKey) {
         case "pr:opened":

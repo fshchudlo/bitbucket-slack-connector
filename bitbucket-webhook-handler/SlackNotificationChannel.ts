@@ -1,20 +1,12 @@
-import { CommentSeverity } from "../../bitbucket-payload-types";
+import { CommentSeverity } from "../bitbucket-payload-types";
 import { Block, KnownBlock } from "@slack/bolt";
 
-export interface SlackAPIAdapter {
-    findChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelInfo | null>;
-
+export interface SlackNotificationChannel {
     getSlackUserIds(userEmails: Array<string>): Promise<string[]>;
-
-    createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo>;
-
     addBookmark(options: AddBookmarkArguments): Promise<void>;
-
     inviteToChannel(options: InviteToChannelArguments): Promise<void>;
-
     kickFromChannel(options: KickFromChannelArguments): Promise<void>;
-
-    archiveChannel(channelId: string): Promise<void>;
+    closeChannel(channelId: string): Promise<void>;
     addReaction(channelId: string, messageId: string, reaction: string): Promise<void>
     sendMessage(options: SendMessageArguments): Promise<SendMessageResponse>;
     findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null>;
@@ -38,15 +30,6 @@ export type PullRequestSnapshotInSlackMetadata = {
     repositorySlug: string
 }
 
-export type SlackChannelInfo = {
-    id: string;
-    name: string;
-    isArchived: boolean;
-}
-export type CreateChannelArguments = {
-    name: string;
-    isPrivate?: boolean;
-}
 export type AddBookmarkArguments = {
     channelId: string;
     link: string;

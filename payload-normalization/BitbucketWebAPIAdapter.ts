@@ -1,4 +1,4 @@
-import { BitbucketAPIAdapter } from "../../payload-normalization/BitbucketAPIAdapter";
+import { BitbucketAPIAdapter } from "./BitbucketAPIAdapter";
 import axios, { AxiosRequestConfig } from "axios";
 
 export default class BitbucketWebAPIAdapter implements BitbucketAPIAdapter {

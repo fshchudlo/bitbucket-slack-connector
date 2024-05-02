@@ -1,9 +1,9 @@
 import { iconEmoji } from "./slack-building-blocks";
-import { SlackAPIAdapter } from "../ports/SlackAPIAdapter";
+import { SlackNotificationChannel } from "../SlackNotificationChannel";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 import { getPullRequestCompletionAction } from "./helpers/getPullRequestCompletionAction";
 
-export async function tryBroadcastMessageAboutClosedPR(payload: PullRequestBasicNotification, slackAPI: SlackAPIAdapter, broadcastChannelId: string) {
+export async function tryBroadcastMessageAboutClosedPR(payload: PullRequestBasicNotification, slackAPI: SlackNotificationChannel, broadcastChannelId: string) {
     if (!broadcastChannelId) {
         return;
     }

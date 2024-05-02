@@ -10,7 +10,7 @@ describe("handleBitbucketWebhook", () => {
         const payload = TestPayloadBuilder.pullRequestDeleted();
 
 
-        await handleBitbucketWebhook(payload, testSlackGateway, TestWebhookHandlerConfig);
+        await handleBitbucketWebhook(payload, testSlackGateway, testSlackGateway.testChannel, TestWebhookHandlerConfig);
 
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
@@ -25,7 +25,7 @@ describe("handleBitbucketWebhook", () => {
 
 
         const payload = TestPayloadBuilder.pullRequestDeleted();
-        await handleBitbucketWebhook(payload, testSlackGateway, testConfig);
+        await handleBitbucketWebhook(payload, testSlackGateway, testSlackGateway.testChannel, testConfig);
 
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();

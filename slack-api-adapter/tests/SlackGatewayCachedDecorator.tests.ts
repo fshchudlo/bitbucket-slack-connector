@@ -1,31 +1,33 @@
 import { SlackAPIAdapterCachedDecorator } from "../SlackAPIAdapterCachedDecorator";
-import { snapshotCommentState } from "../../../bitbucket-webhook-handler/use-cases/helpers";
-import { PullRequestCommentActionNotification } from "../../../bitbucket-payload-types";
+import { snapshotCommentState } from "../../bitbucket-webhook-handler/use-cases/helpers";
+import { PullRequestCommentActionNotification } from "../../bitbucket-payload-types";
 import { register } from "prom-client";
 import {
     BitbucketCommentSnapshot,
-    BitbucketCommentSnapshotInSlackMetadata, SendMessageResponse
-} from "../../../bitbucket-webhook-handler/ports/SlackAPIAdapter";
+    BitbucketCommentSnapshotInSlackMetadata, SendMessageResponse, SlackNotificationChannel
+} from "../../bitbucket-webhook-handler/SlackNotificationChannel";
+import { SlackChannelFactory } from "../../channel-provisioning/SlackChannelFactory";
 
 
-const decoratedGatewayMock = {
-    provisionChannel: jest.fn(),
+const decoratedGatewayMock = (<SlackChannelFactory & SlackNotificationChannel>{
+    addBookmark: jest.fn(),
+    addReaction: jest.fn(),
+    closeChannel: jest.fn(),
     createChannel: jest.fn(),
     findChannel: jest.fn(),
-    archiveChannel: jest.fn(),
+    findLatestBitbucketCommentSnapshot: jest.fn(),
+    findPROpenedBroadcastMessageId: jest.fn(),
     getSlackUserIds: jest.fn(),
-    setChannelTopic: jest.fn(),
     inviteToChannel: jest.fn(),
     kickFromChannel: jest.fn(),
-    sendMessage: jest.fn(),
-    findLatestBitbucketCommentSnapshot: jest.fn()
-};
+    sendMessage: jest.fn()
+}) as any;
 
 describe("SlackGatewayCachedDecorator", () => {
     let systemUnderTest: SlackAPIAdapterCachedDecorator;
 
     beforeEach(() => {
-        systemUnderTest = new SlackAPIAdapterCachedDecorator(decoratedGatewayMock as any);
+        systemUnderTest = new SlackAPIAdapterCachedDecorator(decoratedGatewayMock as any, decoratedGatewayMock as any);
     });
 
     afterEach(() => {
@@ -53,12 +55,12 @@ describe("SlackGatewayCachedDecorator", () => {
             isArchived: false
         };
         decoratedGatewayMock.createChannel.mockResolvedValue(channelData);
-        decoratedGatewayMock.archiveChannel.mockResolvedValue({});
+        decoratedGatewayMock.closeChannel.mockResolvedValue({});
 
         await systemUnderTest.createChannel({ name: channelData.name });
         expect(systemUnderTest.channelsCache.get(channelData.name)).not.toBeUndefined();
 
-        await systemUnderTest.archiveChannel(channelData.id);
+        await systemUnderTest.closeChannel(channelData.id);
         expect(systemUnderTest.channelsCache.get(channelData.name)).toBeUndefined();
     });
 
@@ -173,9 +175,9 @@ describe("SlackGatewayCachedDecorator", () => {
 
         expect(systemUnderTest.bitbucketCommentsCache.get("channelId-1")).toEqual(commentSnapshot);
 
-        decoratedGatewayMock.archiveChannel.mockResolvedValue({});
+        decoratedGatewayMock.closeChannel.mockResolvedValue({});
 
-        await systemUnderTest.archiveChannel("channelId");
+        await systemUnderTest.closeChannel("channelId");
 
         expect(systemUnderTest.bitbucketCommentsCache.get("channelId-1")).toBeUndefined();
 

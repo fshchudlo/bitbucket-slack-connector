@@ -1,5 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`handleBitbucketWebhook Should create channel 1`] = `
+{
+  "addedBookmarks": [],
+  "addedReactions": [],
+  "archivedChannels": [],
+  "createdChannels": [
+    {
+      "id": "12345",
+      "isArchived": false,
+      "name": "pr-test-proj-test-repository-1",
+    },
+  ],
+  "invitesToChannels": [],
+  "kicksFromChannels": [],
+  "lookedUpUsers": [],
+  "searchedChannels": [],
+  "searchedCommentSnapshots": [],
+  "searchedPrOpenedBroadcastMessages": [],
+  "sentMessages": [],
+}
+`;
+
 exports[`handleBitbucketWebhook Should replay channel creation if channel doesn't exist and handle initial payload after that 1`] = `
 {
   "addedBookmarks": [
@@ -29,33 +51,13 @@ exports[`handleBitbucketWebhook Should replay channel creation if channel doesn'
         "test.reviewer2@test.com",
       ],
     },
-    {
-      "channelId": "12345",
-      "force": true,
-      "users": [
-        "test.reviewer3@test.com",
-      ],
-    },
   ],
-  "kicksFromChannels": [
-    {
-      "channelId": "12345",
-      "users": [
-        "test.reviewer1@test.com",
-      ],
-    },
-  ],
+  "kicksFromChannels": [],
   "lookedUpUsers": [
     [
       "test.author@test.com",
       "test.reviewer1@test.com",
       "test.reviewer2@test.com",
-    ],
-    [
-      "test.reviewer3@test.com",
-    ],
-    [
-      "test.reviewer1@test.com",
     ],
   ],
   "searchedChannels": [

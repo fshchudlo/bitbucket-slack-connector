@@ -1,7 +1,7 @@
-import { SlackAPIAdapter } from "../ports/SlackAPIAdapter";
+import { SlackNotificationChannel } from "../SlackNotificationChannel";
 import { PullRequestReviewersUpdatedNotification } from "../../bitbucket-payload-types";
 
-export async function updateChannelMembers(payload: PullRequestReviewersUpdatedNotification, slackAPI: SlackAPIAdapter, slackChannelId: string) {
+export async function updateChannelMembers(payload: PullRequestReviewersUpdatedNotification, slackAPI: SlackNotificationChannel, slackChannelId: string) {
     const userIdsToAdd = await slackAPI.getSlackUserIds(payload.addedReviewers.map(payload => payload.emailAddress));
     const userIdsToRemove = await slackAPI.getSlackUserIds(payload.removedReviewers.map(payload => payload.emailAddress));
 

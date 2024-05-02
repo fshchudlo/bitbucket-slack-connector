@@ -1,32 +1,38 @@
 import {
     BitbucketCommentSnapshot,
     BitbucketCommentSnapshotInSlackMetadata,
-    CreateChannelArguments,
     InviteToChannelArguments,
     KickFromChannelArguments, SendMessageArguments, SendMessageResponse,
     AddBookmarkArguments,
-    SlackAPIAdapter,
-    SlackChannelInfo, PullRequestSnapshotInSlackMetadata
-} from "../../bitbucket-webhook-handler/ports/SlackAPIAdapter";
+    SlackNotificationChannel,
+    PullRequestSnapshotInSlackMetadata
+} from "../bitbucket-webhook-handler/SlackNotificationChannel";
 import { InMemoryCache } from "./cache/InMemoryCache";
+import {
+    CreateChannelArguments,
+    SlackChannelFactory,
+    SlackChannelInfo
+} from "../channel-provisioning/SlackChannelFactory";
 
 function getCommentCacheKey(channelId: string, bitbucketCommentId: number | string) {
     return `${channelId}-${bitbucketCommentId}`;
 }
 
-export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
-    private gateway: SlackAPIAdapter;
+export class SlackAPIAdapterCachedDecorator implements SlackNotificationChannel, SlackChannelFactory {
+    private gateway: SlackNotificationChannel;
+    private factory: SlackChannelFactory;
     readonly channelsCache: InMemoryCache<SlackChannelInfo>;
     readonly bitbucketCommentsCache: InMemoryCache<BitbucketCommentSnapshot>;
 
-    constructor(gateway: SlackAPIAdapter) {
+    constructor(gateway: SlackNotificationChannel, factory: SlackChannelFactory) {
         this.gateway = gateway;
+        this.factory = factory;
         this.channelsCache = new InMemoryCache("channels");
         this.bitbucketCommentsCache = new InMemoryCache("comments");
     }
 
     async createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
-        const response = await this.gateway.createChannel(options);
+        const response = await this.factory.createChannel(options);
         this.channelsCache.set(options.name, response);
         return response;
     }
@@ -36,7 +42,7 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
         if (cachedChannelInfo) {
             return Promise.resolve(cachedChannelInfo);
         }
-        const channelInfo = await this.gateway.findChannel(channelName, findPrivateChannels);
+        const channelInfo = await this.factory.findChannel(channelName, findPrivateChannels);
 
         if (channelInfo && !channelInfo.isArchived) {
             this.channelsCache.set(channelName, channelInfo);
@@ -44,8 +50,8 @@ export class SlackAPIAdapterCachedDecorator implements SlackAPIAdapter {
         return channelInfo;
     }
 
-    async archiveChannel(channelId: string): Promise<void> {
-        await this.gateway.archiveChannel(channelId);
+    async closeChannel(channelId: string): Promise<void> {
+        await this.gateway.closeChannel(channelId);
         this.channelsCache.deleteWhere((k, v) => v.id == channelId);
         this.bitbucketCommentsCache.deleteWhere((k) => k.startsWith(getCommentCacheKey(channelId, "")));
     }
