@@ -19,7 +19,6 @@ function buildMessage(payload: PullRequestBasicNotification, channelId: string):
     const invitationText = `You're welcome to ${link(payload.pullRequest.links.self[0].href, "join code review")}.`;
 
     return {
-        channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), contextBlock(targetText), reviewersContextBlock, section(invitationText)]

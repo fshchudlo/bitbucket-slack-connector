@@ -18,10 +18,9 @@ export async function tryBroadcastMessageAboutClosedPR(payload: PullRequestBasic
     const completionAction = getPullRequestCompletionAction(payload);
 
     await slackAPI.sendMessage({
-        channelId: broadcastChannelId,
         iconEmoji: iconEmoji,
         text: `${completionAction.emoji} ${completionAction.text}`,
         threadId: initialBroadcastMessageId
     });
-    await slackAPI.addReaction(broadcastChannelId, initialBroadcastMessageId, completionAction.reaction);
+    await slackAPI.addReaction(initialBroadcastMessageId, completionAction.reaction);
 }

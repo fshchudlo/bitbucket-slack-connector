@@ -9,6 +9,7 @@ import {
     SendMessageResponse,
     SlackChannel
 } from "../bitbucket-webhook-handler/SlackChannel";
+import { SlackChannelInfo } from "../channel-provisioning/SlackChannelFactory";
 import { CHANNELS_CACHE } from "./CHANNELS_CACHE";
 import { COMMENTS_CACHE } from "./COMMENTS_CACHE";
 
@@ -18,20 +19,23 @@ function getCommentCacheKey(channelId: string, bitbucketCommentId: number | stri
 
 
 export class SlackChannelCachedDecorator implements SlackChannel {
+    get channelInfo(): SlackChannelInfo {
+        return this.channel.channelInfo;
+    }
     private channel: SlackChannel;
-
     constructor(gateway: SlackChannel) {
         this.channel = gateway;
     }
 
-    async closeChannel(channelId: string): Promise<void> {
-        await this.channel.closeChannel(channelId);
-        CHANNELS_CACHE.deleteWhere((k, v) => v.id == channelId);
-        COMMENTS_CACHE.deleteWhere((k) => k.startsWith(getCommentCacheKey(channelId, "")));
+
+    async closeChannel(): Promise<void> {
+        await this.channel.closeChannel();
+        CHANNELS_CACHE.deleteWhere((k, v) => v.id == this.channel.channelInfo.id);
+        COMMENTS_CACHE.deleteWhere((k) => k.startsWith(getCommentCacheKey(this.channel.channelInfo.id, "")));
     }
 
-    addReaction(channelId: string, messageId: string, reaction: string): Promise<void> {
-        return this.channel.addReaction(channelId, messageId, reaction);
+    addReaction(messageId: string, reaction: string): Promise<void> {
+        return this.channel.addReaction(messageId, reaction);
     }
 
     getSlackUserIds(userEmails: string[]): Promise<string[]> {
@@ -63,18 +67,18 @@ export class SlackChannelCachedDecorator implements SlackChannel {
                 slackMessageId: response.messageId,
                 slackThreadId: response.threadId
             };
-            COMMENTS_CACHE.set(getCommentCacheKey(options.channelId, commentSnapshot.commentId), commentSnapshot);
+            COMMENTS_CACHE.set(getCommentCacheKey(this.channel.channelInfo.id, commentSnapshot.commentId), commentSnapshot);
         }
         return response;
     }
 
-    async findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
-        const cacheKey = getCommentCacheKey(channelId, bitbucketCommentId);
+    async findLatestBitbucketCommentSnapshot(bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
+        const cacheKey = getCommentCacheKey(this.channel.channelInfo.id, bitbucketCommentId);
         const cachedCommentInfo = COMMENTS_CACHE.get(cacheKey);
         if (cachedCommentInfo) {
             return Promise.resolve(cachedCommentInfo);
         }
-        const commentSnapshot = await this.channel.findLatestBitbucketCommentSnapshot(channelId, bitbucketCommentId);
+        const commentSnapshot = await this.channel.findLatestBitbucketCommentSnapshot(bitbucketCommentId);
 
         if (commentSnapshot) {
             COMMENTS_CACHE.set(cacheKey, commentSnapshot);

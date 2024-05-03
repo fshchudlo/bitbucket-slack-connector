@@ -6,8 +6,8 @@ import { SlackChannelFactoryCachedDecorator } from "../SlackChannelFactoryCached
 
 
 const decoratedFactoryMock = (<SlackChannelFactory>{
-    createChannel: jest.fn(),
-    findExistingChannel: jest.fn()
+    setupNewChannel: jest.fn(),
+    fromExistingChannel: jest.fn()
 }) as any;
 
 describe("SlackChannelFactoryCachedDecorator", () => {
@@ -30,9 +30,9 @@ describe("SlackChannelFactoryCachedDecorator", () => {
             name: "channelName",
             isArchived: false
         };
-        decoratedFactoryMock.createChannel.mockResolvedValue(channelData);
+        decoratedFactoryMock.setupNewChannel.mockResolvedValue({ channelInfo: channelData });
 
-        await systemUnderTest.createChannel({ name: channelData.name });
+        await systemUnderTest.setupNewChannel({ name: channelData.name });
 
         expect(CHANNELS_CACHE.get(channelData.name)).toEqual(channelData);
     });
@@ -45,24 +45,24 @@ describe("SlackChannelFactoryCachedDecorator", () => {
         };
         CHANNELS_CACHE.set(channelData.name, channelData);
 
-        const result = await systemUnderTest.findExistingChannel(channelData.name, true);
+        const result = await systemUnderTest.fromExistingChannel(channelData.name, true);
 
-        expect(result).toEqual(channelData);
-        expect(decoratedFactoryMock.findExistingChannel).not.toHaveBeenCalled();
+        expect((<any>result).channelInfo).toEqual(channelData);
+        expect(decoratedFactoryMock.fromExistingChannel).not.toHaveBeenCalled();
     });
 
-    it("should fetch channel info from gateway and save in cache", async () => {
+    it("should fetch channel info from slack and save in cache", async () => {
         const channelData = {
             id: "channelId",
             name: "channelName",
             isArchived: false
         };
-        decoratedFactoryMock.findExistingChannel.mockResolvedValueOnce(channelData);
+        decoratedFactoryMock.fromExistingChannel.mockResolvedValueOnce({ channelInfo: channelData });
         expect(CHANNELS_CACHE.get(channelData.name)).toBeUndefined();
 
-        const result = await systemUnderTest.findExistingChannel("channelName", true);
+        const result = await systemUnderTest.fromExistingChannel("channelName", true);
 
-        expect(result).toEqual(channelData);
+        expect(result.channelInfo).toEqual(channelData);
         expect(CHANNELS_CACHE.get(channelData.name)).toEqual(channelData);
     });
 });

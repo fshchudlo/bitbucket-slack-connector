@@ -9,70 +9,55 @@ import {
     BitbucketCommentSnapshotInSlackMetadata,
     PullRequestSnapshotInSlackMetadata
 } from "../bitbucket-webhook-handler/SlackChannel";
-import { SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE } from "../bitbucket-webhook-handler/use-cases/helpers/snapshotPullRequestState";
-import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../bitbucket-webhook-handler/use-cases/helpers";
-import TestPayloadBuilder from "./TestPayloadBuilder";
-import { TestWebhookHandlerConfig } from "./TestWebhookHandlerConfig";
 import {
-    CreateChannelArguments,
-    SlackChannelFactory,
-    SlackChannelInfo
-} from "../channel-provisioning/SlackChannelFactory";
-import { provisionNotificationChannel } from "../channel-provisioning/provisionNotificationChannel";
+    SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
+} from "../bitbucket-webhook-handler/use-cases/helpers/snapshotPullRequestState";
+import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../bitbucket-webhook-handler/use-cases/helpers";
+import { TestWebhookHandlerConfig } from "./TestWebhookHandlerConfig";
+import { SlackChannelInfo } from "../channel-provisioning/SlackChannelFactory";
 
-const channelId = "12345";
 const messageId = "ABCDE";
-export default class SlackAdapterSnapshottingMock implements SlackChannel, SlackChannelFactory {
+export default class SlackChannelSnapshottingMock implements SlackChannel {
     snapshot: {
         addedReactions: any[];
         addedBookmarks: AddBookmarkArguments[];
-        archivedChannels: string[];
-        createdChannels: SlackChannelInfo[];
+        closeChannelCalls: string[];
         invitesToChannels: InviteToChannelArguments[];
         kicksFromChannels: KickFromChannelArguments[];
         lookedUpUsers: Array<Array<string>>;
-        searchedChannels: any[];
         searchedCommentSnapshots: any[];
         searchedPrOpenedBroadcastMessages: any[];
         sentMessages: SendMessageArguments[];
     };
-    public testChannel: SlackChannelInfo = null;
 
     constructor() {
         this.snapshot = {
             addedReactions: new Array<any>(),
             addedBookmarks: new Array<AddBookmarkArguments>(),
-            archivedChannels: new Array<string>(),
-            createdChannels: new Array<SlackChannelInfo>(),
+            closeChannelCalls: new Array<string>(),
             invitesToChannels: new Array<InviteToChannelArguments>(),
             kicksFromChannels: new Array<KickFromChannelArguments>(),
             lookedUpUsers: new Array<Array<string>>(),
             searchedCommentSnapshots: new Array<any>(),
             searchedPrOpenedBroadcastMessages: new Array<any>(),
-            searchedChannels: new Array<any>(),
             sentMessages: new Array<SendMessageArguments>()
         };
     }
 
-    async setupBasicChannel(webhookHandlerConfig = TestWebhookHandlerConfig): Promise<SlackAdapterSnapshottingMock> {
-        this.testChannel = await provisionNotificationChannel(this, this, TestPayloadBuilder.pullRequestOpened(), webhookHandlerConfig);
+    readonly channelInfo: SlackChannelInfo = {
+        id: "12345",
+        isArchived: false,
+        name: "test-channel"
+    };
+
+    async setupBasicChannel(webhookHandlerConfig = TestWebhookHandlerConfig): Promise<SlackChannelSnapshottingMock> {
+        // this.testChannel = await provisionNotificationChannel(this, TestPayloadBuilder.pullRequestOpened(), webhookHandlerConfig);
         return this;
     }
 
     getSlackUserIds(userEmails: string[]): Promise<string[]> {
         this.snapshot.lookedUpUsers.push(userEmails);
         return Promise.resolve(userEmails);
-    }
-
-    findExistingChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelInfo | null> {
-        this.snapshot.searchedChannels.push({ channelName, findPrivateChannels });
-        return Promise.resolve(this.snapshot.createdChannels.find(c => c.name == channelName) ?? null);
-    }
-
-    createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo> {
-        const channel = { id: channelId, name: options.name, isArchived: false };
-        this.snapshot.createdChannels.push(channel);
-        return Promise.resolve(channel);
     }
 
     addBookmark(options: AddBookmarkArguments): Promise<void> {
@@ -90,23 +75,23 @@ export default class SlackAdapterSnapshottingMock implements SlackChannel, Slack
         return Promise.resolve();
     }
 
-    closeChannel(channelId: string): Promise<void> {
-        this.snapshot.archivedChannels.push(channelId);
+    closeChannel(): Promise<void> {
+        this.snapshot.closeChannelCalls.push(this.channelInfo.id);
         return Promise.resolve();
     }
 
-    addReaction(channelId: string, messageId: string, reaction: string): Promise<void> {
-        this.snapshot.addedReactions.push({ channelId, messageId, reaction });
+    addReaction(messageId: string, reaction: string): Promise<void> {
+        this.snapshot.addedReactions.push({ channelId: this.channelInfo.id, messageId, reaction });
         return Promise.resolve();
     }
 
     sendMessage(options: SendMessageArguments): Promise<SendMessageResponse> {
         this.snapshot.sentMessages.push(options);
-        return Promise.resolve({ ok: true, channelId: channelId, messageId: messageId });
+        return Promise.resolve({ ok: true, channelId: this.channelInfo.id, messageId: messageId });
     }
 
-    findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
-        this.snapshot.searchedCommentSnapshots.push({ channelId, bitbucketCommentId });
+    findLatestBitbucketCommentSnapshot(bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
+        this.snapshot.searchedCommentSnapshots.push({ channelId: this.channelInfo.id, bitbucketCommentId });
 
         const snapshot = (<any>this.snapshot.sentMessages).findLast((m: SendMessageArguments) => m.metadata?.eventType === SNAPSHOT_COMMENT_STATE_EVENT_TYPE && m.metadata?.eventPayload?.commentId === bitbucketCommentId.toString());
 

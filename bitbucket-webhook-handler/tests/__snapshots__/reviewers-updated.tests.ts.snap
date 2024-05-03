@@ -4,17 +4,9 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
 {
   "addedBookmarks": [],
   "addedReactions": [],
-  "archivedChannels": [],
-  "createdChannels": [
-    {
-      "id": "12345",
-      "isArchived": false,
-      "name": "pr-test-proj-test-repository-1",
-    },
-  ],
+  "closeChannelCalls": [],
   "invitesToChannels": [
     {
-      "channelId": "12345",
       "force": true,
       "users": [
         "test.reviewer3@test.com",
@@ -23,7 +15,6 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
   ],
   "kicksFromChannels": [
     {
-      "channelId": "12345",
       "users": [
         "test.reviewer1@test.com",
       ],
@@ -37,7 +28,6 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
       "test.reviewer1@test.com",
     ],
   ],
-  "searchedChannels": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [],

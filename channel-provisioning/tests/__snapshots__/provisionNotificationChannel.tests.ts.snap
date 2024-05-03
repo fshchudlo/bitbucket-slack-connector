@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`provisionNotificationChannel Should create channel 1`] = `
+{
+  "createdChannels": [
+    {
+      "id": "12345",
+      "isArchived": false,
+      "name": "pr-test-proj-test-repository-1",
+    },
+  ],
+  "searchedChannels": [],
+}
+`;
+
+exports[`provisionNotificationChannel Should replay channel creation if channel doesn't exist and handle initial payload after that 1`] = `
+{
+  "createdChannels": [
+    {
+      "id": "12345",
+      "isArchived": false,
+      "name": "pr-test-proj-test-repository-1",
+    },
+  ],
+  "searchedChannels": [
+    {
+      "channelName": "pr-test-proj-test-repository-1",
+      "findPrivateChannels": true,
+    },
+  ],
+}
+`;

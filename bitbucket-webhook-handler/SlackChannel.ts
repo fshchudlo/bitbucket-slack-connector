@@ -1,15 +1,17 @@
 import { CommentSeverity } from "../bitbucket-payload-types";
 import { Block, KnownBlock } from "@slack/bolt";
+import { SlackChannelInfo } from "../channel-provisioning/SlackChannelFactory";
 
 export interface SlackChannel {
+    readonly channelInfo: SlackChannelInfo;
     getSlackUserIds(userEmails: Array<string>): Promise<string[]>;
     addBookmark(options: AddBookmarkArguments): Promise<void>;
     inviteToChannel(options: InviteToChannelArguments): Promise<void>;
     kickFromChannel(options: KickFromChannelArguments): Promise<void>;
-    closeChannel(channelId: string): Promise<void>;
-    addReaction(channelId: string, messageId: string, reaction: string): Promise<void>
+    closeChannel(): Promise<void>;
+    addReaction(messageId: string, reaction: string): Promise<void>
     sendMessage(options: SendMessageArguments): Promise<SendMessageResponse>;
-    findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null>;
+    findLatestBitbucketCommentSnapshot(bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null>;
     findPROpenedBroadcastMessageId(channelId: string, prCreationDate: Date, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null>;
 }
 
@@ -31,23 +33,19 @@ export type PullRequestSnapshotInSlackMetadata = {
 }
 
 export type AddBookmarkArguments = {
-    channelId: string;
     link: string;
     title: string;
     emoji?: string;
 }
 
 export type InviteToChannelArguments = {
-    channelId: string;
     force: boolean;
     users: string[];
 }
 export type KickFromChannelArguments = {
-    channelId: string;
     users: string[];
 }
 export type SendMessageArguments = {
-    channelId: string;
     iconEmoji?: string;
     text?: string;
     threadId?: string;

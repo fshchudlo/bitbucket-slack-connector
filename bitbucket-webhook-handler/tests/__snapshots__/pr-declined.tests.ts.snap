@@ -4,25 +4,16 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
 {
   "addedBookmarks": [],
   "addedReactions": [],
-  "archivedChannels": [
+  "closeChannelCalls": [
     "12345",
-  ],
-  "createdChannels": [
-    {
-      "id": "12345",
-      "isArchived": false,
-      "name": "pr-test-proj-test-repository-1",
-    },
   ],
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "text": ":no_entry_sign: Pull request was declined by Test Author.",
     },
@@ -34,20 +25,12 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
 {
   "addedBookmarks": [],
   "addedReactions": [],
-  "archivedChannels": [
+  "closeChannelCalls": [
     "12345",
-  ],
-  "createdChannels": [
-    {
-      "id": "12345",
-      "isArchived": false,
-      "name": "pr-test-proj-test-repository-1",
-    },
   ],
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [
     {
@@ -62,7 +45,6 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
   ],
   "sentMessages": [
     {
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "text": ":no_entry_sign: Pull request was declined by Test Author.",
     },

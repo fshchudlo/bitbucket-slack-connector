@@ -4,24 +4,15 @@ exports[`handleBitbucketWebhook Should add bookmark and invite author and review
 {
   "addedBookmarks": [
     {
-      "channelId": "12345",
       "emoji": ":git:",
       "link": "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview",
       "title": "Review Pull Request",
     },
   ],
   "addedReactions": [],
-  "archivedChannels": [],
-  "createdChannels": [
-    {
-      "id": "12345",
-      "isArchived": false,
-      "name": "pr-test-proj-test-repository-1",
-    },
-  ],
+  "closeChannelCalls": [],
   "invitesToChannels": [
     {
-      "channelId": "12345",
       "force": true,
       "users": [
         "test.author@test.com",
@@ -38,7 +29,6 @@ exports[`handleBitbucketWebhook Should add bookmark and invite author and review
       "test.reviewer2@test.com",
     ],
   ],
-  "searchedChannels": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
@@ -74,7 +64,6 @@ exports[`handleBitbucketWebhook Should add bookmark and invite author and review
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
     },
@@ -86,24 +75,15 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
 {
   "addedBookmarks": [
     {
-      "channelId": "12345",
       "emoji": ":git:",
       "link": "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview",
       "title": "Review Pull Request",
     },
   ],
   "addedReactions": [],
-  "archivedChannels": [],
-  "createdChannels": [
-    {
-      "id": "12345",
-      "isArchived": false,
-      "name": "pr-test-proj-test-repository-1",
-    },
-  ],
+  "closeChannelCalls": [],
   "invitesToChannels": [
     {
-      "channelId": "12345",
       "force": true,
       "users": [
         "test.author@test.com",
@@ -120,7 +100,6 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
       "test.reviewer2@test.com",
     ],
   ],
-  "searchedChannels": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
@@ -156,7 +135,6 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
     },
@@ -195,7 +173,6 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
           "type": "section",
         },
       ],
-      "channelId": "test-broadcast-channel-id",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {

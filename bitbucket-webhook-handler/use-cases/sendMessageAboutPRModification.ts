@@ -3,7 +3,7 @@ import { formatUserName, formatPullRequestDescription, reviewPRAction } from "./
 import { SlackChannel } from "../SlackChannel";
 import { PullRequestModifiedNotification } from "../../bitbucket-payload-types";
 
-export async function sendMessageAboutPRModification(payload: PullRequestModifiedNotification, slackAPI: SlackChannel, slackChannelId: string) {
+export async function sendMessageAboutPRModification(payload: PullRequestModifiedNotification, slackAPI: SlackChannel) {
     const visibleChanges = getChangesDescription(payload);
     if (visibleChanges.length == 0) {
         return;
@@ -12,7 +12,6 @@ export async function sendMessageAboutPRModification(payload: PullRequestModifie
     const messageTitle = `:writing_hand: ${formatUserName(payload.actor)} changed the pull request`;
 
     await slackAPI.sendMessage({
-        channelId: slackChannelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), ...visibleChanges, divider(), reviewPRAction(payload.pullRequest)]

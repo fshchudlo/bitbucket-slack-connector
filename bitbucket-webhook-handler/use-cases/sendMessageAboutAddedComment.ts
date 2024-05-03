@@ -3,12 +3,12 @@ import { link, quote, section, iconEmoji } from "./slack-building-blocks";
 import { BitbucketCommentSnapshot, SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { PullRequestCommentActionNotification } from "../../bitbucket-payload-types";
 
-export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackChannel, slackChannelId: string) {
-    const parentCommentSnapshot = payload.commentParentId ? await slackAPI.findLatestBitbucketCommentSnapshot(slackChannelId, payload.commentParentId) : null;
-    await slackAPI.sendMessage(buildMessage(payload, parentCommentSnapshot, slackChannelId));
+export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackChannel) {
+    const parentCommentSnapshot = payload.commentParentId ? await slackAPI.findLatestBitbucketCommentSnapshot(payload.commentParentId) : null;
+    await slackAPI.sendMessage(buildMessage(payload, parentCommentSnapshot));
 }
 
-function buildMessage(payload: PullRequestCommentActionNotification, parentCommentSnapshot: BitbucketCommentSnapshot, channelId: string): SendMessageArguments {
+function buildMessage(payload: PullRequestCommentActionNotification, parentCommentSnapshot: BitbucketCommentSnapshot): SendMessageArguments {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
     const action = parentCommentSnapshot ? "replied" : `added ${getTaskOrCommentTitle(payload)}`;
     const emoji = parentCommentSnapshot ? ":left_speech_bubble:" : `:loudspeaker:`;
@@ -16,7 +16,6 @@ function buildMessage(payload: PullRequestCommentActionNotification, parentComme
     const commentText = markdownToSlackMarkup(payload.comment.text);
 
     return {
-        channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), section(quote(commentText))],

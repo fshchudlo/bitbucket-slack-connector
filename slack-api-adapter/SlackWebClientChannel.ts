@@ -15,6 +15,7 @@ import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../bitbucket-webhook-handler/
 import {
     SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
 } from "../bitbucket-webhook-handler/use-cases/helpers/snapshotPullRequestState";
+import { SlackChannelInfo } from "../channel-provisioning/SlackChannelFactory";
 
 
 /**
@@ -22,9 +23,11 @@ import {
  */
 export class SlackWebClientChannel implements SlackChannel {
     private client: slack.WebClient;
+    readonly channelInfo: SlackChannelInfo;
 
-    constructor(client: slack.WebClient) {
+    constructor(client: slack.WebClient, channelInfo: SlackChannelInfo = null) {
         this.client = client;
+        this.channelInfo = channelInfo;
     }
 
     async getSlackUserIds(userEmails: string[]): Promise<string[]> {
@@ -37,7 +40,7 @@ export class SlackWebClientChannel implements SlackChannel {
 
     addBookmark(options: AddBookmarkArguments): Promise<void> {
         return this.client.bookmarks.add({
-            channel_id: options.channelId,
+            channel_id: this.channelInfo.id,
             link: options.link,
             title: options.title,
             type: "link"
@@ -46,7 +49,7 @@ export class SlackWebClientChannel implements SlackChannel {
 
     inviteToChannel(options: InviteToChannelArguments): Promise<void> {
         return this.client.conversations.invite({
-            channel: options.channelId,
+            channel: this.channelInfo.id,
             users: options.users.join(","),
             force: true
         }).catch(error => {
@@ -59,19 +62,19 @@ export class SlackWebClientChannel implements SlackChannel {
     kickFromChannel(options: KickFromChannelArguments): Promise<void> {
         return Promise.all(options.users.map(async userId => {
             return this.client.conversations.kick({
-                channel: options.channelId,
+                channel: this.channelInfo.id,
                 user: userId
             }).catch(error => error.data.error == "not_in_channel" ? undefined : error);
         })) as unknown as Promise<void>;
     }
 
-    closeChannel(channelId: string): Promise<void> {
-        return this.client.conversations.archive({ channel: channelId }) as unknown as Promise<void>;
+    closeChannel(): Promise<void> {
+        return this.client.conversations.archive({ channel: this.channelInfo.id }) as unknown as Promise<void>;
     }
 
-    addReaction(channelId: string, messageId: string, reaction: string): Promise<void> {
+    addReaction(messageId: string, reaction: string): Promise<void> {
         return this.client.reactions.add({
-            channel: channelId,
+            channel: this.channelInfo.id,
             timestamp: messageId,
             name: reaction
         }) as unknown as Promise<void>;
@@ -79,7 +82,7 @@ export class SlackWebClientChannel implements SlackChannel {
 
     async sendMessage(options: SendMessageArguments): Promise<SendMessageResponse> {
         const response = await this.client.chat.postMessage({
-            channel: options.channelId,
+            channel: this.channelInfo.id,
             icon_emoji: options.iconEmoji,
             text: options.text,
             metadata: options.metadata ? {
@@ -97,12 +100,12 @@ export class SlackWebClientChannel implements SlackChannel {
         };
     }
 
-    async findLatestBitbucketCommentSnapshot(channelId: string, bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
+    async findLatestBitbucketCommentSnapshot(bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
         const matchPredicate = (message: MessageElement) => {
             const eventPayload = message.metadata.event_type === SNAPSHOT_COMMENT_STATE_EVENT_TYPE ? <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload : null;
             return eventPayload && eventPayload?.commentId === bitbucketCommentId.toString();
         };
-        const message = await this.findMessageInChannelHistory(channelId, matchPredicate);
+        const message = await this.findMessageInChannelHistory(this.channelInfo.id, matchPredicate);
 
         if (message) {
             const metadata = <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload;

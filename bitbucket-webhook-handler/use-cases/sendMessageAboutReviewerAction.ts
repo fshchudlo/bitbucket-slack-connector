@@ -3,16 +3,15 @@ import { contextBlock, divider, iconEmoji, link, section } from "./slack-buildin
 import { formatUserName } from "./helpers";
 import { PullRequestBasicNotification, PullRequestPayload } from "../../bitbucket-payload-types";
 
-export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNotification, slackAPI: SlackChannel, slackChannelId: string) {
-    await slackAPI.sendMessage(buildMessage(payload, slackChannelId));
+export async function sendMessageAboutReviewerAction(payload: PullRequestBasicNotification, slackAPI: SlackChannel) {
+    await slackAPI.sendMessage(buildMessage(payload));
 }
 
-function buildMessage(payload: PullRequestBasicNotification, channelId: string): SendMessageArguments {
+function buildMessage(payload: PullRequestBasicNotification): SendMessageArguments {
     const pullRequest = payload.pullRequest;
     const messageTitle = getReviewerActionText(payload);
     const reviewStatus = getReviewStatus(pullRequest);
     return {
-        channelId: channelId,
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), divider(), contextBlock(reviewStatus)]

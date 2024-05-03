@@ -3,16 +3,15 @@ import { SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 import { getPullRequestCompletionAction } from "./helpers/getPullRequestCompletionAction";
 
-export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackAPI: SlackChannel, slackChannelId: string) {
-    await slackAPI.sendMessage(buildMessage(payload, slackChannelId));
-    await slackAPI.closeChannel(slackChannelId);
+export async function sendCompletionMessageAndCloseTheChannel(payload: PullRequestBasicNotification, slackAPI: SlackChannel) {
+    await slackAPI.sendMessage(buildMessage(payload));
+    await slackAPI.closeChannel();
 }
 
 
-function buildMessage(payload: PullRequestBasicNotification, channelId: string): SendMessageArguments {
+function buildMessage(payload: PullRequestBasicNotification): SendMessageArguments {
     const completionAction = getPullRequestCompletionAction(payload);
     return {
-        channelId: channelId,
         iconEmoji: iconEmoji,
         text: `${completionAction.emoji} ${completionAction.text}`
     };

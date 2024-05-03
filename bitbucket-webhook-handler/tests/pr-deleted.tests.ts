@@ -1,4 +1,4 @@
-import SlackAdapterSnapshottingMock from "../../test-helpers/SlackAdapterSnapshottingMock";
+import SlackChannelSnapshottingMock from "../../test-helpers/SlackChannelSnapshottingMock";
 import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
 import { TestWebhookHandlerConfig } from "../../test-helpers/TestWebhookHandlerConfig";
@@ -6,11 +6,11 @@ import { WebhookHandlerConfig } from "../webhookHandlerConfig";
 
 describe("handleBitbucketWebhook", () => {
     it("Should send completion message and close the channel on PR deletion", async () => {
-        const testSlackGateway = await new SlackAdapterSnapshottingMock().setupBasicChannel();
+        const testSlackGateway = await new SlackChannelSnapshottingMock().setupBasicChannel();
         const payload = TestPayloadBuilder.pullRequestDeleted();
 
 
-        await handleBitbucketWebhook(payload, testSlackGateway, testSlackGateway.testChannel, TestWebhookHandlerConfig);
+        await handleBitbucketWebhook(payload, testSlackGateway, TestWebhookHandlerConfig);
 
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
@@ -21,11 +21,11 @@ describe("handleBitbucketWebhook", () => {
             ...TestWebhookHandlerConfig,
             getOpenedPRBroadcastChannelId: () => "test-broadcast-channel-id"
         };
-        const testSlackGateway = await new SlackAdapterSnapshottingMock().setupBasicChannel(testConfig);
+        const testSlackGateway = await new SlackChannelSnapshottingMock().setupBasicChannel(testConfig);
 
 
         const payload = TestPayloadBuilder.pullRequestDeleted();
-        await handleBitbucketWebhook(payload, testSlackGateway, testSlackGateway.testChannel, testConfig);
+        await handleBitbucketWebhook(payload, testSlackGateway, testConfig);
 
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();

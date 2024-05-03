@@ -4,18 +4,10 @@ exports[`handleBitbucketWebhook Should return generic message if initial comment
 {
   "addedBookmarks": [],
   "addedReactions": [],
-  "archivedChannels": [],
-  "createdChannels": [
-    {
-      "id": "12345",
-      "isArchived": false,
-      "name": "pr-test-proj-test-repository-1",
-    },
-  ],
+  "closeChannelCalls": [],
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
   "searchedCommentSnapshots": [
     {
       "bitbucketCommentId": 1,
@@ -41,7 +33,6 @@ exports[`handleBitbucketWebhook Should return generic message if initial comment
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
@@ -65,18 +56,10 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
 {
   "addedBookmarks": [],
   "addedReactions": [],
-  "archivedChannels": [],
-  "createdChannels": [
-    {
-      "id": "12345",
-      "isArchived": false,
-      "name": "pr-test-proj-test-repository-1",
-    },
-  ],
+  "closeChannelCalls": [],
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
   "searchedCommentSnapshots": [
     {
       "bitbucketCommentId": 1,
@@ -102,7 +85,6 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
@@ -135,7 +117,6 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
@@ -159,18 +140,10 @@ exports[`handleBitbucketWebhook Should send message on comment conversion to the
 {
   "addedBookmarks": [],
   "addedReactions": [],
-  "archivedChannels": [],
-  "createdChannels": [
-    {
-      "id": "12345",
-      "isArchived": false,
-      "name": "pr-test-proj-test-repository-1",
-    },
-  ],
+  "closeChannelCalls": [],
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
   "searchedCommentSnapshots": [
     {
       "bitbucketCommentId": 1,
@@ -196,7 +169,6 @@ exports[`handleBitbucketWebhook Should send message on comment conversion to the
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
@@ -229,7 +201,6 @@ exports[`handleBitbucketWebhook Should send message on comment conversion to the
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
@@ -253,18 +224,10 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
 {
   "addedBookmarks": [],
   "addedReactions": [],
-  "archivedChannels": [],
-  "createdChannels": [
-    {
-      "id": "12345",
-      "isArchived": false,
-      "name": "pr-test-proj-test-repository-1",
-    },
-  ],
+  "closeChannelCalls": [],
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
   "searchedCommentSnapshots": [
     {
       "bitbucketCommentId": 1,
@@ -294,7 +257,6 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
@@ -327,7 +289,6 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
@@ -360,7 +321,6 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
@@ -384,18 +344,10 @@ exports[`handleBitbucketWebhook Should send message on task conversion to the co
 {
   "addedBookmarks": [],
   "addedReactions": [],
-  "archivedChannels": [],
-  "createdChannels": [
-    {
-      "id": "12345",
-      "isArchived": false,
-      "name": "pr-test-proj-test-repository-1",
-    },
-  ],
+  "closeChannelCalls": [],
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
   "searchedCommentSnapshots": [
     {
       "bitbucketCommentId": 1,
@@ -421,7 +373,6 @@ exports[`handleBitbucketWebhook Should send message on task conversion to the co
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
@@ -454,7 +405,6 @@ exports[`handleBitbucketWebhook Should send message on task conversion to the co
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
@@ -478,18 +428,10 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
 {
   "addedBookmarks": [],
   "addedReactions": [],
-  "archivedChannels": [],
-  "createdChannels": [
-    {
-      "id": "12345",
-      "isArchived": false,
-      "name": "pr-test-proj-test-repository-1",
-    },
-  ],
+  "closeChannelCalls": [],
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
   "searchedCommentSnapshots": [
     {
       "bitbucketCommentId": 1,
@@ -519,7 +461,6 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
@@ -552,7 +493,6 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
@@ -585,7 +525,6 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {

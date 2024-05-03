@@ -1,4 +1,4 @@
-import SlackAdapterSnapshottingMock from "../../test-helpers/SlackAdapterSnapshottingMock";
+import SlackChannelSnapshottingMock from "../../test-helpers/SlackChannelSnapshottingMock";
 import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
 import { TestWebhookHandlerConfig } from "../../test-helpers/TestWebhookHandlerConfig";
@@ -6,10 +6,10 @@ import { WebhookHandlerConfig } from "../webhookHandlerConfig";
 
 describe("handleBitbucketWebhook", () => {
     it("Should send completion message and close the channel on PR declining", async () => {
-        const testSlackGateway = await new SlackAdapterSnapshottingMock().setupBasicChannel();
+        const testSlackGateway = await new SlackChannelSnapshottingMock().setupBasicChannel();
 
 
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestDeclined(), testSlackGateway, testSlackGateway.testChannel, TestWebhookHandlerConfig);
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestDeclined(), testSlackGateway, TestWebhookHandlerConfig);
 
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();
@@ -20,10 +20,10 @@ describe("handleBitbucketWebhook", () => {
             ...TestWebhookHandlerConfig,
             getOpenedPRBroadcastChannelId: () => "test-broadcast-channel-id"
         };
-        const testSlackGateway = await new SlackAdapterSnapshottingMock().setupBasicChannel(testConfig);
+        const testSlackGateway = await new SlackChannelSnapshottingMock().setupBasicChannel(testConfig);
 
 
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestDeclined(), testSlackGateway, testSlackGateway.testChannel, testConfig);
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestDeclined(), testSlackGateway, testConfig);
 
 
         expect(testSlackGateway.snapshot).toMatchSnapshot();

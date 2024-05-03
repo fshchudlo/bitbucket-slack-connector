@@ -4,18 +4,10 @@ exports[`handleBitbucketWebhook Should send message on PR comment 1`] = `
 {
   "addedBookmarks": [],
   "addedReactions": [],
-  "archivedChannels": [],
-  "createdChannels": [
-    {
-      "id": "12345",
-      "isArchived": false,
-      "name": "pr-test-proj-test-repository-1",
-    },
-  ],
+  "closeChannelCalls": [],
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
@@ -36,7 +28,6 @@ exports[`handleBitbucketWebhook Should send message on PR comment 1`] = `
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
@@ -60,18 +51,10 @@ exports[`handleBitbucketWebhook Should send message on PR task 1`] = `
 {
   "addedBookmarks": [],
   "addedReactions": [],
-  "archivedChannels": [],
-  "createdChannels": [
-    {
-      "id": "12345",
-      "isArchived": false,
-      "name": "pr-test-proj-test-repository-1",
-    },
-  ],
+  "closeChannelCalls": [],
   "invitesToChannels": [],
   "kicksFromChannels": [],
   "lookedUpUsers": [],
-  "searchedChannels": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
@@ -92,7 +75,6 @@ exports[`handleBitbucketWebhook Should send message on PR task 1`] = `
           "type": "section",
         },
       ],
-      "channelId": "12345",
       "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {

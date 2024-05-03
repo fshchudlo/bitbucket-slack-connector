@@ -2,7 +2,6 @@ import handleBitbucketWebhook from "./bitbucket-webhook-handler/handleBitbucketW
 import { register } from "prom-client";
 import { buildChannelName } from "./channel-provisioning/buildChannelName";
 import { ExpressReceiver } from "@slack/bolt";
-import { SlackChannelCachedDecorator } from "./slack-api-adapter/SlackChannelCachedDecorator";
 import BitbucketAPI from "./payload-normalization/BitbucketAPI";
 import { AppConfig } from "./app.config";
 import { NextFunction } from "express";
@@ -10,7 +9,6 @@ import { WebhookHandlerConfig } from "./bitbucket-webhook-handler/webhookHandler
 import { normalizeBitbucketWebhookPayload } from "./payload-normalization/normalizeBitbucketWebhookPayload";
 import { provisionNotificationChannel } from "./channel-provisioning/provisionNotificationChannel";
 import { WebClient } from "@slack/web-api";
-import { SlackWebClientChannel } from "./slack-api-adapter/SlackWebClientChannel";
 import { SlackWebClientChannelFactory } from "./slack-api-adapter/SlackWebClientChannelFactory";
 
 const bitbucketAPI = new BitbucketAPI(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
@@ -21,18 +19,15 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackC
         defaultChannelParticipants: AppConfig.DEFAULT_CHANNEL_PARTICIPANTS,
         getOpenedPRBroadcastChannelId: AppConfig.getOpenedPRBroadcastChannelId
     };
+    const slackChannelFactory = new SlackWebClientChannelFactory(slackClient);
 
     expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
         try {
             const payload = await normalizeBitbucketWebhookPayload(req.body, bitbucketAPI);
 
-            const slackChannel = new SlackWebClientChannel(slackClient);
-            const slackChannelFactory = new SlackWebClientChannelFactory(slackClient);
-            const slackAPI = new SlackChannelCachedDecorator(slackChannel);
+            const slackChannel = await provisionNotificationChannel(slackChannelFactory, payload, config);
 
-            const channelInfo = await provisionNotificationChannel(slackChannelFactory, slackAPI, payload, config);
-
-            await handleBitbucketWebhook(payload, slackAPI, channelInfo, config);
+            await handleBitbucketWebhook(payload, slackChannel, config);
             res.sendStatus(200);
 
         } catch (error) {
@@ -59,9 +54,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackC
                 projectKey: <string>projectKey
             });
 
-            const slackChannelFactory = new SlackWebClientChannelFactory(slackClient);
-
-            const channelInfo = await slackChannelFactory.findExistingChannel(channelName, AppConfig.USE_PRIVATE_CHANNELS);
+            const channelInfo = await slackChannelFactory.fromExistingChannel(channelName, AppConfig.USE_PRIVATE_CHANNELS);
 
             channelInfo ? res.send(channelInfo) : res.sendStatus(404);
         } catch (error) {

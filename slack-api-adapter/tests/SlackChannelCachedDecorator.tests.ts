@@ -13,6 +13,11 @@ import { SlackChannelFactoryCachedDecorator } from "../SlackChannelFactoryCached
 
 
 const decoratedChannelMock = {
+    channelInfo: {
+        id: "channelId",
+        name: "channelName",
+        isArchived: false
+    },
     addBookmark: jest.fn(),
     addReaction: jest.fn(),
     closeChannel: jest.fn(),
@@ -25,8 +30,10 @@ const decoratedChannelMock = {
 } as SlackChannel;
 
 const decoratedFactoryMock = {
-    createChannel: jest.fn(),
-    findExistingChannel: jest.fn()
+    setupNewChannel: jest.fn(),
+    fromExistingChannel: jest.fn(),
+    createChannel2: jest.fn(),
+    findExistingChannel2: jest.fn()
 } as SlackChannelFactory;
 
 
@@ -47,19 +54,14 @@ describe("SlackChannelCachedDecorator", () => {
     });
 
     it("should delete channel info from cache when closing a channel", async () => {
-        const channelData = {
-            id: "channelId",
-            name: "channelName",
-            isArchived: false
-        };
-        (<jest.Mock>decoratedFactoryMock.createChannel).mockResolvedValue(channelData);
+        (<jest.Mock>decoratedFactoryMock.setupNewChannel).mockResolvedValue(decoratedChannelMock.channelInfo);
         (<jest.Mock>decoratedChannelMock.closeChannel).mockResolvedValue({});
 
-        await channelFactory.createChannel({ name: channelData.name });
-        expect(CHANNELS_CACHE.get(channelData.name)).not.toBeUndefined();
+        await channelFactory.setupNewChannel({ name: decoratedChannelMock.channelInfo.name });
+        expect(CHANNELS_CACHE.get(decoratedChannelMock.channelInfo.name)).not.toBeUndefined();
 
-        await systemUnderTest.closeChannel(channelData.id);
-        expect(CHANNELS_CACHE.get(channelData.name)).toBeUndefined();
+        await systemUnderTest.closeChannel();
+        expect(CHANNELS_CACHE.get(decoratedChannelMock.channelInfo.name)).toBeUndefined();
     });
 
     it("should cache comment info when sending a message", async () => {
@@ -68,9 +70,9 @@ describe("SlackChannelCachedDecorator", () => {
             name: "channelName",
             isArchived: false
         };
-        (<jest.Mock>decoratedFactoryMock.createChannel).mockResolvedValue(channelData);
+        (<jest.Mock>decoratedFactoryMock.setupNewChannel).mockResolvedValue(channelData);
 
-        await channelFactory.createChannel({ name: channelData.name });
+        await channelFactory.setupNewChannel({ name: channelData.name });
 
         (<jest.Mock>decoratedChannelMock.sendMessage).mockResolvedValue(<SendMessageResponse>{
             messageId: "ABCDE"
@@ -86,12 +88,11 @@ describe("SlackChannelCachedDecorator", () => {
         } as PullRequestCommentActionNotification;
 
         await systemUnderTest.sendMessage({
-            channelId: channelData.id,
             metadata: snapshotCommentState(testPayload)
         });
 
 
-        expect(await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.id, testPayload.comment.id)).toEqual(<BitbucketCommentSnapshot>{
+        expect(await systemUnderTest.findLatestBitbucketCommentSnapshot(testPayload.comment.id)).toEqual(<BitbucketCommentSnapshot>{
             commentId: testPayload.comment.id.toString(),
             commentParentId: testPayload.commentParentId?.toString(),
             severity: testPayload.comment.severity,
@@ -104,13 +105,7 @@ describe("SlackChannelCachedDecorator", () => {
     });
 
     it("should fetch comment snapshot from gateway and save in cache", async () => {
-        const channelData = {
-            id: "channelId",
-            name: "channelName",
-            isArchived: false
-        };
-
-        (<jest.Mock>decoratedFactoryMock.findExistingChannel).mockResolvedValueOnce(channelData);
+        (<jest.Mock>decoratedFactoryMock.fromExistingChannel).mockResolvedValueOnce(decoratedChannelMock.channelInfo);
         const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>{
             commentId: "1",
             severity: "NORMAL",
@@ -118,21 +113,16 @@ describe("SlackChannelCachedDecorator", () => {
         };
         (<jest.Mock>decoratedChannelMock.findLatestBitbucketCommentSnapshot).mockResolvedValueOnce(commentSnapshot);
 
-        const result = await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.id, commentSnapshot.commentId);
+        const result = await systemUnderTest.findLatestBitbucketCommentSnapshot(commentSnapshot.commentId);
 
-        expect(decoratedChannelMock.findLatestBitbucketCommentSnapshot).toHaveBeenCalledWith(channelData.id, commentSnapshot.commentId);
+        expect(decoratedChannelMock.findLatestBitbucketCommentSnapshot).toHaveBeenCalledWith(decoratedChannelMock.channelInfo.id, commentSnapshot.commentId);
         expect(result).toEqual(commentSnapshot);
         expect(COMMENTS_CACHE.get("channelId-1")).toEqual(commentSnapshot);
     });
 
     it("should delete comment snapshots from cache when archiving a channel", async () => {
-        const channelData = {
-            id: "channelId",
-            name: "channelName",
-            isArchived: false
-        };
 
-        (<jest.Mock>decoratedFactoryMock.findExistingChannel).mockResolvedValueOnce(channelData);
+        (<jest.Mock>decoratedFactoryMock.fromExistingChannel).mockResolvedValueOnce(decoratedChannelMock.channelInfo);
         const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>{
             commentId: "1",
             severity: "NORMAL",
@@ -140,13 +130,13 @@ describe("SlackChannelCachedDecorator", () => {
         };
         (<jest.Mock>decoratedChannelMock.findLatestBitbucketCommentSnapshot).mockResolvedValueOnce(commentSnapshot);
 
-        await systemUnderTest.findLatestBitbucketCommentSnapshot(channelData.id, commentSnapshot.commentId);
+        await systemUnderTest.findLatestBitbucketCommentSnapshot(commentSnapshot.commentId);
 
         expect(COMMENTS_CACHE.get("channelId-1")).toEqual(commentSnapshot);
 
         (<jest.Mock>decoratedChannelMock.closeChannel).mockResolvedValue({});
 
-        await systemUnderTest.closeChannel("channelId");
+        await systemUnderTest.closeChannel();
 
         expect(COMMENTS_CACHE.get("channelId-1")).toBeUndefined();
 
