@@ -3,9 +3,9 @@ import { formatUserName, snapshotPullRequestState } from "./helpers";
 import { SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 
-export async function tryBroadcastMessageAboutOpenedPR(payload: PullRequestBasicNotification, slackAPI: SlackChannel, broadcastChannelId: string) {
+export async function tryBroadcastMessageAboutOpenedPR(payload: PullRequestBasicNotification, slackChannel: SlackChannel, broadcastChannelId: string) {
     if (broadcastChannelId) {
-        await slackAPI.sendMessage(buildMessage(payload, broadcastChannelId));
+        await slackChannel.sendMessage(buildMessage(payload, broadcastChannelId));
     }
 }
 

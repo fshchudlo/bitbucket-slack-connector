@@ -20,8 +20,8 @@ export default class SlackChannelFactorySnapshottingMock implements SlackChannel
         };
     }
 
-    fromExistingChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannel | null> {
-        this.snapshot.searchedChannels.push({ channelName, findPrivateChannels });
+    fromExistingChannel(channelName: string, includePrivateChannels: boolean): Promise<SlackChannel | null> {
+        this.snapshot.searchedChannels.push({ channelName, includePrivateChannels });
         const channelInfo = this.snapshot.createdChannels.find(c => c.name == channelName);
         return Promise.resolve(channelInfo ? new SlackChannelSnapshottingMock() : null);
     }

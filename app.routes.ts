@@ -10,6 +10,7 @@ import { normalizeBitbucketWebhookPayload } from "./payload-normalization/normal
 import { provisionNotificationChannel } from "./channel-provisioning/provisionNotificationChannel";
 import { WebClient } from "@slack/web-api";
 import { SlackWebClientChannelFactory } from "./slack-api-adapter/SlackWebClientChannelFactory";
+import { SlackChannelFactoryCachedDecorator } from "./slack-api-adapter/SlackChannelFactoryCachedDecorator";
 
 const bitbucketAPI = new BitbucketAPI(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
 
@@ -19,17 +20,22 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackC
         defaultChannelParticipants: AppConfig.DEFAULT_CHANNEL_PARTICIPANTS,
         getOpenedPRBroadcastChannelId: AppConfig.getOpenedPRBroadcastChannelId
     };
-    const slackChannelFactory = new SlackWebClientChannelFactory(slackClient);
+    const slackChannelFactory = new SlackChannelFactoryCachedDecorator(new SlackWebClientChannelFactory(slackClient));
 
     expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
         try {
             const payload = await normalizeBitbucketWebhookPayload(req.body, bitbucketAPI);
+            const pullRequestChannel = await provisionNotificationChannel(slackChannelFactory, payload, config);
+            await handleBitbucketWebhook(payload, pullRequestChannel, config);
 
-            const slackChannel = await provisionNotificationChannel(slackChannelFactory, payload, config);
+            const broadcastChannelId =config.getOpenedPRBroadcastChannelId(payload);
+            if(broadcastChannelId)
+            {
+                const broadcastChannel = slackChannelFactory.fromExistingChannel(broadcastChannelId, true);
 
-            await handleBitbucketWebhook(payload, slackChannel, config);
+            }
+
             res.sendStatus(200);
-
         } catch (error) {
             next(error);
         }
@@ -54,9 +60,9 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackC
                 projectKey: <string>projectKey
             });
 
-            const channelInfo = await slackChannelFactory.fromExistingChannel(channelName, AppConfig.USE_PRIVATE_CHANNELS);
+            const channel = await slackChannelFactory.fromExistingChannel(channelName, AppConfig.USE_PRIVATE_CHANNELS);
 
-            channelInfo ? res.send(channelInfo) : res.sendStatus(404);
+            channel ? res.send(channel.channelInfo) : res.sendStatus(404);
         } catch (error) {
             next(error);
         }

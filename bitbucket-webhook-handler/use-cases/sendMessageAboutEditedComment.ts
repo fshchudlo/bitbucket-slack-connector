@@ -7,16 +7,16 @@ import { getTaskOrCommentTitle, snapshotCommentState } from "./helpers";
 import { iconEmoji, link, quote, section } from "./slack-building-blocks";
 import { formatUserName, markdownToSlackMarkup } from "./helpers";
 
-export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackChannel) {
+export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackChannel: SlackChannel) {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
 
-    const commentSnapshot = await slackAPI.findLatestBitbucketCommentSnapshot(payload.comment.id);
+    const commentSnapshot = await slackChannel.findLatestBitbucketCommentSnapshot(payload.comment.id);
     const userAction = await getUserAction(payload, commentSnapshot);
 
     const messageTitle = `${userAction.emoji} ${formatUserName(payload.actor)} ${link(commentUrl, userAction.title)}:`;
     const commentText = markdownToSlackMarkup(payload.comment.text);
 
-    await slackAPI.sendMessage({
+    await slackChannel.sendMessage({
         iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), section(quote(commentText))],

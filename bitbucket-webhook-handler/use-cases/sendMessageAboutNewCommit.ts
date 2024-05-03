@@ -3,9 +3,9 @@ import { formatUserName, markdownToSlackMarkup, reviewPRAction } from "./helpers
 import { SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { PullRequestFromRefUpdatedPayload } from "../../bitbucket-payload-types";
 
-export async function sendMessageAboutNewCommit(payload: PullRequestFromRefUpdatedPayload, slackAPI: SlackChannel) {
+export async function sendMessageAboutNewCommit(payload: PullRequestFromRefUpdatedPayload, slackChannel: SlackChannel) {
     const message = buildMessage(payload);
-    await slackAPI.sendMessage(message);
+    await slackChannel.sendMessage(message);
 }
 
 function buildMessage(payload: PullRequestFromRefUpdatedPayload): SendMessageArguments {

@@ -3,9 +3,9 @@ import { formatUserName, getTaskOrCommentTitle, markdownToSlackMarkup, snapshotC
 import { quote, section, iconEmoji } from "./slack-building-blocks";
 import { PullRequestCommentActionNotification } from "../../bitbucket-payload-types";
 
-export async function sendMessageAboutDeletedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackChannel) {
-    const previousCommentSnapshot = await slackAPI.findLatestBitbucketCommentSnapshot(payload.comment.id);
-    await slackAPI.sendMessage(buildMessage(payload, previousCommentSnapshot));
+export async function sendMessageAboutDeletedComment(payload: PullRequestCommentActionNotification, slackChannel: SlackChannel) {
+    const previousCommentSnapshot = await slackChannel.findLatestBitbucketCommentSnapshot(payload.comment.id);
+    await slackChannel.sendMessage(buildMessage(payload, previousCommentSnapshot));
 }
 
 function buildMessage(payload: PullRequestCommentActionNotification, commentSnapshot: BitbucketCommentSnapshot): SendMessageArguments {

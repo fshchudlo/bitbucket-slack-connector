@@ -3,9 +3,9 @@ import { link, quote, section, iconEmoji } from "./slack-building-blocks";
 import { BitbucketCommentSnapshot, SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { PullRequestCommentActionNotification } from "../../bitbucket-payload-types";
 
-export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackAPI: SlackChannel) {
-    const parentCommentSnapshot = payload.commentParentId ? await slackAPI.findLatestBitbucketCommentSnapshot(payload.commentParentId) : null;
-    await slackAPI.sendMessage(buildMessage(payload, parentCommentSnapshot));
+export async function sendMessageAboutAddedComment(payload: PullRequestCommentActionNotification, slackChannel: SlackChannel) {
+    const parentCommentSnapshot = payload.commentParentId ? await slackChannel.findLatestBitbucketCommentSnapshot(payload.commentParentId) : null;
+    await slackChannel.sendMessage(buildMessage(payload, parentCommentSnapshot));
 }
 
 function buildMessage(payload: PullRequestCommentActionNotification, parentCommentSnapshot: BitbucketCommentSnapshot): SendMessageArguments {

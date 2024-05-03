@@ -20,17 +20,17 @@ export class SlackWebClientChannelFactory implements SlackChannelFactory {
         const channelInfo = await this.createNewChannelInSlack(options);
         return new SlackWebClientChannel(this.client, channelInfo);
     }
-    async fromExistingChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannel> {
-        const channelInfo = await this.findExistingChannelInSlack(channelName, findPrivateChannels);
+    async fromExistingChannel(channelName: string, includePrivateChannels: boolean): Promise<SlackChannel> {
+        const channelInfo = await this.findExistingChannelInSlack(channelName, includePrivateChannels);
         return new SlackWebClientChannel(this.client, channelInfo);
     }
 
-    private async findExistingChannelInSlack(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelInfo | null> {
+    private async findExistingChannelInSlack(channelName: string, includePrivateChannels: boolean): Promise<SlackChannelInfo | null> {
         if (awaitingCreateChannelRequests.has(channelName)) {
             return awaitingCreateChannelRequests.get(channelName);
         }
         let cursor: string | undefined = undefined;
-        const channelTypes = findPrivateChannels ? "private_channel" : undefined;
+        const channelTypes = includePrivateChannels ? "public_channel,private_channel" : undefined;
         while (true) {
             const response = await this.client.conversations.list({
                 exclude_archived: false,

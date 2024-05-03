@@ -54,7 +54,7 @@ describe("SlackChannelCachedDecorator", () => {
     });
 
     it("should delete channel info from cache when closing a channel", async () => {
-        (<jest.Mock>decoratedFactoryMock.setupNewChannel).mockResolvedValue(decoratedChannelMock.channelInfo);
+        (<jest.Mock>decoratedFactoryMock.setupNewChannel).mockResolvedValue({ channelInfo: decoratedChannelMock.channelInfo });
         (<jest.Mock>decoratedChannelMock.closeChannel).mockResolvedValue({});
 
         await channelFactory.setupNewChannel({ name: decoratedChannelMock.channelInfo.name });
@@ -65,15 +65,6 @@ describe("SlackChannelCachedDecorator", () => {
     });
 
     it("should cache comment info when sending a message", async () => {
-        const channelData = {
-            id: "channelId",
-            name: "channelName",
-            isArchived: false
-        };
-        (<jest.Mock>decoratedFactoryMock.setupNewChannel).mockResolvedValue(channelData);
-
-        await channelFactory.setupNewChannel({ name: channelData.name });
-
         (<jest.Mock>decoratedChannelMock.sendMessage).mockResolvedValue(<SendMessageResponse>{
             messageId: "ABCDE"
         });
@@ -105,7 +96,6 @@ describe("SlackChannelCachedDecorator", () => {
     });
 
     it("should fetch comment snapshot from gateway and save in cache", async () => {
-        (<jest.Mock>decoratedFactoryMock.fromExistingChannel).mockResolvedValueOnce(decoratedChannelMock.channelInfo);
         const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>{
             commentId: "1",
             severity: "NORMAL",
@@ -115,7 +105,7 @@ describe("SlackChannelCachedDecorator", () => {
 
         const result = await systemUnderTest.findLatestBitbucketCommentSnapshot(commentSnapshot.commentId);
 
-        expect(decoratedChannelMock.findLatestBitbucketCommentSnapshot).toHaveBeenCalledWith(decoratedChannelMock.channelInfo.id, commentSnapshot.commentId);
+        expect(decoratedChannelMock.findLatestBitbucketCommentSnapshot).toHaveBeenCalledWith(commentSnapshot.commentId);
         expect(result).toEqual(commentSnapshot);
         expect(COMMENTS_CACHE.get("channelId-1")).toEqual(commentSnapshot);
     });

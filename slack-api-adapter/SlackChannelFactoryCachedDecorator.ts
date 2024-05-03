@@ -16,9 +16,9 @@ export class SlackChannelFactoryCachedDecorator implements SlackChannelFactory {
     }
 
     async setupNewChannel(options: CreateChannelArguments): Promise<SlackChannel> {
-        const webClientChannel = await this.factory.setupNewChannel(options);
-        CHANNELS_CACHE.set(options.name, webClientChannel.channelInfo);
-        return new SlackChannelCachedDecorator(webClientChannel);
+        const channel = await this.factory.setupNewChannel(options);
+        CHANNELS_CACHE.set(options.name, channel.channelInfo);
+        return new SlackChannelCachedDecorator(channel);
     }
 
     async fromExistingChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannel> {
