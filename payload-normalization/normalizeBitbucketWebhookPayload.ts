@@ -1,7 +1,7 @@
 import { BitbucketNotification, PullRequestFromRefUpdatedPayload } from "../bitbucket-payload-types";
-import { BitbucketAPIAdapter } from "./BitbucketAPIAdapter";
+import BitbucketAPI from "./BitbucketAPI";
 
-export async function normalizeBitbucketWebhookPayload(payload: BitbucketNotification, bitbucketAPI: BitbucketAPIAdapter) {
+export async function normalizeBitbucketWebhookPayload(payload: BitbucketNotification, bitbucketAPI: BitbucketAPI) {
     if (payload.eventKey == "pr:from_ref_updated") {
         return <PullRequestFromRefUpdatedPayload>{
             ...payload,

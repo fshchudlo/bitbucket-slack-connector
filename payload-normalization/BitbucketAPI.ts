@@ -1,7 +1,6 @@
-import { BitbucketAPIAdapter } from "./BitbucketAPIAdapter";
 import axios, { AxiosRequestConfig } from "axios";
 
-export default class BitbucketWebAPIAdapter implements BitbucketAPIAdapter {
+export default class BitbucketAPI {
     private readonly apiURL: string;
     private readonly readApiToken: string;
 

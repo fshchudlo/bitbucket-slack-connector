@@ -3,7 +3,7 @@ import { register } from "prom-client";
 import { buildChannelName } from "./channel-provisioning/buildChannelName";
 import { ExpressReceiver } from "@slack/bolt";
 import { SlackAPIAdapterCachedDecorator } from "./slack-api-adapter/SlackAPIAdapterCachedDecorator";
-import BitbucketWebAPIAdapter from "./payload-normalization/BitbucketWebAPIAdapter";
+import BitbucketAPI from "./payload-normalization/BitbucketAPI";
 import { AppConfig } from "./app.config";
 import { NextFunction } from "express";
 import { WebhookHandlerConfig } from "./bitbucket-webhook-handler/webhookHandlerConfig";
@@ -13,20 +13,23 @@ import { WebClient } from "@slack/web-api";
 import { SlackWebClientChannel } from "./slack-api-adapter/SlackWebClientChannel";
 import { SlackWebClientChannelFactory } from "./slack-api-adapter/SlackWebClientChannelFactory";
 
-const bitbucketAPI = new BitbucketWebAPIAdapter(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
+const bitbucketAPI = new BitbucketAPI(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
 
 export default function configureRoutes(expressReceiver: ExpressReceiver, slackClient: WebClient) {
+    const config = <WebhookHandlerConfig>{
+        usePrivateChannels: AppConfig.USE_PRIVATE_CHANNELS,
+        defaultChannelParticipants: AppConfig.DEFAULT_CHANNEL_PARTICIPANTS,
+        getOpenedPRBroadcastChannelId: AppConfig.getOpenedPRBroadcastChannelId
+    };
+
     expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
-        const slackChannel = new SlackWebClientChannel(slackClient);
-        const slackChannelFactory = new SlackWebClientChannelFactory(slackClient);
-        const slackAPI = new SlackAPIAdapterCachedDecorator(slackChannel, slackChannelFactory);
         try {
-            const config = <WebhookHandlerConfig>{
-                usePrivateChannels: AppConfig.USE_PRIVATE_CHANNELS,
-                defaultChannelParticipants: AppConfig.DEFAULT_CHANNEL_PARTICIPANTS,
-                getOpenedPRBroadcastChannelId: AppConfig.getOpenedPRBroadcastChannelId
-            };
             const payload = await normalizeBitbucketWebhookPayload(req.body, bitbucketAPI);
+
+            const slackChannel = new SlackWebClientChannel(slackClient);
+            const slackChannelFactory = new SlackWebClientChannelFactory(slackClient);
+            const slackAPI = new SlackAPIAdapterCachedDecorator(slackChannel, slackChannelFactory);
+
             const channelInfo = await provisionPullRequestChannel(slackAPI, slackAPI, payload, config);
 
             await handleBitbucketWebhook(payload, slackAPI, channelInfo, config);
