@@ -1,15 +1,14 @@
 import * as useCases from "./use-cases";
 import { SlackChannel } from "./SlackChannel";
 import { BitbucketNotification } from "../bitbucket-payload-types";
-import { WebhookHandlerConfig } from "./webhookHandlerConfig";
 
-export default async function handleBitbucketWebhook(payload: BitbucketNotification, pullRequestChannel: SlackChannel, config: WebhookHandlerConfig) {
+export default async function handleBitbucketWebhook(payload: BitbucketNotification, pullRequestChannel: SlackChannel, broadcastChannel: SlackChannel = null, defaultChannelParticipants: string[] | null = null) {
     const eventKey = payload.eventKey;
 
     switch (eventKey) {
         case "pr:opened":
-            await useCases.inviteParticipantsAndSetChannelBookmark(payload, pullRequestChannel, config.defaultChannelParticipants);
-            await useCases.tryBroadcastMessageAboutOpenedPR(payload, pullRequestChannel, config.getOpenedPRBroadcastChannelId(payload));
+            await useCases.inviteParticipantsAndSetChannelBookmark(payload, pullRequestChannel, defaultChannelParticipants);
+            await useCases.tryBroadcastMessageAboutOpenedPR(payload, broadcastChannel);
             break;
         case "pr:modified":
             await useCases.sendMessageAboutPRModification(payload, pullRequestChannel);
@@ -38,7 +37,7 @@ export default async function handleBitbucketWebhook(payload: BitbucketNotificat
         case "pr:declined":
         case "pr:deleted":
             await useCases.sendCompletionMessageAndCloseTheChannel(payload, pullRequestChannel);
-            await useCases.tryBroadcastMessageAboutClosedPR(payload, pullRequestChannel, config.getOpenedPRBroadcastChannelId(payload));
+            await useCases.tryBroadcastMessageAboutClosedPR(payload, broadcastChannel);
             break;
         default:
             throw new Error(`"${eventKey}" event key is unknown.`);

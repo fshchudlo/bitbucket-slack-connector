@@ -13,7 +13,6 @@ import {
     SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
 } from "../bitbucket-webhook-handler/use-cases/helpers/snapshotPullRequestState";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../bitbucket-webhook-handler/use-cases/helpers";
-import { TestWebhookHandlerConfig } from "./TestWebhookHandlerConfig";
 import { SlackChannelInfo } from "../channel-provisioning/SlackChannelFactory";
 
 const messageId = "ABCDE";
@@ -49,11 +48,6 @@ export default class SlackChannelSnapshottingMock implements SlackChannel {
         isArchived: false,
         name: "test-channel"
     };
-
-    async setupBasicChannel(webhookHandlerConfig = TestWebhookHandlerConfig): Promise<SlackChannelSnapshottingMock> {
-        // this.testChannel = await provisionNotificationChannel(this, TestPayloadBuilder.pullRequestOpened(), webhookHandlerConfig);
-        return this;
-    }
 
     getSlackUserIds(userEmails: string[]): Promise<string[]> {
         this.snapshot.lookedUpUsers.push(userEmails);
@@ -110,8 +104,12 @@ export default class SlackChannelSnapshottingMock implements SlackChannel {
         return Promise.resolve(null);
     }
 
-    findPROpenedBroadcastMessageId(channelId: string, prCreationDate: Date, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
-        this.snapshot.searchedPrOpenedBroadcastMessages.push({ channelId, prCreationDate, pullRequestTraits });
+    findPROpenedBroadcastMessageId(prCreationDate: Date, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
+        this.snapshot.searchedPrOpenedBroadcastMessages.push({
+            channelId: this.channelInfo.id,
+            prCreationDate,
+            pullRequestTraits
+        });
 
         const snapshot = (<any>this.snapshot.sentMessages).findLast((m: SendMessageArguments) => m.metadata?.eventType === SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE && m.metadata?.eventPayload?.pullRequestId === pullRequestTraits.pullRequestId && m.metadata?.eventPayload?.projectKey === pullRequestTraits.projectKey && m.metadata?.eventPayload?.repositorySlug === pullRequestTraits.repositorySlug);
 

@@ -86,8 +86,8 @@ export class SlackChannelCachedDecorator implements SlackChannel {
         return commentSnapshot;
     }
 
-    findPROpenedBroadcastMessageId(channelId: string, prCreationDate: Date, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
-        return this.channel.findPROpenedBroadcastMessageId(channelId, prCreationDate, pullRequestTraits);
+    findPROpenedBroadcastMessageId(prCreationDate: Date, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
+        return this.channel.findPROpenedBroadcastMessageId(prCreationDate, pullRequestTraits);
     }
 }
 

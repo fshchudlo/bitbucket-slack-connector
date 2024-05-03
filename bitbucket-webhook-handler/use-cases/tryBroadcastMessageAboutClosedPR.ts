@@ -3,11 +3,11 @@ import { SlackChannel } from "../SlackChannel";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 import { getPullRequestCompletionAction } from "./helpers/getPullRequestCompletionAction";
 
-export async function tryBroadcastMessageAboutClosedPR(payload: PullRequestBasicNotification, slackChannel: SlackChannel, broadcastChannelId: string) {
-    if (!broadcastChannelId) {
+export async function tryBroadcastMessageAboutClosedPR(payload: PullRequestBasicNotification, broadcastChannel: SlackChannel) {
+    if (!broadcastChannel) {
         return;
     }
-    const initialBroadcastMessageId = await slackChannel.findPROpenedBroadcastMessageId(broadcastChannelId, new Date(payload.pullRequest.createdDate), {
+    const initialBroadcastMessageId = await broadcastChannel.findPROpenedBroadcastMessageId(new Date(payload.pullRequest.createdDate), {
         pullRequestId: payload.pullRequest.id.toString(),
         projectKey: payload.pullRequest.toRef.repository.project.key,
         repositorySlug: payload.pullRequest.toRef.repository.slug
@@ -17,10 +17,10 @@ export async function tryBroadcastMessageAboutClosedPR(payload: PullRequestBasic
     }
     const completionAction = getPullRequestCompletionAction(payload);
 
-    await slackChannel.sendMessage({
+    await broadcastChannel.sendMessage({
         iconEmoji: iconEmoji,
         text: `${completionAction.emoji} ${completionAction.text}`,
         threadId: initialBroadcastMessageId
     });
-    await slackChannel.addReaction(initialBroadcastMessageId, completionAction.reaction);
+    await broadcastChannel.addReaction(initialBroadcastMessageId, completionAction.reaction);
 }

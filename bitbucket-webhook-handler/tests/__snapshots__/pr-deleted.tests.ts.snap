@@ -23,18 +23,45 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
 
 exports[`handleBitbucketWebhook Should send notification to the broadcast channel, if it is specified 1`] = `
 {
-  "addedBookmarks": [],
-  "addedReactions": [],
+  "addedBookmarks": [
+    {
+      "emoji": ":git:",
+      "link": "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview",
+      "title": "Review Pull Request",
+    },
+  ],
+  "addedReactions": [
+    {
+      "channelId": "12345",
+      "messageId": "ABCDE",
+      "reaction": "no_entry_sign",
+    },
+  ],
   "closeChannelCalls": [
     "12345",
   ],
-  "invitesToChannels": [],
+  "invitesToChannels": [
+    {
+      "force": true,
+      "users": [
+        "test.author@test.com",
+        "test.reviewer1@test.com",
+        "test.reviewer2@test.com",
+      ],
+    },
+  ],
   "kicksFromChannels": [],
-  "lookedUpUsers": [],
+  "lookedUpUsers": [
+    [
+      "test.author@test.com",
+      "test.reviewer1@test.com",
+      "test.reviewer2@test.com",
+    ],
+  ],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [
     {
-      "channelId": "test-broadcast-channel-id",
+      "channelId": "12345",
       "prCreationDate": 2024-04-29T08:59:44.802Z,
       "pullRequestTraits": {
         "projectKey": "TEST-PROJ",
@@ -45,8 +72,94 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
   ],
   "sentMessages": [
     {
+      "blocks": [
+        {
+          "text": {
+            "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "type": "divider",
+        },
+        {
+          "elements": [
+            {
+              "text": "Test pull request description",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
+        },
+        {
+          "type": "divider",
+        },
+        {
+          "text": {
+            "text": "Please <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|review the PR>",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "iconEmoji": ":bitbucket:",
+      "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
+    },
+    {
+      "blocks": [
+        {
+          "text": {
+            "text": ":snowboarder: Test Author opened pull request "Test pull request title".",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+        {
+          "elements": [
+            {
+              "text": "Target: \`test-repository/master\`",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
+        },
+        {
+          "elements": [
+            {
+              "text": "Assigned reviewers: Test Reviewer 1,Test Reviewer 2.",
+              "type": "mrkdwn",
+            },
+          ],
+          "type": "context",
+        },
+        {
+          "text": {
+            "text": "You're welcome to <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|join code review>.",
+            "type": "mrkdwn",
+          },
+          "type": "section",
+        },
+      ],
+      "iconEmoji": ":bitbucket:",
+      "metadata": {
+        "eventPayload": {
+          "projectKey": "TEST-PROJ",
+          "pullRequestId": "1",
+          "repositorySlug": "test-repository",
+        },
+        "eventType": "bitbucket_pull_request_opened",
+      },
+      "text": ":snowboarder: Test Author opened pull request "Test pull request title".",
+    },
+    {
       "iconEmoji": ":bitbucket:",
       "text": ":no_entry_sign: Pull request was deleted by Test Author.",
+    },
+    {
+      "iconEmoji": ":bitbucket:",
+      "text": ":no_entry_sign: Pull request was deleted by Test Author.",
+      "threadId": "ABCDE",
     },
   ],
 }

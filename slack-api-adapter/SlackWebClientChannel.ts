@@ -121,12 +121,12 @@ export class SlackWebClientChannel implements SlackChannel {
         }
     }
 
-    async findPROpenedBroadcastMessageId(channelId: string, prCreationDate: Date, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
+    async findPROpenedBroadcastMessageId(prCreationDate: Date, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null> {
         const matchPredicate = (message: MessageElement) => {
             const eventPayload = message.metadata?.event_type === SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE ? <PullRequestSnapshotInSlackMetadata>message.metadata?.event_payload : null;
             return eventPayload && eventPayload?.pullRequestId === pullRequestTraits.pullRequestId && eventPayload?.projectKey === pullRequestTraits.projectKey && eventPayload?.repositorySlug === pullRequestTraits.repositorySlug;
         };
-        const message = await this.findMessageInChannelHistory(channelId, matchPredicate, prCreationDate);
+        const message = await this.findMessageInChannelHistory(this.channelInfo.id, matchPredicate, prCreationDate);
         return message?.ts || null;
     }
 

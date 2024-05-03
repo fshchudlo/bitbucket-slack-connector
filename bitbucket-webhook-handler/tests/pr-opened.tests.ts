@@ -1,32 +1,25 @@
 import SlackChannelSnapshottingMock from "../../test-helpers/SlackChannelSnapshottingMock";
 import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
-import { TestWebhookHandlerConfig } from "../../test-helpers/TestWebhookHandlerConfig";
 
 describe("handleBitbucketWebhook", () => {
     it("Should add bookmark and invite author and reviewers on PR opened", async () => {
-        const testSlackGateway = await new SlackChannelSnapshottingMock().setupBasicChannel();
+        const channelMock = new SlackChannelSnapshottingMock();
 
 
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), testSlackGateway, TestWebhookHandlerConfig);
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), channelMock);
 
 
-        expect(testSlackGateway.snapshot).toMatchSnapshot();
+        expect(channelMock.snapshot).toMatchSnapshot();
     });
 
     it("Should send notification to the broadcast channel, if it is specified", async () => {
-        const testSlackGateway = await new SlackChannelSnapshottingMock().setupBasicChannel();
-        // noinspection JSUnusedGlobalSymbols
-        const testConfig = {
-            ...TestWebhookHandlerConfig,
-            getOpenedPRBroadcastChannelId: () => "test-broadcast-channel-id"
-        };
+        const channelMock = new SlackChannelSnapshottingMock();
+
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), channelMock, channelMock);
 
 
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), testSlackGateway, testConfig);
-
-
-        expect(testSlackGateway.snapshot).toMatchSnapshot();
+        expect(channelMock.snapshot).toMatchSnapshot();
     });
 
 });

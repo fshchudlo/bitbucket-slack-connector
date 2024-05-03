@@ -1,18 +1,17 @@
 import SlackChannelSnapshottingMock from "../../test-helpers/SlackChannelSnapshottingMock";
 import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
-import { TestWebhookHandlerConfig } from "../../test-helpers/TestWebhookHandlerConfig";
 
 describe("handleBitbucketWebhook", () => {
     it("Should send message on PR approval/unapproval/needs work", async () => {
-        const testSlackGateway = await new SlackChannelSnapshottingMock().setupBasicChannel();
+        const channelMock = new SlackChannelSnapshottingMock();
 
 
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestNeedsWork(), testSlackGateway, TestWebhookHandlerConfig);
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestUnapproved(), testSlackGateway, TestWebhookHandlerConfig);
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestApproved(), testSlackGateway, TestWebhookHandlerConfig);
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestNeedsWork(), channelMock);
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestUnapproved(), channelMock);
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestApproved(), channelMock);
 
 
-        expect(testSlackGateway.snapshot).toMatchSnapshot();
+        expect(channelMock.snapshot).toMatchSnapshot();
     });
 });

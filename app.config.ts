@@ -17,7 +17,7 @@ export const AppConfig = {
     /*
     * You can implement any other logic depending on the granularity level you need
     * */
-    getOpenedPRBroadcastChannelId(payload: BitbucketNotification): string | null {
+    getOpenedPRBroadcastChannel(payload: BitbucketNotification): string | null {
         const configuredBotUsers = process.env.BITBUCKET_BOT_USERS?.split(",").map(u => u.trim());
         const projectKey = payload.pullRequest.toRef.repository.project.key;
         const prAuthor = payload.pullRequest.author.user.name;
@@ -25,12 +25,12 @@ export const AppConfig = {
         let channelName = null;
 
         if (configuredBotUsers?.find(u => u == prAuthor)) {
-            channelName = process.env[`${projectKey.toUpperCase()}_BOT_OPENED_PRS_BROADCAST_CHANNEL_ID`]
-                ?? process.env.BOT_OPENED_PRS_BROADCAST_CHANNEL_ID;
+            channelName = process.env[`${projectKey.toUpperCase()}_BOT_OPENED_PRS_BROADCAST_CHANNEL`]
+                ?? process.env.BOT_OPENED_PRS_BROADCAST_CHANNEL;
         }
         if (!channelName) {
-            channelName = process.env[`${projectKey.toUpperCase()}_OPENED_PRS_BROADCAST_CHANNEL_ID`]
-                ?? process.env.OPENED_PRS_BROADCAST_CHANNEL_ID;
+            channelName = process.env[`${projectKey.toUpperCase()}_OPENED_PRS_BROADCAST_CHANNEL`]
+                ?? process.env.OPENED_PRS_BROADCAST_CHANNEL;
         }
         return channelName ?? null;
     }

@@ -1,26 +1,25 @@
 import SlackChannelSnapshottingMock from "../../test-helpers/SlackChannelSnapshottingMock";
 import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
 import handleBitbucketWebhook from "../handleBitbucketWebhook";
-import { TestWebhookHandlerConfig } from "../../test-helpers/TestWebhookHandlerConfig";
 
 describe("handleBitbucketWebhook", () => {
     it("Should send message when PR modified", async () => {
-        const testSlackGateway = await new SlackChannelSnapshottingMock().setupBasicChannel();
+        const channelMock = new SlackChannelSnapshottingMock();
 
 
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestModified(), testSlackGateway, TestWebhookHandlerConfig);
+        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestModified(), channelMock);
 
 
-        expect(testSlackGateway.snapshot).toMatchSnapshot();
+        expect(channelMock.snapshot).toMatchSnapshot();
     });
     it("Should not send message if PR doesn't contain visible changes", async () => {
-        const testSlackGateway = await new SlackChannelSnapshottingMock().setupBasicChannel();
+        const channelMock = new SlackChannelSnapshottingMock();
 
 
         const modifiedPayload = TestPayloadBuilder.pullRequestModifiedWithoutVisibleChanges();
-        await handleBitbucketWebhook(modifiedPayload, testSlackGateway, TestWebhookHandlerConfig);
+        await handleBitbucketWebhook(modifiedPayload, channelMock);
 
 
-        expect(testSlackGateway.snapshot).toMatchSnapshot();
+        expect(channelMock.snapshot).toMatchSnapshot();
     });
 });
