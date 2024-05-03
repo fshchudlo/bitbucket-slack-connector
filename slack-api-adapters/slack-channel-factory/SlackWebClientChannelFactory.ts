@@ -3,9 +3,9 @@ import {
     CreateChannelArguments,
     SlackChannelFactory,
     SlackChannelInfo
-} from "../channel-provisioning/SlackChannelFactory";
-import { SlackChannel } from "../bitbucket-webhook-handler/SlackChannel";
-import { SlackWebClientChannel } from "./SlackWebClientChannel";
+} from "./SlackChannelFactory";
+import { SlackChannel } from "../../bitbucket-webhook-handler/SlackChannel";
+import { SlackWebClientChannel } from "../slack-channel/SlackWebClientChannel";
 
 const awaitingCreateChannelRequests = new Map<string, Promise<SlackChannelInfo>>();
 

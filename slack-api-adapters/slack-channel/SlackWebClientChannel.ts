@@ -9,13 +9,13 @@ import {
     AddBookmarkArguments,
     SlackChannel,
     PullRequestSnapshotInSlackMetadata
-} from "../bitbucket-webhook-handler/SlackChannel";
+} from "../../bitbucket-webhook-handler/SlackChannel";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
-import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../bitbucket-webhook-handler/use-cases/helpers";
+import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../bitbucket-webhook-handler/use-cases/helpers";
 import {
     SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
-} from "../bitbucket-webhook-handler/use-cases/helpers/snapshotPullRequestState";
-import { SlackChannelInfo } from "../channel-provisioning/SlackChannelFactory";
+} from "../../bitbucket-webhook-handler/use-cases/helpers/snapshotPullRequestState";
+import { SlackChannelInfo } from "../slack-channel-factory/SlackChannelFactory";
 
 
 /**

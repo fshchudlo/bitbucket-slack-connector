@@ -1,11 +1,11 @@
-import { SlackChannel } from "../bitbucket-webhook-handler/SlackChannel";
+import { SlackChannel } from "../../bitbucket-webhook-handler/SlackChannel";
 import {
     CreateChannelArguments,
     SlackChannelFactory
-} from "../channel-provisioning/SlackChannelFactory";
-import { CHANNELS_CACHE } from "./CHANNELS_CACHE";
-import { SlackWebClientChannel } from "./SlackWebClientChannel";
-import { SlackChannelCachedDecorator } from "./SlackChannelCachedDecorator";
+} from "./SlackChannelFactory";
+import { CHANNELS_CACHE } from "../cache/CHANNELS_CACHE";
+import { SlackWebClientChannel } from "../slack-channel/SlackWebClientChannel";
+import { SlackChannelCachedDecorator } from "../slack-channel/SlackChannelCachedDecorator";
 import { SlackWebClientChannelFactory } from "./SlackWebClientChannelFactory";
 
 export class SlackChannelFactoryCachedDecorator implements SlackChannelFactory {

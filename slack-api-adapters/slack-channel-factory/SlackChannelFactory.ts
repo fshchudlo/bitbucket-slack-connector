@@ -1,4 +1,4 @@
-import { SlackChannel } from "../bitbucket-webhook-handler/SlackChannel";
+import { SlackChannel } from "../../bitbucket-webhook-handler/SlackChannel";
 
 export interface SlackChannelFactory {
     fromExistingChannel(channelName: string, includePrivateChannels: boolean): Promise<SlackChannel | null>;

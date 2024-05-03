@@ -4,6 +4,10 @@ import express from "express";
 import { collectDefaultMetrics } from "prom-client";
 import configureRoutes from "./app.routes";
 import configureErrorHandler from "./app.errorHandler";
+import {
+    SlackChannelFactoryCachedDecorator
+} from "./slack-api-adapters/slack-channel-factory/SlackChannelFactoryCachedDecorator";
+import { SlackWebClientChannelFactory } from "./slack-api-adapters/slack-channel-factory/SlackWebClientChannelFactory";
 
 const expressReceiver = new ExpressReceiver({
     signingSecret: AppConfig.SLACK_SIGNING_SECRET
@@ -15,8 +19,10 @@ const slackApp = new App({
     receiver: expressReceiver
 });
 
+const slackChannelFactory = new SlackChannelFactoryCachedDecorator(new SlackWebClientChannelFactory(slackApp.client));
+
 collectDefaultMetrics();
-configureRoutes(expressReceiver, slackApp.client);
+configureRoutes(expressReceiver, slackChannelFactory);
 configureErrorHandler(expressReceiver, slackApp.client);
 
 (async () => {

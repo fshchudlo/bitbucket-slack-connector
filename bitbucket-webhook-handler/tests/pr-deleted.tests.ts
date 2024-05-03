@@ -1,6 +1,6 @@
 import SlackChannelSnapshottingMock from "../../test-helpers/SlackChannelSnapshottingMock";
 import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
-import handleBitbucketWebhook from "../handleBitbucketWebhook";
+import sendTargetNotificationToSlack from "../handleBitbucketWebhook";
 
 describe("handleBitbucketWebhook", () => {
     it("Should send completion message and close the channel on PR deletion", async () => {
@@ -8,7 +8,7 @@ describe("handleBitbucketWebhook", () => {
         const payload = TestPayloadBuilder.pullRequestDeleted();
 
 
-        await handleBitbucketWebhook(payload, channelMock);
+        await sendTargetNotificationToSlack(payload, channelMock);
 
 
         expect(channelMock.snapshot).toMatchSnapshot();
@@ -16,9 +16,9 @@ describe("handleBitbucketWebhook", () => {
 
     it("Should send notification to the broadcast channel, if it is specified", async () => {
         const channelMock = new SlackChannelSnapshottingMock();
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestOpened(), channelMock, channelMock);
+        await sendTargetNotificationToSlack(TestPayloadBuilder.pullRequestOpened(), channelMock, channelMock);
 
-        await handleBitbucketWebhook(TestPayloadBuilder.pullRequestDeleted(), channelMock, channelMock);
+        await sendTargetNotificationToSlack(TestPayloadBuilder.pullRequestDeleted(), channelMock, channelMock);
 
 
         expect(channelMock.snapshot).toMatchSnapshot();

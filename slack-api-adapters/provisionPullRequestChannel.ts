@@ -1,11 +1,11 @@
 import { BitbucketNotification, PullRequestBasicNotification } from "../bitbucket-payload-types";
 import { buildChannelName } from "./buildChannelName";
-import { SlackChannelFactory } from "./SlackChannelFactory";
-import handleBitbucketWebhook from "../bitbucket-webhook-handler/handleBitbucketWebhook";
+import { SlackChannelFactory } from "./slack-channel-factory/SlackChannelFactory";
+import sendTargetNotificationToSlack from "../bitbucket-webhook-handler/handleBitbucketWebhook";
 import { SlackChannel } from "../bitbucket-webhook-handler/SlackChannel";
 import { AppConfig } from "../app.config";
 
-export async function provisionNotificationChannel(channelFactory: SlackChannelFactory, broadcastChannel: SlackChannel | null, payload: BitbucketNotification) {
+export async function provisionPullRequestChannel(channelFactory: SlackChannelFactory, broadcastChannel: SlackChannel | null, payload: BitbucketNotification) {
     const channelName = buildChannelName(payload.pullRequest);
     if (payload.eventKey == "pr:opened") {
         return await channelFactory.setupNewChannel({ name: channelName, isPrivate: AppConfig.USE_PRIVATE_CHANNELS });
@@ -27,6 +27,6 @@ export async function provisionNotificationChannel(channelFactory: SlackChannelF
         },
         pullRequest: payload.pullRequest
     };
-    await handleBitbucketWebhook(prOpenedPayload, createdChannel, broadcastChannel, AppConfig.DEFAULT_CHANNEL_PARTICIPANTS);
+    await sendTargetNotificationToSlack(prOpenedPayload, createdChannel, broadcastChannel, AppConfig.DEFAULT_CHANNEL_PARTICIPANTS);
     return createdChannel;
 }

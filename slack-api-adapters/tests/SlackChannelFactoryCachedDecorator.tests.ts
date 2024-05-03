@@ -1,8 +1,8 @@
 import { register } from "prom-client";
-import { SlackChannelFactory } from "../../channel-provisioning/SlackChannelFactory";
-import { CHANNELS_CACHE } from "../CHANNELS_CACHE";
-import { COMMENTS_CACHE } from "../COMMENTS_CACHE";
-import { SlackChannelFactoryCachedDecorator } from "../SlackChannelFactoryCachedDecorator";
+import { SlackChannelFactory } from "../slack-channel-factory/SlackChannelFactory";
+import { CHANNELS_CACHE } from "../cache/CHANNELS_CACHE";
+import { COMMENTS_CACHE } from "../cache/COMMENTS_CACHE";
+import { SlackChannelFactoryCachedDecorator } from "../slack-channel-factory/SlackChannelFactoryCachedDecorator";
 
 
 const decoratedFactoryMock = (<SlackChannelFactory>{

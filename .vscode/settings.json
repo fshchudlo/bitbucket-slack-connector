@@ -1,6 +1,0 @@
-{
-    "jest.runMode": {
-        "type": "watch",
-        "coverage": true
-    }
-}

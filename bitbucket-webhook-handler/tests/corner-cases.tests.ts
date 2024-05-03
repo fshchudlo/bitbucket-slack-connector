@@ -1,5 +1,5 @@
 import SlackChannelSnapshottingMock from "../../test-helpers/SlackChannelSnapshottingMock";
-import handleBitbucketWebhook from "../handleBitbucketWebhook";
+import sendTargetNotificationToSlack from "../handleBitbucketWebhook";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
 
@@ -14,7 +14,7 @@ describe("handleBitbucketWebhook", () => {
         } as unknown) as PullRequestBasicNotification;
 
         try {
-            await handleBitbucketWebhook(invalidPayload, channelMock);
+            await sendTargetNotificationToSlack(invalidPayload, channelMock);
         } catch (error) {
             expect((error as Error).message).toBe("\"unknown action\" event key is unknown.");
         }

@@ -13,7 +13,7 @@ import {
     SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
 } from "../bitbucket-webhook-handler/use-cases/helpers/snapshotPullRequestState";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../bitbucket-webhook-handler/use-cases/helpers";
-import { SlackChannelInfo } from "../channel-provisioning/SlackChannelFactory";
+import { SlackChannelInfo } from "../slack-api-adapters/slack-channel-factory/SlackChannelFactory";
 
 const messageId = "ABCDE";
 export default class SlackChannelSnapshottingMock implements SlackChannel {

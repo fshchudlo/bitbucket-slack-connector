@@ -1,12 +1,12 @@
-import { provisionNotificationChannel } from "../provisionNotificationChannel";
+import { provisionPullRequestChannel } from "../provisionPullRequestChannel";
 import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
-import SlackChannelFactorySnapshottingMock from "../../test-helpers/SlackChannelFactorySnapshottingMock";
+import SlackChannelFactorySnapshottingMock from "./SlackChannelFactorySnapshottingMock";
 
-describe("provisionNotificationChannel", () => {
+describe("provisionPullRequestChannel", () => {
     it("Should create channel", async () => {
         const testFactory = new SlackChannelFactorySnapshottingMock();
 
-        await provisionNotificationChannel(testFactory, null, TestPayloadBuilder.pullRequestOpened());
+        await provisionPullRequestChannel(testFactory, null, TestPayloadBuilder.pullRequestOpened());
 
         expect(testFactory.snapshot).toMatchSnapshot();
     });
@@ -14,7 +14,7 @@ describe("provisionNotificationChannel", () => {
     it("Should replay channel creation if channel doesn't exist and handle initial payload after that", async () => {
         const testFactory = new SlackChannelFactorySnapshottingMock();
 
-        await provisionNotificationChannel(testFactory, null, TestPayloadBuilder.reviewersUpdated());
+        await provisionPullRequestChannel(testFactory, null, TestPayloadBuilder.reviewersUpdated());
 
         expect(testFactory.snapshot).toMatchSnapshot();
     });
