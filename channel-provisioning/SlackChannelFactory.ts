@@ -1,5 +1,5 @@
 export interface SlackChannelFactory {
-    findChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelInfo | null>;
+    findExistingChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelInfo | null>;
     createChannel(options: CreateChannelArguments): Promise<SlackChannelInfo>;
 }
 

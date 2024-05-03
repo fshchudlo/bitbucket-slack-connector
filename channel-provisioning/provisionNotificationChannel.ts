@@ -10,7 +10,7 @@ export async function provisionNotificationChannel(channelFactory: SlackChannelF
     if (payload.eventKey == "pr:opened") {
         return await channelFactory.createChannel({ name: channelName, isPrivate: config.usePrivateChannels });
     }
-    const existingChannel = await channelFactory.findChannel(channelName, config.usePrivateChannels);
+    const existingChannel = await channelFactory.findExistingChannel(channelName, config.usePrivateChannels);
     if (existingChannel != null) {
         return existingChannel;
     }
@@ -25,5 +25,5 @@ export async function provisionNotificationChannel(channelFactory: SlackChannelF
         pullRequest: payload.pullRequest
     };
     await handleBitbucketWebhook(prOpenedPayload, slackAPI, newChannel, config);
-    return await channelFactory.findChannel(channelName, config.usePrivateChannels);
+    return await channelFactory.findExistingChannel(channelName, config.usePrivateChannels);
 }

@@ -64,7 +64,7 @@ export default class SlackAdapterSnapshottingMock implements SlackChannel, Slack
         return Promise.resolve(userEmails);
     }
 
-    findChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelInfo | null> {
+    findExistingChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelInfo | null> {
         this.snapshot.searchedChannels.push({ channelName, findPrivateChannels });
         return Promise.resolve(this.snapshot.createdChannels.find(c => c.name == channelName) ?? null);
     }

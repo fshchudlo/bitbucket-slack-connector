@@ -2,7 +2,7 @@ import handleBitbucketWebhook from "./bitbucket-webhook-handler/handleBitbucketW
 import { register } from "prom-client";
 import { buildChannelName } from "./channel-provisioning/buildChannelName";
 import { ExpressReceiver } from "@slack/bolt";
-import { SlackAPIAdapterCachedDecorator } from "./slack-api-adapter/SlackAPIAdapterCachedDecorator";
+import { SlackChannelCachedDecorator } from "./slack-api-adapter/SlackChannelCachedDecorator";
 import BitbucketAPI from "./payload-normalization/BitbucketAPI";
 import { AppConfig } from "./app.config";
 import { NextFunction } from "express";
@@ -28,9 +28,9 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackC
 
             const slackChannel = new SlackWebClientChannel(slackClient);
             const slackChannelFactory = new SlackWebClientChannelFactory(slackClient);
-            const slackAPI = new SlackAPIAdapterCachedDecorator(slackChannel, slackChannelFactory);
+            const slackAPI = new SlackChannelCachedDecorator(slackChannel);
 
-            const channelInfo = await provisionNotificationChannel(slackAPI, slackAPI, payload, config);
+            const channelInfo = await provisionNotificationChannel(slackChannelFactory, slackAPI, payload, config);
 
             await handleBitbucketWebhook(payload, slackAPI, channelInfo, config);
             res.sendStatus(200);
@@ -59,12 +59,9 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackC
                 projectKey: <string>projectKey
             });
 
-            const slackChannel = new SlackWebClientChannel(slackClient);
             const slackChannelFactory = new SlackWebClientChannelFactory(slackClient);
-            const slackAPI = new SlackAPIAdapterCachedDecorator(slackChannel, slackChannelFactory);
 
-
-            const channelInfo = await slackAPI.findChannel(channelName, AppConfig.USE_PRIVATE_CHANNELS);
+            const channelInfo = await slackChannelFactory.findExistingChannel(channelName, AppConfig.USE_PRIVATE_CHANNELS);
 
             channelInfo ? res.send(channelInfo) : res.sendStatus(404);
         } catch (error) {

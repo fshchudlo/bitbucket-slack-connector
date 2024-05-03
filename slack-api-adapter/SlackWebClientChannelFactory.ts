@@ -14,7 +14,7 @@ export class SlackWebClientChannelFactory implements SlackChannelFactory {
         this.client = client;
     }
 
-    async findChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelInfo | null> {
+    async findExistingChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelInfo | null> {
         if (awaitingCreateChannelRequests.has(channelName)) {
             return awaitingCreateChannelRequests.get(channelName);
         }
