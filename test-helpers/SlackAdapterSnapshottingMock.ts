@@ -18,7 +18,7 @@ import {
     SlackChannelFactory,
     SlackChannelInfo
 } from "../channel-provisioning/SlackChannelFactory";
-import { provisionPullRequestChannel } from "../channel-provisioning/provisionPullRequestChannel";
+import { provisionNotificationChannel } from "../channel-provisioning/provisionNotificationChannel";
 
 const channelId = "12345";
 const messageId = "ABCDE";
@@ -55,7 +55,7 @@ export default class SlackAdapterSnapshottingMock implements SlackChannel, Slack
     }
 
     async setupBasicChannel(webhookHandlerConfig = TestWebhookHandlerConfig): Promise<SlackAdapterSnapshottingMock> {
-        this.testChannel = await provisionPullRequestChannel(this, this, TestPayloadBuilder.pullRequestOpened(), webhookHandlerConfig);
+        this.testChannel = await provisionNotificationChannel(this, this, TestPayloadBuilder.pullRequestOpened(), webhookHandlerConfig);
         return this;
     }
 

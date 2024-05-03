@@ -8,7 +8,7 @@ import { AppConfig } from "./app.config";
 import { NextFunction } from "express";
 import { WebhookHandlerConfig } from "./bitbucket-webhook-handler/webhookHandlerConfig";
 import { normalizeBitbucketWebhookPayload } from "./payload-normalization/normalizeBitbucketWebhookPayload";
-import { provisionPullRequestChannel } from "./channel-provisioning/provisionPullRequestChannel";
+import { provisionNotificationChannel } from "./channel-provisioning/provisionNotificationChannel";
 import { WebClient } from "@slack/web-api";
 import { SlackWebClientChannel } from "./slack-api-adapter/SlackWebClientChannel";
 import { SlackWebClientChannelFactory } from "./slack-api-adapter/SlackWebClientChannelFactory";
@@ -30,7 +30,7 @@ export default function configureRoutes(expressReceiver: ExpressReceiver, slackC
             const slackChannelFactory = new SlackWebClientChannelFactory(slackClient);
             const slackAPI = new SlackAPIAdapterCachedDecorator(slackChannel, slackChannelFactory);
 
-            const channelInfo = await provisionPullRequestChannel(slackAPI, slackAPI, payload, config);
+            const channelInfo = await provisionNotificationChannel(slackAPI, slackAPI, payload, config);
 
             await handleBitbucketWebhook(payload, slackAPI, channelInfo, config);
             res.sendStatus(200);
