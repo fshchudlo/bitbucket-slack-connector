@@ -1,4 +1,4 @@
-import { iconEmoji, link, section, divider, contextBlock } from "./slack-building-blocks";
+import { link, section, divider, contextBlock } from "./slack-building-blocks";
 import { formatUserName, formatPullRequestDescription, reviewPRAction } from "./helpers";
 import { SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
@@ -25,7 +25,6 @@ function buildMessage(payload: PullRequestBasicNotification): SendMessageArgumen
     const messageTitle = `${formatUserName(payload.actor)} opened ${link(payload.pullRequest.links.self[0].href, "pull request")}`;
     const descriptionText = formatPullRequestDescription(payload.pullRequest.description ?? payload.pullRequest.title);
     return {
-        iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), divider(), contextBlock(descriptionText), divider(), reviewPRAction(payload.pullRequest)]
     };

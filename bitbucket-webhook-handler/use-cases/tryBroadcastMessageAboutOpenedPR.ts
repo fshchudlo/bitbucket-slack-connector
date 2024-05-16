@@ -1,4 +1,4 @@
-import { iconEmoji, link, section, contextBlock } from "./slack-building-blocks";
+import { link, section, contextBlock } from "./slack-building-blocks";
 import { formatUserName, snapshotPullRequestState } from "./helpers";
 import { SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
@@ -17,7 +17,6 @@ function buildMessage(payload: PullRequestBasicNotification): SendMessageArgumen
     const invitationText = `You're welcome to ${link(payload.pullRequest.links.self[0].href, "join code review")}.`;
 
     return {
-        iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), contextBlock(targetText), reviewersContextBlock, section(invitationText)]
             .filter(b => !!b),

@@ -39,8 +39,6 @@ export default async function sendTargetNotificationToSlack(payload: BitbucketNo
             await useCases.sendCompletionMessageAndCloseTheChannel(payload, pullRequestChannel);
             await useCases.tryBroadcastMessageAboutClosedPR(payload, broadcastChannel);
             break;
-        default:
-            throw new Error(`"${eventKey}" event key is unknown.`);
     }
 }
 

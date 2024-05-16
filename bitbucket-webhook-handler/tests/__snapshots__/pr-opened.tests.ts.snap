@@ -64,7 +64,6 @@ exports[`handleBitbucketWebhook Should add bookmark and invite author and review
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
     },
   ],
@@ -135,7 +134,6 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
     },
     {
@@ -173,7 +171,6 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "projectKey": "TEST-PROJ",

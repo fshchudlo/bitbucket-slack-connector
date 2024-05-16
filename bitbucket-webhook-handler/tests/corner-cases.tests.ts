@@ -1,5 +1,5 @@
 import SlackChannelSnapshottingMock from "../../test-helpers/SlackChannelSnapshottingMock";
-import sendTargetNotificationToSlack from "../handleBitbucketWebhook";
+import sendTargetNotificationToSlack from "../sendTargetNotificationToSlack";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
 

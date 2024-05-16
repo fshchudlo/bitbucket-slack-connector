@@ -1,4 +1,4 @@
-import { contextBlock, divider, iconEmoji, section } from "./slack-building-blocks";
+import { contextBlock, divider, section } from "./slack-building-blocks";
 import { formatUserName, formatPullRequestDescription, reviewPRAction } from "./helpers";
 import { SlackChannel } from "../SlackChannel";
 import { PullRequestModifiedNotification } from "../../bitbucket-payload-types";
@@ -12,7 +12,6 @@ export async function sendMessageAboutPRModification(payload: PullRequestModifie
     const messageTitle = `:writing_hand: ${formatUserName(payload.actor)} changed the pull request`;
 
     await slackChannel.sendMessage({
-        iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), ...visibleChanges, divider(), reviewPRAction(payload.pullRequest)]
     });

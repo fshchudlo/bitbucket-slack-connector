@@ -1,4 +1,3 @@
-import { iconEmoji } from "./slack-building-blocks";
 import { SlackChannel } from "../SlackChannel";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 import { getPullRequestCompletionAction } from "./helpers/getPullRequestCompletionAction";
@@ -18,7 +17,6 @@ export async function tryBroadcastMessageAboutClosedPR(payload: PullRequestBasic
     const completionAction = getPullRequestCompletionAction(payload);
 
     await broadcastChannel.sendMessage({
-        iconEmoji: iconEmoji,
         text: `${completionAction.emoji} ${completionAction.text}`,
         threadId: initialBroadcastMessageId
     });

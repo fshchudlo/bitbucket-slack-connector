@@ -1,5 +1,5 @@
 import { SendMessageArguments, SlackChannel } from "../SlackChannel";
-import { contextBlock, divider, iconEmoji, link, section } from "./slack-building-blocks";
+import { contextBlock, divider, link, section } from "./slack-building-blocks";
 import { formatUserName } from "./helpers";
 import { PullRequestBasicNotification, PullRequestPayload } from "../../bitbucket-payload-types";
 
@@ -12,7 +12,6 @@ function buildMessage(payload: PullRequestBasicNotification): SendMessageArgumen
     const messageTitle = getReviewerActionText(payload);
     const reviewStatus = getReviewStatus(pullRequest);
     return {
-        iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), divider(), contextBlock(reviewStatus)]
     };

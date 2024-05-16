@@ -4,7 +4,7 @@ import {
     SlackChannel
 } from "../SlackChannel";
 import { getTaskOrCommentTitle, snapshotCommentState } from "./helpers";
-import { iconEmoji, link, quote, section } from "./slack-building-blocks";
+import { link, quote, section } from "./slack-building-blocks";
 import { formatUserName, markdownToSlackMarkup } from "./helpers";
 
 export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackChannel: SlackChannel) {
@@ -17,7 +17,6 @@ export async function sendMessageAboutEditedComment(payload: PullRequestCommentA
     const commentText = markdownToSlackMarkup(payload.comment.text);
 
     await slackChannel.sendMessage({
-        iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), section(quote(commentText))],
         metadata: snapshotCommentState(payload),

@@ -90,7 +90,6 @@ exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "text": ":writing_hand: Test Author changed the pull request",
     },
   ],

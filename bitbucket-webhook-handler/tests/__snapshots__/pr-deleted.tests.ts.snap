@@ -14,7 +14,6 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
     {
-      "iconEmoji": ":bitbucket:",
       "text": ":no_entry_sign: Pull request was deleted by Test Author.",
     },
   ],
@@ -103,7 +102,6 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "text": "Test Author opened <https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview|pull request>",
     },
     {
@@ -141,7 +139,6 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "projectKey": "TEST-PROJ",
@@ -153,11 +150,9 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
       "text": ":snowboarder: Test Author opened pull request "Test pull request title".",
     },
     {
-      "iconEmoji": ":bitbucket:",
       "text": ":no_entry_sign: Pull request was deleted by Test Author.",
     },
     {
-      "iconEmoji": ":bitbucket:",
       "text": ":no_entry_sign: Pull request was deleted by Test Author.",
       "threadId": "ABCDE",
     },

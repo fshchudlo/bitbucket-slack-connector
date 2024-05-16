@@ -17,17 +17,18 @@ import {
 } from "../../bitbucket-webhook-handler/use-cases/helpers/snapshotPullRequestState";
 import { SlackChannelInfo } from "../slack-channel-factory/SlackChannelFactory";
 
-
 /**
  * Adapter for the Slack API that also acts as an {@link https://awesome-architecture.com/cloud-design-patterns/anti-corruption-layer-pattern/|anti-corruption layer} since Slack API is not always consistent
  */
 export class SlackWebClientChannel implements SlackChannel {
-    private client: slack.WebClient;
+    private readonly client: slack.WebClient;
+    private readonly iconEmoji: string;
     readonly channelInfo: SlackChannelInfo;
 
-    constructor(client: slack.WebClient, channelInfo: SlackChannelInfo = null) {
+    constructor(client: slack.WebClient, channelInfo: SlackChannelInfo = null, iconEmoji = ":bitbucket:") {
         this.client = client;
         this.channelInfo = channelInfo;
+        this.iconEmoji = iconEmoji;
     }
 
     async getSlackUserIds(userEmails: string[]): Promise<string[]> {
@@ -83,7 +84,7 @@ export class SlackWebClientChannel implements SlackChannel {
     async sendMessage(options: SendMessageArguments): Promise<SendMessageResponse> {
         const response = await this.client.chat.postMessage({
             channel: this.channelInfo.id,
-            icon_emoji: options.iconEmoji,
+            icon_emoji: this.iconEmoji,
             text: options.text,
             metadata: options.metadata ? {
                 event_type: options.metadata.eventType,

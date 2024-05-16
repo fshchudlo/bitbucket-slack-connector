@@ -1,6 +1,6 @@
 import { BitbucketCommentSnapshot, SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { formatUserName, getTaskOrCommentTitle, markdownToSlackMarkup, snapshotCommentState } from "./helpers";
-import { quote, section, iconEmoji } from "./slack-building-blocks";
+import { quote, section } from "./slack-building-blocks";
 import { PullRequestCommentActionNotification } from "../../bitbucket-payload-types";
 
 export async function sendMessageAboutDeletedComment(payload: PullRequestCommentActionNotification, slackChannel: SlackChannel) {
@@ -12,7 +12,6 @@ function buildMessage(payload: PullRequestCommentActionNotification, commentSnap
     const messageTitle = `:broom: ${formatUserName(payload.actor)} deleted ${getTaskOrCommentTitle(payload)}:`;
     const commentText = markdownToSlackMarkup(payload.comment.text);
     return {
-        iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), section(quote(commentText))],
         metadata: snapshotCommentState(payload),

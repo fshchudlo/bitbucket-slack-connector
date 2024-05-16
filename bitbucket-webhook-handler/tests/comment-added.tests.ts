@@ -1,6 +1,6 @@
 import SlackChannelSnapshottingMock from "../../test-helpers/SlackChannelSnapshottingMock";
 import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
-import sendTargetNotificationToSlack from "../handleBitbucketWebhook";
+import sendTargetNotificationToSlack from "../sendTargetNotificationToSlack";
 
 describe("handleBitbucketWebhook", () => {
     it("Should send message on PR comment", async () => {

@@ -1,4 +1,4 @@
-import { iconEmoji, link, quote, section } from "./slack-building-blocks";
+import { link, quote, section } from "./slack-building-blocks";
 import { formatUserName, markdownToSlackMarkup, reviewPRAction } from "./helpers";
 import { SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { PullRequestFromRefUpdatedPayload } from "../../bitbucket-payload-types";
@@ -15,7 +15,6 @@ function buildMessage(payload: PullRequestFromRefUpdatedPayload): SendMessageArg
 
     const commentSection = payload.latestCommitMessage ? section(`Commit message: \n${quote(markdownToSlackMarkup(payload.latestCommitMessage))}`) : null;
     return {
-        iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), commentSection, reviewPRAction(payload.pullRequest)].filter(s => !!s)
     };

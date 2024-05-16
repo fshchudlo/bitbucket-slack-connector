@@ -46,7 +46,6 @@ export type KickFromChannelArguments = {
     users: string[];
 }
 export type SendMessageArguments = {
-    iconEmoji?: string;
     text?: string;
     threadId?: string;
     replyBroadcast?: boolean,

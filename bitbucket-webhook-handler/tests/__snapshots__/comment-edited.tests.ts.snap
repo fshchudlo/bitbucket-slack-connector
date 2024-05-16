@@ -33,7 +33,6 @@ exports[`handleBitbucketWebhook Should return generic message if initial comment
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "commentId": "1",
@@ -85,7 +84,6 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "commentId": "1",
@@ -117,7 +115,6 @@ exports[`handleBitbucketWebhook Should send message on PR comment edit 1`] = `
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "commentId": "1",
@@ -169,7 +166,6 @@ exports[`handleBitbucketWebhook Should send message on comment conversion to the
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "commentId": "1",
@@ -201,7 +197,6 @@ exports[`handleBitbucketWebhook Should send message on comment conversion to the
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "commentId": "1",
@@ -257,7 +252,6 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "commentId": "1",
@@ -289,7 +283,6 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "commentId": "1",
@@ -321,7 +314,6 @@ exports[`handleBitbucketWebhook Should send message on comment resolving and reo
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "commentId": "1",
@@ -373,7 +365,6 @@ exports[`handleBitbucketWebhook Should send message on task conversion to the co
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "commentId": "1",
@@ -405,7 +396,6 @@ exports[`handleBitbucketWebhook Should send message on task conversion to the co
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "commentId": "1",
@@ -461,7 +451,6 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "commentId": "1",
@@ -493,7 +482,6 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "commentId": "1",
@@ -525,7 +513,6 @@ exports[`handleBitbucketWebhook Should send message on task resolving and reopen
           "type": "section",
         },
       ],
-      "iconEmoji": ":bitbucket:",
       "metadata": {
         "eventPayload": {
           "commentId": "1",

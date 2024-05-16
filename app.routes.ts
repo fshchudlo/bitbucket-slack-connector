@@ -1,4 +1,4 @@
-import sendTargetNotificationToSlack from "./bitbucket-webhook-handler/handleBitbucketWebhook";
+import sendTargetNotificationToSlack from "./bitbucket-webhook-handler/sendTargetNotificationToSlack";
 import { register } from "prom-client";
 import { buildChannelName } from "./slack-api-adapters/buildChannelName";
 import { ExpressReceiver } from "@slack/bolt";

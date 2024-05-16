@@ -1,5 +1,5 @@
 import { formatUserName, getTaskOrCommentTitle, markdownToSlackMarkup, snapshotCommentState } from "./helpers";
-import { link, quote, section, iconEmoji } from "./slack-building-blocks";
+import { link, quote, section } from "./slack-building-blocks";
 import { BitbucketCommentSnapshot, SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { PullRequestCommentActionNotification } from "../../bitbucket-payload-types";
 
@@ -16,7 +16,6 @@ function buildMessage(payload: PullRequestCommentActionNotification, parentComme
     const commentText = markdownToSlackMarkup(payload.comment.text);
 
     return {
-        iconEmoji: iconEmoji,
         text: messageTitle,
         blocks: [section(messageTitle), section(quote(commentText))],
         metadata: snapshotCommentState(payload),
