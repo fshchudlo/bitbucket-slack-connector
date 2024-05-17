@@ -1,4 +1,4 @@
-import * as useCases from "./use-cases";
+import * as useCases from "./use-case-handlers";
 import { SlackChannel } from "./SlackChannel";
 import { BitbucketNotification } from "../bitbucket-payload-types";
 

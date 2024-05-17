@@ -6,8 +6,8 @@ import configureRoutes from "./app.routes";
 import configureErrorHandler from "./app.errorHandler";
 import {
     SlackChannelFactoryCachedDecorator
-} from "./slack-api-adapters/slack-channel-factory/SlackChannelFactoryCachedDecorator";
-import { SlackWebClientChannelFactory } from "./slack-api-adapters/slack-channel-factory/SlackWebClientChannelFactory";
+} from "./slack-api/slack-channel-factory/SlackChannelFactoryCachedDecorator";
+import { SlackWebClientChannelFactory } from "./slack-api/slack-channel-factory/SlackWebClientChannelFactory";
 
 const expressReceiver = new ExpressReceiver({
     signingSecret: AppConfig.SLACK_SIGNING_SECRET

@@ -1,6 +1,6 @@
 import { contextBlock, divider, section } from "../utils/slack-building-blocks";
 import { formatUserName, formatPullRequestDescription, reviewPRAction } from "../utils";
-import { SendMessageArguments, SlackChannel } from "../../SlackChannel";
+import { SlackChannel } from "../../SlackChannel";
 import { PullRequestModifiedNotification } from "../../../bitbucket-payload-types";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
 
@@ -10,23 +10,17 @@ export class PullRequestModifiedHandler implements WebhookPayloadHandler {
     }
 
     public async handle(payload: PullRequestModifiedNotification, slackChannel: SlackChannel) {
-        const message = buildSlackMessage(payload);
-        await slackChannel.sendMessage(message);
+        const visibleChanges = getPRChangesDescription(payload);
+        if (visibleChanges.length == 0) {
+            return;
+        }
+
+        const messageTitle = `:writing_hand: ${formatUserName(payload.actor)} changed the pull request`;
+        await slackChannel.sendMessage({
+            text: messageTitle,
+            blocks: [section(messageTitle), ...visibleChanges, divider(), reviewPRAction(payload.pullRequest)]
+        });
     }
-}
-
-function buildSlackMessage(payload: PullRequestModifiedNotification): SendMessageArguments {
-    const visibleChanges = getPRChangesDescription(payload);
-    if (visibleChanges.length == 0) {
-        return;
-    }
-
-    const messageTitle = `:writing_hand: ${formatUserName(payload.actor)} changed the pull request`;
-
-    return {
-        text: messageTitle,
-        blocks: [section(messageTitle), ...visibleChanges, divider(), reviewPRAction(payload.pullRequest)]
-    };
 }
 
 function getPRChangesDescription(payload: PullRequestModifiedNotification) {

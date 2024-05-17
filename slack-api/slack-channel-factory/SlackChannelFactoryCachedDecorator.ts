@@ -1,9 +1,8 @@
-import { SlackChannel } from "../../bitbucket-webhook-handler/SlackChannel";
 import {
     CreateChannelArguments,
     SlackChannelFactory
 } from "./SlackChannelFactory";
-import { CHANNELS_CACHE } from "../cache/CHANNELS_CACHE";
+import { CHANNELS_CACHE } from "../CHANNELS_CACHE";
 import { SlackWebClientChannel } from "../slack-channel/SlackWebClientChannel";
 import { SlackChannelCachedDecorator } from "../slack-channel/SlackChannelCachedDecorator";
 import { SlackWebClientChannelFactory } from "./SlackWebClientChannelFactory";
@@ -15,23 +14,23 @@ export class SlackChannelFactoryCachedDecorator implements SlackChannelFactory {
         this.factory = factory;
     }
 
-    async setupNewChannel(options: CreateChannelArguments): Promise<SlackChannel> {
+    async setupNewChannel(options: CreateChannelArguments): Promise<SlackChannelCachedDecorator> {
         const channel = await this.factory.setupNewChannel(options);
         CHANNELS_CACHE.set(options.name, channel.channelInfo);
         return new SlackChannelCachedDecorator(channel);
     }
 
-    async fromExistingChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannel> {
-        const webClientChannel = await this.instantiateWebClientChannel(channelName, findPrivateChannels);
+    async fromExistingChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelCachedDecorator> {
+        const webClientChannel = await this.initWebClientChannel(channelName, findPrivateChannels);
         return new SlackChannelCachedDecorator(webClientChannel);
     }
 
-    private async instantiateWebClientChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackWebClientChannel | null> {
+    private async initWebClientChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackWebClientChannel | null> {
         const cachedChannelInfo = CHANNELS_CACHE.get(channelName);
         if (cachedChannelInfo) {
             return Promise.resolve(new SlackWebClientChannel(this.factory.client, cachedChannelInfo));
         }
-        const channel = <SlackWebClientChannel>await this.factory.fromExistingChannel(channelName, findPrivateChannels);
+        const channel = await this.factory.fromExistingChannel(channelName, findPrivateChannels);
 
         if (channel && !channel.channelInfo.isArchived) {
             CHANNELS_CACHE.set(channelName, channel.channelInfo);

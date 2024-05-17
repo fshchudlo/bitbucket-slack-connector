@@ -1,5 +1,5 @@
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
-import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
+import TestPayloadBuilder from "../../bitbucket-webhook-handler/tests/test-helpers/TestPayloadBuilder";
 import { normalizeBitbucketWebhookPayload } from "../normalizeBitbucketWebhookPayload";
 
 describe("normalizeBitbucketWebhookPayload", () => {

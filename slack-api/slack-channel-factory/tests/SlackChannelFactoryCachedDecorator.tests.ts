@@ -1,7 +1,7 @@
 import { register } from "prom-client";
 import { SlackChannelFactory } from "../SlackChannelFactory";
-import { CHANNELS_CACHE } from "../../cache/CHANNELS_CACHE";
-import { COMMENTS_CACHE } from "../../cache/COMMENTS_CACHE";
+import { CHANNELS_CACHE } from "../../CHANNELS_CACHE";
+import { COMMENTS_CACHE } from "../../COMMENTS_CACHE";
 import { SlackChannelFactoryCachedDecorator } from "../SlackChannelFactoryCachedDecorator";
 
 

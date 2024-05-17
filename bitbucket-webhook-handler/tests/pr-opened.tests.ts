@@ -1,5 +1,5 @@
-import SlackChannelSnapshottingMock from "../../test-helpers/SlackChannelSnapshottingMock";
-import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
+import SlackChannelSnapshottingMock from "./test-helpers/SlackChannelSnapshottingMock";
+import TestPayloadBuilder from "./test-helpers/TestPayloadBuilder";
 import handleWebhookPayload from "../handleWebhookPayload";
 
 describe("handleBitbucketWebhook", () => {

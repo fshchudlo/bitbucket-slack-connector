@@ -4,7 +4,6 @@ import {
     SlackChannelFactory,
     SlackChannelInfo
 } from "./SlackChannelFactory";
-import { SlackChannel } from "../../bitbucket-webhook-handler/SlackChannel";
 import { SlackWebClientChannel } from "../slack-channel/SlackWebClientChannel";
 
 const awaitingCreateChannelRequests = new Map<string, Promise<SlackChannelInfo>>();
@@ -16,7 +15,7 @@ export class SlackWebClientChannelFactory implements SlackChannelFactory {
         this.client = client;
     }
 
-    async setupNewChannel(options: CreateChannelArguments): Promise<SlackChannel> {
+    async setupNewChannel(options: CreateChannelArguments): Promise<SlackWebClientChannel> {
         const channelInfo = await this.createNewChannelInSlack(options);
         const channel = new SlackWebClientChannel(this.client, channelInfo);
         if (options.defaultParticipants?.length > 0) {
@@ -25,7 +24,7 @@ export class SlackWebClientChannelFactory implements SlackChannelFactory {
         return channel;
     }
 
-    async fromExistingChannel(channelName: string, includePrivateChannels: boolean): Promise<SlackChannel> {
+    async fromExistingChannel(channelName: string, includePrivateChannels: boolean): Promise<SlackWebClientChannel> {
         const channelInfo = await this.findExistingChannelInSlack(channelName, includePrivateChannels);
         return new SlackWebClientChannel(this.client, channelInfo);
     }
