@@ -11,28 +11,18 @@ export type PullRequestNotificationBasicPayload = {
     readonly pullRequest: PullRequestPayload;
 };
 
-export type PullRequestBasicNotificationEventTypes =
-    "pr:opened"
-    | "pr:reviewer:unapproved"
-    | "pr:reviewer:needs_work"
-    | "pr:reviewer:approved"
-    | "pr:merged"
-    | "pr:declined"
-    | "pr:deleted";
 export type PullRequestBasicNotification = PullRequestNotificationBasicPayload & {
-    readonly eventKey: PullRequestBasicNotificationEventTypes;
+    readonly eventKey: "pr:opened" | "pr:reviewer:unapproved" | "pr:reviewer:needs_work" | "pr:reviewer:approved" | "pr:merged" | "pr:declined" | "pr:deleted";
 };
 
-export type PullRequestFromRefUpdatedNotificationEventType = "pr:from_ref_updated";
 export type PullRequestFromRefUpdatedNotification = PullRequestNotificationBasicPayload & {
-    readonly eventKey: PullRequestFromRefUpdatedNotificationEventType;
+    readonly eventKey: "pr:from_ref_updated";
     readonly latestCommitMessage: string | null;
 };
 
 
-export type PullRequestModifiedNotificationEventType = "pr:modified";
 export type PullRequestModifiedNotification = PullRequestNotificationBasicPayload & {
-    readonly eventKey: PullRequestModifiedNotificationEventType;
+    readonly eventKey: "pr:modified";
     readonly previousTitle: string;
     readonly previousDescription: string | null;
     readonly previousTarget: {
@@ -41,12 +31,8 @@ export type PullRequestModifiedNotification = PullRequestNotificationBasicPayloa
     }
 };
 
-export type PullRequestCommentActionNotificationEventTypes =
-    "pr:comment:added"
-    | "pr:comment:deleted"
-    | "pr:comment:edited";
 export type PullRequestCommentActionNotification = PullRequestNotificationBasicPayload & {
-    readonly eventKey: PullRequestCommentActionNotificationEventTypes;
+    readonly eventKey: "pr:comment:added" | "pr:comment:deleted" | "pr:comment:edited";
     readonly commentParentId?: number;
     readonly previousComment?: string;
     readonly comment: {
@@ -60,9 +46,8 @@ export type PullRequestCommentActionNotification = PullRequestNotificationBasicP
 };
 
 
-export type PullRequestReviewersUpdatedNotificationEventType = "pr:reviewer:updated";
 export type PullRequestReviewersUpdatedNotification = PullRequestNotificationBasicPayload & {
-    readonly eventKey: PullRequestReviewersUpdatedNotificationEventType;
+    readonly eventKey: "pr:reviewer:updated";
     readonly addedReviewers: Array<UserPayload>;
     readonly removedReviewers: Array<UserPayload>;
 };

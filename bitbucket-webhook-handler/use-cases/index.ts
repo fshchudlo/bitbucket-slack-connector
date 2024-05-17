@@ -5,8 +5,8 @@ export { PullRequestNotificationHandler } from "./PullRequestNotificationHandler
 export { sendCompletionMessageAndCloseTheChannel } from "./sendCompletionMessageAndCloseTheChannel";
 export { sendMessageAboutNewCommit } from "./sendMessageAboutNewCommit";
 export { sendMessageAboutAddedComment } from "./sendMessageAboutAddedComment";
-export { updateChannelMembers } from "./updateChannelMembers";
-export { sendMessageAboutReviewerAction } from "./sendMessageAboutReviewerAction";
+export { PullRequestReviewersUpdatedHandler } from "./PullRequestReviewersUpdatedHandler";
+export { PullRequestReviewerActionHandler } from "./PullRequestReviewerActionHandler";
 export { sendMessageAboutDeletedComment } from "./sendMessageAboutDeletedComment";
 export { sendMessageAboutEditedComment } from "./sendMessageAboutEditedComment";
-export { sendMessageAboutPRModification } from "./sendMessageAboutPRModification";
+export { PullRequestModifiedHandler } from "./PullRequestModifiedHandler";

@@ -1,11 +1,11 @@
 import { link, section, divider, contextBlock } from "./slack-building-blocks";
 import { formatUserName, formatPullRequestDescription, reviewPRAction } from "./helpers";
 import { SendMessageArguments, SlackChannel } from "../SlackChannel";
-import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
+import { BitbucketNotification, PullRequestBasicNotification } from "../../bitbucket-payload-types";
 import { PullRequestNotificationHandler } from "./PullRequestNotificationHandler";
 
 export class PullRequestOpenedHandler implements PullRequestNotificationHandler {
-    public canHandle(payload: PullRequestBasicNotification) {
+    public canHandle(payload: BitbucketNotification) {
         return payload.eventKey == "pr:opened";
     }
 

@@ -1,9 +1,13 @@
 import * as useCases from "./use-cases";
 import { SlackChannel } from "./SlackChannel";
 import { BitbucketNotification } from "../bitbucket-payload-types";
-import { PullRequestNotificationHandler, PullRequestOpenedHandler } from "./use-cases";
 
-const payloadHandlers = new Array<PullRequestNotificationHandler>(new PullRequestOpenedHandler());
+const payloadHandlers = new Array<useCases.PullRequestNotificationHandler>(
+    new useCases.PullRequestOpenedHandler(),
+    new useCases.PullRequestModifiedHandler(),
+    new useCases.PullRequestReviewersUpdatedHandler(),
+    new useCases.PullRequestReviewerActionHandler()
+);
 
 export default async function sendTargetNotificationToSlack(payload: BitbucketNotification, pullRequestChannel: SlackChannel, broadcastChannel: SlackChannel = null) {
     const eventKey = payload.eventKey;
@@ -13,20 +17,6 @@ export default async function sendTargetNotificationToSlack(payload: BitbucketNo
         }
     }
     switch (eventKey) {
-        case "pr:opened":
-            await useCases.tryBroadcastMessageAboutOpenedPR(payload, broadcastChannel);
-            break;
-        case "pr:modified":
-            await useCases.sendMessageAboutPRModification(payload, pullRequestChannel);
-            break;
-        case "pr:reviewer:updated":
-            await useCases.updateChannelMembers(payload, pullRequestChannel);
-            break;
-        case "pr:reviewer:unapproved":
-        case "pr:reviewer:needs_work":
-        case "pr:reviewer:approved":
-            await useCases.sendMessageAboutReviewerAction(payload, pullRequestChannel);
-            break;
         case "pr:comment:added":
             await useCases.sendMessageAboutAddedComment(payload, pullRequestChannel);
             break;
@@ -38,6 +28,9 @@ export default async function sendTargetNotificationToSlack(payload: BitbucketNo
             break;
         case "pr:from_ref_updated":
             await useCases.sendMessageAboutNewCommit(payload, pullRequestChannel);
+            break;
+        case "pr:opened":
+            await useCases.tryBroadcastMessageAboutOpenedPR(payload, broadcastChannel);
             break;
         case "pr:merged":
         case "pr:declined":
