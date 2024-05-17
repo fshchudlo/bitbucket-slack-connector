@@ -8,7 +8,11 @@ import { AppConfig } from "../app.config";
 export async function provisionPullRequestChannel(channelFactory: SlackChannelFactory, broadcastChannel: SlackChannel | null, payload: BitbucketNotification) {
     const channelName = buildChannelName(payload.pullRequest);
     if (payload.eventKey == "pr:opened") {
-        return await channelFactory.setupNewChannel({ name: channelName, isPrivate: AppConfig.USE_PRIVATE_CHANNELS });
+        return await channelFactory.setupNewChannel({
+            name: channelName,
+            isPrivate: AppConfig.USE_PRIVATE_CHANNELS,
+            defaultParticipants: AppConfig.DEFAULT_CHANNEL_PARTICIPANTS
+        });
     }
     const existingChannel = await channelFactory.fromExistingChannel(channelName, AppConfig.USE_PRIVATE_CHANNELS);
     if (existingChannel != null) {
@@ -17,7 +21,8 @@ export async function provisionPullRequestChannel(channelFactory: SlackChannelFa
 
     const createdChannel = await channelFactory.setupNewChannel({
         name: channelName,
-        isPrivate: AppConfig.USE_PRIVATE_CHANNELS
+        isPrivate: AppConfig.USE_PRIVATE_CHANNELS,
+        defaultParticipants: AppConfig.DEFAULT_CHANNEL_PARTICIPANTS
     });
     const prOpenedPayload = <PullRequestBasicNotification>{
         eventKey: "pr:opened",
@@ -27,6 +32,6 @@ export async function provisionPullRequestChannel(channelFactory: SlackChannelFa
         },
         pullRequest: payload.pullRequest
     };
-    await sendTargetNotificationToSlack(prOpenedPayload, createdChannel, broadcastChannel, AppConfig.DEFAULT_CHANNEL_PARTICIPANTS);
+    await sendTargetNotificationToSlack(prOpenedPayload, createdChannel, broadcastChannel);
     return createdChannel;
 }

@@ -3,11 +3,11 @@ import { formatUserName, formatPullRequestDescription, reviewPRAction } from "./
 import { SendMessageArguments, SlackChannel } from "../SlackChannel";
 import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
 
-export async function inviteParticipantsAndSetChannelBookmark(payload: PullRequestBasicNotification, slackChannel: SlackChannel, defaultChannelParticipants: string[]) {
+export async function inviteParticipantsAndSetChannelBookmark(payload: PullRequestBasicNotification, slackChannel: SlackChannel) {
     const allParticipants = [payload.pullRequest.author.user]
         .concat(payload.pullRequest.reviewers.map(r => r.user));
 
-    const slackUserIds = (await slackChannel.getSlackUserIds(allParticipants.map(payload => payload.emailAddress))).concat(defaultChannelParticipants ?? []);
+    const slackUserIds = (await slackChannel.getSlackUserIds(allParticipants.map(payload => payload.emailAddress)));
 
     if (slackUserIds.length > 0) {
         await slackChannel.inviteToChannel({ users: slackUserIds, force: true });

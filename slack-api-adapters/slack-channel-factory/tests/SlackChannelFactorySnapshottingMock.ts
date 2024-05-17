@@ -1,10 +1,10 @@
-import { SlackChannel } from "../../bitbucket-webhook-handler/SlackChannel";
+import { SlackChannel } from "../../../bitbucket-webhook-handler/SlackChannel";
 import {
     CreateChannelArguments,
     SlackChannelFactory,
     SlackChannelInfo
-} from "../slack-channel-factory/SlackChannelFactory";
-import SlackChannelSnapshottingMock from "../../test-helpers/SlackChannelSnapshottingMock";
+} from "../SlackChannelFactory";
+import SlackChannelSnapshottingMock from "../../../test-helpers/SlackChannelSnapshottingMock";
 
 const channelId = "12345";
 export default class SlackChannelFactorySnapshottingMock implements SlackChannelFactory {

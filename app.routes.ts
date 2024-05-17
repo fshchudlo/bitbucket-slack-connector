@@ -34,7 +34,7 @@ async function handleBitbucketWebhookEvent(req: Request, res: Response, next: Ne
         const pullRequestChannel = await provisionPullRequestChannel(slackChannelFactory, broadcastChannel, payload);
 
 
-        await sendTargetNotificationToSlack(payload, pullRequestChannel, broadcastChannel, AppConfig.DEFAULT_CHANNEL_PARTICIPANTS);
+        await sendTargetNotificationToSlack(payload, pullRequestChannel, broadcastChannel);
 
         res.sendStatus(200);
     } catch (error) {

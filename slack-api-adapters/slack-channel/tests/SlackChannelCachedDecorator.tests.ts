@@ -1,15 +1,15 @@
-import { SlackChannelCachedDecorator } from "../slack-channel/SlackChannelCachedDecorator";
-import { snapshotCommentState } from "../../bitbucket-webhook-handler/use-cases/helpers";
-import { PullRequestCommentActionNotification } from "../../bitbucket-payload-types";
+import { SlackChannelCachedDecorator } from "../SlackChannelCachedDecorator";
+import { snapshotCommentState } from "../../../bitbucket-webhook-handler/use-cases/helpers";
+import { PullRequestCommentActionNotification } from "../../../bitbucket-payload-types";
 import { register } from "prom-client";
 import {
     BitbucketCommentSnapshot,
     BitbucketCommentSnapshotInSlackMetadata, SendMessageResponse, SlackChannel
-} from "../../bitbucket-webhook-handler/SlackChannel";
-import { SlackChannelFactory } from "../slack-channel-factory/SlackChannelFactory";
-import { CHANNELS_CACHE } from "../cache/CHANNELS_CACHE";
-import { COMMENTS_CACHE } from "../cache/COMMENTS_CACHE";
-import { SlackChannelFactoryCachedDecorator } from "../slack-channel-factory/SlackChannelFactoryCachedDecorator";
+} from "../../../bitbucket-webhook-handler/SlackChannel";
+import { SlackChannelFactory } from "../../slack-channel-factory/SlackChannelFactory";
+import { CHANNELS_CACHE } from "../../cache/CHANNELS_CACHE";
+import { COMMENTS_CACHE } from "../../cache/COMMENTS_CACHE";
+import { SlackChannelFactoryCachedDecorator } from "../../slack-channel-factory/SlackChannelFactoryCachedDecorator";
 
 
 const decoratedChannelMock = {
@@ -57,7 +57,11 @@ describe("SlackChannelCachedDecorator", () => {
         (<jest.Mock>decoratedFactoryMock.setupNewChannel).mockResolvedValue({ channelInfo: decoratedChannelMock.channelInfo });
         (<jest.Mock>decoratedChannelMock.closeChannel).mockResolvedValue({});
 
-        await channelFactory.setupNewChannel({ name: decoratedChannelMock.channelInfo.name });
+        await channelFactory.setupNewChannel({
+            name: decoratedChannelMock.channelInfo.name,
+            defaultParticipants: null,
+            isPrivate: true
+        });
         expect(CHANNELS_CACHE.get(decoratedChannelMock.channelInfo.name)).not.toBeUndefined();
 
         await systemUnderTest.closeChannel();

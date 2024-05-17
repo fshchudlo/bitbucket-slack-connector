@@ -18,8 +18,13 @@ export class SlackWebClientChannelFactory implements SlackChannelFactory {
 
     async setupNewChannel(options: CreateChannelArguments): Promise<SlackChannel> {
         const channelInfo = await this.createNewChannelInSlack(options);
-        return new SlackWebClientChannel(this.client, channelInfo);
+        const channel = new SlackWebClientChannel(this.client, channelInfo);
+        if (options.defaultParticipants?.length > 0) {
+            await channel.inviteToChannel({ users: options.defaultParticipants, force: true });
+        }
+        return channel;
     }
+
     async fromExistingChannel(channelName: string, includePrivateChannels: boolean): Promise<SlackChannel> {
         const channelInfo = await this.findExistingChannelInSlack(channelName, includePrivateChannels);
         return new SlackWebClientChannel(this.client, channelInfo);

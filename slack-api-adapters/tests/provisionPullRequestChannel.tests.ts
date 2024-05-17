@@ -1,6 +1,6 @@
 import { provisionPullRequestChannel } from "../provisionPullRequestChannel";
 import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
-import SlackChannelFactorySnapshottingMock from "./SlackChannelFactorySnapshottingMock";
+import SlackChannelFactorySnapshottingMock from "../slack-channel-factory/tests/SlackChannelFactorySnapshottingMock";
 
 describe("provisionPullRequestChannel", () => {
     it("Should create channel", async () => {

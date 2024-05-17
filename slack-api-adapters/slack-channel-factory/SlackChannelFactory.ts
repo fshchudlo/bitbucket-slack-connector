@@ -13,5 +13,6 @@ export type SlackChannelInfo = {
 }
 export type CreateChannelArguments = {
     name: string;
-    isPrivate?: boolean;
+    isPrivate: boolean;
+    defaultParticipants: string[];
 }

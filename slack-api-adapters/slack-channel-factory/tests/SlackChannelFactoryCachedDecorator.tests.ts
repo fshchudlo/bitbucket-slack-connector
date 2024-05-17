@@ -1,8 +1,8 @@
 import { register } from "prom-client";
-import { SlackChannelFactory } from "../slack-channel-factory/SlackChannelFactory";
-import { CHANNELS_CACHE } from "../cache/CHANNELS_CACHE";
-import { COMMENTS_CACHE } from "../cache/COMMENTS_CACHE";
-import { SlackChannelFactoryCachedDecorator } from "../slack-channel-factory/SlackChannelFactoryCachedDecorator";
+import { SlackChannelFactory } from "../SlackChannelFactory";
+import { CHANNELS_CACHE } from "../../cache/CHANNELS_CACHE";
+import { COMMENTS_CACHE } from "../../cache/COMMENTS_CACHE";
+import { SlackChannelFactoryCachedDecorator } from "../SlackChannelFactoryCachedDecorator";
 
 
 const decoratedFactoryMock = (<SlackChannelFactory>{
@@ -32,7 +32,11 @@ describe("SlackChannelFactoryCachedDecorator", () => {
         };
         decoratedFactoryMock.setupNewChannel.mockResolvedValue({ channelInfo: channelData });
 
-        await systemUnderTest.setupNewChannel({ name: channelData.name });
+        await systemUnderTest.setupNewChannel({
+            name: channelData.name,
+            defaultParticipants: null,
+            isPrivate: true
+        });
 
         expect(CHANNELS_CACHE.get(channelData.name)).toEqual(channelData);
     });
