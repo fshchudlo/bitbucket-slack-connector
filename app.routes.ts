@@ -1,4 +1,4 @@
-import sendTargetNotificationToSlack from "./bitbucket-webhook-handler/sendTargetNotificationToSlack";
+import handleWebhookPayload from "./bitbucket-webhook-handler/handleWebhookPayload";
 import { register } from "prom-client";
 import { buildChannelName } from "./slack-api-adapters/buildChannelName";
 import { ExpressReceiver } from "@slack/bolt";
@@ -34,7 +34,7 @@ async function handleBitbucketWebhookEvent(req: Request, res: Response, next: Ne
         const pullRequestChannel = await provisionPullRequestChannel(slackChannelFactory, broadcastChannel, payload);
 
 
-        await sendTargetNotificationToSlack(payload, pullRequestChannel, broadcastChannel);
+        await handleWebhookPayload(payload, pullRequestChannel, broadcastChannel);
 
         res.sendStatus(200);
     } catch (error) {

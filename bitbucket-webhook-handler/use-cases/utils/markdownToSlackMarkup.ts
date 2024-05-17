@@ -1,5 +1,5 @@
-import { bold } from "../slack-building-blocks";
-import { link } from "../slack-building-blocks";
+import { bold } from "./slack-building-blocks";
+import { link } from "./slack-building-blocks";
 
 export function markdownToSlackMarkup(text: string): string {
     const boldRegex = /\*\*(.*?)\*\*/g;

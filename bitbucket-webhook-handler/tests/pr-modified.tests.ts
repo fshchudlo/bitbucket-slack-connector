@@ -1,13 +1,13 @@
 import SlackChannelSnapshottingMock from "../../test-helpers/SlackChannelSnapshottingMock";
 import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
-import sendTargetNotificationToSlack from "../sendTargetNotificationToSlack";
+import handleWebhookPayload from "../handleWebhookPayload";
 
 describe("handleBitbucketWebhook", () => {
     it("Should send message when PR modified", async () => {
         const channelMock = new SlackChannelSnapshottingMock();
 
 
-        await sendTargetNotificationToSlack(TestPayloadBuilder.pullRequestModified(), channelMock);
+        await handleWebhookPayload(TestPayloadBuilder.pullRequestModified(), channelMock);
 
 
         expect(channelMock.snapshot).toMatchSnapshot();
@@ -17,7 +17,7 @@ describe("handleBitbucketWebhook", () => {
 
 
         const modifiedPayload = TestPayloadBuilder.pullRequestModifiedWithoutVisibleChanges();
-        await sendTargetNotificationToSlack(modifiedPayload, channelMock);
+        await handleWebhookPayload(modifiedPayload, channelMock);
 
 
         expect(channelMock.snapshot).toMatchSnapshot();

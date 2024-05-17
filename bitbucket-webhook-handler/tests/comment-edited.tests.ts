@@ -1,16 +1,16 @@
 import SlackChannelSnapshottingMock from "../../test-helpers/SlackChannelSnapshottingMock";
 import TestPayloadBuilder from "../../test-helpers/TestPayloadBuilder";
-import sendTargetNotificationToSlack from "../sendTargetNotificationToSlack";
+import handleWebhookPayload from "../handleWebhookPayload";
 
 describe("handleBitbucketWebhook", () => {
 
     it("Should send message on PR comment edit", async () => {
         const channelMock = new SlackChannelSnapshottingMock();
-        await sendTargetNotificationToSlack(TestPayloadBuilder.pullRequestCommentAdded(), channelMock);
+        await handleWebhookPayload(TestPayloadBuilder.pullRequestCommentAdded(), channelMock);
 
 
         const payload = TestPayloadBuilder.pullRequestCommentEdited();
-        await sendTargetNotificationToSlack(payload, channelMock);
+        await handleWebhookPayload(payload, channelMock);
 
 
         expect(channelMock.snapshot).toMatchSnapshot();
@@ -18,11 +18,11 @@ describe("handleBitbucketWebhook", () => {
 
     it("Should send message on comment conversion to the task", async () => {
         const channelMock = new SlackChannelSnapshottingMock();
-        await sendTargetNotificationToSlack(TestPayloadBuilder.pullRequestCommentAdded(), channelMock);
+        await handleWebhookPayload(TestPayloadBuilder.pullRequestCommentAdded(), channelMock);
 
 
         const payload = TestPayloadBuilder.pullRequestCommentConvertedToTheTask();
-        await sendTargetNotificationToSlack(payload, channelMock);
+        await handleWebhookPayload(payload, channelMock);
 
 
         expect(channelMock.snapshot).toMatchSnapshot();
@@ -30,22 +30,22 @@ describe("handleBitbucketWebhook", () => {
 
     it("Should send message on task conversion to the comment", async () => {
         const channelMock = new SlackChannelSnapshottingMock();
-        await sendTargetNotificationToSlack(TestPayloadBuilder.pullRequestTaskAdded(), channelMock);
+        await handleWebhookPayload(TestPayloadBuilder.pullRequestTaskAdded(), channelMock);
 
 
         const payload = TestPayloadBuilder.pullRequestTaskConvertedToTheComment();
-        await sendTargetNotificationToSlack(payload, channelMock);
+        await handleWebhookPayload(payload, channelMock);
 
 
         expect(channelMock.snapshot).toMatchSnapshot();
     });
     it("Should send message on comment resolving and reopening", async () => {
         const channelMock = new SlackChannelSnapshottingMock();
-        await sendTargetNotificationToSlack(TestPayloadBuilder.pullRequestCommentAdded(), channelMock);
+        await handleWebhookPayload(TestPayloadBuilder.pullRequestCommentAdded(), channelMock);
 
 
-        await sendTargetNotificationToSlack(TestPayloadBuilder.pullRequestCommentResolved(), channelMock);
-        await sendTargetNotificationToSlack(TestPayloadBuilder.pullRequestCommentReopened(), channelMock);
+        await handleWebhookPayload(TestPayloadBuilder.pullRequestCommentResolved(), channelMock);
+        await handleWebhookPayload(TestPayloadBuilder.pullRequestCommentReopened(), channelMock);
 
 
         expect(channelMock.snapshot).toMatchSnapshot();
@@ -53,11 +53,11 @@ describe("handleBitbucketWebhook", () => {
 
     it("Should send message on task resolving and reopening", async () => {
         const channelMock = new SlackChannelSnapshottingMock();
-        await sendTargetNotificationToSlack(TestPayloadBuilder.pullRequestTaskAdded(), channelMock);
+        await handleWebhookPayload(TestPayloadBuilder.pullRequestTaskAdded(), channelMock);
 
 
-        await sendTargetNotificationToSlack(TestPayloadBuilder.pullRequestTaskResolved(), channelMock);
-        await sendTargetNotificationToSlack(TestPayloadBuilder.pullRequestTaskReopened(), channelMock);
+        await handleWebhookPayload(TestPayloadBuilder.pullRequestTaskResolved(), channelMock);
+        await handleWebhookPayload(TestPayloadBuilder.pullRequestTaskReopened(), channelMock);
 
 
         expect(channelMock.snapshot).toMatchSnapshot();
@@ -67,7 +67,7 @@ describe("handleBitbucketWebhook", () => {
         const channelMock = new SlackChannelSnapshottingMock();
 
 
-        await sendTargetNotificationToSlack(TestPayloadBuilder.pullRequestTaskReopened(), channelMock);
+        await handleWebhookPayload(TestPayloadBuilder.pullRequestTaskReopened(), channelMock);
 
 
         expect(channelMock.snapshot).toMatchSnapshot();

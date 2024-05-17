@@ -11,8 +11,8 @@ import {
 } from "../bitbucket-webhook-handler/SlackChannel";
 import {
     SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
-} from "../bitbucket-webhook-handler/use-cases/helpers/snapshotPullRequestState";
-import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../bitbucket-webhook-handler/use-cases/helpers";
+} from "../bitbucket-webhook-handler/use-cases/utils/snapshotPullRequestState";
+import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../bitbucket-webhook-handler/use-cases/utils";
 import { SlackChannelInfo } from "../slack-api-adapters/slack-channel-factory/SlackChannelFactory";
 
 const messageId = "ABCDE";

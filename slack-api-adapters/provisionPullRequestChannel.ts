@@ -1,7 +1,7 @@
 import { BitbucketNotification, PullRequestBasicNotification } from "../bitbucket-payload-types";
 import { buildChannelName } from "./buildChannelName";
 import { SlackChannelFactory } from "./slack-channel-factory/SlackChannelFactory";
-import sendTargetNotificationToSlack from "../bitbucket-webhook-handler/sendTargetNotificationToSlack";
+import handleWebhookPayload from "../bitbucket-webhook-handler/handleWebhookPayload";
 import { SlackChannel } from "../bitbucket-webhook-handler/SlackChannel";
 import { AppConfig } from "../app.config";
 
@@ -32,6 +32,6 @@ export async function provisionPullRequestChannel(channelFactory: SlackChannelFa
         },
         pullRequest: payload.pullRequest
     };
-    await sendTargetNotificationToSlack(prOpenedPayload, createdChannel, broadcastChannel);
+    await handleWebhookPayload(prOpenedPayload, createdChannel, broadcastChannel);
     return createdChannel;
 }

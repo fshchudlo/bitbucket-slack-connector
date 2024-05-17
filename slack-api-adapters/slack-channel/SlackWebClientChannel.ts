@@ -11,10 +11,10 @@ import {
     PullRequestSnapshotInSlackMetadata
 } from "../../bitbucket-webhook-handler/SlackChannel";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
-import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../bitbucket-webhook-handler/use-cases/helpers";
+import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../bitbucket-webhook-handler/use-cases/utils";
 import {
     SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
-} from "../../bitbucket-webhook-handler/use-cases/helpers/snapshotPullRequestState";
+} from "../../bitbucket-webhook-handler/use-cases/utils/snapshotPullRequestState";
 import { SlackChannelInfo } from "../slack-channel-factory/SlackChannelFactory";
 
 /**

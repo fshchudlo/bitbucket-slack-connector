@@ -1,34 +1,43 @@
-import { PullRequestCommentActionNotification } from "../../bitbucket-payload-types";
+import { PullRequestCommentActionNotification } from "../../../bitbucket-payload-types";
 import {
-    BitbucketCommentSnapshot,
+    BitbucketCommentSnapshot, SendMessageArguments,
     SlackChannel
-} from "../SlackChannel";
-import { getTaskOrCommentTitle, snapshotCommentState } from "./helpers";
-import { link, quote, section } from "./slack-building-blocks";
-import { formatUserName, markdownToSlackMarkup } from "./helpers";
+} from "../../SlackChannel";
+import { getTaskOrCommentTitle, snapshotCommentState } from "../utils";
+import { link, quote, section } from "../utils/slack-building-blocks";
+import { formatUserName, markdownToSlackMarkup } from "../utils";
+import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
 
-export async function sendMessageAboutEditedComment(payload: PullRequestCommentActionNotification, slackChannel: SlackChannel) {
+export class CommentEditedHandler implements WebhookPayloadHandler {
+    canHandle(payload: PullRequestCommentActionNotification) {
+        return payload.eventKey == "pr:comment:edited";
+    }
+
+    async handle(payload: PullRequestCommentActionNotification, slackChannel: SlackChannel) {
+        const commentSnapshot = await slackChannel.findLatestBitbucketCommentSnapshot(payload.comment.id);
+        const message = buildSlackMessage(payload, commentSnapshot);
+        await slackChannel.sendMessage(message);
+    }
+}
+
+function buildSlackMessage(payload: PullRequestCommentActionNotification, commentSnapshot: BitbucketCommentSnapshot): SendMessageArguments {
     const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
 
-    const commentSnapshot = await slackChannel.findLatestBitbucketCommentSnapshot(payload.comment.id);
-    const userAction = await getUserAction(payload, commentSnapshot);
+    const userAction = getUserAction(payload, commentSnapshot);
 
     const messageTitle = `${userAction.emoji} ${formatUserName(payload.actor)} ${link(commentUrl, userAction.title)}:`;
     const commentText = markdownToSlackMarkup(payload.comment.text);
 
-    await slackChannel.sendMessage({
+    return {
         text: messageTitle,
         blocks: [section(messageTitle), section(quote(commentText))],
         metadata: snapshotCommentState(payload),
         threadId: commentSnapshot?.slackThreadId || commentSnapshot?.slackMessageId,
         replyBroadcast: commentSnapshot ? true : undefined
-    });
+    };
 }
 
-async function getUserAction(payload: PullRequestCommentActionNotification, previousCommentSnapshot: BitbucketCommentSnapshot): Promise<{
-    title: string,
-    emoji: string
-}> {
+function getUserAction(payload: PullRequestCommentActionNotification, previousCommentSnapshot: BitbucketCommentSnapshot) {
     const commentType = getTaskOrCommentTitle(payload);
     if (previousCommentSnapshot) {
         if (previousCommentSnapshot.severity == "NORMAL" && payload.comment.severity == "BLOCKER") {
