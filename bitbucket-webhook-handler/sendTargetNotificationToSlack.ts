@@ -1,13 +1,19 @@
 import * as useCases from "./use-cases";
 import { SlackChannel } from "./SlackChannel";
 import { BitbucketNotification } from "../bitbucket-payload-types";
+import { PullRequestNotificationHandler, PullRequestOpenedHandler } from "./use-cases";
+
+const payloadHandlers = new Array<PullRequestNotificationHandler>(new PullRequestOpenedHandler());
 
 export default async function sendTargetNotificationToSlack(payload: BitbucketNotification, pullRequestChannel: SlackChannel, broadcastChannel: SlackChannel = null) {
     const eventKey = payload.eventKey;
-
+    for (const handler of payloadHandlers) {
+        if (handler.canHandle(payload)) {
+            await handler.handle(payload, pullRequestChannel);
+        }
+    }
     switch (eventKey) {
         case "pr:opened":
-            await useCases.inviteParticipantsAndSetChannelBookmark(payload, pullRequestChannel);
             await useCases.tryBroadcastMessageAboutOpenedPR(payload, broadcastChannel);
             break;
         case "pr:modified":

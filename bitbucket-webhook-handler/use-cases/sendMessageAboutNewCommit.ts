@@ -1,14 +1,14 @@
 import { link, quote, section } from "./slack-building-blocks";
 import { formatUserName, markdownToSlackMarkup, reviewPRAction } from "./helpers";
 import { SendMessageArguments, SlackChannel } from "../SlackChannel";
-import { PullRequestFromRefUpdatedPayload } from "../../bitbucket-payload-types";
+import { PullRequestFromRefUpdatedNotification } from "../../bitbucket-payload-types";
 
-export async function sendMessageAboutNewCommit(payload: PullRequestFromRefUpdatedPayload, slackChannel: SlackChannel) {
+export async function sendMessageAboutNewCommit(payload: PullRequestFromRefUpdatedNotification, slackChannel: SlackChannel) {
     const message = buildMessage(payload);
     await slackChannel.sendMessage(message);
 }
 
-function buildMessage(payload: PullRequestFromRefUpdatedPayload): SendMessageArguments {
+function buildMessage(payload: PullRequestFromRefUpdatedNotification): SendMessageArguments {
     const pullRequest = payload.pullRequest;
     const viewCommitUrl = `${pullRequest.links.self[0].href.replace("/overview", "")}/commits/${pullRequest.fromRef.latestCommit}`;
     const messageTitle = `:new: ${formatUserName(payload.actor)} added ${link(viewCommitUrl, "new commit")}.`;

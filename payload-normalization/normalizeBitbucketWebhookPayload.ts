@@ -1,4 +1,4 @@
-import { BitbucketNotification, PullRequestFromRefUpdatedPayload } from "../bitbucket-payload-types";
+import { BitbucketNotification, PullRequestFromRefUpdatedNotification } from "../bitbucket-payload-types";
 import BitbucketAPI from "./BitbucketAPI";
 
 export async function normalizeBitbucketWebhookPayload(payload: BitbucketNotification, bitbucketAPI: BitbucketAPI) {
@@ -19,7 +19,7 @@ export async function normalizeBitbucketWebhookPayload(payload: BitbucketNotific
         case "pr:deleted":
             return payload;
         case "pr:from_ref_updated":
-            return <PullRequestFromRefUpdatedPayload>{
+            return <PullRequestFromRefUpdatedNotification>{
                 ...payload,
                 latestCommitMessage: bitbucketAPI.canRead() ? await bitbucketAPI.fetchCommitMessage(payload.pullRequest.fromRef.repository.project.key, payload.pullRequest.fromRef.repository.slug, payload.pullRequest.fromRef.latestCommit) : null
             };

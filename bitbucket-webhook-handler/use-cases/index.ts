@@ -1,6 +1,7 @@
 export { tryBroadcastMessageAboutOpenedPR } from "./tryBroadcastMessageAboutOpenedPR";
 export { tryBroadcastMessageAboutClosedPR } from "./tryBroadcastMessageAboutClosedPR";
-export { inviteParticipantsAndSetChannelBookmark } from "./inviteParticipantsAndSetChannelBookmark";
+export { PullRequestOpenedHandler } from "./PullRequestOpenedHandler";
+export { PullRequestNotificationHandler } from "./PullRequestNotificationHandler";
 export { sendCompletionMessageAndCloseTheChannel } from "./sendCompletionMessageAndCloseTheChannel";
 export { sendMessageAboutNewCommit } from "./sendMessageAboutNewCommit";
 export { sendMessageAboutAddedComment } from "./sendMessageAboutAddedComment";

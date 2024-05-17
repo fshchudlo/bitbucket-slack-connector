@@ -1,31 +1,52 @@
 // see https://confluence.atlassian.com/bitbucketserver0816/event-payload-1333334207.html#Eventpayload-pullrequest
 export type BitbucketNotification =
     PullRequestBasicNotification
-    | PullRequestFromRefUpdatedPayload
+    | PullRequestFromRefUpdatedNotification
     | PullRequestModifiedNotification
     | PullRequestCommentActionNotification
-    | PullRequestReviewersUpdatedNotification
+    | PullRequestReviewersUpdatedNotification;
 
+export type PullRequestNotificationBasicPayload = {
+    readonly actor: UserPayload;
+    readonly pullRequest: PullRequestPayload;
+};
+
+export type PullRequestBasicNotificationEventTypes =
+    "pr:opened"
+    | "pr:reviewer:unapproved"
+    | "pr:reviewer:needs_work"
+    | "pr:reviewer:approved"
+    | "pr:merged"
+    | "pr:declined"
+    | "pr:deleted";
 export type PullRequestBasicNotification = PullRequestNotificationBasicPayload & {
-    readonly eventKey: "pr:opened" | "pr:reviewer:unapproved" | "pr:reviewer:needs_work" | "pr:reviewer:approved" | "pr:merged" | "pr:declined" | "pr:deleted";
-}
-export type PullRequestFromRefUpdatedPayload = PullRequestNotificationBasicPayload & {
-    readonly eventKey: "pr:from_ref_updated";
+    readonly eventKey: PullRequestBasicNotificationEventTypes;
+};
+
+export type PullRequestFromRefUpdatedNotificationEventType = "pr:from_ref_updated";
+export type PullRequestFromRefUpdatedNotification = PullRequestNotificationBasicPayload & {
+    readonly eventKey: PullRequestFromRefUpdatedNotificationEventType;
     readonly latestCommitMessage: string | null;
-}
+};
+
+
+export type PullRequestModifiedNotificationEventType = "pr:modified";
 export type PullRequestModifiedNotification = PullRequestNotificationBasicPayload & {
-    readonly eventKey: "pr:modified";
+    readonly eventKey: PullRequestModifiedNotificationEventType;
     readonly previousTitle: string;
     readonly previousDescription: string | null;
     readonly previousTarget: {
         readonly displayId: string;
         readonly latestCommit: string
     }
-}
+};
 
-export type CommentSeverity = "NORMAL" | "BLOCKER"
+export type PullRequestCommentActionNotificationEventTypes =
+    "pr:comment:added"
+    | "pr:comment:deleted"
+    | "pr:comment:edited";
 export type PullRequestCommentActionNotification = PullRequestNotificationBasicPayload & {
-    readonly eventKey: "pr:comment:added" | "pr:comment:deleted" | "pr:comment:edited";
+    readonly eventKey: PullRequestCommentActionNotificationEventTypes;
     readonly commentParentId?: number;
     readonly previousComment?: string;
     readonly comment: {
@@ -36,29 +57,26 @@ export type PullRequestCommentActionNotification = PullRequestNotificationBasicP
         readonly resolvedDate?: number;
         readonly threadResolvedDate?: number;
     };
-}
+};
 
+
+export type PullRequestReviewersUpdatedNotificationEventType = "pr:reviewer:updated";
 export type PullRequestReviewersUpdatedNotification = PullRequestNotificationBasicPayload & {
-    readonly eventKey: "pr:reviewer:updated";
+    readonly eventKey: PullRequestReviewersUpdatedNotificationEventType;
     readonly addedReviewers: Array<UserPayload>;
     readonly removedReviewers: Array<UserPayload>;
-}
-
-export type PullRequestNotificationBasicPayload = {
-    readonly actor: UserPayload;
-    readonly pullRequest: PullRequestPayload;
-}
+};
 
 export type UserPayload = {
     readonly name: string;
     readonly displayName: string;
     readonly emailAddress: string;
-}
+};
 
 export type ReviewerPayload = {
     readonly user: UserPayload,
-    readonly status: "UNAPPROVED" | "NEEDS_WORK" | "APPROVED";
-}
+    readonly status: ReviewStatus;
+};
 
 export type RefPayload = {
     readonly displayId: string;
@@ -70,7 +88,7 @@ export type RefPayload = {
             readonly name: string
         };
     };
-}
+};
 
 export type PullRequestPayload = {
     readonly id: number;
@@ -84,5 +102,7 @@ export type PullRequestPayload = {
     };
     readonly fromRef: RefPayload;
     readonly toRef: RefPayload;
-}
+};
 
+export type CommentSeverity = "NORMAL" | "BLOCKER";
+export type ReviewStatus = "UNAPPROVED" | "NEEDS_WORK" | "APPROVED";
