@@ -20,9 +20,9 @@ export class SlackChannelFactoryCachedDecorator implements SlackChannelFactory {
         return new SlackChannelCachedDecorator(channel);
     }
 
-    async fromExistingChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelCachedDecorator> {
+    async fromExistingChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelCachedDecorator | null> {
         const webClientChannel = await this.initWebClientChannel(channelName, findPrivateChannels);
-        return new SlackChannelCachedDecorator(webClientChannel);
+        return webClientChannel ? new SlackChannelCachedDecorator(webClientChannel) : null;
     }
 
     private async initWebClientChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackWebClientChannel | null> {

@@ -103,7 +103,7 @@ export class SlackWebClientChannel implements SlackChannel {
 
     async findLatestBitbucketCommentSnapshot(bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
         const matchPredicate = (message: MessageElement) => {
-            const eventPayload = message.metadata.event_type === SNAPSHOT_COMMENT_STATE_EVENT_TYPE ? <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload : null;
+            const eventPayload = message.metadata?.event_type === SNAPSHOT_COMMENT_STATE_EVENT_TYPE ? <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload : null;
             return eventPayload && eventPayload?.commentId === bitbucketCommentId.toString();
         };
         const message = await this.findMessageInChannelHistory(this.channelInfo.id, matchPredicate);
