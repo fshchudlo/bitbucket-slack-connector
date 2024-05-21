@@ -15,8 +15,7 @@ import { SlackChannelFactoryCachedDecorator } from "../../slack-channel-factory/
 const decoratedChannelMock = {
     channelInfo: {
         id: "channelId",
-        name: "channelName",
-        isArchived: false
+        name: "channelName"
     },
     addBookmark: jest.fn(),
     addReaction: jest.fn(),

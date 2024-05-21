@@ -24,34 +24,36 @@ export class SlackWebClientChannelFactory implements SlackChannelFactory {
         return channel;
     }
 
-    async fromExistingChannel(channelName: string, includePrivateChannels: boolean): Promise<SlackWebClientChannel | null> {
-        const channelInfo = await this.findExistingChannelInSlack(channelName, includePrivateChannels);
+    async fromExistingChannel(channelName: string): Promise<SlackWebClientChannel | null> {
+        const channelInfo = await this.findExistingChannelInfo(channelName);
         return channelInfo ? new SlackWebClientChannel(this.client, channelInfo) : null;
     }
 
-    private async findExistingChannelInSlack(channelName: string, includePrivateChannels: boolean): Promise<SlackChannelInfo | null> {
-        if (awaitingCreateChannelRequests.has(channelName)) {
-            return awaitingCreateChannelRequests.get(channelName);
-        }
-        let cursor: string | undefined = undefined;
-        const channelTypes = includePrivateChannels ? "public_channel,private_channel" : undefined;
-        while (true) {
-            const response = await this.client.conversations.list({
-                exclude_archived: false,
-                types: channelTypes,
-                cursor
+    private async findExistingChannelInfo(channelName: string): Promise<SlackChannelInfo | null> {
+        const someFutureDate = new Date();
+        someFutureDate.setDate(someFutureDate.getDate() + 1);
+
+        // We don't use conversations.list since it can be very slow, prone to request limiting, and it requires additional (and quite privileged) scopes for the bot
+        try {
+            const result = await this.client.chat.scheduleMessage({
+                channel: channelName,
+                post_at: Number.parseInt("" + (someFutureDate.getTime() / 1000)),
+                text: "Scheduled message to detect channel id. If you see that, something went wrong with a slack bot"
             });
 
-            const channel = response.channels.find(channel => channel.name === channelName);
-            if (channel) {
-                return { id: channel.id, isArchived: channel.is_archived, name: channel.name };
-            }
-
-            if (response.response_metadata && response.response_metadata.next_cursor) {
-                cursor = response.response_metadata.next_cursor;
-            } else {
+            await this.client.chat.deleteScheduledMessage({
+                channel: channelName,
+                scheduled_message_id: result.scheduled_message_id
+            });
+            return {
+                id: result.channel,
+                name: channelName
+            };
+        } catch (error: any) {
+            if (error.data?.error == "is_archived" || error.data?.error == "channel_not_found") {
                 return null;
             }
+            throw error;
         }
     }
 
@@ -67,7 +69,6 @@ export class SlackWebClientChannelFactory implements SlackChannelFactory {
                     is_private: options.isPrivate
                 });
                 resolve({
-                    isArchived: response.channel.is_archived,
                     id: response.channel.id,
                     name: response.channel.name
                 });

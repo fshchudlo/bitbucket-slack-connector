@@ -119,6 +119,17 @@ Content-Type: application/json
     });
 %}
 
+### Fetch channel info with API call
+GET {{EndpointHost}}/slack-channel?pullRequestId={{PullRequestId}}&repositorySlug={{RepositoryName}}&projectKey={{ProjectName}}
+Content-Type: application/json
+
+> {%
+    client.test("Fetching of channel info should be successful for the active channel", function() {
+        client.assert(response.status === 200)
+    });
+%}
+
+
 
 ### Merge pull request
 POST {{EndpointHost}}/bitbucket-webhook
@@ -161,13 +172,11 @@ Content-Type: application/json
 %}
 
 ### Fetch channel info with API call
-GET {{EndpointHost}}/slack-channel?pullRequestId={{PullRequestId}}&repositorySlug={{RepositoryName}}&
-    projectKey={{ProjectName}}
+GET {{EndpointHost}}/slack-channel?pullRequestId={{PullRequestId}}&repositorySlug={{RepositoryName}}&projectKey={{ProjectName}}
 Content-Type: application/json
 
 > {%
-    client.test("Fetching of channel info should be successful even for archived channel", function() {
-        client.assert(response.status === 200)
-        client.assert(response.body.isArchived === true)
+    client.test("Fetching of channel info should return 404 for the archived channel", function() {
+        client.assert(response.status === 404)
     });
 %}

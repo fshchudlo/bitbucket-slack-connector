@@ -45,7 +45,6 @@ export default class SlackChannelSnapshottingMock implements SlackChannel {
 
     readonly channelInfo: SlackChannelInfo = {
         id: "12345",
-        isArchived: false,
         name: "test-channel"
     };
 

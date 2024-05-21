@@ -27,8 +27,7 @@ describe("SlackChannelFactoryCachedDecorator", () => {
     it("should cache channel info when creating a channel", async () => {
         const channelData = {
             id: "channelId",
-            name: "channelName",
-            isArchived: false
+            name: "channelName"
         };
         decoratedFactoryMock.setupNewChannel.mockResolvedValue({ channelInfo: channelData });
 
@@ -44,12 +43,11 @@ describe("SlackChannelFactoryCachedDecorator", () => {
     it("should get channel info from cache if available", async () => {
         const channelData = {
             id: "channelId",
-            name: "channelName",
-            isArchived: false
+            name: "channelName"
         };
         CHANNELS_CACHE.set(channelData.name, channelData);
 
-        const result = await systemUnderTest.fromExistingChannel(channelData.name, true);
+        const result = await systemUnderTest.fromExistingChannel(channelData.name);
 
         expect((<any>result).channelInfo).toEqual(channelData);
         expect(decoratedFactoryMock.fromExistingChannel).not.toHaveBeenCalled();
@@ -58,13 +56,12 @@ describe("SlackChannelFactoryCachedDecorator", () => {
     it("should fetch channel info from slack and save in cache", async () => {
         const channelData = {
             id: "channelId",
-            name: "channelName",
-            isArchived: false
+            name: "channelName"
         };
         decoratedFactoryMock.fromExistingChannel.mockResolvedValueOnce({ channelInfo: channelData });
         expect(CHANNELS_CACHE.get(channelData.name)).toBeUndefined();
 
-        const result = await systemUnderTest.fromExistingChannel("channelName", true);
+        const result = await systemUnderTest.fromExistingChannel("channelName");
 
         expect(result.channelInfo).toEqual(channelData);
         expect(CHANNELS_CACHE.get(channelData.name)).toEqual(channelData);

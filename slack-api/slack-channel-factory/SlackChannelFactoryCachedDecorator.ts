@@ -20,19 +20,19 @@ export class SlackChannelFactoryCachedDecorator implements SlackChannelFactory {
         return new SlackChannelCachedDecorator(channel);
     }
 
-    async fromExistingChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackChannelCachedDecorator | null> {
-        const webClientChannel = await this.initWebClientChannel(channelName, findPrivateChannels);
+    async fromExistingChannel(channelName: string): Promise<SlackChannelCachedDecorator | null> {
+        const webClientChannel = await this.initWebClientChannel(channelName);
         return webClientChannel ? new SlackChannelCachedDecorator(webClientChannel) : null;
     }
 
-    private async initWebClientChannel(channelName: string, findPrivateChannels: boolean): Promise<SlackWebClientChannel | null> {
+    private async initWebClientChannel(channelName: string): Promise<SlackWebClientChannel | null> {
         const cachedChannelInfo = CHANNELS_CACHE.get(channelName);
         if (cachedChannelInfo) {
             return Promise.resolve(new SlackWebClientChannel(this.factory.client, cachedChannelInfo));
         }
-        const channel = await this.factory.fromExistingChannel(channelName, findPrivateChannels);
+        const channel = await this.factory.fromExistingChannel(channelName);
 
-        if (channel && !channel.channelInfo.isArchived) {
+        if (channel) {
             CHANNELS_CACHE.set(channelName, channel.channelInfo);
         }
         return channel;
