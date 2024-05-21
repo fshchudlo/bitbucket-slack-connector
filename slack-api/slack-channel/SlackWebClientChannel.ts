@@ -15,7 +15,7 @@ import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../bitbucket-webhook-handl
 import {
     SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
 } from "../../bitbucket-webhook-handler/use-case-handlers/utils/snapshotPullRequestState";
-import { SlackChannelInfo } from "../slack-channel-factory/SlackChannelFactory";
+import { SlackChannelInfo } from "../SlackChannelProvisioner";
 
 /**
  * Adapter for the Slack API that also acts as an {@link https://awesome-architecture.com/cloud-design-patterns/anti-corruption-layer-pattern/|anti-corruption layer} since Slack API is not always consistent

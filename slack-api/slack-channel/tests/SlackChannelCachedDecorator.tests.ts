@@ -6,10 +6,8 @@ import {
     BitbucketCommentSnapshot,
     BitbucketCommentSnapshotInSlackMetadata, SendMessageResponse, SlackChannel
 } from "../../../bitbucket-webhook-handler/SlackChannel";
-import { SlackChannelFactory } from "../../slack-channel-factory/SlackChannelFactory";
 import { CHANNELS_CACHE } from "../../CHANNELS_CACHE";
 import { COMMENTS_CACHE } from "../../COMMENTS_CACHE";
-import { SlackChannelFactoryCachedDecorator } from "../../slack-channel-factory/SlackChannelFactoryCachedDecorator";
 
 
 const decoratedChannelMock = {
@@ -28,21 +26,12 @@ const decoratedChannelMock = {
     sendMessage: jest.fn()
 } as SlackChannel;
 
-const decoratedFactoryMock = {
-    setupNewChannel: jest.fn(),
-    fromExistingChannel: jest.fn(),
-    createChannel2: jest.fn(),
-    findExistingChannel2: jest.fn()
-} as SlackChannelFactory;
-
 
 describe("SlackChannelCachedDecorator", () => {
     let systemUnderTest: SlackChannelCachedDecorator;
-    let channelFactory: SlackChannelFactoryCachedDecorator;
 
     beforeEach(() => {
         systemUnderTest = new SlackChannelCachedDecorator(decoratedChannelMock as any);
-        channelFactory = new SlackChannelFactoryCachedDecorator(decoratedFactoryMock as any);
         CHANNELS_CACHE.deleteWhere(() => true);
         COMMENTS_CACHE.deleteWhere(() => true);
     });
@@ -53,14 +42,9 @@ describe("SlackChannelCachedDecorator", () => {
     });
 
     it("should delete channel info from cache when closing a channel", async () => {
-        (<jest.Mock>decoratedFactoryMock.setupNewChannel).mockResolvedValue({ channelInfo: decoratedChannelMock.channelInfo });
         (<jest.Mock>decoratedChannelMock.closeChannel).mockResolvedValue({});
 
-        await channelFactory.setupNewChannel({
-            name: decoratedChannelMock.channelInfo.name,
-            defaultParticipants: null,
-            isPrivate: true
-        });
+        CHANNELS_CACHE.set(decoratedChannelMock.channelInfo.name, decoratedChannelMock.channelInfo);
         expect(CHANNELS_CACHE.get(decoratedChannelMock.channelInfo.name)).not.toBeUndefined();
 
         await systemUnderTest.closeChannel();
@@ -114,8 +98,6 @@ describe("SlackChannelCachedDecorator", () => {
     });
 
     it("should delete comment snapshots from cache when archiving a channel", async () => {
-
-        (<jest.Mock>decoratedFactoryMock.fromExistingChannel).mockResolvedValueOnce(decoratedChannelMock.channelInfo);
         const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>{
             commentId: "1",
             severity: "NORMAL",

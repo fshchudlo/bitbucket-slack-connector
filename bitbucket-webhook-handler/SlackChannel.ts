@@ -1,6 +1,6 @@
 import { CommentSeverity } from "../bitbucket-payload-types";
 import { Block, KnownBlock } from "@slack/bolt";
-import { SlackChannelInfo } from "../slack-api/slack-channel-factory/SlackChannelFactory";
+import { SlackChannelInfo } from "../slack-api/SlackChannelProvisioner";
 
 export interface SlackChannel {
     readonly channelInfo: SlackChannelInfo;

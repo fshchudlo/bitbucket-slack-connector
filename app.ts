@@ -2,10 +2,7 @@ import { App, ExpressReceiver } from "@slack/bolt";
 import { AppConfig } from "./app.config";
 import express, { NextFunction } from "express";
 import { getSlackChannelInfo, handleBitbucketWebhookEvent } from "./app.routes";
-import {
-    SlackChannelFactoryCachedDecorator
-} from "./slack-api/slack-channel-factory/SlackChannelFactoryCachedDecorator";
-import { SlackWebClientChannelFactory } from "./slack-api/slack-channel-factory/SlackWebClientChannelFactory";
+import { SlackChannelProvisioner } from "./slack-api/SlackChannelProvisioner";
 import measureRequestDuration from "./app.metrics";
 import logUnhandledError from "./app.errorHandler";
 import { register } from "prom-client";
@@ -20,7 +17,7 @@ const slackApp = new App({
     receiver: expressReceiver
 });
 
-const slackChannelFactory = new SlackChannelFactoryCachedDecorator(new SlackWebClientChannelFactory(slackApp.client));
+const slackChannelFactory = new SlackChannelProvisioner(slackApp.client);
 
 expressReceiver.router.use(measureRequestDuration);
 

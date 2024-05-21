@@ -9,7 +9,7 @@ import {
     SendMessageResponse,
     SlackChannel
 } from "../../bitbucket-webhook-handler/SlackChannel";
-import { SlackChannelInfo } from "../slack-channel-factory/SlackChannelFactory";
+import { SlackChannelInfo } from "../SlackChannelProvisioner";
 import { CHANNELS_CACHE } from "../CHANNELS_CACHE";
 import { COMMENTS_CACHE } from "../COMMENTS_CACHE";
 
@@ -22,7 +22,9 @@ export class SlackChannelCachedDecorator implements SlackChannel {
     get channelInfo(): SlackChannelInfo {
         return this.channel.channelInfo;
     }
+
     private channel: SlackChannel;
+
     constructor(gateway: SlackChannel) {
         this.channel = gateway;
     }
@@ -59,11 +61,7 @@ export class SlackChannelCachedDecorator implements SlackChannel {
         const metadata = <BitbucketCommentSnapshotInSlackMetadata>options.metadata?.eventPayload;
         if (metadata?.commentId) {
             const commentSnapshot: BitbucketCommentSnapshot = {
-                commentId: metadata.commentId,
-                commentParentId: metadata.commentParentId,
-                threadResolvedDate: metadata.threadResolvedDate,
-                taskResolvedDate: metadata.taskResolvedDate,
-                severity: metadata.severity,
+                ...metadata,
                 slackMessageId: response.messageId,
                 slackThreadId: response.threadId
             };

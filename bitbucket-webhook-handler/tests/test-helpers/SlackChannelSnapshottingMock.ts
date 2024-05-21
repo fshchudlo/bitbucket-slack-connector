@@ -13,7 +13,7 @@ import {
     SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
 } from "../../use-case-handlers/utils/snapshotPullRequestState";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../use-case-handlers/utils";
-import { SlackChannelInfo } from "../../../slack-api/slack-channel-factory/SlackChannelFactory";
+import { SlackChannelInfo } from "../../../slack-api/SlackChannelProvisioner";
 
 const messageId = "ABCDE";
 export default class SlackChannelSnapshottingMock implements SlackChannel {
