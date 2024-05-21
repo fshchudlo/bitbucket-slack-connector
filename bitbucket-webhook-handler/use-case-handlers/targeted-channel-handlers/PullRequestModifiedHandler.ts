@@ -1,6 +1,6 @@
 import { contextBlock, divider, section } from "../utils/slack-building-blocks";
 import { formatUserName, formatPullRequestDescription, reviewPRAction } from "../utils";
-import { SlackChannel } from "../../SlackChannel";
+import { SlackTargetedChannel } from "../../slack-contracts/SlackTargetedChannel";
 import { PullRequestModifiedNotification } from "../../../bitbucket-payload-types";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
 
@@ -9,7 +9,7 @@ export class PullRequestModifiedHandler implements WebhookPayloadHandler {
         return payload.eventKey == "pr:modified";
     }
 
-    public async handle(payload: PullRequestModifiedNotification, slackChannel: SlackChannel) {
+    public async handle(payload: PullRequestModifiedNotification, slackChannel: SlackTargetedChannel) {
         const visibleChanges = getPRChangesDescription(payload);
         if (visibleChanges.length == 0) {
             return;

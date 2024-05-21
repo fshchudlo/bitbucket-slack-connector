@@ -1,4 +1,4 @@
-import { SlackChannel } from "../../SlackChannel";
+import { SlackTargetedChannel } from "../../slack-contracts/SlackTargetedChannel";
 import { PullRequestReviewersUpdatedNotification } from "../../../bitbucket-payload-types";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
 
@@ -7,12 +7,12 @@ export class PullRequestReviewersUpdatedHandler implements WebhookPayloadHandler
         return payload.eventKey == "pr:reviewer:updated";
     }
 
-    public async handle(payload: PullRequestReviewersUpdatedNotification, slackChannel: SlackChannel) {
+    public async handle(payload: PullRequestReviewersUpdatedNotification, slackChannel: SlackTargetedChannel) {
         await updateChannelMembers(payload, slackChannel);
     }
 }
 
-async function updateChannelMembers(payload: PullRequestReviewersUpdatedNotification, slackChannel: SlackChannel) {
+async function updateChannelMembers(payload: PullRequestReviewersUpdatedNotification, slackChannel: SlackTargetedChannel) {
     const userIdsToAdd = await slackChannel.getSlackUserIds(payload.addedReviewers.map(payload => payload.emailAddress));
     const userIdsToRemove = await slackChannel.getSlackUserIds(payload.removedReviewers.map(payload => payload.emailAddress));
 

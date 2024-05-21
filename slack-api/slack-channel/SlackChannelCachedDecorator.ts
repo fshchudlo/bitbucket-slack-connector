@@ -4,29 +4,35 @@ import {
     BitbucketCommentSnapshotInSlackMetadata,
     InviteToChannelArguments,
     KickFromChannelArguments,
-    PullRequestSnapshotInSlackMetadata,
-    SendMessageArguments,
-    SendMessageResponse,
-    SlackChannel
-} from "../../bitbucket-webhook-handler/SlackChannel";
+    SlackTargetedChannel
+} from "../../bitbucket-webhook-handler/slack-contracts/SlackTargetedChannel";
 import { SlackChannelInfo } from "../SlackChannelProvisioner";
 import { CHANNELS_CACHE } from "../CHANNELS_CACHE";
 import { COMMENTS_CACHE } from "../COMMENTS_CACHE";
+import {
+    PullRequestSnapshotInSlackMetadata,
+    SlackBroadcastChannel
+} from "../../bitbucket-webhook-handler/slack-contracts/SlackBroadcastChannel";
+import {
+    SendMessageArguments,
+    SendMessageResponse
+} from "../../bitbucket-webhook-handler/slack-contracts/SendMessageArguments";
+import { SlackWebClientChannel } from "./SlackWebClientChannel";
 
 function getCommentCacheKey(channelId: string, bitbucketCommentId: number | string) {
     return `${channelId}-${bitbucketCommentId}`;
 }
 
 
-export class SlackChannelCachedDecorator implements SlackChannel {
+export class SlackChannelCachedDecorator implements SlackTargetedChannel, SlackBroadcastChannel {
     get channelInfo(): SlackChannelInfo {
         return this.channel.channelInfo;
     }
 
-    private channel: SlackChannel;
+    private channel: SlackWebClientChannel;
 
-    constructor(gateway: SlackChannel) {
-        this.channel = gateway;
+    constructor(channel: SlackWebClientChannel) {
+        this.channel = channel;
     }
 
 

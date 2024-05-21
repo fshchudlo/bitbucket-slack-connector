@@ -1,8 +1,8 @@
-import { SlackChannel } from "../../SlackChannel";
 import { PullRequestBasicNotification } from "../../../bitbucket-payload-types";
 import { getPullRequestCompletionAction } from "../utils/getPullRequestCompletionAction";
+import { SlackBroadcastChannel } from "../../slack-contracts/SlackBroadcastChannel";
 
-export async function tryBroadcastMessageAboutClosedPR(payload: PullRequestBasicNotification, broadcastChannel: SlackChannel) {
+export async function tryBroadcastMessageAboutClosedPR(payload: PullRequestBasicNotification, broadcastChannel: SlackBroadcastChannel) {
     if (!broadcastChannel) {
         return;
     }

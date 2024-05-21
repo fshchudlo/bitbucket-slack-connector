@@ -1,18 +1,16 @@
-import { CommentSeverity } from "../bitbucket-payload-types";
-import { Block, KnownBlock } from "@slack/bolt";
-import { SlackChannelInfo } from "../slack-api/SlackChannelProvisioner";
+import { CommentSeverity } from "../../bitbucket-payload-types";
+import { SlackChannelInfo } from "../../slack-api/SlackChannelProvisioner";
+import { SendMessageArguments, SendMessageResponse } from "./SendMessageArguments";
 
-export interface SlackChannel {
+export interface SlackTargetedChannel {
     readonly channelInfo: SlackChannelInfo;
     getSlackUserIds(userEmails: Array<string>): Promise<string[]>;
     addBookmark(options: AddBookmarkArguments): Promise<void>;
     inviteToChannel(options: InviteToChannelArguments): Promise<void>;
     kickFromChannel(options: KickFromChannelArguments): Promise<void>;
     closeChannel(): Promise<void>;
-    addReaction(messageId: string, reaction: string): Promise<void>
     sendMessage(options: SendMessageArguments): Promise<SendMessageResponse>;
     findLatestBitbucketCommentSnapshot(bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null>;
-    findPROpenedBroadcastMessageId(prCreationDate: Date, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null>;
 }
 
 export type BitbucketCommentSnapshotInSlackMetadata = {
@@ -25,11 +23,6 @@ export type BitbucketCommentSnapshotInSlackMetadata = {
 export type BitbucketCommentSnapshot = BitbucketCommentSnapshotInSlackMetadata & {
     slackMessageId: string;
     slackThreadId?: string;
-}
-export type PullRequestSnapshotInSlackMetadata = {
-    pullRequestId: string,
-    projectKey: string,
-    repositorySlug: string
 }
 
 export type AddBookmarkArguments = {
@@ -44,22 +37,4 @@ export type InviteToChannelArguments = {
 }
 export type KickFromChannelArguments = {
     users: string[];
-}
-export type SendMessageArguments = {
-    text?: string;
-    threadId?: string;
-    replyBroadcast?: boolean,
-    attachments?: Array<{
-        text: string,
-        color?: string
-    }>;
-    metadata?: {
-        eventType: string;
-        eventPayload: { [p: string]: string | number | boolean }
-    };
-    blocks?: Block[] | KnownBlock[]
-}
-export type SendMessageResponse = {
-    messageId: string;
-    threadId?: string;
 }

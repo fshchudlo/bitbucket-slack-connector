@@ -1,15 +1,16 @@
-import { SendMessageArguments, SlackChannel } from "../../SlackChannel";
+import { SlackTargetedChannel } from "../../slack-contracts/SlackTargetedChannel";
 import { contextBlock, divider, link, section } from "../utils/slack-building-blocks";
 import { formatUserName } from "../utils";
 import { BitbucketNotification, PullRequestBasicNotification, PullRequestPayload } from "../../../bitbucket-payload-types";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
+import { SendMessageArguments } from "../../slack-contracts/SendMessageArguments";
 
 export class PullRequestReviewerActionHandler implements WebhookPayloadHandler {
     public canHandle(payload: BitbucketNotification) {
         return payload.eventKey == "pr:reviewer:approved" || payload.eventKey == "pr:reviewer:unapproved" || payload.eventKey == "pr:reviewer:needs_work";
     }
 
-    public async handle(payload: PullRequestBasicNotification, slackChannel: SlackChannel) {
+    public async handle(payload: PullRequestBasicNotification, slackChannel: SlackTargetedChannel) {
         await slackChannel.sendMessage(buildSlackMessage(payload));
     }
 }

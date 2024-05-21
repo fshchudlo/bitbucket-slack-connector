@@ -1,6 +1,7 @@
 import * as useCases from "./use-case-handlers";
-import { SlackChannel } from "./SlackChannel";
+import { SlackTargetedChannel } from "./slack-contracts/SlackTargetedChannel";
 import { BitbucketNotification } from "../bitbucket-payload-types";
+import { SlackBroadcastChannel } from "./slack-contracts/SlackBroadcastChannel";
 
 const payloadHandlers = new Array<useCases.WebhookPayloadHandler>(
     new useCases.PullRequestOpenedHandler(),
@@ -14,7 +15,7 @@ const payloadHandlers = new Array<useCases.WebhookPayloadHandler>(
     new useCases.PullRequestCompletionHandler()
 );
 
-export default async function handleWebhookPayload(payload: BitbucketNotification, pullRequestChannel: SlackChannel, broadcastChannel: SlackChannel = null) {
+export default async function handleWebhookPayload(payload: BitbucketNotification, pullRequestChannel: SlackTargetedChannel, broadcastChannel: SlackBroadcastChannel = null) {
     const eventKey = payload.eventKey;
     for (const handler of payloadHandlers) {
         if (handler.canHandle(payload)) {

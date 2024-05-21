@@ -1,22 +1,23 @@
 import { link, section, divider, contextBlock } from "../utils/slack-building-blocks";
 import { formatUserName, formatPullRequestDescription, reviewPRAction } from "../utils";
-import { SendMessageArguments, SlackChannel } from "../../SlackChannel";
+import { SlackTargetedChannel } from "../../slack-contracts/SlackTargetedChannel";
 import { BitbucketNotification, PullRequestBasicNotification } from "../../../bitbucket-payload-types";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
+import { SendMessageArguments } from "../../slack-contracts/SendMessageArguments";
 
 export class PullRequestOpenedHandler implements WebhookPayloadHandler {
     public canHandle(payload: BitbucketNotification) {
         return payload.eventKey == "pr:opened";
     }
 
-    public async handle(payload: PullRequestBasicNotification, slackChannel: SlackChannel) {
+    public async handle(payload: PullRequestBasicNotification, slackChannel: SlackTargetedChannel) {
         await inviteParticipants(payload, slackChannel);
         await setChannelBookmark(payload, slackChannel);
         await slackChannel.sendMessage(buildInvitationMessage(payload));
     }
 }
 
-async function setChannelBookmark(payload: PullRequestBasicNotification, slackChannel: SlackChannel) {
+async function setChannelBookmark(payload: PullRequestBasicNotification, slackChannel: SlackTargetedChannel) {
     await slackChannel.addBookmark({
         link: payload.pullRequest.links.self[0].href,
         emoji: ":git:",
@@ -24,7 +25,7 @@ async function setChannelBookmark(payload: PullRequestBasicNotification, slackCh
     });
 }
 
-async function inviteParticipants(payload: PullRequestBasicNotification, slackChannel: SlackChannel) {
+async function inviteParticipants(payload: PullRequestBasicNotification, slackChannel: SlackTargetedChannel) {
     const allParticipants = [payload.pullRequest.author.user]
         .concat(payload.pullRequest.reviewers.map(r => r.user));
 

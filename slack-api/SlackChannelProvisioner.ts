@@ -4,7 +4,8 @@ import { BitbucketNotification } from "../bitbucket-payload-types";
 import { buildChannelName } from "./buildChannelName";
 import { CHANNELS_CACHE } from "./CHANNELS_CACHE";
 import { SlackChannelCachedDecorator } from "./slack-channel/SlackChannelCachedDecorator";
-import { SlackChannel } from "../bitbucket-webhook-handler/SlackChannel";
+import { SlackTargetedChannel } from "../bitbucket-webhook-handler/slack-contracts/SlackTargetedChannel";
+import { SlackBroadcastChannel } from "../bitbucket-webhook-handler/slack-contracts/SlackBroadcastChannel";
 
 const awaitingCreateChannelRequests = new Map<string, Promise<SlackChannelInfo>>();
 
@@ -28,7 +29,7 @@ export class SlackChannelProvisioner {
                 isSetUpProperly: true
             };
         }
-        const existingChannel = await this.forExistingChannel(channelName);
+        const existingChannel = await this.fromExistingChannel(channelName);
         if (existingChannel != null) {
             return {
                 channel: existingChannel,
@@ -45,9 +46,8 @@ export class SlackChannelProvisioner {
         return { channel: createdChannel, isSetUpProperly: false };
     }
 
-    async forExistingChannel(channelName: string): Promise<SlackChannel | null> {
-        const channelInfo = await this.getChannelInfo(channelName);
-        return channelInfo ? new SlackChannelCachedDecorator(new SlackWebClientChannel(this.client, channelInfo)) : null;
+    async getBroadcastChannel(channelName: string): Promise<SlackBroadcastChannel | null> {
+        return this.fromExistingChannel(channelName);
     }
 
     async getChannelInfo(channelName: string): Promise<SlackChannelInfo | null> {
@@ -64,7 +64,12 @@ export class SlackChannelProvisioner {
         return channelInfo;
     }
 
-    private async createNewChannel(options: CreateChannelArguments): Promise<SlackChannel> {
+    private async fromExistingChannel(channelName: string): Promise<SlackChannelCachedDecorator | null> {
+        const channelInfo = await this.getChannelInfo(channelName);
+        return channelInfo ? new SlackChannelCachedDecorator(new SlackWebClientChannel(this.client, channelInfo)) : null;
+    }
+
+    private async createNewChannel(options: CreateChannelArguments): Promise<SlackTargetedChannel> {
         const channelInfo = await this.createNewChannelInSlack(options);
         const channel = new SlackWebClientChannel(this.client, channelInfo);
         if (options.defaultParticipants?.length > 0) {
@@ -129,7 +134,7 @@ export class SlackChannelProvisioner {
 }
 
 export type ProvisionResult = {
-    channel: SlackChannel,
+    channel: SlackTargetedChannel,
     isSetUpProperly: boolean
 }
 export type SlackChannelInfo = {

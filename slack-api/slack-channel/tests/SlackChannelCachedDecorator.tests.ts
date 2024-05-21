@@ -4,10 +4,11 @@ import { PullRequestCommentActionNotification } from "../../../bitbucket-payload
 import { register } from "prom-client";
 import {
     BitbucketCommentSnapshot,
-    BitbucketCommentSnapshotInSlackMetadata, SendMessageResponse, SlackChannel
-} from "../../../bitbucket-webhook-handler/SlackChannel";
+    BitbucketCommentSnapshotInSlackMetadata, SlackTargetedChannel
+} from "../../../bitbucket-webhook-handler/slack-contracts/SlackTargetedChannel";
 import { CHANNELS_CACHE } from "../../CHANNELS_CACHE";
 import { COMMENTS_CACHE } from "../../COMMENTS_CACHE";
+import { SendMessageResponse } from "../../../bitbucket-webhook-handler/slack-contracts/SendMessageArguments";
 
 
 const decoratedChannelMock = {
@@ -24,7 +25,7 @@ const decoratedChannelMock = {
     inviteToChannel: jest.fn(),
     kickFromChannel: jest.fn(),
     sendMessage: jest.fn()
-} as SlackChannel;
+} as SlackTargetedChannel;
 
 
 describe("SlackChannelCachedDecorator", () => {

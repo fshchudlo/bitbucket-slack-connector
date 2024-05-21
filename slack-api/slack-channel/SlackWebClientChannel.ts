@@ -4,23 +4,28 @@ import {
     BitbucketCommentSnapshotInSlackMetadata,
     InviteToChannelArguments,
     KickFromChannelArguments,
-    SendMessageArguments,
-    SendMessageResponse,
     AddBookmarkArguments,
-    SlackChannel,
-    PullRequestSnapshotInSlackMetadata
-} from "../../bitbucket-webhook-handler/SlackChannel";
+    SlackTargetedChannel
+} from "../../bitbucket-webhook-handler/slack-contracts/SlackTargetedChannel";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../bitbucket-webhook-handler/use-case-handlers/utils";
 import {
     SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
 } from "../../bitbucket-webhook-handler/use-case-handlers/utils/snapshotPullRequestState";
 import { SlackChannelInfo } from "../SlackChannelProvisioner";
+import {
+    PullRequestSnapshotInSlackMetadata,
+    SlackBroadcastChannel
+} from "../../bitbucket-webhook-handler/slack-contracts/SlackBroadcastChannel";
+import {
+    SendMessageArguments,
+    SendMessageResponse
+} from "../../bitbucket-webhook-handler/slack-contracts/SendMessageArguments";
 
 /**
  * Adapter for the Slack API that also acts as an {@link https://awesome-architecture.com/cloud-design-patterns/anti-corruption-layer-pattern/|anti-corruption layer} since Slack API is not always consistent
  */
-export class SlackWebClientChannel implements SlackChannel {
+export class SlackWebClientChannel implements SlackTargetedChannel, SlackBroadcastChannel {
     private readonly client: slack.WebClient;
     private readonly iconEmoji: string;
     readonly channelInfo: SlackChannelInfo;
@@ -90,7 +95,6 @@ export class SlackWebClientChannel implements SlackChannel {
                 event_type: options.metadata.eventType,
                 event_payload: options.metadata.eventPayload
             } : undefined,
-            attachments: options.attachments,
             blocks: options.blocks,
             thread_ts: options.threadId,
             reply_broadcast: options.replyBroadcast

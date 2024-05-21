@@ -1,15 +1,16 @@
 import { formatUserName, getTaskOrCommentTitle, markdownToSlackMarkup, snapshotCommentState } from "../utils";
 import { link, quote, section } from "../utils/slack-building-blocks";
-import { BitbucketCommentSnapshot, SendMessageArguments, SlackChannel } from "../../SlackChannel";
+import { BitbucketCommentSnapshot, SlackTargetedChannel } from "../../slack-contracts/SlackTargetedChannel";
 import { PullRequestCommentActionNotification } from "../../../bitbucket-payload-types";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
+import { SendMessageArguments } from "../../slack-contracts/SendMessageArguments";
 
 export class CommentAddedHandler implements WebhookPayloadHandler {
     canHandle(payload: PullRequestCommentActionNotification) {
         return payload.eventKey == "pr:comment:added";
     }
 
-    async handle(payload: PullRequestCommentActionNotification, slackChannel: SlackChannel) {
+    async handle(payload: PullRequestCommentActionNotification, slackChannel: SlackTargetedChannel) {
         const parentCommentSnapshot = payload.commentParentId ? await slackChannel.findLatestBitbucketCommentSnapshot(payload.commentParentId) : null;
         const message = buildSlackMessage(payload, parentCommentSnapshot);
         await slackChannel.sendMessage(message);

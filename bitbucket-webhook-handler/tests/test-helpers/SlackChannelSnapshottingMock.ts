@@ -1,22 +1,21 @@
 import {
-    SlackChannel,
+    SlackTargetedChannel,
     BitbucketCommentSnapshot,
     AddBookmarkArguments,
     InviteToChannelArguments,
     KickFromChannelArguments,
-    SendMessageArguments,
-    SendMessageResponse,
     BitbucketCommentSnapshotInSlackMetadata,
-    PullRequestSnapshotInSlackMetadata
-} from "../../SlackChannel";
+} from "../../slack-contracts/SlackTargetedChannel";
 import {
     SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
 } from "../../use-case-handlers/utils/snapshotPullRequestState";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../use-case-handlers/utils";
 import { SlackChannelInfo } from "../../../slack-api/SlackChannelProvisioner";
+import { SendMessageArguments, SendMessageResponse } from "../../slack-contracts/SendMessageArguments";
+import { PullRequestSnapshotInSlackMetadata, SlackBroadcastChannel } from "../../slack-contracts/SlackBroadcastChannel";
 
 const messageId = "ABCDE";
-export default class SlackChannelSnapshottingMock implements SlackChannel {
+export default class SlackChannelSnapshottingMock implements SlackTargetedChannel, SlackBroadcastChannel {
     snapshot: {
         addedReactions: any[];
         addedBookmarks: AddBookmarkArguments[];
