@@ -40,7 +40,7 @@ export class InMemoryCache<T> {
     deleteWhere(matchPredicate: (key: string, value: T) => boolean): void {
         this.cache.forEach((value, key) => {
             if (matchPredicate(key, value)) {
-                this.cache.delete(key);
+                this.delete(key);
             }
         });
     }
