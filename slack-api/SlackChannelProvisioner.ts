@@ -51,6 +51,10 @@ export class SlackChannelProvisioner {
     }
 
     async getChannelInfo(channelName: string): Promise<SlackChannelInfo | null> {
+        if (awaitingCreateChannelRequests.has(channelName)) {
+            return awaitingCreateChannelRequests.get(channelName);
+        }
+
         const cachedChannelInfo = CHANNELS_CACHE.get(channelName);
         if (cachedChannelInfo) {
             return Promise.resolve(cachedChannelInfo);
