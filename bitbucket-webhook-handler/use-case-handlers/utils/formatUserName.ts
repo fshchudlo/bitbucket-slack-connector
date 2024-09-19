@@ -1,5 +1,5 @@
-import { UserPayload } from "../../../types/bitbucket-payload-types";
+import { UserPayload } from "../../../types/normalized-payload-types";
 
 export function formatUserName(user: UserPayload) {
-    return user.displayName ? user.displayName : user.emailAddress;
+    return user.name ? user.name : user.email;
 }

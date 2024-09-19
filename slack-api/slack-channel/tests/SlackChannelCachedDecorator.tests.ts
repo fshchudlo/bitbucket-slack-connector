@@ -1,10 +1,9 @@
 import { SlackChannelCachedDecorator } from "../SlackChannelCachedDecorator";
 import { snapshotCommentState } from "../../../bitbucket-webhook-handler/use-case-handlers/utils";
-import { PullRequestCommentActionNotification } from "../../../types/bitbucket-payload-types";
 import { register } from "prom-client";
 import { CHANNELS_CACHE } from "../../CHANNELS_CACHE";
 import { COMMENTS_CACHE } from "../../COMMENTS_CACHE";
-import { BitbucketCommentSnapshot, BitbucketCommentSnapshotInSlackMetadata, SendMessageResponse, SlackTargetedChannel } from "../../../types/slack-contracts";
+import { PullrequestCommentSnapshotInSlackMetadata, SendMessageResponse, SlackTargetedChannel } from "../../../types/slack-contracts";
 
 
 const decoratedChannelMock = {
@@ -15,7 +14,7 @@ const decoratedChannelMock = {
     addBookmark: jest.fn(),
     addReaction: jest.fn(),
     closeChannel: jest.fn(),
-    findLatestBitbucketCommentSnapshot: jest.fn(),
+    findLatestPullRequestCommentSnapshot: jest.fn(),
     findPROpenedBroadcastMessageId: jest.fn(),
     getSlackUserIds: jest.fn(),
     inviteToChannel: jest.fn(),
@@ -57,52 +56,45 @@ describe("SlackChannelCachedDecorator", () => {
             comment: {
                 id: 1,
                 severity: "NORMAL",
-                threadResolvedDate: 123456789
+                resolvedAt: undefined as number,
+                threadResolvedAt: new Date(1714381184802)
             },
-            commentParentId: undefined
-        } as PullRequestCommentActionNotification;
+            commentParentId: undefined as string
+        };
 
         await systemUnderTest.sendMessage({
-            metadata: snapshotCommentState(testPayload)
+            metadata: snapshotCommentState(testPayload as any)
         });
 
 
-        expect(await systemUnderTest.findLatestBitbucketCommentSnapshot(testPayload.comment.id)).toEqual(<BitbucketCommentSnapshot>{
-            commentId: testPayload.comment.id.toString(),
-            commentParentId: testPayload.commentParentId?.toString(),
-            severity: testPayload.comment.severity,
-            threadResolvedDate: testPayload.comment.threadResolvedDate,
-            taskResolvedDate: testPayload.comment.resolvedDate,
-            slackMessageId: "ABCDE",
-            slackThreadId: undefined
-        });
-        expect(decoratedChannelMock.findLatestBitbucketCommentSnapshot).not.toHaveBeenCalled();
+        expect(await systemUnderTest.findLatestPullRequestCommentSnapshot(testPayload.comment.id)).toMatchSnapshot();
+        expect(decoratedChannelMock.findLatestPullRequestCommentSnapshot).not.toHaveBeenCalled();
     });
 
     it("should fetch comment snapshot from gateway and save in cache", async () => {
-        const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>{
+        const commentSnapshot = <PullrequestCommentSnapshotInSlackMetadata>{
             commentId: "1",
             severity: "NORMAL",
             thread_resolved: false
         };
-        (<jest.Mock>decoratedChannelMock.findLatestBitbucketCommentSnapshot).mockResolvedValueOnce(commentSnapshot);
+        (<jest.Mock>decoratedChannelMock.findLatestPullRequestCommentSnapshot).mockResolvedValueOnce(commentSnapshot);
 
-        const result = await systemUnderTest.findLatestBitbucketCommentSnapshot(commentSnapshot.commentId);
+        const result = await systemUnderTest.findLatestPullRequestCommentSnapshot(commentSnapshot.commentId);
 
-        expect(decoratedChannelMock.findLatestBitbucketCommentSnapshot).toHaveBeenCalledWith(commentSnapshot.commentId);
+        expect(decoratedChannelMock.findLatestPullRequestCommentSnapshot).toHaveBeenCalledWith(commentSnapshot.commentId);
         expect(result).toEqual(commentSnapshot);
         expect(COMMENTS_CACHE.get("channelId-1")).toEqual(commentSnapshot);
     });
 
     it("should delete comment snapshots from cache when archiving a channel", async () => {
-        const commentSnapshot = <BitbucketCommentSnapshotInSlackMetadata>{
+        const commentSnapshot = <PullrequestCommentSnapshotInSlackMetadata>{
             commentId: "1",
             severity: "NORMAL",
             thread_resolved: false
         };
-        (<jest.Mock>decoratedChannelMock.findLatestBitbucketCommentSnapshot).mockResolvedValueOnce(commentSnapshot);
+        (<jest.Mock>decoratedChannelMock.findLatestPullRequestCommentSnapshot).mockResolvedValueOnce(commentSnapshot);
 
-        await systemUnderTest.findLatestBitbucketCommentSnapshot(commentSnapshot.commentId);
+        await systemUnderTest.findLatestPullRequestCommentSnapshot(commentSnapshot.commentId);
 
         expect(COMMENTS_CACHE.get("channelId-1")).toEqual(commentSnapshot);
 

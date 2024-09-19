@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { BitbucketNotification } from "./types/bitbucket-payload-types";
+import { PullRequestNotification } from "./types/normalized-payload-types";
 
 export const AppConfig = {
     SLACK_SIGNING_SECRET: process.env.SLACK_SIGNING_SECRET as string,
@@ -17,10 +17,10 @@ export const AppConfig = {
     /*
     * You can implement any other logic depending on the granularity level you need
     * */
-    getOpenedPRBroadcastChannel(payload: BitbucketNotification): string | null {
+    getOpenedPRBroadcastChannel(payload: PullRequestNotification): string | null {
         const configuredBotUsers = process.env.BITBUCKET_BOT_USERS?.split(",").map(u => u.trim());
-        const projectKey = payload.pullRequest.toRef.repository.project.key;
-        const prAuthor = payload.pullRequest.author.user.name;
+        const projectKey = payload.pullRequest.targetBranch.projectKey;
+        const prAuthor = payload.pullRequest.author.name;
 
         let channelName = null;
 

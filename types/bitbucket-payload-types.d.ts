@@ -1,27 +1,27 @@
 // see https://confluence.atlassian.com/bitbucketserver0816/event-payload-1333334207.html#Eventpayload-pullrequest
 export type BitbucketNotification =
-    PullRequestBasicNotification
-    | PullRequestFromRefUpdatedNotification
-    | PullRequestModifiedNotification
-    | PullRequestCommentActionNotification
-    | PullRequestReviewersUpdatedNotification;
+    BitbucketPullRequestBasicNotification
+    | BitbucketPullRequestFromRefUpdatedNotification
+    | BitbucketPullRequestModifiedNotification
+    | BitbucketPullRequestCommentActionNotification
+    | BitbucketPullRequestReviewersUpdatedNotification;
 
-export type PullRequestNotificationBasicPayload = {
-    readonly actor: UserPayload;
-    readonly pullRequest: PullRequestPayload;
+export type BitbucketPullRequestNotificationBasicPayload = {
+    readonly actor: BitbucketUserPayload;
+    readonly pullRequest: BitbucketPullRequestPayload;
 };
 
-export type PullRequestBasicNotification = PullRequestNotificationBasicPayload & {
+export type BitbucketPullRequestBasicNotification = BitbucketPullRequestNotificationBasicPayload & {
     readonly eventKey: "pr:opened" | "pr:reviewer:unapproved" | "pr:reviewer:needs_work" | "pr:reviewer:approved" | "pr:merged" | "pr:declined" | "pr:deleted";
 };
 
-export type PullRequestFromRefUpdatedNotification = PullRequestNotificationBasicPayload & {
+export type BitbucketPullRequestFromRefUpdatedNotification = BitbucketPullRequestNotificationBasicPayload & {
     readonly eventKey: "pr:from_ref_updated";
     readonly latestCommitMessage: string | null;
 };
 
 
-export type PullRequestModifiedNotification = PullRequestNotificationBasicPayload & {
+export type BitbucketPullRequestModifiedNotification = BitbucketPullRequestNotificationBasicPayload & {
     readonly eventKey: "pr:modified";
     readonly previousTitle: string;
     readonly previousDescription: string | null;
@@ -31,39 +31,39 @@ export type PullRequestModifiedNotification = PullRequestNotificationBasicPayloa
     }
 };
 
-export type PullRequestCommentActionNotification = PullRequestNotificationBasicPayload & {
+export type BitbucketPullRequestCommentActionNotification = BitbucketPullRequestNotificationBasicPayload & {
     readonly eventKey: "pr:comment:added" | "pr:comment:deleted" | "pr:comment:edited";
     readonly commentParentId?: number;
     readonly previousComment?: string;
     readonly comment: {
         readonly id: number;
         readonly text: string;
-        readonly author: UserPayload;
-        readonly severity: CommentSeverity;
+        readonly author: BitbucketUserPayload;
+        readonly severity: BitbucketCommentSeverity;
         readonly resolvedDate?: number;
         readonly threadResolvedDate?: number;
     };
 };
 
 
-export type PullRequestReviewersUpdatedNotification = PullRequestNotificationBasicPayload & {
+export type BitbucketPullRequestReviewersUpdatedNotification = BitbucketPullRequestNotificationBasicPayload & {
     readonly eventKey: "pr:reviewer:updated";
-    readonly addedReviewers: Array<UserPayload>;
-    readonly removedReviewers: Array<UserPayload>;
+    readonly addedReviewers: Array<BitbucketUserPayload>;
+    readonly removedReviewers: Array<BitbucketUserPayload>;
 };
 
-export type UserPayload = {
+export type BitbucketUserPayload = {
     readonly name: string;
     readonly displayName: string;
     readonly emailAddress: string;
 };
 
-export type ReviewerPayload = {
-    readonly user: UserPayload,
-    readonly status: ReviewStatus;
+export type BitbucketReviewerPayload = {
+    readonly user: BitbucketUserPayload,
+    readonly status: BitbucketReviewStatus;
 };
 
-export type RefPayload = {
+export type BitbucketRefPayload = {
     readonly displayId: string;
     readonly latestCommit: string;
     readonly repository: {
@@ -75,19 +75,19 @@ export type RefPayload = {
     };
 };
 
-export type PullRequestPayload = {
+export type BitbucketPullRequestPayload = {
     readonly id: number;
     readonly createdDate: number,
     readonly title: string;
     readonly description: string | null;
-    readonly author: { readonly user: UserPayload };
-    readonly reviewers: Array<ReviewerPayload>;
+    readonly author: { readonly user: BitbucketUserPayload };
+    readonly reviewers: Array<BitbucketReviewerPayload>;
     readonly links: {
         readonly self: Array<{ readonly href: string }>
     };
-    readonly fromRef: RefPayload;
-    readonly toRef: RefPayload;
+    readonly fromRef: BitbucketRefPayload;
+    readonly toRef: BitbucketRefPayload;
 };
 
-export type CommentSeverity = "NORMAL" | "BLOCKER";
-export type ReviewStatus = "UNAPPROVED" | "NEEDS_WORK" | "APPROVED";
+export type BitbucketCommentSeverity = "NORMAL" | "BLOCKER";
+export type BitbucketReviewStatus = "UNAPPROVED" | "NEEDS_WORK" | "APPROVED";

@@ -1,6 +1,6 @@
 import { Block, KnownBlock } from "@slack/bolt";
 import { SlackChannelInfo } from "../slack-api/SlackChannelProvisioner";
-import { CommentSeverity } from "./bitbucket-payload-types";
+import { CommentSeverity } from "./normalized-payload-types";
 
 export type SendMessageArguments = {
     text?: string;
@@ -46,17 +46,17 @@ export interface SlackTargetedChannel {
 
     sendMessage(options: SendMessageArguments): Promise<SendMessageResponse>;
 
-    findLatestBitbucketCommentSnapshot(bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null>;
+    findLatestPullRequestCommentSnapshot(commentId: number | string): Promise<PullRequestCommentSnapshot | null>;
 }
 
-export type BitbucketCommentSnapshotInSlackMetadata = {
+export type PullrequestCommentSnapshotInSlackMetadata = {
     severity: CommentSeverity;
     taskResolvedDate?: number;
     threadResolvedDate?: number;
     commentId: string;
     commentParentId?: string;
 }
-export type BitbucketCommentSnapshot = BitbucketCommentSnapshotInSlackMetadata & {
+export type PullRequestCommentSnapshot = PullrequestCommentSnapshotInSlackMetadata & {
     slackMessageId: string;
     slackThreadId?: string;
 }

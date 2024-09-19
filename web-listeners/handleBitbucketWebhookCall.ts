@@ -5,7 +5,7 @@ import { AppConfig } from "../app.config";
 import { NextFunction, Request, Response } from "express";
 import { normalizeBitbucketPayload } from "../payload-normalization/normalizeBitbucketPayload";
 import { SlackChannelProvisioner } from "../slack-api/SlackChannelProvisioner";
-import { PullRequestBasicNotification } from "../types/bitbucket-payload-types";
+import { PullRequestGenericNotification } from "../types/normalized-payload-types";
 
 const bitbucketAPI = new BitbucketAPI(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
 
@@ -19,11 +19,11 @@ export async function handleBitbucketWebhookCall(req: Request, res: Response, ne
         const provisionResult = await slackChannelFactory.provisionChannelFor(payload, AppConfig.USE_PRIVATE_CHANNELS, AppConfig.DEFAULT_CHANNEL_PARTICIPANTS);
 
         if (!provisionResult.isSetUpProperly) {
-            const payloadToReplay = <PullRequestBasicNotification>{
+            const payloadToReplay = <PullRequestGenericNotification>{
                 eventKey: "pr:opened",
                 actor: {
-                    displayName: payload.pullRequest.author.user.displayName,
-                    emailAddress: payload.pullRequest.author.user.emailAddress
+                    name: payload.pullRequest.author.name,
+                    email: payload.pullRequest.author.email
                 },
                 pullRequest: payload.pullRequest
             };

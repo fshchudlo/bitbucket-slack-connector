@@ -1,16 +1,16 @@
-import { PullRequestBasicNotification } from "../../../types/bitbucket-payload-types";
+import { PullRequestGenericNotification } from "../../../types/normalized-payload-types";
 import { getPullRequestCompletionAction } from "../utils/getPullRequestCompletionAction";
 
 import { SlackBroadcastChannel } from "../../../types/slack-contracts";
 
-export async function tryBroadcastMessageAboutClosedPR(payload: PullRequestBasicNotification, broadcastChannel: SlackBroadcastChannel) {
+export async function tryBroadcastMessageAboutClosedPR(payload: PullRequestGenericNotification, broadcastChannel: SlackBroadcastChannel) {
     if (!broadcastChannel) {
         return;
     }
-    const initialBroadcastMessageId = await broadcastChannel.findPROpenedBroadcastMessageId(new Date(payload.pullRequest.createdDate), {
-        pullRequestId: payload.pullRequest.id.toString(),
-        projectKey: payload.pullRequest.toRef.repository.project.key,
-        repositorySlug: payload.pullRequest.toRef.repository.slug
+    const initialBroadcastMessageId = await broadcastChannel.findPROpenedBroadcastMessageId(payload.pullRequest.createdAt, {
+        pullRequestId: payload.pullRequest.number.toString(),
+        projectKey: payload.pullRequest.targetBranch.projectKey,
+        repositorySlug: payload.pullRequest.targetBranch.repositoryName
     });
     if (!initialBroadcastMessageId) {
         return;

@@ -1,4 +1,4 @@
-import { PullRequestPayload } from "../types/bitbucket-payload-types";
+import { PullRequestPayload } from "../types/normalized-payload-types";
 
 interface PullRequestFlattenTraits {
     pullRequestId: string | number;
@@ -11,11 +11,11 @@ export function buildChannelName(params: PullRequestFlattenTraits | PullRequestP
     const channelNamePrefix = "pr-";
     const projectRepoSeparator = "-";
 
-    const pullRequestId = ("pullRequestId" in params ? params.pullRequestId : params.id)
+    const pullRequestId = ("pullRequestId" in params ? params.pullRequestId : params.number)
         .toString();
-    const projectKey = ("projectKey" in params ? params.projectKey : params.toRef.repository.project.key)
+    const projectKey = ("projectKey" in params ? params.projectKey : params.targetBranch.projectKey)
         .replace("~", "").trim();
-    const repositorySlug = ("repositorySlug" in params ? params.repositorySlug : params.toRef.repository.slug)
+    const repositorySlug = ("repositorySlug" in params ? params.repositorySlug : params.targetBranch.repositoryName)
         .replaceAll(".", "-");
 
     const lengthLeftForTheKey = maxChannelNameLengthInSlack - pullRequestId.length - channelNamePrefix.length - projectRepoSeparator.length;

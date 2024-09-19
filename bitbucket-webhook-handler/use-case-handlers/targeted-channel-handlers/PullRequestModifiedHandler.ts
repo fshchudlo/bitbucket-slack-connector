@@ -1,6 +1,6 @@
 import { contextBlock, divider, section } from "../utils/slack-building-blocks";
 import { formatUserName, formatPullRequestDescription, reviewPRAction } from "../utils";
-import { PullRequestModifiedNotification } from "../../../types/bitbucket-payload-types";
+import { PullRequestModifiedNotification } from "../../../types/normalized-payload-types";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
 import { SlackTargetedChannel } from "../../../types/slack-contracts";
 
@@ -32,9 +32,9 @@ function getPRChangesDescription(payload: PullRequestModifiedNotification) {
     };
     const pullRequest = payload.pullRequest;
 
-    if (pullRequest.toRef.displayId != payload.previousTarget.displayId) {
+    if (pullRequest.targetBranch.branchName != payload.previousTargetBranch.branchName) {
         addDivider();
-        changesDescription.push(section(`Target is changed to \`${pullRequest.toRef.displayId}\``));
+        changesDescription.push(section(`Target is changed to \`${pullRequest.targetBranch.branchName}\``));
     }
     if (pullRequest.title != payload.previousTitle) {
         addDivider();

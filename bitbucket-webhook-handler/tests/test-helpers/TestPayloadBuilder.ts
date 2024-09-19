@@ -1,76 +1,61 @@
 import {
-    BitbucketNotification,
-    PullRequestBasicNotification, PullRequestCommentActionNotification, PullRequestModifiedNotification,
+    PullRequestNotification,
+    PullRequestGenericNotification,
+    PullRequestCommentActionNotification,
+    PullRequestModifiedNotification,
     PullRequestReviewersUpdatedNotification
-} from "../../../types/bitbucket-payload-types";
+} from "../../../types/normalized-payload-types";
 
 const authorUser = {
-    name: "TestAuthor",
-    displayName: "Test Author",
-    emailAddress: "test.author@test.com"
+    name: "Test Author",
+    email: "test.author@test.com"
 };
 const reviewer1User = {
-    name: "TestReviewer1",
-    displayName: "Test Reviewer 1",
-    emailAddress: "test.reviewer1@test.com"
+    name: "Test Reviewer 1",
+    email: "test.reviewer1@test.com"
 };
 const reviewer2User = {
-    name: "TestReviewer2",
-    displayName: "Test Reviewer 2",
-    emailAddress: "test.reviewer2@test.com"
+    name: "Test Reviewer 2",
+    email: "test.reviewer2@test.com"
 };
 const reviewer3User = {
-    name: "TestReviewer3",
-    displayName: "Test Reviewer 3",
-    emailAddress: "test.reviewer3@test.com"
+    name: "Test Reviewer 3",
+    email: "test.reviewer3@test.com"
 };
 
-function getBasicPayload(): PullRequestBasicNotification {
+function getBasicPayload(): PullRequestGenericNotification {
     return {
         eventKey: "pr:opened",
         actor: { ...authorUser },
         pullRequest: {
-            id: 1,
-            createdDate: 1714381184802,
+            number: 1,
+            createdAt: new Date(1714381184802),
             title: "Test pull request title",
             description: "Test pull request description",
-            fromRef: {
-                displayId: "feature/test-branch",
+            fromBranch: {
+                branchName: "feature/test-branch",
                 latestCommit: "from-ref-commit-hash",
-                repository: {
-                    slug: "test-repository",
-                    project: {
-                        key: "TEST-PROJ",
-                        name: "Test project"
-                    }
-                }
+                repositoryName: "test-repository",
+                projectKey: "TEST-PROJ",
+                projectName: "Test project"
             },
-            toRef: {
-                displayId: "master",
+            targetBranch: {
+                branchName: "master",
                 latestCommit: "to-ref-commit-hash",
-                repository: {
-                    slug: "test-repository",
-                    project: {
-                        key: "TEST-PROJ",
-                        name: "Test project"
-                    }
-                }
+                repositoryName: "test-repository",
+                projectKey: "TEST-PROJ",
+                projectName: "Test project"
             },
-            author: {
-                user: { ...authorUser }
-            },
-            reviewers: [
-                {
-                    user: { ...reviewer1User },
-                    status: "UNAPPROVED"
-                },
-                {
-                    user: { ...reviewer2User },
-                    status: "UNAPPROVED"
-                }
-            ],
+            author: { ...authorUser },
+            reviewers: [{
+                user: { ...reviewer1User },
+                status: "UNAPPROVED"
+            }, {
+                user: { ...reviewer2User },
+                status: "UNAPPROVED"
+            }],
             links: {
-                self: [{ href: "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview" }]
+                self: "https://git.test.com/projects/TEST-PROJ/repos/test-repository/pull-requests/1/overview"
             }
         }
     };
@@ -78,28 +63,28 @@ function getBasicPayload(): PullRequestBasicNotification {
 }
 
 export default class TestPayloadBuilder {
-    static pullRequestOpened(): BitbucketNotification {
+    static pullRequestOpened(): PullRequestNotification {
         return {
             ...getBasicPayload(),
             eventKey: "pr:opened"
         };
     }
 
-    static pullRequestMerged(): BitbucketNotification {
+    static pullRequestMerged(): PullRequestNotification {
         return {
             ...getBasicPayload(),
             eventKey: "pr:merged"
         };
     }
 
-    static pullRequestDeclined(): BitbucketNotification {
+    static pullRequestDeclined(): PullRequestNotification {
         return {
             ...getBasicPayload(),
             eventKey: "pr:declined"
         };
     }
 
-    static pullRequestDeleted(): BitbucketNotification {
+    static pullRequestDeleted(): PullRequestNotification {
         return {
             ...getBasicPayload(),
             eventKey: "pr:deleted"
@@ -115,6 +100,7 @@ export default class TestPayloadBuilder {
     }
 
     static pullRequestCommentAdded(): PullRequestCommentActionNotification {
+        const payload = getBasicPayload();
         return {
             ...getBasicPayload(),
             eventKey: "pr:comment:added",
@@ -123,7 +109,8 @@ export default class TestPayloadBuilder {
                 id: 1,
                 severity: "NORMAL",
                 text: "Test comment",
-                author: { ...reviewer1User }
+                author: { ...reviewer1User },
+                link: `${payload.pullRequest.links.self}?commentId=1`
             }
         };
     }
@@ -182,7 +169,7 @@ export default class TestPayloadBuilder {
             eventKey: "pr:comment:edited",
             comment: {
                 ...payload.comment,
-                resolvedDate: 123456789
+                resolvedAt: new Date(1714381184802)
             }
         };
     }
@@ -194,7 +181,7 @@ export default class TestPayloadBuilder {
             eventKey: "pr:comment:edited",
             comment: {
                 ...payload.comment,
-                resolvedDate: undefined
+                resolvedAt: undefined
             }
         };
     }
@@ -206,7 +193,7 @@ export default class TestPayloadBuilder {
             eventKey: "pr:comment:edited",
             comment: {
                 ...payload.comment,
-                threadResolvedDate: 123456789
+                threadResolvedAt: new Date(1714381184802)
             }
         };
     }
@@ -218,7 +205,7 @@ export default class TestPayloadBuilder {
             eventKey: "pr:comment:edited",
             comment: {
                 ...payload.comment,
-                threadResolvedDate: undefined
+                threadResolvedAt: undefined
             }
         };
     }
@@ -230,12 +217,13 @@ export default class TestPayloadBuilder {
             eventKey: "pr:modified",
             previousDescription: prCreatedPayload.pullRequest.description,
             previousTitle: prCreatedPayload.pullRequest.title,
-            previousTarget: {
-                displayId: prCreatedPayload.pullRequest.toRef.displayId,
-                latestCommit: prCreatedPayload.pullRequest.toRef.latestCommit
+            previousTargetBranch: {
+                branchName: prCreatedPayload.pullRequest.targetBranch.branchName,
+                latestCommit: prCreatedPayload.pullRequest.targetBranch.latestCommit
             }
         };
     }
+
     static pullRequestModified(): PullRequestModifiedNotification {
         const payload = getBasicPayload();
 
@@ -244,20 +232,20 @@ export default class TestPayloadBuilder {
             eventKey: "pr:modified",
             previousDescription: payload.pullRequest.description,
             previousTitle: payload.pullRequest.title,
-            previousTarget: {
-                displayId: payload.pullRequest.toRef.displayId,
-                latestCommit: payload.pullRequest.toRef.latestCommit
+            previousTargetBranch: {
+                branchName: payload.pullRequest.targetBranch.branchName,
+                latestCommit: payload.pullRequest.targetBranch.latestCommit
             },
             pullRequest: {
                 ...payload.pullRequest,
                 title: "New pull request title",
                 description: "New pull request description",
-                toRef: { ...payload.pullRequest.toRef, displayId: "not-the-master" }
+                targetBranch: { ...payload.pullRequest.targetBranch, branchName: "not-the-master" }
             }
         };
     }
 
-    static pullRequestNeedsWork(): BitbucketNotification {
+    static pullRequestNeedsWork(): PullRequestNotification {
         const payload = getBasicPayload();
 
         payload.pullRequest.reviewers[0] = {
@@ -272,7 +260,7 @@ export default class TestPayloadBuilder {
         };
     }
 
-    static pullRequestApproved(): BitbucketNotification {
+    static pullRequestApproved(): PullRequestNotification {
         const payload = getBasicPayload();
         payload.pullRequest.reviewers[0] = {
             ...payload.pullRequest.reviewers[0],
@@ -286,7 +274,7 @@ export default class TestPayloadBuilder {
         };
     }
 
-    static pullRequestUnapproved(): BitbucketNotification {
+    static pullRequestUnapproved(): PullRequestNotification {
         const payload = getBasicPayload();
 
         payload.pullRequest.reviewers[0] = {
@@ -301,13 +289,18 @@ export default class TestPayloadBuilder {
         };
     }
 
-    static pullRequestFromRefUpdated(): BitbucketNotification {
-        const basicPayload =getBasicPayload();
+    static pullRequestFromRefUpdated(): PullRequestNotification {
+        const basicPayload = getBasicPayload();
         return {
             ...basicPayload,
-            ...{ fromRef: { latestCommit: "from-ref-updated-hash" } },
+            ...{
+                fromRef: {
+                    latestCommit: "from-ref-updated-hash"
+                }
+            },
             eventKey: "pr:from_ref_updated",
-            latestCommitMessage: `Test comment for ${basicPayload.pullRequest.fromRef.repository.project.key}, ${basicPayload.pullRequest.fromRef.repository.slug}, ${basicPayload.pullRequest.fromRef.latestCommit}`
+            latestCommitMessage: `Test comment for ${basicPayload.pullRequest.fromBranch.projectKey}, ${basicPayload.pullRequest.fromBranch.repositoryName}, ${basicPayload.pullRequest.fromBranch.latestCommit}`,
+            latestCommitViewUrl: `${basicPayload.pullRequest.links.self.replace("/overview", "")}/commits/${basicPayload.pullRequest.fromBranch.latestCommit}`
         };
     }
 

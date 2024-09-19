@@ -1,15 +1,15 @@
-import { PullRequestBasicNotification } from "../../../types/bitbucket-payload-types";
+import { PullRequestGenericNotification } from "../../../types/normalized-payload-types";
 
 import { PullRequestSnapshotInSlackMetadata } from "../../../types/slack-contracts";
 
-export const SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE = "bitbucket_pull_request_opened";
-export function snapshotPullRequestState(payload: PullRequestBasicNotification) {
+export const SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE = "pull_request_opened";
+export function snapshotPullRequestState(payload: PullRequestGenericNotification) {
     return {
         eventType: SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE,
         eventPayload: <PullRequestSnapshotInSlackMetadata>{
-            pullRequestId: payload.pullRequest.id.toString(),
-            projectKey: payload.pullRequest.toRef.repository.project.key,
-            repositorySlug: payload.pullRequest.toRef.repository.slug
+            pullRequestId: payload.pullRequest.number.toString(),
+            projectKey: payload.pullRequest.targetBranch.projectKey,
+            repositorySlug: payload.pullRequest.targetBranch.repositoryName
         }
     };
 }

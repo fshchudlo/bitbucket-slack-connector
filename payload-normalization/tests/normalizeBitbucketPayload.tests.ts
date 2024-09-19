@@ -1,5 +1,4 @@
-import { PullRequestBasicNotification } from "../../types/bitbucket-payload-types";
-import TestPayloadBuilder from "../../bitbucket-webhook-handler/tests/test-helpers/TestPayloadBuilder";
+import { BitbucketPullRequestBasicNotification } from "../../types/bitbucket-payload-types";
 import { normalizeBitbucketPayload } from "../normalizeBitbucketPayload";
 
 describe("normalizeBitbucketPayload", () => {
@@ -7,9 +6,8 @@ describe("normalizeBitbucketPayload", () => {
         expect.assertions(1);
 
         const invalidPayload = ({
-            ...TestPayloadBuilder.reviewersUpdated(),
             eventKey: "unknown action"
-        } as unknown) as PullRequestBasicNotification;
+        } as unknown) as BitbucketPullRequestBasicNotification;
 
         try {
             await normalizeBitbucketPayload(invalidPayload, null);

@@ -1,9 +1,9 @@
-import { PullRequestCommentActionNotification } from "../../../types/bitbucket-payload-types";
+import { PullRequestCommentActionNotification } from "../../../types/normalized-payload-types";
 import { getTaskOrCommentTitle, snapshotCommentState } from "../utils";
 import { link, quote, section } from "../utils/slack-building-blocks";
 import { formatUserName, markdownToSlackMarkup } from "../utils";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
-import { BitbucketCommentSnapshot, SendMessageArguments, SlackTargetedChannel } from "../../../types/slack-contracts";
+import { PullRequestCommentSnapshot, SendMessageArguments, SlackTargetedChannel } from "../../../types/slack-contracts";
 
 export class CommentEditedHandler implements WebhookPayloadHandler {
     canHandle(payload: PullRequestCommentActionNotification) {
@@ -11,18 +11,16 @@ export class CommentEditedHandler implements WebhookPayloadHandler {
     }
 
     async handle(payload: PullRequestCommentActionNotification, slackChannel: SlackTargetedChannel) {
-        const commentSnapshot = await slackChannel.findLatestBitbucketCommentSnapshot(payload.comment.id);
+        const commentSnapshot = await slackChannel.findLatestPullRequestCommentSnapshot(payload.comment.id);
         const message = buildSlackMessage(payload, commentSnapshot);
         await slackChannel.sendMessage(message);
     }
 }
 
-function buildSlackMessage(payload: PullRequestCommentActionNotification, commentSnapshot: BitbucketCommentSnapshot): SendMessageArguments {
-    const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
-
+function buildSlackMessage(payload: PullRequestCommentActionNotification, commentSnapshot: PullRequestCommentSnapshot): SendMessageArguments {
     const userAction = getUserAction(payload, commentSnapshot);
 
-    const messageTitle = `${userAction.emoji} ${formatUserName(payload.actor)} ${link(commentUrl, userAction.title)}:`;
+    const messageTitle = `${userAction.emoji} ${formatUserName(payload.actor)} ${link(payload.comment.link, userAction.title)}:`;
     const commentText = markdownToSlackMarkup(payload.comment.text);
 
     return {
@@ -34,7 +32,7 @@ function buildSlackMessage(payload: PullRequestCommentActionNotification, commen
     };
 }
 
-function getUserAction(payload: PullRequestCommentActionNotification, previousCommentSnapshot: BitbucketCommentSnapshot) {
+function getUserAction(payload: PullRequestCommentActionNotification, previousCommentSnapshot: PullRequestCommentSnapshot) {
     const commentType = getTaskOrCommentTitle(payload);
     if (previousCommentSnapshot) {
         if (previousCommentSnapshot.severity == "NORMAL" && payload.comment.severity == "BLOCKER") {
@@ -49,25 +47,25 @@ function getUserAction(payload: PullRequestCommentActionNotification, previousCo
                 emoji: ":writing_hand:"
             };
         }
-        if (!previousCommentSnapshot.taskResolvedDate && payload.comment.resolvedDate) {
+        if (!previousCommentSnapshot.taskResolvedDate && payload.comment.resolvedAt) {
             return {
                 title: `resolved ${commentType}`,
                 emoji: ":white_check_mark:"
             };
         }
-        if (previousCommentSnapshot.taskResolvedDate && !payload.comment.resolvedDate) {
+        if (previousCommentSnapshot.taskResolvedDate && !payload.comment.resolvedAt) {
             return {
                 title: `reopened ${commentType}`,
                 emoji: ":repeat:"
             };
         }
-        if (!previousCommentSnapshot.threadResolvedDate && payload.comment.threadResolvedDate) {
+        if (!previousCommentSnapshot.threadResolvedDate && payload.comment.threadResolvedAt) {
             return {
                 title: `resolved ${commentType}`,
                 emoji: ":white_check_mark:"
             };
         }
-        if (previousCommentSnapshot.threadResolvedDate && !payload.comment.threadResolvedDate) {
+        if (previousCommentSnapshot.threadResolvedDate && !payload.comment.threadResolvedAt) {
             return {
                 title: `reopened ${commentType}`,
                 emoji: ":repeat:"

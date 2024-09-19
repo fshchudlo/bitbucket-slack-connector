@@ -1,5 +1,5 @@
 import { InMemoryCache } from "./cache/InMemoryCache";
 
-import { BitbucketCommentSnapshot } from "../types/slack-contracts";
+import { PullRequestCommentSnapshot } from "../types/slack-contracts";
 
-export const COMMENTS_CACHE = new InMemoryCache<BitbucketCommentSnapshot>("comments");
+export const COMMENTS_CACHE = new InMemoryCache<PullRequestCommentSnapshot>("comments");

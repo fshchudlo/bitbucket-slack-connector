@@ -1,7 +1,7 @@
-import { PullRequestBasicNotification } from "../../../types/bitbucket-payload-types";
-import { formatUserName } from "./index";
+import { PullRequestGenericNotification } from "../../../types/normalized-payload-types";
+import { formatUserName } from "./formatUserName";
 
-export function getPullRequestCompletionAction(payload: PullRequestBasicNotification): {
+export function getPullRequestCompletionAction(payload: PullRequestGenericNotification): {
     text: string,
     emoji: string,
     reaction: string

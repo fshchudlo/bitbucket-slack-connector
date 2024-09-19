@@ -2,7 +2,7 @@ import { SlackChannelInfo } from "../SlackChannelProvisioner";
 import { CHANNELS_CACHE } from "../CHANNELS_CACHE";
 import { COMMENTS_CACHE } from "../COMMENTS_CACHE";
 import {
-    AddBookmarkArguments, BitbucketCommentSnapshot, BitbucketCommentSnapshotInSlackMetadata,
+    AddBookmarkArguments, PullRequestCommentSnapshot, PullrequestCommentSnapshotInSlackMetadata,
     InviteToChannelArguments,
     KickFromChannelArguments,
     PullRequestSnapshotInSlackMetadata,
@@ -56,9 +56,9 @@ export class SlackChannelCachedDecorator implements SlackTargetedChannel, SlackB
 
     async sendMessage(options: SendMessageArguments): Promise<SendMessageResponse> {
         const response = await this.channel.sendMessage(options);
-        const metadata = <BitbucketCommentSnapshotInSlackMetadata>options.metadata?.eventPayload;
+        const metadata = <PullrequestCommentSnapshotInSlackMetadata>options.metadata?.eventPayload;
         if (metadata?.commentId) {
-            const commentSnapshot: BitbucketCommentSnapshot = {
+            const commentSnapshot: PullRequestCommentSnapshot = {
                 ...metadata,
                 slackMessageId: response.messageId,
                 slackThreadId: response.threadId
@@ -68,13 +68,13 @@ export class SlackChannelCachedDecorator implements SlackTargetedChannel, SlackB
         return response;
     }
 
-    async findLatestBitbucketCommentSnapshot(bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
+    async findLatestPullRequestCommentSnapshot(bitbucketCommentId: number | string): Promise<PullRequestCommentSnapshot | null> {
         const cacheKey = getCommentCacheKey(this.channel.channelInfo.id, bitbucketCommentId);
         const cachedCommentInfo = COMMENTS_CACHE.get(cacheKey);
         if (cachedCommentInfo) {
             return Promise.resolve(cachedCommentInfo);
         }
-        const commentSnapshot = await this.channel.findLatestBitbucketCommentSnapshot(bitbucketCommentId);
+        const commentSnapshot = await this.channel.findLatestPullRequestCommentSnapshot(bitbucketCommentId);
 
         if (commentSnapshot) {
             COMMENTS_CACHE.set(cacheKey, commentSnapshot);

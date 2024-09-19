@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SlackChannelCachedDecorator should cache comment info when sending a message 1`] = `
+{
+  "commentId": "1",
+  "commentParentId": undefined,
+  "severity": "NORMAL",
+  "slackMessageId": "ABCDE",
+  "slackThreadId": undefined,
+  "taskResolvedDate": undefined,
+  "threadResolvedDate": 1714381184802,
+}
+`;

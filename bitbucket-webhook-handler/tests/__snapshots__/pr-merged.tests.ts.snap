@@ -145,7 +145,7 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
           "pullRequestId": "1",
           "repositorySlug": "test-repository",
         },
-        "eventType": "bitbucket_pull_request_opened",
+        "eventType": "pull_request_opened",
       },
       "text": ":snowboarder: Test Author opened pull request "Test pull request title".",
     },

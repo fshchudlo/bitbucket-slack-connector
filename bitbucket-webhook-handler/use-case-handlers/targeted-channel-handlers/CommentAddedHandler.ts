@@ -1,8 +1,8 @@
 import { formatUserName, getTaskOrCommentTitle, markdownToSlackMarkup, snapshotCommentState } from "../utils";
 import { link, quote, section } from "../utils/slack-building-blocks";
-import { PullRequestCommentActionNotification } from "../../../types/bitbucket-payload-types";
+import { PullRequestCommentActionNotification } from "../../../types/normalized-payload-types";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
-import { BitbucketCommentSnapshot, SendMessageArguments, SlackTargetedChannel } from "../../../types/slack-contracts";
+import { PullRequestCommentSnapshot, SendMessageArguments, SlackTargetedChannel } from "../../../types/slack-contracts";
 
 export class CommentAddedHandler implements WebhookPayloadHandler {
     canHandle(payload: PullRequestCommentActionNotification) {
@@ -10,17 +10,16 @@ export class CommentAddedHandler implements WebhookPayloadHandler {
     }
 
     async handle(payload: PullRequestCommentActionNotification, slackChannel: SlackTargetedChannel) {
-        const parentCommentSnapshot = payload.commentParentId ? await slackChannel.findLatestBitbucketCommentSnapshot(payload.commentParentId) : null;
+        const parentCommentSnapshot = payload.commentParentId ? await slackChannel.findLatestPullRequestCommentSnapshot(payload.commentParentId) : null;
         const message = buildSlackMessage(payload, parentCommentSnapshot);
         await slackChannel.sendMessage(message);
     }
 }
 
-function buildSlackMessage(payload: PullRequestCommentActionNotification, parentCommentSnapshot: BitbucketCommentSnapshot): SendMessageArguments {
-    const commentUrl = `${payload.pullRequest.links.self[0].href}?commentId=${payload.comment.id}`;
+function buildSlackMessage(payload: PullRequestCommentActionNotification, parentCommentSnapshot: PullRequestCommentSnapshot): SendMessageArguments {
     const action = parentCommentSnapshot ? "replied" : `added ${getTaskOrCommentTitle(payload)}`;
     const emoji = parentCommentSnapshot ? ":left_speech_bubble:" : `:loudspeaker:`;
-    const messageTitle = `${emoji} ${formatUserName(payload.actor)} ${link(commentUrl, action)}:`;
+    const messageTitle = `${emoji} ${formatUserName(payload.actor)} ${link(payload.comment.link, action)}:`;
     const commentText = markdownToSlackMarkup(payload.comment.text);
 
     return {

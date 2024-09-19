@@ -1,16 +1,16 @@
-import { PullRequestCommentActionNotification } from "../../../types/bitbucket-payload-types";
+import { PullRequestCommentActionNotification } from "../../../types/normalized-payload-types";
 
-import { BitbucketCommentSnapshotInSlackMetadata } from "../../../types/slack-contracts";
+import { PullrequestCommentSnapshotInSlackMetadata } from "../../../types/slack-contracts";
 
 export const SNAPSHOT_COMMENT_STATE_EVENT_TYPE = "bitbucket_comment_snapshot_saved";
 export function snapshotCommentState(payload: PullRequestCommentActionNotification) {
     return {
         eventType: SNAPSHOT_COMMENT_STATE_EVENT_TYPE,
-        eventPayload: <BitbucketCommentSnapshotInSlackMetadata>{
+        eventPayload: <PullrequestCommentSnapshotInSlackMetadata>{
             commentId: payload.comment.id.toString(),
             severity: payload.comment.severity,
-            threadResolvedDate: payload.comment.threadResolvedDate,
-            taskResolvedDate: payload.comment.resolvedDate,
+            threadResolvedDate: payload.comment.threadResolvedAt?.getTime(),
+            taskResolvedDate: payload.comment.resolvedAt?.getTime(),
             commentParentId: payload.commentParentId?.toString()
         }
     };

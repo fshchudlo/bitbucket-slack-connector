@@ -6,7 +6,7 @@ import {
 } from "../../bitbucket-webhook-handler/use-case-handlers/utils/snapshotPullRequestState";
 import { SlackChannelInfo } from "../SlackChannelProvisioner";
 import {
-    AddBookmarkArguments, BitbucketCommentSnapshot, BitbucketCommentSnapshotInSlackMetadata,
+    AddBookmarkArguments, PullRequestCommentSnapshot, PullrequestCommentSnapshotInSlackMetadata,
     InviteToChannelArguments,
     KickFromChannelArguments,
     PullRequestSnapshotInSlackMetadata,
@@ -97,16 +97,16 @@ export class SlackWebClientChannel implements SlackTargetedChannel, SlackBroadca
         };
     }
 
-    async findLatestBitbucketCommentSnapshot(bitbucketCommentId: number | string): Promise<BitbucketCommentSnapshot | null> {
+    async findLatestPullRequestCommentSnapshot(bitbucketCommentId: number | string): Promise<PullRequestCommentSnapshot | null> {
         const matchPredicate = (message: MessageElement) => {
-            const eventPayload = message.metadata?.event_type === SNAPSHOT_COMMENT_STATE_EVENT_TYPE ? <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload : null;
+            const eventPayload = message.metadata?.event_type === SNAPSHOT_COMMENT_STATE_EVENT_TYPE ? <PullrequestCommentSnapshotInSlackMetadata>message.metadata?.event_payload : null;
             return eventPayload && eventPayload?.commentId === bitbucketCommentId.toString();
         };
         const message = await this.findMessageInChannelHistory(this.channelInfo.id, matchPredicate);
 
         if (message) {
-            const metadata = <BitbucketCommentSnapshotInSlackMetadata>message.metadata?.event_payload;
-            return <BitbucketCommentSnapshot>{
+            const metadata = <PullrequestCommentSnapshotInSlackMetadata>message.metadata?.event_payload;
+            return <PullRequestCommentSnapshot>{
                 commentId: metadata.commentId,
                 commentParentId: metadata.commentParentId,
                 threadResolvedDate: metadata.threadResolvedDate,

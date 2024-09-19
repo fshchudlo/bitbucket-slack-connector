@@ -1,17 +1,13 @@
 import { buildChannelName } from "../buildChannelName";
-import { PullRequestPayload } from "../../types/bitbucket-payload-types";
+import { PullRequestPayload } from "../../types/normalized-payload-types";
 
 describe("buildChannelName", () => {
     it("should generate the correct channel name", () => {
         const payload = <PullRequestPayload>{
-            id: 123,
-            toRef: {
-                repository: {
-                    slug: "REPOSITORY",
-                    project: {
-                        key: "PROJECT"
-                    }
-                }
+            number: 123,
+            targetBranch: {
+                repositoryName: "REPOSITORY",
+                projectKey: "PROJECT"
             }
         };
         expect(buildChannelName(payload)).toEqual("pr-project-repository-123");
@@ -28,14 +24,10 @@ describe("buildChannelName", () => {
 
     it("should remove extra dashes", () => {
         const payload = <PullRequestPayload>{
-            id: 123,
-            toRef: {
-                repository: {
-                    slug: "------REPOSITORY------",
-                    project: {
-                        key: "------PROJECT------"
-                    }
-                }
+            number: 123,
+            targetBranch: {
+                repositoryName: "------REPOSITORY------",
+                projectKey: "------PROJECT------"
             }
         };
 
@@ -44,14 +36,10 @@ describe("buildChannelName", () => {
 
     it("should handle project key with ~ and repository slug with .", () => {
         const payload = <PullRequestPayload>{
-            id: 456,
-            toRef: {
-                repository: {
-                    slug: "REPOSI.TORY.SLUG",
-                    project: {
-                        key: "~PROJECT"
-                    }
-                }
+            number: 456,
+            targetBranch: {
+                repositoryName: "REPOSI.TORY.SLUG",
+                projectKey: "~PROJECT"
             }
         };
 
@@ -60,14 +48,10 @@ describe("buildChannelName", () => {
 
     it("should limit channel name to 80 symbols", () => {
         const payload = <PullRequestPayload>{
-            id: 789,
-            toRef: {
-                repository: {
-                    slug: "REALLY_REALLY_REALLY_LONG_REPOSITORY_SLUG",
-                    project: {
-                        key: "REALLY_REALLY_REALLY_LONG_PROJECT_NAME"
-                    }
-                }
+            number: 789,
+            targetBranch: {
+                repositoryName: "REALLY_REALLY_REALLY_LONG_REPOSITORY_SLUG",
+                projectKey: "REALLY_REALLY_REALLY_LONG_PROJECT_NAME"
             }
         };
         expect(buildChannelName(payload)).toEqual("pr-really_really_really_long_project_name-really_really_really_long_reposito-789");

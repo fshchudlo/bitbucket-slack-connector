@@ -1,6 +1,6 @@
 import * as slack from "@slack/web-api";
 import { SlackWebClientChannel } from "./slack-channel/SlackWebClientChannel";
-import { BitbucketNotification } from "../types/bitbucket-payload-types";
+import { PullRequestNotification } from "../types/normalized-payload-types";
 import { buildChannelName } from "./buildChannelName";
 import { CHANNELS_CACHE } from "./CHANNELS_CACHE";
 import { SlackChannelCachedDecorator } from "./slack-channel/SlackChannelCachedDecorator";
@@ -16,7 +16,7 @@ export class SlackChannelProvisioner {
         this.client = client;
     }
 
-    async provisionChannelFor(payload: BitbucketNotification, usePrivateChannels: boolean, defaultChannelParticipants: string[]): Promise<ProvisionResult> {
+    async provisionChannelFor(payload: PullRequestNotification, usePrivateChannels: boolean, defaultChannelParticipants: string[]): Promise<ProvisionResult> {
         const channelName = buildChannelName(payload.pullRequest);
         if (payload.eventKey == "pr:opened") {
             const newChannel = await this.createNewChannel({

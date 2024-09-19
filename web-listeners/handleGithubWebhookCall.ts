@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { SlackChannelProvisioner } from "../slack-api/SlackChannelProvisioner";
 import { normalizeGithubPayload } from "../payload-normalization/normalizeGithubPayload";
 import { AppConfig } from "../app.config";
-import { PullRequestBasicNotification } from "../types/bitbucket-payload-types";
+import { PullRequestNotification } from "../types/normalized-payload-types";
 import handleWebhookPayload from "../bitbucket-webhook-handler/handleWebhookPayload";
 
 export async function handleGithubWebhookCall(req: Request, res: Response, next: NextFunction, slackChannelFactory: SlackChannelProvisioner) {
@@ -15,11 +15,11 @@ export async function handleGithubWebhookCall(req: Request, res: Response, next:
         const provisionResult = await slackChannelFactory.provisionChannelFor(payload, AppConfig.USE_PRIVATE_CHANNELS, AppConfig.DEFAULT_CHANNEL_PARTICIPANTS);
 
         if (!provisionResult.isSetUpProperly) {
-            const payloadToReplay = <PullRequestBasicNotification>{
+            const payloadToReplay = <PullRequestNotification>{
                 eventKey: "pr:opened",
                 actor: {
-                    displayName: payload.pullRequest.author.user.displayName,
-                    emailAddress: payload.pullRequest.author.user.emailAddress
+                    name: payload.pullRequest.author.name,
+                    email: payload.pullRequest.author.email
                 },
                 pullRequest: payload.pullRequest
             };
