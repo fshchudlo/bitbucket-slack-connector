@@ -1,14 +1,10 @@
 import { SlackChannelCachedDecorator } from "../SlackChannelCachedDecorator";
 import { snapshotCommentState } from "../../../bitbucket-webhook-handler/use-case-handlers/utils";
-import { PullRequestCommentActionNotification } from "../../../bitbucket-payload-types";
+import { PullRequestCommentActionNotification } from "../../../types/bitbucket-payload-types";
 import { register } from "prom-client";
-import {
-    BitbucketCommentSnapshot,
-    BitbucketCommentSnapshotInSlackMetadata, SlackTargetedChannel
-} from "../../../bitbucket-webhook-handler/slack-contracts/SlackTargetedChannel";
 import { CHANNELS_CACHE } from "../../CHANNELS_CACHE";
 import { COMMENTS_CACHE } from "../../COMMENTS_CACHE";
-import { SendMessageResponse } from "../../../bitbucket-webhook-handler/slack-contracts/SendMessageArguments";
+import { BitbucketCommentSnapshot, BitbucketCommentSnapshotInSlackMetadata, SendMessageResponse, SlackTargetedChannel } from "../../../types/slack-contracts";
 
 
 const decoratedChannelMock = {

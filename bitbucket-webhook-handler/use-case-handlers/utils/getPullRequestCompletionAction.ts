@@ -1,4 +1,4 @@
-import { PullRequestBasicNotification } from "../../../bitbucket-payload-types";
+import { PullRequestBasicNotification } from "../../../types/bitbucket-payload-types";
 import { formatUserName } from "./index";
 
 export function getPullRequestCompletionAction(payload: PullRequestBasicNotification): {

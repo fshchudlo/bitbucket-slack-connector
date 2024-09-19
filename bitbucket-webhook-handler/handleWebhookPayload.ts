@@ -1,7 +1,7 @@
 import * as useCases from "./use-case-handlers";
-import { SlackTargetedChannel } from "./slack-contracts/SlackTargetedChannel";
-import { BitbucketNotification } from "../bitbucket-payload-types";
-import { SlackBroadcastChannel } from "./slack-contracts/SlackBroadcastChannel";
+import { BitbucketNotification } from "../types/bitbucket-payload-types";
+
+import { SlackBroadcastChannel, SlackTargetedChannel } from "../types/slack-contracts";
 
 const payloadHandlers = new Array<useCases.WebhookPayloadHandler>(
     new useCases.PullRequestOpenedHandler(),

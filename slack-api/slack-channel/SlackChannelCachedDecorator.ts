@@ -1,22 +1,14 @@
-import {
-    AddBookmarkArguments,
-    BitbucketCommentSnapshot,
-    BitbucketCommentSnapshotInSlackMetadata,
-    InviteToChannelArguments,
-    KickFromChannelArguments,
-    SlackTargetedChannel
-} from "../../bitbucket-webhook-handler/slack-contracts/SlackTargetedChannel";
 import { SlackChannelInfo } from "../SlackChannelProvisioner";
 import { CHANNELS_CACHE } from "../CHANNELS_CACHE";
 import { COMMENTS_CACHE } from "../COMMENTS_CACHE";
 import {
+    AddBookmarkArguments, BitbucketCommentSnapshot, BitbucketCommentSnapshotInSlackMetadata,
+    InviteToChannelArguments,
+    KickFromChannelArguments,
     PullRequestSnapshotInSlackMetadata,
-    SlackBroadcastChannel
-} from "../../bitbucket-webhook-handler/slack-contracts/SlackBroadcastChannel";
-import {
     SendMessageArguments,
-    SendMessageResponse
-} from "../../bitbucket-webhook-handler/slack-contracts/SendMessageArguments";
+    SendMessageResponse, SlackBroadcastChannel, SlackTargetedChannel
+} from "../../types/slack-contracts";
 import { SlackWebClientChannel } from "./SlackWebClientChannel";
 
 function getCommentCacheKey(channelId: string, bitbucketCommentId: number | string) {

@@ -1,5 +1,5 @@
 import { getTaskOrCommentTitle } from "../getTaskOrCommentTitle";
-import { PullRequestCommentActionNotification } from "../../../../bitbucket-payload-types";
+import { PullRequestCommentActionNotification } from "../../../../types/bitbucket-payload-types";
 
 describe("getTaskOrCommentTitle", () => {
     it("should return \"task\" for BLOCKER severity", () => {

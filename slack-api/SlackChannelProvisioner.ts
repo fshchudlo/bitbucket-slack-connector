@@ -1,11 +1,11 @@
 import * as slack from "@slack/web-api";
 import { SlackWebClientChannel } from "./slack-channel/SlackWebClientChannel";
-import { BitbucketNotification } from "../bitbucket-payload-types";
+import { BitbucketNotification } from "../types/bitbucket-payload-types";
 import { buildChannelName } from "./buildChannelName";
 import { CHANNELS_CACHE } from "./CHANNELS_CACHE";
 import { SlackChannelCachedDecorator } from "./slack-channel/SlackChannelCachedDecorator";
-import { SlackTargetedChannel } from "../bitbucket-webhook-handler/slack-contracts/SlackTargetedChannel";
-import { SlackBroadcastChannel } from "../bitbucket-webhook-handler/slack-contracts/SlackBroadcastChannel";
+
+import { SlackBroadcastChannel, SlackTargetedChannel } from "../types/slack-contracts";
 
 const awaitingCreateChannelRequests = new Map<string, Promise<SlackChannelInfo>>();
 

@@ -1,8 +1,8 @@
-import { SlackTargetedChannel } from "../../slack-contracts/SlackTargetedChannel";
-import { PullRequestBasicNotification } from "../../../bitbucket-payload-types";
+
+import { PullRequestBasicNotification } from "../../../types/bitbucket-payload-types";
 import { getPullRequestCompletionAction } from "../utils/getPullRequestCompletionAction";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
-import { SendMessageArguments } from "../../slack-contracts/SendMessageArguments";
+import { SendMessageArguments, SlackTargetedChannel } from "../../../types/slack-contracts";
 
 export class PullRequestCompletionHandler implements WebhookPayloadHandler {
     canHandle(payload: PullRequestBasicNotification): boolean {

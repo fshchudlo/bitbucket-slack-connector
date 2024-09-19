@@ -1,4 +1,5 @@
 import { InMemoryCache } from "./cache/InMemoryCache";
-import { BitbucketCommentSnapshot } from "../bitbucket-webhook-handler/slack-contracts/SlackTargetedChannel";
+
+import { BitbucketCommentSnapshot } from "../types/slack-contracts";
 
 export const COMMENTS_CACHE = new InMemoryCache<BitbucketCommentSnapshot>("comments");

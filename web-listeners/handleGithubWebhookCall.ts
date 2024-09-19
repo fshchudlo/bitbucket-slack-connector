@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { SlackChannelProvisioner } from "../slack-api/SlackChannelProvisioner";
 import { normalizeGithubPayload } from "../payload-normalization/normalizeGithubPayload";
 import { AppConfig } from "../app.config";
-import { PullRequestBasicNotification } from "../bitbucket-payload-types";
+import { PullRequestBasicNotification } from "../types/bitbucket-payload-types";
 import handleWebhookPayload from "../bitbucket-webhook-handler/handleWebhookPayload";
 
 export async function handleGithubWebhookCall(req: Request, res: Response, next: NextFunction, slackChannelFactory: SlackChannelProvisioner) {

@@ -1,8 +1,8 @@
 import { contextBlock, divider, section } from "../utils/slack-building-blocks";
 import { formatUserName, formatPullRequestDescription, reviewPRAction } from "../utils";
-import { SlackTargetedChannel } from "../../slack-contracts/SlackTargetedChannel";
-import { PullRequestModifiedNotification } from "../../../bitbucket-payload-types";
+import { PullRequestModifiedNotification } from "../../../types/bitbucket-payload-types";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
+import { SlackTargetedChannel } from "../../../types/slack-contracts";
 
 export class PullRequestModifiedHandler implements WebhookPayloadHandler {
     public canHandle(payload: PullRequestModifiedNotification) {

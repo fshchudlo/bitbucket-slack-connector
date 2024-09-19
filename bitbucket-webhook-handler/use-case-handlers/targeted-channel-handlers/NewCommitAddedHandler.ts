@@ -1,9 +1,8 @@
 import { link, quote, section } from "../utils/slack-building-blocks";
 import { formatUserName, markdownToSlackMarkup, reviewPRAction } from "../utils";
-import { SlackTargetedChannel } from "../../slack-contracts/SlackTargetedChannel";
-import { PullRequestFromRefUpdatedNotification } from "../../../bitbucket-payload-types";
+import { PullRequestFromRefUpdatedNotification } from "../../../types/bitbucket-payload-types";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
-import { SendMessageArguments } from "../../slack-contracts/SendMessageArguments";
+import { SendMessageArguments, SlackTargetedChannel } from "../../../types/slack-contracts";
 
 export class NewCommitAddedHandler implements WebhookPayloadHandler {
     canHandle(payload: PullRequestFromRefUpdatedNotification) {

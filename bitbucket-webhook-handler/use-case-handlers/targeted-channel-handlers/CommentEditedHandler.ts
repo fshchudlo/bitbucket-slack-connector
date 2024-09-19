@@ -1,12 +1,9 @@
-import { PullRequestCommentActionNotification } from "../../../bitbucket-payload-types";
-import {
-    BitbucketCommentSnapshot, SlackTargetedChannel
-} from "../../slack-contracts/SlackTargetedChannel";
+import { PullRequestCommentActionNotification } from "../../../types/bitbucket-payload-types";
 import { getTaskOrCommentTitle, snapshotCommentState } from "../utils";
 import { link, quote, section } from "../utils/slack-building-blocks";
 import { formatUserName, markdownToSlackMarkup } from "../utils";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
-import { SendMessageArguments } from "../../slack-contracts/SendMessageArguments";
+import { BitbucketCommentSnapshot, SendMessageArguments, SlackTargetedChannel } from "../../../types/slack-contracts";
 
 export class CommentEditedHandler implements WebhookPayloadHandler {
     canHandle(payload: PullRequestCommentActionNotification) {

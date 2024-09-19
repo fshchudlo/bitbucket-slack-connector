@@ -1,5 +1,6 @@
-import { PullRequestBasicNotification } from "../../../bitbucket-payload-types";
-import { PullRequestSnapshotInSlackMetadata } from "../../slack-contracts/SlackBroadcastChannel";
+import { PullRequestBasicNotification } from "../../../types/bitbucket-payload-types";
+
+import { PullRequestSnapshotInSlackMetadata } from "../../../types/slack-contracts";
 
 export const SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE = "bitbucket_pull_request_opened";
 export function snapshotPullRequestState(payload: PullRequestBasicNotification) {

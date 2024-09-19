@@ -1,4 +1,4 @@
-import { PullRequestBasicNotification } from "../../bitbucket-payload-types";
+import { PullRequestBasicNotification } from "../../types/bitbucket-payload-types";
 import TestPayloadBuilder from "../../bitbucket-webhook-handler/tests/test-helpers/TestPayloadBuilder";
 import { normalizeBitbucketPayload } from "../normalizeBitbucketPayload";
 

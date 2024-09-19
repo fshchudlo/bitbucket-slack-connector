@@ -1,6 +1,6 @@
-import { SlackTargetedChannel } from "../../slack-contracts/SlackTargetedChannel";
-import { PullRequestReviewersUpdatedNotification } from "../../../bitbucket-payload-types";
+import { PullRequestReviewersUpdatedNotification } from "../../../types/bitbucket-payload-types";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
+import { SlackTargetedChannel } from "../../../types/slack-contracts";
 
 export class PullRequestReviewersUpdatedHandler implements WebhookPayloadHandler {
     public canHandle(payload: PullRequestReviewersUpdatedNotification) {

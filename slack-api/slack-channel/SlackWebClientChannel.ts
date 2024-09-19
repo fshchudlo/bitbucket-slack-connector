@@ -1,12 +1,4 @@
 import * as slack from "@slack/web-api";
-import {
-    BitbucketCommentSnapshot,
-    BitbucketCommentSnapshotInSlackMetadata,
-    InviteToChannelArguments,
-    KickFromChannelArguments,
-    AddBookmarkArguments,
-    SlackTargetedChannel
-} from "../../bitbucket-webhook-handler/slack-contracts/SlackTargetedChannel";
 import { MessageElement } from "@slack/web-api/dist/response/ConversationsHistoryResponse";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../bitbucket-webhook-handler/use-case-handlers/utils";
 import {
@@ -14,13 +6,13 @@ import {
 } from "../../bitbucket-webhook-handler/use-case-handlers/utils/snapshotPullRequestState";
 import { SlackChannelInfo } from "../SlackChannelProvisioner";
 import {
+    AddBookmarkArguments, BitbucketCommentSnapshot, BitbucketCommentSnapshotInSlackMetadata,
+    InviteToChannelArguments,
+    KickFromChannelArguments,
     PullRequestSnapshotInSlackMetadata,
-    SlackBroadcastChannel
-} from "../../bitbucket-webhook-handler/slack-contracts/SlackBroadcastChannel";
-import {
     SendMessageArguments,
-    SendMessageResponse
-} from "../../bitbucket-webhook-handler/slack-contracts/SendMessageArguments";
+    SendMessageResponse, SlackBroadcastChannel, SlackTargetedChannel
+} from "../../types/slack-contracts";
 
 /**
  * Adapter for the Slack API that also acts as an {@link https://awesome-architecture.com/cloud-design-patterns/anti-corruption-layer-pattern/|anti-corruption layer} since Slack API is not always consistent

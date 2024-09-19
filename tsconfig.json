@@ -13,8 +13,8 @@
             "*": ["./node_modules/*"]
         },
         "typeRoots": ["./node_modules/@types",
-          "./bitbucket-payload-types",
-          "./normalized-payload-types"
+            "./types/bitbucket-payload-types",
+            "./types/normalized-payload-types"
         ]
     },
     "include": ["./**/*.ts"],

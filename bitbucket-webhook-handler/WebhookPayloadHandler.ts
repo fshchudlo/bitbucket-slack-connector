@@ -1,5 +1,6 @@
-import { BitbucketNotification } from "../bitbucket-payload-types";
-import { SlackTargetedChannel } from "./slack-contracts/SlackTargetedChannel";
+import { BitbucketNotification } from "../types/bitbucket-payload-types";
+
+import { SlackTargetedChannel } from "../types/slack-contracts";
 
 export interface WebhookPayloadHandler {
     canHandle(payload: BitbucketNotification): boolean;

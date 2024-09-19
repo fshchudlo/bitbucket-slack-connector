@@ -1,4 +1,4 @@
-import { PullRequestPayload } from "../bitbucket-payload-types";
+import { PullRequestPayload } from "../types/bitbucket-payload-types";
 
 interface PullRequestFlattenTraits {
     pullRequestId: string | number;

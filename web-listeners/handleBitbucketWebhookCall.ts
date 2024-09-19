@@ -5,7 +5,7 @@ import { AppConfig } from "../app.config";
 import { NextFunction, Request, Response } from "express";
 import { normalizeBitbucketPayload } from "../payload-normalization/normalizeBitbucketPayload";
 import { SlackChannelProvisioner } from "../slack-api/SlackChannelProvisioner";
-import { PullRequestBasicNotification } from "../bitbucket-payload-types";
+import { PullRequestBasicNotification } from "../types/bitbucket-payload-types";
 
 const bitbucketAPI = new BitbucketAPI(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
 

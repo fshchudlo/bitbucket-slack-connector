@@ -1,4 +1,4 @@
-import { PullRequestCommentActionNotification } from "../../../bitbucket-payload-types";
+import { PullRequestCommentActionNotification } from "../../../types/bitbucket-payload-types";
 
 export function getTaskOrCommentTitle(payload: PullRequestCommentActionNotification): "task" | "comment" {
     switch (payload.comment.severity) {

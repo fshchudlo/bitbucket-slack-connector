@@ -1,8 +1,7 @@
 import { link, section, contextBlock } from "../utils/slack-building-blocks";
 import { formatUserName, snapshotPullRequestState } from "../utils";
-import { PullRequestBasicNotification } from "../../../bitbucket-payload-types";
-import { SlackBroadcastChannel } from "../../slack-contracts/SlackBroadcastChannel";
-import { SendMessageArguments } from "../../slack-contracts/SendMessageArguments";
+import { PullRequestBasicNotification } from "../../../types/bitbucket-payload-types";
+import { SendMessageArguments, SlackBroadcastChannel } from "../../../types/slack-contracts";
 
 export async function tryBroadcastMessageAboutOpenedPR(payload: PullRequestBasicNotification, broadcastChannel: SlackBroadcastChannel) {
     await broadcastChannel?.sendMessage(buildMessage(payload));

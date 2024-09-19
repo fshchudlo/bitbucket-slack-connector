@@ -1,9 +1,9 @@
-import { SlackTargetedChannel } from "../../slack-contracts/SlackTargetedChannel";
+
 import { contextBlock, divider, link, section } from "../utils/slack-building-blocks";
 import { formatUserName } from "../utils";
-import { BitbucketNotification, PullRequestBasicNotification, PullRequestPayload } from "../../../bitbucket-payload-types";
+import { BitbucketNotification, PullRequestBasicNotification, PullRequestPayload } from "../../../types/bitbucket-payload-types";
 import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
-import { SendMessageArguments } from "../../slack-contracts/SendMessageArguments";
+import { SendMessageArguments, SlackTargetedChannel } from "../../../types/slack-contracts";
 
 export class PullRequestReviewerActionHandler implements WebhookPayloadHandler {
     public canHandle(payload: BitbucketNotification) {

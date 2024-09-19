@@ -1,4 +1,4 @@
-import { BitbucketNotification, PullRequestFromRefUpdatedNotification } from "../bitbucket-payload-types";
+import { BitbucketNotification, PullRequestFromRefUpdatedNotification } from "../types/bitbucket-payload-types";
 import BitbucketAPI from "./BitbucketAPI";
 
 export async function normalizeBitbucketPayload(payload: BitbucketNotification, bitbucketAPI: BitbucketAPI) {
