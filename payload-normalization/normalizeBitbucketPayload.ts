@@ -1,7 +1,7 @@
 import { BitbucketNotification, PullRequestFromRefUpdatedNotification } from "../bitbucket-payload-types";
 import BitbucketAPI from "./BitbucketAPI";
 
-export async function normalizeBitbucketWebhookPayload(payload: BitbucketNotification, bitbucketAPI: BitbucketAPI) {
+export async function normalizeBitbucketPayload(payload: BitbucketNotification, bitbucketAPI: BitbucketAPI) {
     const eventKey = payload.eventKey;
 
     switch (eventKey) {

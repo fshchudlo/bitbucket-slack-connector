@@ -1,17 +1,17 @@
-import handleWebhookPayload from "./bitbucket-webhook-handler/handleWebhookPayload";
-import { buildChannelName } from "./slack-api/buildChannelName";
-import BitbucketAPI from "./payload-normalization/BitbucketAPI";
-import { AppConfig } from "./app.config";
+import handleWebhookPayload from "../bitbucket-webhook-handler/handleWebhookPayload";
+import { buildChannelName } from "../slack-api/buildChannelName";
+import BitbucketAPI from "../payload-normalization/BitbucketAPI";
+import { AppConfig } from "../app.config";
 import { NextFunction, Request, Response } from "express";
-import { normalizeBitbucketWebhookPayload } from "./payload-normalization/normalizeBitbucketWebhookPayload";
-import { SlackChannelProvisioner } from "./slack-api/SlackChannelProvisioner";
-import { PullRequestBasicNotification } from "./bitbucket-payload-types";
+import { normalizeBitbucketPayload } from "../payload-normalization/normalizeBitbucketPayload";
+import { SlackChannelProvisioner } from "../slack-api/SlackChannelProvisioner";
+import { PullRequestBasicNotification } from "../bitbucket-payload-types";
 
 const bitbucketAPI = new BitbucketAPI(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
 
-export async function handleBitbucketWebhookEvent(req: Request, res: Response, next: NextFunction, slackChannelFactory: SlackChannelProvisioner) {
+export async function handleBitbucketWebhookCall(req: Request, res: Response, next: NextFunction, slackChannelFactory: SlackChannelProvisioner) {
     try {
-        const payload = await normalizeBitbucketWebhookPayload(req.body, bitbucketAPI);
+        const payload = await normalizeBitbucketPayload(req.body, bitbucketAPI);
         const broadcastChannelName = AppConfig.getOpenedPRBroadcastChannel(payload);
         const broadcastChannel = broadcastChannelName ? await slackChannelFactory.getBroadcastChannel(broadcastChannelName) : null;
 

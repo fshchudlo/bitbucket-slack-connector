@@ -1,11 +1,12 @@
 import { App, ExpressReceiver } from "@slack/bolt";
 import { AppConfig } from "./app.config";
 import express, { NextFunction } from "express";
-import { getSlackChannelInfo, handleBitbucketWebhookEvent } from "./app.routes";
+import { getSlackChannelInfo, handleBitbucketWebhookCall } from "./web-listeners/handleBitbucketWebhookCall";
 import { SlackChannelProvisioner } from "./slack-api/SlackChannelProvisioner";
 import measureRequestDuration from "./app.metrics";
 import logUnhandledError from "./app.errorHandler";
 import { register } from "prom-client";
+import { handleGithubWebhookCall } from "./web-listeners/handleGithubWebhookCall";
 
 const expressReceiver = new ExpressReceiver({
     signingSecret: AppConfig.SLACK_SIGNING_SECRET
@@ -22,8 +23,13 @@ const slackChannelFactory = new SlackChannelProvisioner(slackApp.client);
 expressReceiver.router.use(measureRequestDuration);
 
 expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
-    await handleBitbucketWebhookEvent(req, res, next, slackChannelFactory);
+    await handleBitbucketWebhookCall(req, res, next, slackChannelFactory);
 });
+
+expressReceiver.router.post("/github-webhook", async (req, res, next: NextFunction) => {
+    await handleGithubWebhookCall(req, res, next, slackChannelFactory);
+});
+
 expressReceiver.router.get("/metrics", async (req, res) => {
     res.set("Content-Type", register.contentType);
     res.end(await register.metrics());

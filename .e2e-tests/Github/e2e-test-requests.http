@@ -1,0 +1,11 @@
+### Open pull request
+POST {{EndpointHost}}/github-webhook
+Content-Type: application/json
+
+< ./test-payloads/PR-opened-test-payload.json
+
+> {%
+    client.test("Pull request opening should be successful", function() {
+        client.assert(response.status === 200);
+    });
+%}
