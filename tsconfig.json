@@ -13,7 +13,7 @@
             "*": ["./node_modules/*"]
         },
         "typeRoots": ["./node_modules/@types",
-            "./types/normalized-payload-types"
+            "./use-cases/contracts"
         ]
     },
     "include": ["./**/*.ts"],

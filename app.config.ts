@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { PullRequestNotification } from "./types/normalized-payload-types";
+import { PullRequestNotification } from "./use-cases/contracts";
 
 export const AppConfig = {
     SLACK_SIGNING_SECRET: process.env.SLACK_SIGNING_SECRET as string,
