@@ -1,21 +1,6 @@
 import { Block, KnownBlock } from "@slack/bolt";
-import { SlackChannelInfo } from "../slack-api/SlackChannelProvisioner";
-import { CommentSeverity } from "./normalized-payload-types";
-
-export type SendMessageArguments = {
-    text?: string;
-    threadId?: string;
-    replyBroadcast?: boolean,
-    metadata?: {
-        eventType: string;
-        eventPayload: { [p: string]: string | number | boolean }
-    };
-    blocks?: Block[] | KnownBlock[]
-}
-export type SendMessageResponse = {
-    messageId: string;
-    threadId?: string;
-}
+import { SlackChannelInfo } from "../slack-api-adapters/SlackChannelProvisioner";
+import { CommentSeverity } from "../types/normalized-payload-types";
 
 export interface SlackBroadcastChannel {
     addReaction(messageId: string, reaction: string): Promise<void>;
@@ -24,13 +9,6 @@ export interface SlackBroadcastChannel {
 
     findPROpenedBroadcastMessageId(prCreationDate: Date, pullRequestTraits: PullRequestSnapshotInSlackMetadata): Promise<string | null>;
 }
-
-export type PullRequestSnapshotInSlackMetadata = {
-    pullRequestId: string,
-    projectKey: string,
-    repositorySlug: string
-}
-
 export interface SlackTargetedChannel {
     readonly channelInfo: SlackChannelInfo;
 
@@ -47,6 +25,28 @@ export interface SlackTargetedChannel {
     sendMessage(options: SendMessageArguments): Promise<SendMessageResponse>;
 
     findLatestPullRequestCommentSnapshot(commentId: number | string): Promise<PullRequestCommentSnapshot | null>;
+}
+
+export type SendMessageResponse = {
+    messageId: string;
+    threadId?: string;
+}
+
+export type SendMessageArguments = {
+    text?: string;
+    threadId?: string;
+    replyBroadcast?: boolean,
+    metadata?: {
+        eventType: string;
+        eventPayload: { [p: string]: string | number | boolean }
+    };
+    blocks?: Block[] | KnownBlock[]
+}
+
+export type PullRequestSnapshotInSlackMetadata = {
+    pullRequestId: string,
+    projectKey: string,
+    repositorySlug: string
 }
 
 export type PullrequestCommentSnapshotInSlackMetadata = {

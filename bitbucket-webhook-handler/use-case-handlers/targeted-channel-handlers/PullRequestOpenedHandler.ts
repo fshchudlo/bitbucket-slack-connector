@@ -1,8 +1,8 @@
 import { link, section, divider, contextBlock } from "../utils/slack-building-blocks";
 import { formatUserName, formatPullRequestDescription, reviewPRAction } from "../utils";
 import { PullRequestGenericNotification } from "../../../types/normalized-payload-types";
-import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
-import { SendMessageArguments, SlackTargetedChannel } from "../../../types/slack-contracts";
+import { WebhookPayloadHandler } from "../WebhookPayloadHandler";
+import { SendMessageArguments, SlackTargetedChannel } from "../../slack-api-ports";
 
 export class PullRequestOpenedHandler implements WebhookPayloadHandler {
     public canHandle(payload: PullRequestGenericNotification) {

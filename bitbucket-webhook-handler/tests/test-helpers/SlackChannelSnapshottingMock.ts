@@ -2,7 +2,7 @@ import {
     SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE
 } from "../../use-case-handlers/utils/snapshotPullRequestState";
 import { SNAPSHOT_COMMENT_STATE_EVENT_TYPE } from "../../use-case-handlers/utils";
-import { SlackChannelInfo } from "../../../slack-api/SlackChannelProvisioner";
+import { SlackChannelInfo } from "../../../slack-api-adapters/SlackChannelProvisioner";
 import {
     AddBookmarkArguments, PullRequestCommentSnapshot, PullrequestCommentSnapshotInSlackMetadata,
     InviteToChannelArguments,
@@ -11,7 +11,7 @@ import {
     SendMessageArguments,
     SendMessageResponse,
     SlackBroadcastChannel, SlackTargetedChannel
-} from "../../../types/slack-contracts";
+} from "../../slack-api-ports";
 
 const messageId = "ABCDE";
 export default class SlackChannelSnapshottingMock implements SlackTargetedChannel, SlackBroadcastChannel {

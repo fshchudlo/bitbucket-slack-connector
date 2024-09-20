@@ -1,10 +1,10 @@
 import handleWebhookPayload from "../bitbucket-webhook-handler/handleWebhookPayload";
-import { buildChannelName } from "../slack-api/buildChannelName";
+import { buildChannelName } from "../slack-api-adapters/buildChannelName";
 import BitbucketAPI from "../payload-normalization/BitbucketAPI";
 import { AppConfig } from "../app.config";
 import { NextFunction, Request, Response } from "express";
 import { normalizeBitbucketPayload } from "../payload-normalization/normalizeBitbucketPayload";
-import { SlackChannelProvisioner } from "../slack-api/SlackChannelProvisioner";
+import { SlackChannelProvisioner } from "../slack-api-adapters/SlackChannelProvisioner";
 import { PullRequestGenericNotification } from "../types/normalized-payload-types";
 
 const bitbucketAPI = new BitbucketAPI(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);

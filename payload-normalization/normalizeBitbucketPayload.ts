@@ -1,4 +1,3 @@
-import { BitbucketNotification } from "../types/bitbucket-payload-types";
 import BitbucketAPI from "./BitbucketAPI";
 import {
     PullRequestCommentActionNotification,
@@ -123,3 +122,97 @@ function normalizePayloadGenericPart(payload: BitbucketNotification) {
         }
     };
 }
+
+// see https://confluence.atlassian.com/bitbucketserver0816/event-payload-1333334207.html#Eventpayload-pullrequest
+type BitbucketNotification =
+    BitbucketPullRequestBasicNotification
+    | BitbucketPullRequestFromRefUpdatedNotification
+    | BitbucketPullRequestModifiedNotification
+    | BitbucketPullRequestCommentActionNotification
+    | BitbucketPullRequestReviewersUpdatedNotification;
+
+type BitbucketPullRequestNotificationBasicPayload = {
+    readonly actor: BitbucketUserPayload;
+    readonly pullRequest: BitbucketPullRequestPayload;
+};
+
+type BitbucketPullRequestBasicNotification = BitbucketPullRequestNotificationBasicPayload & {
+    readonly eventKey: "pr:opened" | "pr:reviewer:unapproved" | "pr:reviewer:needs_work" | "pr:reviewer:approved" | "pr:merged" | "pr:declined" | "pr:deleted";
+};
+
+type BitbucketPullRequestFromRefUpdatedNotification = BitbucketPullRequestNotificationBasicPayload & {
+    readonly eventKey: "pr:from_ref_updated";
+    readonly latestCommitMessage: string | null;
+};
+
+
+type BitbucketPullRequestModifiedNotification = BitbucketPullRequestNotificationBasicPayload & {
+    readonly eventKey: "pr:modified";
+    readonly previousTitle: string;
+    readonly previousDescription: string | null;
+    readonly previousTarget: {
+        readonly displayId: string;
+        readonly latestCommit: string
+    }
+};
+
+type BitbucketPullRequestCommentActionNotification = BitbucketPullRequestNotificationBasicPayload & {
+    readonly eventKey: "pr:comment:added" | "pr:comment:deleted" | "pr:comment:edited";
+    readonly commentParentId?: number;
+    readonly previousComment?: string;
+    readonly comment: {
+        readonly id: number;
+        readonly text: string;
+        readonly author: BitbucketUserPayload;
+        readonly severity: BitbucketCommentSeverity;
+        readonly resolvedDate?: number;
+        readonly threadResolvedDate?: number;
+    };
+};
+
+
+type BitbucketPullRequestReviewersUpdatedNotification = BitbucketPullRequestNotificationBasicPayload & {
+    readonly eventKey: "pr:reviewer:updated";
+    readonly addedReviewers: Array<BitbucketUserPayload>;
+    readonly removedReviewers: Array<BitbucketUserPayload>;
+};
+
+type BitbucketUserPayload = {
+    readonly name: string;
+    readonly displayName: string;
+    readonly emailAddress: string;
+};
+
+type BitbucketReviewerPayload = {
+    readonly user: BitbucketUserPayload,
+    readonly status: BitbucketReviewStatus;
+};
+
+type BitbucketRefPayload = {
+    readonly displayId: string;
+    readonly latestCommit: string;
+    readonly repository: {
+        readonly slug: string;
+        readonly project: {
+            readonly key: string;
+            readonly name: string
+        };
+    };
+};
+
+type BitbucketPullRequestPayload = {
+    readonly id: number;
+    readonly createdDate: number,
+    readonly title: string;
+    readonly description: string | null;
+    readonly author: { readonly user: BitbucketUserPayload };
+    readonly reviewers: Array<BitbucketReviewerPayload>;
+    readonly links: {
+        readonly self: Array<{ readonly href: string }>
+    };
+    readonly fromRef: BitbucketRefPayload;
+    readonly toRef: BitbucketRefPayload;
+};
+
+type BitbucketCommentSeverity = "NORMAL" | "BLOCKER";
+type BitbucketReviewStatus = "UNAPPROVED" | "NEEDS_WORK" | "APPROVED";

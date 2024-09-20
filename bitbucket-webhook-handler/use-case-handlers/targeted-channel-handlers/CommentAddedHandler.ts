@@ -1,8 +1,8 @@
 import { formatUserName, getTaskOrCommentTitle, markdownToSlackMarkup, snapshotCommentState } from "../utils";
 import { link, quote, section } from "../utils/slack-building-blocks";
 import { PullRequestCommentActionNotification } from "../../../types/normalized-payload-types";
-import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
-import { PullRequestCommentSnapshot, SendMessageArguments, SlackTargetedChannel } from "../../../types/slack-contracts";
+import { WebhookPayloadHandler } from "../WebhookPayloadHandler";
+import { PullRequestCommentSnapshot, SendMessageArguments, SlackTargetedChannel } from "../../slack-api-ports";
 
 export class CommentAddedHandler implements WebhookPayloadHandler {
     canHandle(payload: PullRequestCommentActionNotification) {

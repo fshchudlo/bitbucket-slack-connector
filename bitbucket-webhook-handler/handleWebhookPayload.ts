@@ -1,7 +1,7 @@
 import * as useCases from "./use-case-handlers";
 import { PullRequestNotification } from "../types/normalized-payload-types";
 
-import { SlackBroadcastChannel, SlackTargetedChannel } from "../types/slack-contracts";
+import { SlackBroadcastChannel, SlackTargetedChannel } from "./slack-api-ports";
 
 const payloadHandlers = new Array<useCases.WebhookPayloadHandler>(
     new useCases.PullRequestOpenedHandler(),

@@ -1,7 +1,7 @@
 import { PullRequestGenericNotification } from "../../../types/normalized-payload-types";
 import { getPullRequestCompletionAction } from "../utils/getPullRequestCompletionAction";
 
-import { SlackBroadcastChannel } from "../../../types/slack-contracts";
+import { SlackBroadcastChannel } from "../../slack-api-ports";
 
 export async function tryBroadcastMessageAboutClosedPR(payload: PullRequestGenericNotification, broadcastChannel: SlackBroadcastChannel) {
     if (!broadcastChannel) {

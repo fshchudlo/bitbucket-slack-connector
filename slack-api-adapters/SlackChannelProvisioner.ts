@@ -5,7 +5,7 @@ import { buildChannelName } from "./buildChannelName";
 import { CHANNELS_CACHE } from "./CHANNELS_CACHE";
 import { SlackChannelCachedDecorator } from "./slack-channel/SlackChannelCachedDecorator";
 
-import { SlackBroadcastChannel, SlackTargetedChannel } from "../types/slack-contracts";
+import { SlackBroadcastChannel, SlackTargetedChannel } from "../bitbucket-webhook-handler/slack-api-ports";
 
 const awaitingCreateChannelRequests = new Map<string, Promise<SlackChannelInfo>>();
 

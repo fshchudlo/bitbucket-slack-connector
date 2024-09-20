@@ -1,7 +1,6 @@
 export { tryBroadcastMessageAboutOpenedPR } from "./broadcast-channel-handlers/tryBroadcastMessageAboutOpenedPR";
 export { tryBroadcastMessageAboutClosedPR } from "./broadcast-channel-handlers/tryBroadcastMessageAboutClosedPR";
 export { PullRequestOpenedHandler } from "./targeted-channel-handlers/PullRequestOpenedHandler";
-export { WebhookPayloadHandler } from "../WebhookPayloadHandler";
 export { PullRequestCompletionHandler } from "./targeted-channel-handlers/PullRequestCompletionHandler";
 export { NewCommitAddedHandler } from "./targeted-channel-handlers/NewCommitAddedHandler";
 export { CommentAddedHandler } from "./targeted-channel-handlers/CommentAddedHandler";
@@ -10,3 +9,4 @@ export { PullRequestReviewerActionHandler } from "./targeted-channel-handlers/Pu
 export { CommentDeletedHandler } from "./targeted-channel-handlers/CommentDeletedHandler";
 export { CommentEditedHandler } from "./targeted-channel-handlers/CommentEditedHandler";
 export { PullRequestModifiedHandler } from "./targeted-channel-handlers/PullRequestModifiedHandler";
+export { WebhookPayloadHandler } from "./WebhookPayloadHandler";

@@ -8,7 +8,7 @@ import {
     PullRequestSnapshotInSlackMetadata,
     SendMessageArguments,
     SendMessageResponse, SlackBroadcastChannel, SlackTargetedChannel
-} from "../../types/slack-contracts";
+} from "../../bitbucket-webhook-handler/slack-api-ports";
 import { SlackWebClientChannel } from "./SlackWebClientChannel";
 
 function getCommentCacheKey(channelId: string, bitbucketCommentId: number | string) {

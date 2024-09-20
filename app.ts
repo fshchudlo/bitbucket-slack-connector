@@ -1,12 +1,12 @@
 import { App, ExpressReceiver } from "@slack/bolt";
 import { AppConfig } from "./app.config";
 import express, { NextFunction } from "express";
-import { getSlackChannelInfo, handleBitbucketWebhookCall } from "./web-listeners/handleBitbucketWebhookCall";
-import { SlackChannelProvisioner } from "./slack-api/SlackChannelProvisioner";
+import { getSlackChannelInfo, handleBitbucketWebhookCall } from "./web-api-handlers/handleBitbucketWebhookCall";
+import { SlackChannelProvisioner } from "./slack-api-adapters/SlackChannelProvisioner";
 import measureRequestDuration from "./app.metrics";
 import logUnhandledError from "./app.errorHandler";
 import { register } from "prom-client";
-import { handleGithubWebhookCall } from "./web-listeners/handleGithubWebhookCall";
+import { handleGithubWebhookCall } from "./web-api-handlers/handleGithubWebhookCall";
 
 const expressReceiver = new ExpressReceiver({
     signingSecret: AppConfig.SLACK_SIGNING_SECRET

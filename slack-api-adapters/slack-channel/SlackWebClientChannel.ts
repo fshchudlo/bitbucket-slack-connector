@@ -12,7 +12,7 @@ import {
     PullRequestSnapshotInSlackMetadata,
     SendMessageArguments,
     SendMessageResponse, SlackBroadcastChannel, SlackTargetedChannel
-} from "../../types/slack-contracts";
+} from "../../bitbucket-webhook-handler/slack-api-ports";
 
 /**
  * Adapter for the Slack API that also acts as an {@link https://awesome-architecture.com/cloud-design-patterns/anti-corruption-layer-pattern/|anti-corruption layer} since Slack API is not always consistent

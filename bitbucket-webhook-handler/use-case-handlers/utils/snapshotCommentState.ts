@@ -1,6 +1,6 @@
 import { PullRequestCommentActionNotification } from "../../../types/normalized-payload-types";
 
-import { PullrequestCommentSnapshotInSlackMetadata } from "../../../types/slack-contracts";
+import { PullrequestCommentSnapshotInSlackMetadata } from "../../slack-api-ports";
 
 export const SNAPSHOT_COMMENT_STATE_EVENT_TYPE = "bitbucket_comment_snapshot_saved";
 export function snapshotCommentState(payload: PullRequestCommentActionNotification) {

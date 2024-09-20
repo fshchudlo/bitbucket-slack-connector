@@ -1,5 +1,5 @@
-import { SlackTargetedChannel } from "../types/slack-contracts";
-import { PullRequestNotification } from "../types/normalized-payload-types";
+import { SlackTargetedChannel } from "../slack-api-ports";
+import { PullRequestNotification } from "../../types/normalized-payload-types";
 
 export interface WebhookPayloadHandler {
     canHandle(payload: PullRequestNotification): boolean;

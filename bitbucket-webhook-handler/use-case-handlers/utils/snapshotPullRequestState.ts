@@ -1,6 +1,6 @@
 import { PullRequestGenericNotification } from "../../../types/normalized-payload-types";
 
-import { PullRequestSnapshotInSlackMetadata } from "../../../types/slack-contracts";
+import { PullRequestSnapshotInSlackMetadata } from "../../slack-api-ports";
 
 export const SNAPSHOT_PULL_REQUEST_STATE_EVENT_TYPE = "pull_request_opened";
 export function snapshotPullRequestState(payload: PullRequestGenericNotification) {

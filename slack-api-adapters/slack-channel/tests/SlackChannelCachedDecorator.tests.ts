@@ -3,7 +3,7 @@ import { snapshotCommentState } from "../../../bitbucket-webhook-handler/use-cas
 import { register } from "prom-client";
 import { CHANNELS_CACHE } from "../../CHANNELS_CACHE";
 import { COMMENTS_CACHE } from "../../COMMENTS_CACHE";
-import { PullrequestCommentSnapshotInSlackMetadata, SendMessageResponse, SlackTargetedChannel } from "../../../types/slack-contracts";
+import { PullrequestCommentSnapshotInSlackMetadata, SendMessageResponse, SlackTargetedChannel } from "../../../bitbucket-webhook-handler/slack-api-ports";
 
 
 const decoratedChannelMock = {

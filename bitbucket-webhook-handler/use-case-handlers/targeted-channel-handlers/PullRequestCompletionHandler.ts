@@ -1,8 +1,8 @@
 
 import { PullRequestGenericNotification } from "../../../types/normalized-payload-types";
 import { getPullRequestCompletionAction } from "../utils/getPullRequestCompletionAction";
-import { WebhookPayloadHandler } from "../../WebhookPayloadHandler";
-import { SendMessageArguments, SlackTargetedChannel } from "../../../types/slack-contracts";
+import { WebhookPayloadHandler } from "../WebhookPayloadHandler";
+import { SendMessageArguments, SlackTargetedChannel } from "../../slack-api-ports";
 
 export class PullRequestCompletionHandler implements WebhookPayloadHandler {
     canHandle(payload: PullRequestGenericNotification): boolean {

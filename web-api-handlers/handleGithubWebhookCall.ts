@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { SlackChannelProvisioner } from "../slack-api/SlackChannelProvisioner";
+import { SlackChannelProvisioner } from "../slack-api-adapters/SlackChannelProvisioner";
 import { normalizeGithubPayload } from "../payload-normalization/normalizeGithubPayload";
 import { AppConfig } from "../app.config";
 import { PullRequestNotification } from "../types/normalized-payload-types";
