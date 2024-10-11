@@ -38,9 +38,9 @@ expressReceiver.router.get("/slack-channel", async (req, res, next: NextFunction
     return await getSlackChannelInfo(req, res, next, slackChannelFactory);
 });
 
-expressReceiver.router.get("/health", async (req, res, next: NextFunction) => {
-    res.status(200).json({
-        status: 'UP',
+expressReceiver.router.get("/health", async (req, res) => {
+    return res.status(200).json({
+        status: "UP",
         timestamp: new Date().toISOString()
     });
 });
@@ -49,9 +49,6 @@ expressReceiver.router.use(async (error: any, req: express.Request, res: express
     await logUnhandledError(error, req, res, next, slackApp.client);
 });
 
-(async () => {
-    await slackApp.start(AppConfig.SLACK_BOT_PORT);
-    console.log("⚡️ Bitbucket connector app is running!");
-})();
-
-
+expressReceiver.app.listen(AppConfig.SLACK_BOT_PORT, AppConfig.SLACK_BOT_HOST, () => {
+    console.log(`⚡️ Bitbucket connector app is running on ${AppConfig.SLACK_BOT_HOST}:${AppConfig.SLACK_BOT_PORT}!`);
+});
