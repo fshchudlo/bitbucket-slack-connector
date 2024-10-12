@@ -30,7 +30,7 @@ export default class BitbucketAPI {
         if (!this.canRead()) {
             return null;
         }
-        const url = `${this.apiURL}/projects/${projectKey}/repos/${repoSlug}/commits/${commitHash}`.replace(/\/+/g, "\/");
+        const url = `${this.apiURL}/projects/${projectKey}/repos/${repoSlug}/commits/${commitHash}`.replace(/\/+/g, "/");
         return (await this.executeRequest<{ message: string }>(url)).message;
     }
 }

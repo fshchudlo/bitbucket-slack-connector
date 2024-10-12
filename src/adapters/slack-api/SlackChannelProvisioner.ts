@@ -116,6 +116,7 @@ export class SlackChannelProvisioner {
             console.log(`Waiting for channel creation for name ${options.name}`);
             return awaitingCreateChannelRequests.get(options.name);
         }
+         
         const createChannelPromise: Promise<SlackChannelInfo> = new Promise(async (resolve, reject) => {
             try {
                 const response = await this.client.conversations.create({

@@ -55,7 +55,6 @@ export async function getSlackChannelInfo(req: Request, res: Response, next: Nex
 
         const channelInfo = await slackChannelFactory.getChannelInfo(channelName);
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         channelInfo ? res.send(channelInfo) : res.sendStatus(404);
     } catch (error) {
         next(error);
