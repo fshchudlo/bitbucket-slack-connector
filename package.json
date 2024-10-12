@@ -2,9 +2,9 @@
   "name": "bitbucket-slack-connector",
   "version": "1.0.0",
   "description": "An application for reflecting Bitbucket Pull Requests events to the Slack channels for PR author and all of reviewers.",
-  "main": "app.ts",
+  "main": "src/app.ts",
   "scripts": {
-    "start": "ts-node app.ts",
+    "start": "ts-node src/app.ts",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint --ext .ts ./ --fix",
     "test": "jest",
