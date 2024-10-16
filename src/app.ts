@@ -4,11 +4,12 @@ import express, { NextFunction } from "express";
 import { getSlackChannelInfo, handleBitbucketWebhookCall } from "./web-api-entrypoints/handleBitbucketWebhookCall";
 import { SlackChannelProvisioner } from "./adapters/slack-api/SlackChannelProvisioner";
 import measureRequestDuration from "./app.metrics";
-import logUnhandledError from "./app.errorHandler";
+import logErrorMessage from "./web-api-helpers/logErrorMessage";
 import { register } from "prom-client";
 import { handleGithubWebhookCall } from "./web-api-entrypoints/handleGithubWebhookCall";
 import bodyParser from "body-parser";
-import verifyHMACSignature from "./verifyHMACSignature";
+import verifyHMACSignature from "./web-api-helpers/verifyHMACSignature";
+import util from "util";
 
 
 const expressReceiver = new ExpressReceiver({
@@ -57,7 +58,14 @@ expressReceiver.router.get("/health", async (req, res) => {
 });
 
 expressReceiver.router.use(async (error: any, req: express.Request, res: express.Response, next: NextFunction) => {
-    await logUnhandledError(error, req, res, next, slackApp.client);
+    const errorMessage = ["Error processing webhook.", `Error: ${util.inspect(error, false, 8)}.`, `Payload: ${util.inspect(req.body, false, 8)}`].join("\n\n");
+    await logErrorMessage(errorMessage, slackApp.client);
+
+    if (res.headersSent) {
+        return next(error);
+    } else {
+        res.status(500).send(AppConfig.NODE_ENV == "development" ? errorMessage : "Internal server error");
+    }
 });
 
 expressReceiver.app.listen(AppConfig.SLACK_BOT_PORT, AppConfig.SLACK_BOT_HOST, () => {

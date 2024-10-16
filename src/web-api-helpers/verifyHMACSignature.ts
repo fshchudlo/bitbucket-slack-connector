@@ -1,4 +1,4 @@
-import { AppConfig } from "./app.config";
+import { AppConfig } from "../app.config";
 import crypto from "crypto";
 
 export default async function verifyHMACSignature(req: any, res: any, next: any) {
