@@ -4,7 +4,7 @@ import { PullRequestNotification } from "./use-cases/contracts";
 export const AppConfig = {
     SLACK_SIGNING_SECRET: process.env.SLACK_SIGNING_SECRET as string,
     SLACK_BOT_TOKEN: process.env.SLACK_BOT_TOKEN,
-    SLACK_BOT_PORT: parseInt(process.env.SLACK_BOT_PORT, 10) || 3000,
+    SLACK_BOT_PORT: parseInt(process.env.SLACK_BOT_PORT, 10) || 8080,
     SLACK_BOT_HOST: process.env.SLACK_BOT_HOST || "0.0.0.0",
     BITBUCKET_READ_API_TOKEN: process.env.BITBUCKET_READ_API_TOKEN,
     BITBUCKET_BASE_URL: process.env.BITBUCKET_BASE_URL,
