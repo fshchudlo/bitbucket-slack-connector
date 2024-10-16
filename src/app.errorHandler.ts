@@ -12,9 +12,7 @@ export default async function logUnhandledError(error: any, req: express.Request
                 channel: AppConfig.DIAGNOSTIC_CHANNEL,
                 text: errorMessage
             });
-        }
-        else
-        {
+        } else {
             console.warn("Diagnostic channel is not provided");
         }
     } catch (error) {
@@ -24,6 +22,6 @@ export default async function logUnhandledError(error: any, req: express.Request
     if (res.headersSent) {
         return next(error);
     } else {
-        res.sendStatus(500);
+        res.status(500).send(AppConfig.NODE_ENV == "development" ? errorMessage : "Internal server error");
     }
 }

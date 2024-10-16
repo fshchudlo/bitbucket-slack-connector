@@ -7,11 +7,13 @@ import measureRequestDuration from "./app.metrics";
 import logUnhandledError from "./app.errorHandler";
 import { register } from "prom-client";
 import { handleGithubWebhookCall } from "./web-api-entrypoints/handleGithubWebhookCall";
+import bodyParser from "body-parser";
+import verifyHMACSignature from "./verifyHMACSignature";
+
 
 const expressReceiver = new ExpressReceiver({
     signingSecret: AppConfig.SLACK_SIGNING_SECRET
 });
-expressReceiver.router.use(express.json());
 
 const slackApp = new App({
     token: AppConfig.SLACK_BOT_TOKEN,
@@ -20,13 +22,22 @@ const slackApp = new App({
 
 const slackChannelFactory = new SlackChannelProvisioner(slackApp.client);
 
+if (AppConfig.HMAC_SECRET) {
+    expressReceiver.router.use(bodyParser.json({
+        verify: (req: Request, _res: Response, buf: Buffer) => {
+            (req as any).rawBody = buf.toString();
+        }
+    } as any));
+} else {
+    expressReceiver.router.use(express.json());
+}
 expressReceiver.router.use(measureRequestDuration);
 
-expressReceiver.router.post("/bitbucket-webhook", async (req, res, next: NextFunction) => {
+expressReceiver.router.post("/bitbucket-webhook", verifyHMACSignature, async (req, res, next: NextFunction) => {
     await handleBitbucketWebhookCall(req, res, next, slackChannelFactory);
 });
 
-expressReceiver.router.post("/github-webhook", async (req, res, next: NextFunction) => {
+expressReceiver.router.post("/github-webhook", verifyHMACSignature, async (req, res, next: NextFunction) => {
     await handleGithubWebhookCall(req, res, next, slackChannelFactory);
 });
 

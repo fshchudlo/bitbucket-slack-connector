@@ -1,0 +1,46 @@
+### Send valid the signed request
+POST {{EndpointHost}}/bitbucket-webhook
+Content-Type: application/json
+x-hub-signature: sha256=be2cb8001dde982228969395e2cc60fd888904a8c9744d50baef5d763b108312
+
+{
+  "eventKey": "invalid:type"
+}
+
+> {%
+    client.test("Request is signed correctly but produce business logic error", function() {
+        client.assert(response.status === 500);
+        client.assert(response.body.indexOf('"invalid:type" event key is unknown') !== -1);
+    });
+%}
+
+### Send invalid signed request
+POST {{EndpointHost}}/bitbucket-webhook
+Content-Type: application/json
+x-hub-signature: sha256=be2cb8001dde982228969395e2cc60fd888904a8c9744d50baef5d763b108312
+
+{
+  "eventKey": "invalid:type1"
+}
+
+> {%
+    client.test("Request is not signed correctly", function() {
+        client.assert(response.status === 401);
+        client.assert(response.body.indexOf('Invalid signature') !== -1);
+    });
+%}
+
+### Send unsigned request
+POST {{EndpointHost}}/bitbucket-webhook
+Content-Type: application/json
+
+{
+  "eventKey": "invalid:type"
+}
+
+> {%
+    client.test("Request is not signed correctly", function() {
+        client.assert(response.status === 401);
+        client.assert(response.body.indexOf('Invalid signature') !== -1);
+    });
+%}
