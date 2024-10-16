@@ -13,6 +13,10 @@ export default async function logUnhandledError(error: any, req: express.Request
                 text: errorMessage
             });
         }
+        else
+        {
+            console.warn("Diagnostic channel is not provided");
+        }
     } catch (error) {
         console.error("Error during sending message to the diagnostic channel", error);
     }
