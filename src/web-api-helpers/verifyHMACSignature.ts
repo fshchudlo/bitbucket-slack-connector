@@ -6,7 +6,7 @@ export default async function verifyHMACSignature(req: any, res: any, next: any)
         next();
         return;
     }
-    const signature = req.headers["x-hub-signature"];
+    const signature = req.headers["x-hub-signature-256"] || req.headers["x-hub-signature"];
     if (!signature || typeof signature !== "string") {
         console.warn("No signature found in request");
         res.status(401).send("Invalid signature");
