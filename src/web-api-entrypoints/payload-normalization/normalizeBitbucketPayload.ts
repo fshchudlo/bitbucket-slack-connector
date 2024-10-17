@@ -1,4 +1,4 @@
-import BitbucketAPI from "./BitbucketAPI";
+import BitbucketAPI from "../../adapters/BitbucketAPI";
 import {
     PullRequestCommentActionNotification,
     PullRequestFromBranchUpdatedNotification,

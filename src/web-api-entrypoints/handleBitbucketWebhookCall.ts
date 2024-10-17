@@ -1,6 +1,6 @@
 import handlePullRequestEvent from "../use-cases/handlePullRequestEvent";
 import { buildChannelName } from "../adapters/slack-api/buildChannelName";
-import BitbucketAPI from "./payload-normalization/BitbucketAPI";
+import BitbucketAPI from "../adapters/BitbucketAPI";
 import { AppConfig } from "../app.config";
 import { NextFunction, Request, Response } from "express";
 import { normalizeBitbucketPayload } from "./payload-normalization/normalizeBitbucketPayload";
