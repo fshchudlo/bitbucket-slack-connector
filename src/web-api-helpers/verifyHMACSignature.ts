@@ -8,6 +8,7 @@ export default async function verifyHMACSignature(req: any, res: any, next: any)
     }
     const signature = req.headers["x-hub-signature"];
     if (!signature || typeof signature !== "string") {
+        console.warn("No signature found in request");
         res.status(401).send("Invalid signature");
         return;
     }
@@ -18,6 +19,7 @@ export default async function verifyHMACSignature(req: any, res: any, next: any)
     if (crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest))) {
         next();
     } else {
+        console.warn("Request signature is invalid ");
         res.status(401).send("Invalid signature");
     }
 }
