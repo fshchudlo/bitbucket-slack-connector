@@ -4,6 +4,7 @@ import crypto from "crypto";
 export default async function verifyHMACSignature(req: any, res: any, next: any) {
     if (!AppConfig.HMAC_SECRET) {
         next();
+        return;
     }
     const signature = req.headers["x-hub-signature"];
     if (!signature || typeof signature !== "string") {
