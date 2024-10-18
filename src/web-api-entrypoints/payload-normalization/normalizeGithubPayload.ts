@@ -1,24 +1,45 @@
-import { PullRequestGenericNotification, PullRequestNotification } from "../../use-cases/contracts";
+import { PullRequestGenericNotification, PullRequestNotification, PullRequestReviewersUpdatedNotification } from "../../use-cases/contracts";
 import { AppConfig } from "../../app.config";
 
-export async function normalizeGithubPayload(payload: GithubPullRequestNotification): Promise<PullRequestNotification> {
-    switch (payload.action) {
+export async function normalizeGithubPayload(notification: GithubNotification): Promise<PullRequestNotification> {
+    const eventKey = notification.action;
+    switch (eventKey) {
         case "opened":
             return {
-                ...normalizePayloadGenericPart(payload),
+                ...normalizePayloadGenericPart(notification),
                 eventKey: "pr:opened"
             } as PullRequestGenericNotification;
         case "closed":
             return {
-                ...normalizePayloadGenericPart(payload),
-                eventKey: payload.pull_request.merged ? "pr:merged" : "pr:deleted"
+                ...normalizePayloadGenericPart(notification),
+                eventKey: notification.pull_request.merged ? "pr:merged" : "pr:deleted"
             } as PullRequestGenericNotification;
+        case "review_requested":
+            return {
+                ...normalizePayloadGenericPart(notification),
+                eventKey: "pr:reviewer:updated",
+                addedReviewers: [{
+                    name: notification.requested_reviewer.login,
+                    email: AppConfig.getUserEmailFromGithubLogin(notification.requested_reviewer.login)
+                }],
+                removedReviewers: []
+            } as PullRequestReviewersUpdatedNotification;
+        case "review_request_removed":
+            return {
+                ...normalizePayloadGenericPart(notification),
+                eventKey: "pr:reviewer:updated",
+                addedReviewers: [],
+                removedReviewers: [{
+                    name: notification.requested_reviewer.login,
+                    email: AppConfig.getUserEmailFromGithubLogin(notification.requested_reviewer.login)
+                }]
+            } as PullRequestReviewersUpdatedNotification;
         default:
-            throw new Error(`"${payload.action}" action key is unknown.`);
+            throw new Error(`"${eventKey}" action key is unknown.`);
     }
 }
 
-function normalizePayloadGenericPart(payload: GithubPullRequestNotification) {
+function normalizePayloadGenericPart(payload: GithubNotification) {
     const basePayload: PullRequestGenericNotification = {
         eventKey: "pr:opened",
         actor: {
@@ -59,62 +80,72 @@ function normalizePayloadGenericPart(payload: GithubPullRequestNotification) {
 }
 
 
-export interface GithubPullRequestNotification {
-    action: "opened" | "closed";
-    number: number;
-    pull_request: GithubPullRequestPayload;
-    repository: {
-        name: string;
+type GithubNotification = GithubPullRequestBasicNotification | GithubPullRequestReviewersUpdatedNotification;
+
+
+type GithubPullRequestBasicNotification = GithubPullRequestNotificationBasicPayload & {
+    readonly action: "opened" | "closed";
+};
+
+export type GithubPullRequestReviewersUpdatedNotification = GithubPullRequestNotificationBasicPayload & {
+    readonly action: "review_requested" | "review_request_removed";
+    readonly requested_reviewer: GithubUserPayload;
+};
+
+type GithubPullRequestNotificationBasicPayload = {
+    readonly number: number;
+    readonly pull_request: GithubPullRequestPayload;
+    readonly repository: {
+        readonly name: string;
     };
-    sender: GithubUserPayload;
+    readonly sender: GithubUserPayload;
 }
 
 type GithubPullRequestPayload = {
-    html_url: string;
-    number: string;
-    state: "open" | "closed";
-    locked: boolean;
-    title: string;
-    user: GithubUserPayload;
-    body: string | null;
-    created_at: string;
-    updated_at: string;
-    closed_at: string | null;
-    merged_at: string | null;
-    merge_commit_sha: string | null;
-    assignee: string | null;
-    assignees: string[];
-    requested_reviewers: GithubUserPayload[];
-    draft: boolean;
-    head: GithubRefPayload;
-    base: GithubRefPayload;
-    author_association: string;
-    auto_merge: string | null;
-    active_lock_reason: string | null;
-    merged: boolean;
-    mergeable: boolean | null;
-    rebaseable: boolean | null;
-    mergeable_state: "unknown" | "clean";
-    merged_by: GithubUserPayload | null;
-    comments: number;
-    review_comments: number;
-    maintainer_can_modify: boolean;
-    commits: number;
-    additions: number;
-    deletions: number;
-    changed_files: number;
+    readonly html_url: string;
+    readonly number: string;
+    readonly state: "open" | "closed";
+    readonly locked: boolean;
+    readonly title: string;
+    readonly user: GithubUserPayload;
+    readonly body: string | null;
+    readonly created_at: string;
+    readonly updated_at: string;
+    readonly closed_at: string | null;
+    readonly merged_at: string | null;
+    readonly merge_commit_sha: string | null;
+    readonly assignee: string | null;
+    readonly assignees: string[];
+    readonly requested_reviewers: GithubUserPayload[];
+    readonly draft: boolean;
+    readonly head: GithubRefPayload;
+    readonly base: GithubRefPayload;
+    readonly author_association: string;
+    readonly auto_merge: string | null;
+    readonly active_lock_reason: string | null;
+    readonly merged: boolean;
+    readonly mergeable: boolean | null;
+    readonly rebaseable: boolean | null;
+    readonly mergeable_state: "unknown" | "clean";
+    readonly merged_by: GithubUserPayload | null;
+    readonly comments: number;
+    readonly review_comments: number;
+    readonly maintainer_can_modify: boolean;
+    readonly commits: number;
+    readonly additions: number;
+    readonly deletions: number;
+    readonly changed_files: number;
 }
 type GithubUserPayload = {
-    login: string;
-    type: string;
+    readonly login: string;
+    readonly type: string;
 };
-
 type GithubRefPayload = {
-    ref: string;
-    sha: string;
-    repo: {
-        name: string;
-        full_name: string;
-        owner: GithubUserPayload
+    readonly ref: string;
+    readonly sha: string;
+    readonly repo: {
+        readonly name: string;
+        readonly full_name: string;
+        readonly owner: GithubUserPayload
     };
 };

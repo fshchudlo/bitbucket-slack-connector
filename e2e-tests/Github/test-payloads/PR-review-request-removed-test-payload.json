@@ -1,5 +1,5 @@
 {
-  "action": "review_requested",
+  "action": "review_request_removed",
   "number": "{{PullRequestId}}",
   "pull_request": {
     "html_url": "https://github.com/{{OrganizationName}}/{{RepositoryName}}/pull/{{PullRequestId}}",

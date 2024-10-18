@@ -10,6 +10,30 @@ Content-Type: application/json
     });
 %}
 
+### Add reviewer
+POST {{EndpointHost}}/github-webhook
+Content-Type: application/json
+
+< ./test-payloads/PR-review-requested-test-payload.json
+
+> {%
+    client.test("Update of reviewers in open Pull request should be successful", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+### Remove reviewer
+POST {{EndpointHost}}/github-webhook
+Content-Type: application/json
+
+< ./test-payloads/PR-review-request-removed-test-payload.json
+
+> {%
+    client.test("Update of reviewers in open Pull request should be successful", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
 
 ### Merge pull request
 POST {{EndpointHost}}/github-webhook

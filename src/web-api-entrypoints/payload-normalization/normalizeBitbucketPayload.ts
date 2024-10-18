@@ -8,8 +8,8 @@ import {
     PullRequestReviewersUpdatedNotification
 } from "../../use-cases/contracts";
 
-export async function normalizeBitbucketPayload(payload: BitbucketNotification, bitbucketAPI: BitbucketAPI): Promise<PullRequestNotification> {
-    const eventKey = payload.eventKey;
+export async function normalizeBitbucketPayload(notification: BitbucketNotification, bitbucketAPI: BitbucketAPI): Promise<PullRequestNotification> {
+    const eventKey = notification.eventKey;
 
     switch (eventKey) {
         case "pr:opened":
@@ -20,36 +20,36 @@ export async function normalizeBitbucketPayload(payload: BitbucketNotification, 
         case "pr:reviewer:needs_work":
         case "pr:reviewer:approved":
             return {
-                ...normalizePayloadGenericPart(payload),
+                ...normalizePayloadGenericPart(notification),
                 eventKey
             };
         case "pr:modified":
             return <PullRequestModifiedNotification>{
-                ...normalizePayloadGenericPart(payload),
+                ...normalizePayloadGenericPart(notification),
                 eventKey,
-                previousTitle: payload.previousTitle,
-                previousDescription: payload.previousDescription,
+                previousTitle: notification.previousTitle,
+                previousDescription: notification.previousDescription,
                 previousTargetBranch: {
-                    branchName: payload.previousTarget.displayId,
-                    latestCommit: payload.previousTarget.latestCommit
+                    branchName: notification.previousTarget.displayId,
+                    latestCommit: notification.previousTarget.latestCommit
                 }
             };
         case "pr:from_ref_updated":
             return <PullRequestFromBranchUpdatedNotification>{
-                ...normalizePayloadGenericPart(payload),
+                ...normalizePayloadGenericPart(notification),
                 eventKey,
-                latestCommitMessage: bitbucketAPI.canRead() ? await bitbucketAPI.fetchCommitMessage(payload.pullRequest.fromRef.repository.project.key, payload.pullRequest.fromRef.repository.slug, payload.pullRequest.fromRef.latestCommit) : null,
-                latestCommitViewUrl: `${payload.pullRequest.links.self[0].href.replace("/overview", "")}/commits/${payload.pullRequest.fromRef.latestCommit}`
+                latestCommitMessage: bitbucketAPI.canRead() ? await bitbucketAPI.fetchCommitMessage(notification.pullRequest.fromRef.repository.project.key, notification.pullRequest.fromRef.repository.slug, notification.pullRequest.fromRef.latestCommit) : null,
+                latestCommitViewUrl: `${notification.pullRequest.links.self[0].href.replace("/overview", "")}/commits/${notification.pullRequest.fromRef.latestCommit}`
             };
         case "pr:reviewer:updated":
             return <PullRequestReviewersUpdatedNotification>{
-                ...normalizePayloadGenericPart(payload),
+                ...normalizePayloadGenericPart(notification),
                 eventKey,
-                addedReviewers: payload.addedReviewers.map(reviewer => ({
+                addedReviewers: notification.addedReviewers.map(reviewer => ({
                     name: reviewer.displayName,
                     email: reviewer.emailAddress
                 })),
-                removedReviewers: payload.removedReviewers.map(reviewer => ({
+                removedReviewers: notification.removedReviewers.map(reviewer => ({
                     name: reviewer.displayName,
                     email: reviewer.emailAddress
                 }))
@@ -58,22 +58,22 @@ export async function normalizeBitbucketPayload(payload: BitbucketNotification, 
         case "pr:comment:edited":
         case "pr:comment:deleted":
             return <PullRequestCommentActionNotification>{
-                ...normalizePayloadGenericPart(payload),
+                ...normalizePayloadGenericPart(notification),
                 eventKey,
-                commentParentId: payload.commentParentId,
+                commentParentId: notification.commentParentId,
                 comment: {
-                    id: payload.comment.id,
-                    text: payload.comment.text,
-                    severity: payload.comment.severity,
+                    id: notification.comment.id,
+                    text: notification.comment.text,
+                    severity: notification.comment.severity,
                     author: {
-                        name: payload.comment.author.displayName,
-                        email: payload.comment.author.emailAddress
+                        name: notification.comment.author.displayName,
+                        email: notification.comment.author.emailAddress
                     },
-                    resolvedAt: payload.comment.resolvedDate ? new Date(payload.comment.resolvedDate) : null,
-                    threadResolvedAt: payload.comment.threadResolvedDate ? new Date(payload.comment.threadResolvedDate) : null,
-                    link: `${payload.pullRequest.links.self}?commentId=${payload.comment.id}`
+                    resolvedAt: notification.comment.resolvedDate ? new Date(notification.comment.resolvedDate) : null,
+                    threadResolvedAt: notification.comment.threadResolvedDate ? new Date(notification.comment.threadResolvedDate) : null,
+                    link: `${notification.pullRequest.links.self}?commentId=${notification.comment.id}`
                 },
-                previousComment: payload.previousComment
+                previousComment: notification.previousComment
             };
         default:
             throw new Error(`"${eventKey}" event key is unknown.`);
