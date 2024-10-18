@@ -62,47 +62,48 @@ function normalizePayloadGenericPart(payload: GithubPullRequestNotification) {
 export interface GithubPullRequestNotification {
     action: "opened" | "closed";
     number: number;
-    pull_request: {
-        html_url: string;
-        number: string;
-        state: "open" | "closed";
-        locked: boolean;
-        title: string;
-        user: GithubUserPayload;
-        body: string | null;
-        created_at: string;
-        updated_at: string;
-        closed_at: string | null;
-        merged_at: string | null;
-        merge_commit_sha: string | null;
-        assignee: string | null;
-        assignees: string[];
-        requested_reviewers: GithubUserPayload[];
-        draft: boolean;
-        head: GithubRefPayload;
-        base: GithubRefPayload;
-        author_association: string;
-        auto_merge: string | null;
-        active_lock_reason: string | null;
-        merged: boolean;
-        mergeable: boolean | null;
-        rebaseable: boolean | null;
-        mergeable_state: "unknown" | "clean";
-        merged_by: GithubUserPayload | null;
-        comments: number;
-        review_comments: number;
-        maintainer_can_modify: boolean;
-        commits: number;
-        additions: number;
-        deletions: number;
-        changed_files: number;
-    };
+    pull_request: GithubPullRequestPayload;
     repository: {
         name: string;
     };
     sender: GithubUserPayload;
 }
 
+type GithubPullRequestPayload = {
+    html_url: string;
+    number: string;
+    state: "open" | "closed";
+    locked: boolean;
+    title: string;
+    user: GithubUserPayload;
+    body: string | null;
+    created_at: string;
+    updated_at: string;
+    closed_at: string | null;
+    merged_at: string | null;
+    merge_commit_sha: string | null;
+    assignee: string | null;
+    assignees: string[];
+    requested_reviewers: GithubUserPayload[];
+    draft: boolean;
+    head: GithubRefPayload;
+    base: GithubRefPayload;
+    author_association: string;
+    auto_merge: string | null;
+    active_lock_reason: string | null;
+    merged: boolean;
+    mergeable: boolean | null;
+    rebaseable: boolean | null;
+    mergeable_state: "unknown" | "clean";
+    merged_by: GithubUserPayload | null;
+    comments: number;
+    review_comments: number;
+    maintainer_can_modify: boolean;
+    commits: number;
+    additions: number;
+    deletions: number;
+    changed_files: number;
+}
 type GithubUserPayload = {
     login: string;
     type: string;
