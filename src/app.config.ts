@@ -40,5 +40,4 @@ export const AppConfig = {
     getUserEmailFromGithubLogin(login: string): string {
         return login.replace("_webpros", "").split("-").join(".") + "@webpros.com";
     }
-
 };
