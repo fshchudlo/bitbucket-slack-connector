@@ -153,7 +153,7 @@ Content-Type: application/json
 
 > {%
     client.test("Invalid payload sending should lead to error", function() {
-        client.assert(response.body.indexOf('"undefined" action key is unknown') !== -1);
+        client.assert(response.body.indexOf('"invalid-payload" event key is unknown') !== -1);
         client.assert(response.status === 500)
     });
 %}
@@ -166,7 +166,8 @@ Content-Type: application/json
 
 > {%
     client.test("Addition of the comment to closed PR leads to error since channel is archived", function() {
-        client.assert(response.body === "Internal Server Error")
+        console.log(response.body)
+        client.assert(response.body.indexOf('An API error occurred: name_taken') !== -1);
         client.assert(response.status === 500)
     });
 %}

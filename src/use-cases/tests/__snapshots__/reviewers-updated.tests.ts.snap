@@ -9,24 +9,16 @@ exports[`handleBitbucketWebhook Should update channel participants on reviewers 
     {
       "force": true,
       "users": [
-        "test.reviewer3@test.com",
+        "333333",
       ],
     },
   ],
   "kicksFromChannels": [
     {
       "users": [
-        "test.reviewer1@test.com",
+        "111111",
       ],
     },
-  ],
-  "lookedUpUsers": [
-    [
-      "test.reviewer3@test.com",
-    ],
-    [
-      "test.reviewer1@test.com",
-    ],
   ],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],

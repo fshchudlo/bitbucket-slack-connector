@@ -7,7 +7,6 @@ exports[`handleBitbucketWebhook Should not send message if PR doesn't contain vi
   "closeChannelCalls": [],
   "invitesToChannels": [],
   "kicksFromChannels": [],
-  "lookedUpUsers": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [],
@@ -21,7 +20,6 @@ exports[`handleBitbucketWebhook Should send message when PR modified 1`] = `
   "closeChannelCalls": [],
   "invitesToChannels": [],
   "kicksFromChannels": [],
-  "lookedUpUsers": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [

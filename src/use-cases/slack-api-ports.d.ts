@@ -12,8 +12,6 @@ export interface SlackBroadcastChannel {
 export interface SlackTargetedChannel {
     readonly channelInfo: SlackChannelInfo;
 
-    getSlackUserIds(userEmails: Array<string>): Promise<string[]>;
-
     addBookmark(options: AddBookmarkArguments): Promise<void>;
 
     inviteToChannel(options: InviteToChannelArguments): Promise<void>;

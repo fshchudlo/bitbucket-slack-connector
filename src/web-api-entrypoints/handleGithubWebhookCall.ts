@@ -4,10 +4,11 @@ import { normalizeGithubPayload } from "./payload-normalization/normalizeGithubP
 import { AppConfig } from "../app.config";
 import { PullRequestNotification } from "../use-cases/contracts";
 import handlePullRequestEvent from "../use-cases/handlePullRequestEvent";
+import { SlackUserIdResolver } from "./payload-normalization/ports/SlackUserIdResolver";
 
-export async function handleGithubWebhookCall(req: Request, res: Response, next: NextFunction, slackChannelFactory: SlackChannelProvisioner) {
+export async function handleGithubWebhookCall(req: Request, res: Response, next: NextFunction, slackChannelFactory: SlackChannelProvisioner, slackUserIdResolver: SlackUserIdResolver) {
     try {
-        const payload = await normalizeGithubPayload(req.body);
+        const payload = await normalizeGithubPayload(req.body, slackUserIdResolver);
         const broadcastChannelName = AppConfig.getOpenedPRBroadcastChannel(payload);
         const broadcastChannel = broadcastChannelName ? await slackChannelFactory.getBroadcastChannel(broadcastChannelName) : null;
 
@@ -19,7 +20,7 @@ export async function handleGithubWebhookCall(req: Request, res: Response, next:
                 eventKey: "pr:opened",
                 actor: {
                     name: payload.pullRequest.author.name,
-                    email: payload.pullRequest.author.email
+                    slackUserId: payload.pullRequest.author.slackUserId
                 },
                 pullRequest: payload.pullRequest
             };

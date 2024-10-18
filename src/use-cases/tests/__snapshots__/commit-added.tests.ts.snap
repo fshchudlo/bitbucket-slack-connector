@@ -7,7 +7,6 @@ exports[`handleBitbucketWebhook Should send message on PR commit 1`] = `
   "closeChannelCalls": [],
   "invitesToChannels": [],
   "kicksFromChannels": [],
-  "lookedUpUsers": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [

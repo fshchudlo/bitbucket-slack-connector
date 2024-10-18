@@ -38,10 +38,6 @@ export class SlackChannelCachedDecorator implements SlackTargetedChannel, SlackB
         return this.channel.addReaction(messageId, reaction);
     }
 
-    getSlackUserIds(userEmails: string[]): Promise<string[]> {
-        return this.channel.getSlackUserIds(userEmails);
-    }
-
     addBookmark(options: AddBookmarkArguments): Promise<void> {
         return this.channel.addBookmark(options);
     }

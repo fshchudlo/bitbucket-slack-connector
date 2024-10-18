@@ -28,14 +28,6 @@ export class SlackWebClientChannel implements SlackTargetedChannel, SlackBroadca
         this.iconEmoji = iconEmoji;
     }
 
-    async getSlackUserIds(userEmails: string[]): Promise<string[]> {
-        const emailAddresses = [...new Set(userEmails)];
-        const slackUserIds = await Promise.all(emailAddresses
-            .map(email => this.client.users.lookupByEmail({ email })
-                .catch(e => e.data?.error == "users_not_found" ? undefined : e)));
-        return slackUserIds.filter(r => !!r).map(r => r.user.id);
-    }
-
     addBookmark(options: AddBookmarkArguments): Promise<void> {
         return this.client.bookmarks.add({
             channel_id: this.channelInfo.id,
@@ -51,7 +43,7 @@ export class SlackWebClientChannel implements SlackTargetedChannel, SlackBroadca
             users: options.users.join(","),
             force: true
         }).catch(error => {
-            return error.data.errors.every((innerError: any) => {
+            return (error.data.errors || [error.data.error]).every((innerError: any) => {
                 return innerError.error == "already_in_channel";
             }) ? undefined : error;
         }) as unknown as Promise<void>;

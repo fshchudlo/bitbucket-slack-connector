@@ -42,7 +42,7 @@ export type PullRequestFromBranchUpdatedNotification = PullRequestNotificationBa
 
 export type UserPayload = {
     readonly name: string;
-    readonly email: string;
+    readonly slackUserId: string;
 };
 
 export type BranchPayload = {

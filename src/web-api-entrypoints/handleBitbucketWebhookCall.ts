@@ -6,12 +6,13 @@ import { NextFunction, Request, Response } from "express";
 import { normalizeBitbucketPayload } from "./payload-normalization/normalizeBitbucketPayload";
 import { SlackChannelProvisioner } from "../adapters/slack-api/SlackChannelProvisioner";
 import { PullRequestGenericNotification } from "../use-cases/contracts";
+import { SlackUserIdResolver } from "./payload-normalization/ports/SlackUserIdResolver";
 
 const bitbucketAPI = new BitbucketAPI(AppConfig.BITBUCKET_BASE_URL, AppConfig.BITBUCKET_READ_API_TOKEN);
 
-export async function handleBitbucketWebhookCall(req: Request, res: Response, next: NextFunction, slackChannelFactory: SlackChannelProvisioner) {
+export async function handleBitbucketWebhookCall(req: Request, res: Response, next: NextFunction, slackChannelFactory: SlackChannelProvisioner, slackUserIdResolver: SlackUserIdResolver) {
     try {
-        const payload = await normalizeBitbucketPayload(req.body, bitbucketAPI);
+        const payload = await normalizeBitbucketPayload(req.body, bitbucketAPI, slackUserIdResolver);
         const broadcastChannelName = AppConfig.getOpenedPRBroadcastChannel(payload);
         const broadcastChannel = broadcastChannelName ? await slackChannelFactory.getBroadcastChannel(broadcastChannelName) : null;
 
@@ -23,7 +24,7 @@ export async function handleBitbucketWebhookCall(req: Request, res: Response, ne
                 eventKey: "pr:opened",
                 actor: {
                     name: payload.pullRequest.author.name,
-                    email: payload.pullRequest.author.email
+                    slackUserId: payload.pullRequest.author.slackUserId
                 },
                 pullRequest: payload.pullRequest
             };

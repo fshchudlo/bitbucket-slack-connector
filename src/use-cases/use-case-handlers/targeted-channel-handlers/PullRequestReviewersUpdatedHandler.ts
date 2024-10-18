@@ -13,8 +13,8 @@ export class PullRequestReviewersUpdatedHandler implements WebhookPayloadHandler
 }
 
 async function updateChannelMembers(payload: PullRequestReviewersUpdatedNotification, slackChannel: SlackTargetedChannel) {
-    const userIdsToAdd = await slackChannel.getSlackUserIds(payload.addedReviewers.map(payload => payload.email));
-    const userIdsToRemove = await slackChannel.getSlackUserIds(payload.removedReviewers.map(payload => payload.email));
+    const userIdsToAdd = payload.addedReviewers.map(payload => payload.slackUserId);
+    const userIdsToRemove = payload.removedReviewers.map(payload => payload.slackUserId);
 
     if (userIdsToAdd.length > 0) {
         await slackChannel.inviteToChannel({

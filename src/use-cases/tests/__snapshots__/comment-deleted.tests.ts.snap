@@ -7,7 +7,6 @@ exports[`handleBitbucketWebhook Should send message on PR comment deletion 1`] =
   "closeChannelCalls": [],
   "invitesToChannels": [],
   "kicksFromChannels": [],
-  "lookedUpUsers": [],
   "searchedCommentSnapshots": [
     {
       "bitbucketCommentId": 1,

@@ -21,7 +21,6 @@ export default class SlackChannelSnapshottingMock implements SlackTargetedChanne
         closeChannelCalls: string[];
         invitesToChannels: InviteToChannelArguments[];
         kicksFromChannels: KickFromChannelArguments[];
-        lookedUpUsers: Array<Array<string>>;
         searchedCommentSnapshots: any[];
         searchedPrOpenedBroadcastMessages: any[];
         sentMessages: SendMessageArguments[];
@@ -34,7 +33,6 @@ export default class SlackChannelSnapshottingMock implements SlackTargetedChanne
             closeChannelCalls: new Array<string>(),
             invitesToChannels: new Array<InviteToChannelArguments>(),
             kicksFromChannels: new Array<KickFromChannelArguments>(),
-            lookedUpUsers: new Array<Array<string>>(),
             searchedCommentSnapshots: new Array<any>(),
             searchedPrOpenedBroadcastMessages: new Array<any>(),
             sentMessages: new Array<SendMessageArguments>()
@@ -45,11 +43,6 @@ export default class SlackChannelSnapshottingMock implements SlackTargetedChanne
         id: "12345",
         name: "test-channel"
     };
-
-    getSlackUserIds(userEmails: string[]): Promise<string[]> {
-        this.snapshot.lookedUpUsers.push(userEmails);
-        return Promise.resolve(userEmails);
-    }
 
     addBookmark(options: AddBookmarkArguments): Promise<void> {
         this.snapshot.addedBookmarks.push(options);

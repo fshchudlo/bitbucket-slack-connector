@@ -8,19 +8,19 @@ import {
 
 const authorUser = {
     name: "Test Author",
-    email: "test.author@test.com"
+    slackUserId: "000000"
 };
 const reviewer1User = {
     name: "Test Reviewer 1",
-    email: "test.reviewer1@test.com"
+    slackUserId: "111111"
 };
 const reviewer2User = {
     name: "Test Reviewer 2",
-    email: "test.reviewer2@test.com"
+    slackUserId: "222222"
 };
 const reviewer3User = {
     name: "Test Reviewer 3",
-    email: "test.reviewer3@test.com"
+    slackUserId: "333333"
 };
 
 function getBasicPayload(): PullRequestGenericNotification {

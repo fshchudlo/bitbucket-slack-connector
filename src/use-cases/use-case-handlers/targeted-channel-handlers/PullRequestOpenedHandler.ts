@@ -25,10 +25,7 @@ async function setChannelBookmark(payload: PullRequestGenericNotification, slack
 }
 
 async function inviteParticipants(payload: PullRequestGenericNotification, slackChannel: SlackTargetedChannel) {
-    const allParticipants = [payload.pullRequest.author, ...payload.pullRequest.reviewers.map(r => r.user)];
-
-    const slackUserIds = (await slackChannel.getSlackUserIds(allParticipants.map(payload => payload.email)));
-
+    const slackUserIds = [payload.pullRequest.author, ...payload.pullRequest.reviewers.map(r => r.user)].map(u=>u.slackUserId);
     if (slackUserIds.length > 0) {
         await slackChannel.inviteToChannel({ users: slackUserIds, force: true });
     }

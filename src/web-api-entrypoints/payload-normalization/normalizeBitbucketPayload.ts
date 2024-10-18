@@ -5,10 +5,11 @@ import {
     PullRequestGenericNotification,
     PullRequestModifiedNotification,
     PullRequestNotification,
-    PullRequestReviewersUpdatedNotification
+    PullRequestReviewersUpdatedNotification, UserPayload
 } from "../../use-cases/contracts";
+import { SlackUserIdResolver } from "./ports/SlackUserIdResolver";
 
-export async function normalizeBitbucketPayload(notification: BitbucketNotification, bitbucketAPI: BitbucketAPI): Promise<PullRequestNotification> {
+export async function normalizeBitbucketPayload(notification: BitbucketNotification, bitbucketAPI: BitbucketAPI, slackUserIdResolver: SlackUserIdResolver): Promise<PullRequestNotification> {
     const eventKey = notification.eventKey;
 
     switch (eventKey) {
@@ -20,12 +21,12 @@ export async function normalizeBitbucketPayload(notification: BitbucketNotificat
         case "pr:reviewer:needs_work":
         case "pr:reviewer:approved":
             return {
-                ...normalizePayloadGenericPart(notification),
+                ...(await normalizePayloadGenericPart(notification, slackUserIdResolver)),
                 eventKey
             };
         case "pr:modified":
             return <PullRequestModifiedNotification>{
-                ...normalizePayloadGenericPart(notification),
+                ...(await normalizePayloadGenericPart(notification, slackUserIdResolver)),
                 eventKey,
                 previousTitle: notification.previousTitle,
                 previousDescription: notification.previousDescription,
@@ -36,29 +37,23 @@ export async function normalizeBitbucketPayload(notification: BitbucketNotificat
             };
         case "pr:from_ref_updated":
             return <PullRequestFromBranchUpdatedNotification>{
-                ...normalizePayloadGenericPart(notification),
+                ...(await normalizePayloadGenericPart(notification, slackUserIdResolver)),
                 eventKey,
                 latestCommitMessage: bitbucketAPI.canRead() ? await bitbucketAPI.fetchCommitMessage(notification.pullRequest.fromRef.repository.project.key, notification.pullRequest.fromRef.repository.slug, notification.pullRequest.fromRef.latestCommit) : null,
                 latestCommitViewUrl: `${notification.pullRequest.links.self[0].href.replace("/overview", "")}/commits/${notification.pullRequest.fromRef.latestCommit}`
             };
         case "pr:reviewer:updated":
             return <PullRequestReviewersUpdatedNotification>{
-                ...normalizePayloadGenericPart(notification),
+                ...(await normalizePayloadGenericPart(notification, slackUserIdResolver)),
                 eventKey,
-                addedReviewers: notification.addedReviewers.map(reviewer => ({
-                    name: reviewer.displayName,
-                    email: reviewer.emailAddress
-                })),
-                removedReviewers: notification.removedReviewers.map(reviewer => ({
-                    name: reviewer.displayName,
-                    email: reviewer.emailAddress
-                }))
+                addedReviewers: await normalizeUserPayloads(notification.addedReviewers, slackUserIdResolver),
+                removedReviewers: await normalizeUserPayloads(notification.removedReviewers, slackUserIdResolver)
             };
         case "pr:comment:added":
         case "pr:comment:edited":
         case "pr:comment:deleted":
             return <PullRequestCommentActionNotification>{
-                ...normalizePayloadGenericPart(notification),
+                ...(await normalizePayloadGenericPart(notification, slackUserIdResolver)),
                 eventKey,
                 commentParentId: notification.commentParentId,
                 comment: {
@@ -67,7 +62,7 @@ export async function normalizeBitbucketPayload(notification: BitbucketNotificat
                     severity: notification.comment.severity,
                     author: {
                         name: notification.comment.author.displayName,
-                        email: notification.comment.author.emailAddress
+                        slackUserId: await slackUserIdResolver.getUserId(notification.comment.author.emailAddress)
                     },
                     resolvedAt: notification.comment.resolvedDate ? new Date(notification.comment.resolvedDate) : null,
                     threadResolvedAt: notification.comment.threadResolvedDate ? new Date(notification.comment.threadResolvedDate) : null,
@@ -80,12 +75,20 @@ export async function normalizeBitbucketPayload(notification: BitbucketNotificat
     }
 }
 
-function normalizePayloadGenericPart(payload: BitbucketNotification) {
+async function normalizePayloadGenericPart(payload: BitbucketNotification, slackUserIdResolver: SlackUserIdResolver): Promise<PullRequestGenericNotification> {
+    const normalizedReviewersPayload = await Promise.all(
+        payload.pullRequest.reviewers.map(async reviewer => {
+            return {
+                user: await normalizeUserPayload(reviewer.user, slackUserIdResolver),
+                status: reviewer.status
+            };
+        }));
+
     return <PullRequestGenericNotification>{
         eventKey: payload.eventKey,
         actor: {
             name: payload.actor.displayName,
-            email: payload.actor.emailAddress
+            slackUserId: await slackUserIdResolver.getUserId(payload.actor.emailAddress)
         },
         pullRequest: {
             number: payload.pullRequest.id,
@@ -93,18 +96,13 @@ function normalizePayloadGenericPart(payload: BitbucketNotification) {
             createdAt: new Date(payload.pullRequest.createdDate),
             author: {
                 name: payload.pullRequest.author.user.displayName,
-                email: payload.pullRequest.author.user.emailAddress
+                slackUserId: await slackUserIdResolver.getUserId(payload.pullRequest.author.user.emailAddress)
             },
             description: payload.pullRequest.description,
             links: {
                 self: payload.pullRequest.links.self[0].href
             },
-            reviewers: payload.pullRequest.reviewers.map(reviewer => ({
-                user: {
-                    name: reviewer.user.displayName, email: reviewer.user.emailAddress
-                },
-                status: reviewer.status
-            })),
+            reviewers: normalizedReviewersPayload,
             targetBranch: {
                 branchName: payload.pullRequest.toRef.displayId,
                 projectKey: payload.pullRequest.toRef.repository.project.key,
@@ -118,6 +116,18 @@ function normalizePayloadGenericPart(payload: BitbucketNotification) {
                 latestCommit: payload.pullRequest.fromRef.latestCommit
             }
         }
+    };
+}
+
+async function normalizeUserPayloads(users: BitbucketUserPayload[], slackUserIdResolver: SlackUserIdResolver): Promise<UserPayload[]> {
+    return await Promise.all(users.map(async (item) => await normalizeUserPayload(item, slackUserIdResolver)));
+}
+
+async function normalizeUserPayload(user: BitbucketUserPayload, slackUserIdResolver: SlackUserIdResolver): Promise<UserPayload> {
+    const userId = await slackUserIdResolver.getUserId(user.emailAddress);
+    return {
+        name: user.displayName,
+        slackUserId: userId
     };
 }
 

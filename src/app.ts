@@ -10,6 +10,7 @@ import { handleGithubWebhookCall } from "./web-api-entrypoints/handleGithubWebho
 import bodyParser from "body-parser";
 import verifyHMACSignature from "./web-api-helpers/verifyHMACSignature";
 import util from "util";
+import { SlackWebClientUserIdResolver } from "./adapters/slack-api/SlackWebClientUserIdResolver";
 
 
 const expressReceiver = new ExpressReceiver({
@@ -22,6 +23,7 @@ const slackApp = new App({
 });
 
 const slackChannelFactory = new SlackChannelProvisioner(slackApp.client);
+const userIdResolver = new SlackWebClientUserIdResolver(slackApp.client);
 
 if (AppConfig.HMAC_SECRET) {
     expressReceiver.router.use(bodyParser.json({
@@ -35,11 +37,11 @@ if (AppConfig.HMAC_SECRET) {
 expressReceiver.router.use(measureRequestDuration);
 
 expressReceiver.router.post("/bitbucket-webhook", verifyHMACSignature, async (req, res, next: NextFunction) => {
-    await handleBitbucketWebhookCall(req, res, next, slackChannelFactory);
+    await handleBitbucketWebhookCall(req, res, next, slackChannelFactory, userIdResolver);
 });
 
 expressReceiver.router.post("/github-webhook", verifyHMACSignature, async (req, res, next: NextFunction) => {
-    await handleGithubWebhookCall(req, res, next, slackChannelFactory);
+    await handleGithubWebhookCall(req, res, next, slackChannelFactory, userIdResolver);
 });
 
 expressReceiver.router.get("/metrics", async (req, res) => {

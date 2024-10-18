@@ -7,7 +7,6 @@ exports[`handleBitbucketWebhook Should send message on PR approval/unapproval/ne
   "closeChannelCalls": [],
   "invitesToChannels": [],
   "kicksFromChannels": [],
-  "lookedUpUsers": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [

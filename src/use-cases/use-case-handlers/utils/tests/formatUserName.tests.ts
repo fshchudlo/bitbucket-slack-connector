@@ -1,16 +1,9 @@
 import { formatUserName } from "../formatUserName";
 
 describe("formatUserName", () => {
-    it("should return user name by default", () => {
-        const testPayload = { name: "John Doe", email: "test@testmail.com" };
+    it("should return user name as is", () => {
+        const testPayload = { name: "John Doe", slackUserId: "12345" };
         const expectedResult = testPayload.name;
-        const result = formatUserName(testPayload);
-        expect(result).toBe(expectedResult);
-    });
-
-    it("should use email in case of empty name", () => {
-        const testPayload = { name: "", email: "test@testmail.com" };
-        const expectedResult = testPayload.email;
         const result = formatUserName(testPayload);
         expect(result).toBe(expectedResult);
     });

@@ -9,7 +9,6 @@ exports[`handleBitbucketWebhook Should send completion message and close the cha
   ],
   "invitesToChannels": [],
   "kicksFromChannels": [],
-  "lookedUpUsers": [],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [],
   "sentMessages": [
@@ -43,20 +42,13 @@ exports[`handleBitbucketWebhook Should send notification to the broadcast channe
     {
       "force": true,
       "users": [
-        "test.author@test.com",
-        "test.reviewer1@test.com",
-        "test.reviewer2@test.com",
+        "000000",
+        "111111",
+        "222222",
       ],
     },
   ],
   "kicksFromChannels": [],
-  "lookedUpUsers": [
-    [
-      "test.author@test.com",
-      "test.reviewer1@test.com",
-      "test.reviewer2@test.com",
-    ],
-  ],
   "searchedCommentSnapshots": [],
   "searchedPrOpenedBroadcastMessages": [
     {

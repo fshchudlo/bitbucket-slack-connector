@@ -1,37 +1,38 @@
-import { PullRequestGenericNotification, PullRequestNotification, PullRequestReviewersUpdatedNotification } from "../../use-cases/contracts";
+import { PullRequestGenericNotification, PullRequestNotification, PullRequestReviewersUpdatedNotification, ReviewerPayload } from "../../use-cases/contracts";
 import { AppConfig } from "../../app.config";
+import { SlackUserIdResolver } from "./ports/SlackUserIdResolver";
 
-export async function normalizeGithubPayload(notification: GithubNotification): Promise<PullRequestNotification> {
+export async function normalizeGithubPayload(notification: GithubNotification, slackUserIdResolver: SlackUserIdResolver): Promise<PullRequestNotification> {
     const eventKey = notification.action;
     switch (eventKey) {
         case "opened":
             return {
-                ...normalizePayloadGenericPart(notification),
+                ...(await normalizePayloadGenericPart(notification, slackUserIdResolver)),
                 eventKey: "pr:opened"
             } as PullRequestGenericNotification;
         case "closed":
             return {
-                ...normalizePayloadGenericPart(notification),
+                ...(await normalizePayloadGenericPart(notification, slackUserIdResolver)),
                 eventKey: notification.pull_request.merged ? "pr:merged" : "pr:deleted"
             } as PullRequestGenericNotification;
         case "review_requested":
             return {
-                ...normalizePayloadGenericPart(notification),
+                ...(await normalizePayloadGenericPart(notification, slackUserIdResolver)),
                 eventKey: "pr:reviewer:updated",
                 addedReviewers: [{
                     name: notification.requested_reviewer.login,
-                    email: AppConfig.getUserEmailFromGithubLogin(notification.requested_reviewer.login)
+                    slackUserId: await slackUserIdResolver.getUserId(AppConfig.getUserEmailFromGithubLogin(notification.requested_reviewer.login))
                 }],
                 removedReviewers: []
             } as PullRequestReviewersUpdatedNotification;
         case "review_request_removed":
             return {
-                ...normalizePayloadGenericPart(notification),
+                ...(await normalizePayloadGenericPart(notification, slackUserIdResolver)),
                 eventKey: "pr:reviewer:updated",
                 addedReviewers: [],
                 removedReviewers: [{
                     name: notification.requested_reviewer.login,
-                    email: AppConfig.getUserEmailFromGithubLogin(notification.requested_reviewer.login)
+                    slackUserId: await slackUserIdResolver.getUserId(AppConfig.getUserEmailFromGithubLogin(notification.requested_reviewer.login))
                 }]
             } as PullRequestReviewersUpdatedNotification;
         default:
@@ -39,12 +40,23 @@ export async function normalizeGithubPayload(notification: GithubNotification): 
     }
 }
 
-function normalizePayloadGenericPart(payload: GithubNotification) {
+async function normalizePayloadGenericPart(payload: GithubNotification, slackUserIdResolver: SlackUserIdResolver) {
+    const normalizedReviewersPayload = await Promise.all(
+        payload.pull_request.requested_reviewers.map(async reviewer => {
+            return {
+                user: {
+                    name: reviewer.login,
+                    slackUserId: await slackUserIdResolver.getUserId(AppConfig.getUserEmailFromGithubLogin(reviewer.login))
+                },
+                status: "UNAPPROVED"
+            } as ReviewerPayload;
+        }));
+
     const basePayload: PullRequestGenericNotification = {
         eventKey: "pr:opened",
         actor: {
             name: payload.sender.login,
-            email: AppConfig.getUserEmailFromGithubLogin(payload.sender.login)
+            slackUserId: await slackUserIdResolver.getUserId(AppConfig.getUserEmailFromGithubLogin(payload.sender.login))
         },
         pullRequest: {
             number: +payload.number,
@@ -65,12 +77,9 @@ function normalizePayloadGenericPart(payload: GithubNotification) {
             },
             author: {
                 name: payload.pull_request.user.login,
-                email: AppConfig.getUserEmailFromGithubLogin(payload.pull_request.user.login)
+                slackUserId: await slackUserIdResolver.getUserId(AppConfig.getUserEmailFromGithubLogin(payload.pull_request.user.login))
             },
-            reviewers: payload.pull_request.requested_reviewers.map(reviewer => ({
-                user: { name: reviewer.login, email: AppConfig.getUserEmailFromGithubLogin(reviewer.login) },
-                status: "UNAPPROVED"
-            })),
+            reviewers: normalizedReviewersPayload,
             links: {
                 self: payload.pull_request.html_url
             }

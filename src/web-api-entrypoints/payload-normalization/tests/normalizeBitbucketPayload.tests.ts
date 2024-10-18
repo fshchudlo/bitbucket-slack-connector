@@ -7,7 +7,7 @@ describe("normalizeBitbucketPayload", () => {
         try {
             await normalizeBitbucketPayload({
                 eventKey: "unknown action"
-            } as any, null);
+            } as any, null, null);
         } catch (error) {
             expect((error as Error).message).toBe("\"unknown action\" event key is unknown.");
         }
