@@ -21,7 +21,7 @@ export const AppConfig = {
     * You can implement any other logic depending on the granularity level you need
     * */
     getOpenedPRBroadcastChannel(payload: PullRequestNotification): string | null {
-        const configuredBotUsers = process.env.BITBUCKET_BOT_USERS?.split(",").map(u => u.trim());
+        const configuredBotUsers = process.env.BOT_USER_NAMES?.split(",").map(u => u.trim());
         const projectKey = payload.pullRequest.targetBranch.projectKey;
         const prAuthor = payload.pullRequest.author.name;
 
@@ -36,5 +36,9 @@ export const AppConfig = {
                 ?? process.env.OPENED_PRS_BROADCAST_CHANNEL;
         }
         return channelName ?? null;
+    },
+    getUserEmailFromGithubLogin(login: string): string {
+        return login.replace("_webpros", "").split("-").join(".") + "@webpros.com";
     }
+
 };

@@ -36,15 +36,13 @@ function getBasicPayload(): PullRequestGenericNotification {
                 branchName: "feature/test-branch",
                 latestCommit: "from-ref-commit-hash",
                 repositoryName: "test-repository",
-                projectKey: "TEST-PROJ",
-                projectName: "Test project"
+                projectKey: "TEST-PROJ"
             },
             targetBranch: {
                 branchName: "master",
                 latestCommit: "to-ref-commit-hash",
                 repositoryName: "test-repository",
-                projectKey: "TEST-PROJ",
-                projectName: "Test project"
+                projectKey: "TEST-PROJ"
             },
             author: { ...authorUser },
             reviewers: [{

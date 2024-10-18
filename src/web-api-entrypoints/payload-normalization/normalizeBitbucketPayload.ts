@@ -108,14 +108,12 @@ function normalizePayloadGenericPart(payload: BitbucketNotification) {
             targetBranch: {
                 branchName: payload.pullRequest.toRef.displayId,
                 projectKey: payload.pullRequest.toRef.repository.project.key,
-                projectName: payload.pullRequest.toRef.repository.project.name,
                 repositoryName: payload.pullRequest.toRef.repository.slug,
                 latestCommit: payload.pullRequest.toRef.latestCommit
             },
             fromBranch: {
                 branchName: payload.pullRequest.fromRef.displayId,
                 projectKey: payload.pullRequest.fromRef.repository.project.key,
-                projectName: payload.pullRequest.fromRef.repository.project.name,
                 repositoryName: payload.pullRequest.fromRef.repository.slug,
                 latestCommit: payload.pullRequest.fromRef.latestCommit
             }

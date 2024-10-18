@@ -153,7 +153,7 @@ Content-Type: application/json
 
 > {%
     client.test("Invalid payload sending should lead to error", function() {
-        client.assert(response.body === "Internal Server Error")
+        client.assert(response.body.indexOf('"undefined" action key is unknown') !== -1);
         client.assert(response.status === 500)
     });
 %}

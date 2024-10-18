@@ -50,7 +50,6 @@ export type BranchPayload = {
     readonly latestCommit: string;
     readonly repositoryName: string;
     readonly projectKey: string;
-    readonly projectName: string;
 };
 export type PullRequestCommentPayload = {
     readonly id: number;

@@ -1,5 +1,5 @@
 {
-  "action": "opened",
+  "action": "review_requested",
   "number": "{{PullRequestId}}",
   "pull_request": {
     "html_url": "https://github.com/{{OrganizationName}}/{{RepositoryName}}/pull/{{PullRequestId}}",
@@ -64,6 +64,11 @@
     "deletions": 0,
     "changed_files": 1
   },
+  "requested_reviewer": {
+    "login": "{{PRAuthorName}}",
+    "type": "User"
+  },
+
   "repository": {
     "name": "{{RepositoryName}}"
   },

@@ -9,3 +9,32 @@ Content-Type: application/json
         client.assert(response.status === 200);
     });
 %}
+
+
+### Merge pull request
+POST {{EndpointHost}}/github-webhook
+Content-Type: application/json
+
+< ./test-payloads/PR-merged-test-payload.json
+
+> {%
+    client.test("Pull request merge should be successful", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+### Invalid payload
+POST {{EndpointHost}}/github-webhook
+Content-Type: application/json
+
+{
+  "eventKey": "invalid-payload"
+}
+
+> {%
+    client.test("Invalid payload sending should lead to error", function() {
+        console.log(response.body)
+        client.assert(response.body.indexOf('"undefined" action key is unknown') !== -1);
+        client.assert(response.status === 500)
+    });
+%}

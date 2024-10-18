@@ -58,7 +58,7 @@
   },
   "comment": {
     "id": "{{CommentId}}",
-    "text": "Test **bold** _italic_, ~~strikethrough~~ , [links](https://git.plesk.tech/projects/LPS/repos/core.key-administrator/pull-requests/2010/overview), `code blocks`,\nand new lines",
+    "text": "Test **bold** _italic_, ~~strikethrough~~ , [links]({{BitbucketBaseUrl}}/projects/{{ProjectName}}/repos/{{RepositoryName}}/pull-requests/{{PullRequestId}}/overview), `code blocks`,\nand new lines",
     "severity": "NORMAL",
     "state": "OPEN",
     "author": {
